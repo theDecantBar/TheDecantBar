@@ -1,10 +1,7 @@
-console.log("PRODUCT CONTROLLER FILE LOADED");
-
 import pool from "../config/db.js";
 
 export const getProducts = async (req, res) => {
-  console.log("NEW PRODUCT CONTROLLER IS RUNNING");
-
+  
   try {
     const result = await pool.query(`
       SELECT
