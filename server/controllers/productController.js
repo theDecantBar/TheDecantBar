@@ -1,9 +1,11 @@
 import pool from "../config/db.js";
 
 export const getProducts = async (req, res) => {
-  
   try {
-    const result = await pool.query(`
+    const { search } = req.query;
+
+    const result = await pool.query(
+      `
       SELECT
         p.*,
         COALESCE(
@@ -22,9 +24,13 @@ export const getProducts = async (req, res) => {
       FROM products p
       LEFT JOIN product_variants pv
         ON p.id = pv.product_id
+      WHERE
+        ($1 = '' OR p.name ILIKE '%' || $1 || '%')
       GROUP BY p.id
       ORDER BY p.created_at DESC
-    `);
+      `,
+      [search || ""]
+    );
 
     res.json(result.rows);
   } catch (error) {
