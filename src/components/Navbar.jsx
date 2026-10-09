@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, UserRound, ShoppingBag, Menu, X } from "lucide-react";
@@ -20,8 +21,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#11110f]/90 backdrop-blur-md">
       <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
-        
-        {/* Left: Mobile Hamburger */}
+        {/* Mobile Hamburger */}
         <div className="flex items-center lg:hidden">
           <button
             type="button"
@@ -108,11 +108,12 @@ export default function Navbar() {
               className="fixed inset-y-0 left-0 z-50 flex w-full max-w-xs flex-col justify-between border-r border-white/10 bg-[#171715] p-6 text-[#f4efe6] shadow-2xl lg:hidden"
             >
               <div>
-                {/* Header inside drawer */}
+                {/* Drawer Header */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-4">
                   <span className="font-display text-xl tracking-wide">
                     The Decant Bar
                   </span>
+
                   <button
                     type="button"
                     onClick={closeMobileMenu}
@@ -123,7 +124,7 @@ export default function Navbar() {
                   </button>
                 </div>
 
-                {/* Nav Links */}
+                {/* Mobile Navigation Links */}
                 <div className="mt-6 flex flex-col space-y-4">
                   {navItems.map((item) => (
                     <Link
@@ -149,6 +150,7 @@ export default function Navbar() {
                     <UserRound size={16} />
                     <span>My Account</span>
                   </Link>
+
                   <Link
                     to="/cart"
                     onClick={closeMobileMenu}
@@ -158,6 +160,7 @@ export default function Navbar() {
                     <span>View Cart (0)</span>
                   </Link>
                 </div>
+
                 <p className="mt-6 text-[10px] tracking-wide text-[#8e8a82]">
                   Authentic luxury fragrances, decanted.
                 </p>

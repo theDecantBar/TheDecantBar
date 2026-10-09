@@ -1,8 +1,10 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import Products from "./pages/products/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -13,7 +15,7 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Products from "./pages/products/Products";
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
