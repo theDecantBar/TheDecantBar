@@ -1,3 +1,4 @@
+
 console.log("PRODUCT CONTROLLER FILE LOADED");
 
 import pool from "../config/db.js";
@@ -20,7 +21,7 @@ export const getProducts = async (req, res) => {
             )
             ORDER BY pv.size_ml
           ) FILTER (WHERE pv.id IS NOT NULL),
-          '[]'
+          '[]'::json
         ) AS variants
       FROM products p
       LEFT JOIN product_variants pv
@@ -29,12 +30,15 @@ export const getProducts = async (req, res) => {
       ORDER BY p.created_at DESC
     `);
 
+    console.log(`Successfully fetched ${result.rows.length} products`);
+
     res.json(result.rows);
   } catch (error) {
-    console.error("Error fetching products:", error.message);
+    console.error("Error fetching products:", error);
 
     res.status(500).json({
       message: "Failed to fetch products",
+      error: error.message,
     });
   }
 };
