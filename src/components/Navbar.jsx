@@ -4,7 +4,7 @@ import { Search, UserRound, ShoppingBag, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 const navItems = [
-  { name: "Shop", path: "/shop" },
+  { name: "Shop", path: "/products" },
   { name: "Men", path: "/shop?gender=Men" },
   { name: "Women", path: "/shop?gender=Women" },
   { name: "Unisex", path: "/shop?gender=Unisex" },

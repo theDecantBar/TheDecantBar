@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../../components/products/ProductCard";
-import Navbar from "../../components/Navbar";
+
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -29,7 +29,6 @@ function Products() {
 
   return (
   <>
-    <Navbar />
 
     <div className="min-h-screen bg-[#11110f] px-6 pt-20 pb-16">
 
