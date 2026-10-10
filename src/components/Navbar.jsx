@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, UserRound, ShoppingBag, Menu, X, LogIn } from "lucide-react";
+import { Search, UserRound, ShoppingBag, Menu, X, LogIn, Shield } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
@@ -18,7 +18,7 @@ const navItems = [
 export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
   const { cartCount } = useCart();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -99,6 +99,16 @@ export default function Navbar() {
           >
             <Search size={20} strokeWidth={1.5} />
           </Link>
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="hidden sm:inline-flex items-center gap-1.5 border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b] hover:bg-[#c6a15b]/20 hover:border-[#c6a15b] transition"
+            >
+              <Shield size={11} />
+              <span>Admin</span>
+            </Link>
+          )}
 
           <Link
             to={isAuthenticated ? "/account" : "/login"}
@@ -203,6 +213,20 @@ export default function Navbar() {
                 {/* Drawer Footer Actions (Distinct Bottom Section) */}
                 <div className="mt-auto border-t border-white/10 bg-[#11110f]/70 px-6 py-5">
                   <div className="space-y-2.5">
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={closeMobileMenu}
+                        className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b] transition-colors hover:bg-[#c6a15b]/20"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Shield size={16} strokeWidth={1.5} />
+                          <span>Admin Portal</span>
+                        </div>
+                        <span className="text-[10px] text-amber-400 font-bold">CONTROL</span>
+                      </Link>
+                    )}
+
                     {isAuthenticated ? (
                       <Link
                         to="/account"

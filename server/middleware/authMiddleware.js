@@ -16,7 +16,7 @@ export const protect = async (req, res, next) => {
       );
 
       const result = await pool.query(
-        "SELECT id, full_name, email, phone, address, city, state, pincode, created_at FROM users WHERE id = $1",
+        "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin, created_at FROM users WHERE id = $1",
         [decoded.id]
       );
 
@@ -24,7 +24,20 @@ export const protect = async (req, res, next) => {
         return res.status(401).json({ message: "User not found or token invalid." });
       }
 
-      req.user = result.rows[0];
+      const userData = result.rows[0];
+      const adminEmails = (process.env.ADMIN_EMAILS || "")
+        .split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+
+      const isConfiguredAdmin =
+        Boolean(userData.is_admin) ||
+        (userData.email && adminEmails.includes(userData.email.toLowerCase()));
+
+      req.user = {
+        ...userData,
+        isAdmin: isConfiguredAdmin,
+      };
       return next();
     } catch (error) {
       console.error("Auth middleware error:", error.message);
@@ -35,6 +48,16 @@ export const protect = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token provided." });
   }
+};
+
+// Require Administrator role
+export const adminOnly = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    return next();
+  }
+  return res.status(403).json({
+    message: "Access forbidden. Administrator privileges are required.",
+  });
 };
 
 // Optional auth for endpoints like checkout where guest or logged-in users both can place orders
