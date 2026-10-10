@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "motion/react";
 
 const navItems = [
   { name: "Shop", path: "/products" },
-  { name: "Men", path: "/shop?gender=Men" },
-  { name: "Women", path: "/shop?gender=Women" },
-  { name: "Unisex", path: "/shop?gender=Unisex" },
+  { name: "Men", path: "/products?gender=Men" },
+  { name: "Women", path: "/products?gender=Women" },
+  { name: "Unisex", path: "/products?gender=Unisex" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];

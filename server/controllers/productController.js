@@ -33,20 +33,20 @@ export const getProducts = async (req, res) => {
         ($1 = '' OR p.name ILIKE '%' || $1 || '%')
         AND ($2 = '' OR p.category ILIKE '%' || $2 || '%')
         AND (
-  $3 = ''
-  OR (
-    $3 = 'M'
-    AND UPPER(TRIM(p.gender)) = 'M'
-  )
-  OR (
-    $3 = 'W'
-    AND UPPER(TRIM(p.gender)) = 'W'
-  )
-  OR (
-    $3 = 'M/W'
-    AND UPPER(TRIM(p.gender)) = 'M/W'
-  )
-)
+          $3 = ''
+          OR (
+            UPPER($3) IN ('M', 'MEN')
+            AND UPPER(TRIM(p.gender)) = 'M'
+          )
+          OR (
+            UPPER($3) IN ('W', 'WOMEN')
+            AND UPPER(TRIM(p.gender)) = 'W'
+          )
+          OR (
+            UPPER($3) IN ('M/W', 'UNISEX')
+            AND UPPER(TRIM(p.gender)) = 'M/W'
+          )
+        )
         AND ($4 = '' OR p.weather ILIKE '%' || $4 || '%')
         AND ($5 = '' OR p.type ILIKE '%' || $5 || '%')
       GROUP BY p.id
