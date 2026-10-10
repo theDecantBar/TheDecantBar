@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, UserRound, ShoppingBag, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useCart } from "../context/CartContext";
 
 const navItems = [
   { name: "Shop", path: "/products" },
@@ -14,6 +15,7 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const { cartCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -79,7 +81,7 @@ export default function Navbar() {
           >
             <ShoppingBag size={20} strokeWidth={1.5} />
             <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c6a15b] text-[9px] font-bold text-[#11110f]">
-              0
+              {cartCount}
             </span>
           </Link>
         </div>
