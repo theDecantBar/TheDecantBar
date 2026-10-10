@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   ShieldCheck,
@@ -10,15 +10,19 @@ import {
   ShoppingBag,
   ArrowLeft,
   Sparkles,
-  Lock
+  Lock,
+  AlertCircle
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { placeOrder } from "../services/authApi";
 
 const SHIPPING_FEE = 99;
 
 export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
+  const { user, token, isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -33,24 +37,66 @@ export default function Checkout() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
+
+  // Auto-fill form if user is logged in
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: prev.fullName || user.fullName || "",
+        email: prev.email || user.email || "",
+        phone: prev.phone || user.phone || "",
+        address: prev.address || user.address || "",
+        city: prev.city || user.city || "",
+        state: prev.state || user.state || "",
+        pincode: prev.pincode || user.pincode || "",
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errorMessage) setErrorMessage("");
   };
 
   const finalTotal = cartSubtotal + (cartItems.length > 0 ? SHIPPING_FEE : 0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage("");
 
-    // Simulate order placement
-    setTimeout(() => {
-      const orderNumber = `TDB-${Math.floor(100000 + Math.random() * 900000)}`;
+    try {
+      const orderPayload = {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        paymentMethod: formData.paymentMethod,
+        orderNotes: formData.orderNotes,
+        items: cartItems.map((item) => ({
+          id: item.id,
+          name: item.name,
+          size_ml: item.size_ml,
+          price: item.price,
+          quantity: item.quantity,
+          image_url: item.image_url,
+        })),
+        subtotal: cartSubtotal,
+        shippingFee: SHIPPING_FEE,
+        total: finalTotal,
+      };
+
+      const res = await placeOrder(orderPayload, token);
+
       const orderSummary = {
-        orderNumber,
+        orderNumber: res.order.orderNumber,
         items: [...cartItems],
         total: finalTotal,
         customer: { ...formData },
@@ -63,9 +109,13 @@ export default function Checkout() {
 
       setCompletedOrder(orderSummary);
       clearCart();
-      setIsSubmitting(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 1200);
+    } catch (err) {
+      console.error("Order placement error:", err);
+      setErrorMessage(err.message || "Failed to place order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // 1. Order Completed Screen
@@ -125,10 +175,23 @@ export default function Checkout() {
             </span>
           </div>
 
-          <div className="mt-8 text-center">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {isAuthenticated && (
+              <Link
+                to="/account"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#11110f] hover:bg-[#d8c08a] transition"
+              >
+                View in Order History
+                <ArrowRight size={14} />
+              </Link>
+            )}
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#11110f] hover:bg-[#d8c08a] transition"
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 border px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold transition ${
+                isAuthenticated
+                  ? "border-white/20 bg-transparent text-[#f4efe6] hover:bg-white/5"
+                  : "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] hover:bg-[#d8c08a]"
+              }`}
             >
               Discover More Fragrances
               <ArrowRight size={14} />
@@ -190,6 +253,13 @@ export default function Checkout() {
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Left Column: Checkout Input Form */}
         <div className="lg:col-span-7">
+          {errorMessage && (
+            <div className="mb-6 flex items-start gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-10">
             {/* Section 1: Customer Contact */}
             <div className="border border-white/10 bg-[#171715] p-6 sm:p-8">

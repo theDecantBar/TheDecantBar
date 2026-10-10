@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, UserRound, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, UserRound, ShoppingBag, Menu, X, LogIn } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const navItems = [
   { name: "Shop", path: "/products" },
@@ -17,6 +18,7 @@ const navItems = [
 export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
   const { cartCount } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -99,11 +101,20 @@ export default function Navbar() {
           </Link>
 
           <Link
-            to="/account"
-            aria-label="Account"
-            className="hidden text-[#f4efe6] transition-colors hover:text-[#c6a15b] sm:block"
+            to={isAuthenticated ? "/account" : "/login"}
+            aria-label={isAuthenticated ? "My Account" : "Sign In"}
+            className="hidden items-center gap-2 text-[#f4efe6] transition-colors hover:text-[#c6a15b] sm:flex"
           >
-            <UserRound size={20} strokeWidth={1.5} />
+            <UserRound
+              size={20}
+              strokeWidth={1.5}
+              className={isAuthenticated ? "text-[#c6a15b]" : "text-[#f4efe6]"}
+            />
+            {isAuthenticated && user?.fullName && (
+              <span className="hidden xl:inline text-xs font-medium uppercase tracking-wider text-[#c5c1b9]">
+                {user.fullName.split(" ")[0]}
+              </span>
+            )}
           </Link>
 
           <Link
@@ -192,14 +203,30 @@ export default function Navbar() {
                 {/* Drawer Footer Actions (Distinct Bottom Section) */}
                 <div className="mt-auto border-t border-white/10 bg-[#11110f]/70 px-6 py-5">
                   <div className="space-y-2.5">
-                    <Link
-                      to="/account"
-                      onClick={closeMobileMenu}
-                      className="flex items-center gap-3 rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
-                    >
-                      <UserRound size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
-                      <span>My Account</span>
-                    </Link>
+                    {isAuthenticated ? (
+                      <Link
+                        to="/account"
+                        onClick={closeMobileMenu}
+                        className="flex items-center justify-between rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                      >
+                        <div className="flex items-center gap-3">
+                          <UserRound size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
+                          <span>My Account</span>
+                        </div>
+                        <span className="text-[10px] text-[#c6a15b] font-semibold">
+                          {user?.fullName?.split(" ")[0]}
+                        </span>
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/login"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                      >
+                        <LogIn size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
+                        <span>Sign In / Register</span>
+                      </Link>
+                    )}
 
                     <Link
                       to="/cart"
