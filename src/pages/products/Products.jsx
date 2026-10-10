@@ -3,14 +3,24 @@ import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
 
 function Products() {
-  const [searchParams] = useSearchParams();
-  const gender = searchParams.get("gender") || "";
+  const [searchParams, setSearchParams] = useSearchParams();
+  const genderParam = searchParams.get("gender") || "";
+  const categoryParam = searchParams.get("category") || "";
+  const searchParam = searchParams.get("search") || "";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [search, setSearch] = useState(searchParam);
+  const [category, setCategory] = useState(categoryParam);
+  const [gender, setGender] = useState(genderParam);
+
+  // Sync internal filter state when URL searchParams change
+  useEffect(() => {
+    setCategory(searchParams.get("category") || "");
+    setSearch(searchParams.get("search") || "");
+    setGender(searchParams.get("gender") || "");
+  }, [searchParams]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -58,6 +68,53 @@ function Products() {
     return () => controller.abort();
   }, [search, category, gender]);
 
+  const handleCategoryChange = (e) => {
+    const newCat = e.target.value;
+    setCategory(newCat);
+    const newParams = new URLSearchParams(searchParams);
+    if (newCat) {
+      newParams.set("category", newCat);
+    } else {
+      newParams.delete("category");
+    }
+    setSearchParams(newParams);
+  };
+
+  const handleClearFilters = () => {
+    setSearch("");
+    setCategory("");
+    setGender("");
+    setSearchParams({});
+  };
+
+  // Dynamic header based on category or gender
+  let pageTitle = "Our Collection";
+  let pageSubtitle =
+    "Explore our collection of authentic luxury fragrances, carefully decanted for every mood and occasion.";
+
+  if (category.toLowerCase() === "niche") {
+    pageTitle = "Niche Masterpieces";
+    pageSubtitle =
+      "Rare, artisanal formulations crafted with opulent raw ingredients and uncompromising artistic freedom.";
+  } else if (category.toLowerCase() === "designer") {
+    pageTitle = "Designer Icons";
+    pageSubtitle =
+      "The pinnacle of high-fashion luxury scent craft from Tom Ford, Dior, YSL, Chanel, and more.";
+  } else if (category.toLowerCase().includes("middle")) {
+    pageTitle = "Middle Eastern Powerhouses";
+    pageSubtitle =
+      "Rich ambers, hypnotic ouds, and long-lasting oriental elixirs that command the room.";
+  } else if (gender) {
+    const label =
+      gender.toUpperCase() === "M" || gender.toLowerCase() === "men"
+        ? "Men"
+        : gender.toUpperCase() === "W" || gender.toLowerCase() === "women"
+        ? "Women"
+        : "Unisex";
+    pageTitle = `Fragrances for ${label}`;
+    pageSubtitle = `Handpicked luxury decants curated especially for ${label.toLowerCase()}.`;
+  }
+
   return (
     <div className="min-h-screen bg-[#11110f] px-6 pb-16 pt-12 text-[#f4efe6]">
       <div className="mx-auto mb-10 max-w-7xl">
@@ -66,14 +123,13 @@ function Products() {
         </p>
 
         <h1 className="mt-3 font-display text-5xl md:text-6xl">
-          Our Collection
+          {pageTitle}
         </h1>
 
         <div className="mb-5 mt-6 h-px w-16 bg-[#c6a15b]" />
 
         <p className="max-w-xl text-sm text-[#f4efe6]/60 md:text-base">
-          Explore our collection of fragrances, carefully selected for every
-          mood and occasion.
+          {pageSubtitle}
         </p>
       </div>
 
@@ -89,7 +145,7 @@ function Products() {
 
         <select
           value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          onChange={handleCategoryChange}
           aria-label="Filter by category"
           className="w-full border border-white/15 bg-[#151512] px-5 py-4 text-[#f4efe6] transition focus:border-[#c6a15b] focus:outline-none sm:w-1/3"
         >
@@ -99,13 +155,10 @@ function Products() {
           <option value="Middle eastern">Middle Eastern</option>
         </select>
 
-        {(search || category) && (
+        {(search || category || gender) && (
           <button
             type="button"
-            onClick={() => {
-              setSearch("");
-              setCategory("");
-            }}
+            onClick={handleClearFilters}
             className="border border-[#c6a15b] px-5 py-3 text-sm uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
           >
             Clear Filters
@@ -114,15 +167,13 @@ function Products() {
       </div>
 
       {loading ? (
-        <p className="py-12 text-center">Loading products...</p>
+        <p className="py-12 text-center text-[#8e8a82]">Loading fragrances...</p>
       ) : error ? (
         <div className="py-12 text-center">
           <p className="text-red-300">{error}</p>
           <button
             type="button"
-            onClick={() => {
-              setSearch((current) => current);
-            }}
+            onClick={() => setSearch((current) => current)}
             className="mt-4 text-sm text-[#c6a15b] underline"
           >
             Retry
@@ -136,6 +187,7 @@ function Products() {
         <>
           <p className="mx-auto mb-5 max-w-7xl text-sm text-[#f4efe6]/60">
             {products.length} fragrances found
+            {category ? ` in ${category}` : ""}
             {gender ? ` for ${gender}` : ""}
           </p>
 

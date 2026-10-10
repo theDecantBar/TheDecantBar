@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -48,8 +49,8 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-wrap gap-4">
 
-            <a
-              href="/shop"
+            <Link
+              to="/products"
               className="group flex items-center gap-4 bg-[#c6a15b] px-7 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition hover:bg-[#d8c08a]"
             >
               Shop Fragrances
@@ -58,14 +59,14 @@ export default function Hero() {
                 size={16}
                 className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
               />
-            </a>
+            </Link>
 
-            <a
-              href="/shop"
+            <Link
+              to="/products"
               className="flex items-center gap-4 border border-white/25 px-7 py-4 text-xs font-semibold uppercase tracking-wider text-white transition hover:border-[#c6a15b] hover:text-[#c6a15b]"
             >
               Explore Collection
-            </a>
+            </Link>
 
           </div>
 
