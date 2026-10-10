@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, ShoppingBag, Plus, Minus } from "lucide-react";
+import { ShoppingBag, Plus, Minus } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
 
 function ProductCard({ product }) {
+  const shouldReduceMotion = useReducedMotion();
   const { cartItems, addToCart, updateQuantity } = useCart();
-  const firstVariant = product.variants?.[0];
-  const [selectedVariant, setSelectedVariant] = useState(firstVariant || null);
+  const [selectedVariantId, setSelectedVariantId] = useState(
+    () => product.variants?.[0]?.id ?? null
+  );
   const [imageError, setImageError] = useState(false);
 
-  // Sync selected variant if product changes
-  useEffect(() => {
-    if (product.variants?.length > 0) {
-      setSelectedVariant(product.variants[0]);
-    }
-  }, [product]);
+  const selectedVariant =
+    product.variants?.find((v) => v.id === selectedVariantId) ??
+    product.variants?.[0] ??
+    null;
 
   const cartItemId = selectedVariant ? `${product.id}-${selectedVariant.id}` : null;
   const cartItem = cartItems.find((item) => item.cartItemId === cartItemId);
@@ -26,10 +27,16 @@ function ProductCard({ product }) {
     addToCart(product, selectedVariant, 1);
   };
 
-  const currentPrice = selectedVariant ? selectedVariant.price : firstVariant?.price;
+  const currentPrice = selectedVariant ? selectedVariant.price : product.variants?.[0]?.price;
 
   return (
-    <div className="group flex h-full flex-col bg-[#151512] border border-white/10 hover:border-[#c6a15b]/60 transition-all duration-500">
+    <motion.div
+      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="group flex h-full flex-col bg-[#151512] border border-white/10 hover:border-[#c6a15b]/60 transition-colors duration-500"
+    >
       {/* Product Image Link */}
       <Link
         to={`/product/${product.id}`}
@@ -95,7 +102,7 @@ function ProductCard({ product }) {
                   <button
                     key={variant.id}
                     type="button"
-                    onClick={() => setSelectedVariant(variant)}
+                    onClick={() => setSelectedVariantId(variant.id)}
                     className={`inline-flex items-center justify-center min-w-[46px] px-3 py-1.5 text-xs transition cursor-pointer border ${
                       isSelected
                         ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
@@ -144,7 +151,7 @@ function ProductCard({ product }) {
           </button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

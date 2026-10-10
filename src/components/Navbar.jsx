@@ -1,8 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, UserRound, ShoppingBag, Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../context/CartContext";
 
 const navItems = [
@@ -15,13 +15,40 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const shouldReduceMotion = useReducedMotion();
   const { cartCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
+  // Prevent background scroll and close on Escape key when drawer is open
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#11110f]/90 backdrop-blur-md">
+    <motion.header
+      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#11110f]/90 backdrop-blur-md"
+    >
       <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
         {/* Mobile Hamburger */}
         <div className="flex items-center lg:hidden">
@@ -38,9 +65,14 @@ export default function Navbar() {
         {/* Brand Logo */}
         <Link
           to="/"
-          className="font-display text-2xl tracking-wide text-[#f4efe6] sm:text-3xl"
+          className="flex items-center transition-opacity hover:opacity-90 shrink-0"
+          aria-label="The Decant Bar"
         >
-          The Decant Bar
+          <img
+            src="/images/tdb-logo.png"
+            alt="The Decant Bar"
+            className="h-10 w-auto object-contain sm:h-12 lg:h-[50px]"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -90,87 +122,109 @@ export default function Navbar() {
       {/* Mobile Slide-Out Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
+          <div className="fixed inset-0 z-50 lg:hidden">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.25 }}
               onClick={closeMobileMenu}
-              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm lg:hidden"
+              aria-hidden="true"
+              className="fixed inset-0 bg-black/75 backdrop-blur-sm"
             />
 
             {/* Slide-out Menu Panel */}
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-              className="fixed inset-y-0 left-0 z-50 flex w-full max-w-xs flex-col justify-between border-r border-white/10 bg-[#171715] p-6 text-[#f4efe6] shadow-2xl lg:hidden"
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed top-0 bottom-0 left-0 z-50 flex h-screen h-[100dvh] w-[85vw] max-w-[320px] flex-col border-r border-white/10 bg-[#151512] text-[#f4efe6] shadow-2xl"
             >
-              <div>
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                  <span className="font-display text-xl tracking-wide">
-                    The Decant Bar
-                  </span>
+              {/* Drawer Header (Fixed at top) */}
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-6">
+                <Link
+                  to="/"
+                  onClick={closeMobileMenu}
+                  className="flex items-center transition-opacity hover:opacity-90"
+                  aria-label="The Decant Bar"
+                >
+                  <img
+                    src="/images/tdb-logo.png"
+                    alt="The Decant Bar"
+                    className="h-10 w-auto object-contain sm:h-11"
+                  />
+                </Link>
 
-                  <button
-                    type="button"
-                    onClick={closeMobileMenu}
-                    aria-label="Close menu"
-                    className="p-1 text-[#c5c1b9] transition-colors hover:text-[#f4efe6]"
-                  >
-                    <X size={22} strokeWidth={1.5} />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={closeMobileMenu}
+                  aria-label="Close menu"
+                  className="flex h-9 w-9 items-center justify-center rounded border border-white/10 text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/50 hover:bg-white/5 hover:text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                >
+                  <X size={20} strokeWidth={1.5} />
+                </button>
+              </div>
 
-                {/* Mobile Navigation Links */}
-                <div className="mt-6 flex flex-col space-y-4">
+              {/* Single Scrollable Content Container */}
+              <div className="flex flex-1 flex-col justify-between overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {/* Primary Navigation Links */}
+                <nav className="flex flex-col space-y-1 px-6 pt-5 pb-2">
                   {navItems.map((item) => (
                     <Link
                       key={item.name}
                       to={item.path}
                       onClick={closeMobileMenu}
-                      className="text-sm font-medium uppercase tracking-wider text-[#c5c1b9] transition-colors hover:text-[#c6a15b]"
+                      className="group flex items-center justify-between rounded py-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#c5c1b9] transition-all hover:text-[#c6a15b] hover:translate-x-1"
                     >
-                      {item.name}
+                      <span>{item.name}</span>
+                      <span className="text-[10px] text-[#c6a15b] opacity-0 transition-opacity group-hover:opacity-100">
+                        ›
+                      </span>
                     </Link>
                   ))}
+                </nav>
+
+                {/* Drawer Footer Actions (Distinct Bottom Section) */}
+                <div className="mt-auto border-t border-white/10 bg-[#11110f]/70 px-6 py-5">
+                  <div className="space-y-2.5">
+                    <Link
+                      to="/account"
+                      onClick={closeMobileMenu}
+                      className="flex items-center gap-3 rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                    >
+                      <UserRound size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
+                      <span>My Account</span>
+                    </Link>
+
+                    <Link
+                      to="/cart"
+                      onClick={closeMobileMenu}
+                      className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:bg-[#c6a15b]/20"
+                    >
+                      <div className="flex items-center gap-3">
+                        <ShoppingBag size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
+                        <span>View Cart</span>
+                      </div>
+                      <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#c6a15b] px-1.5 text-[10px] font-bold text-[#11110f]">
+                        {cartCount}
+                      </span>
+                    </Link>
+                  </div>
+
+                  <p className="mt-4 text-center text-[10px] uppercase tracking-[0.2em] text-[#8e8a82]">
+                    Authentic Luxury Decants
+                  </p>
                 </div>
-              </div>
-
-              {/* Drawer Footer Actions */}
-              <div className="border-t border-white/10 pt-6">
-                <div className="flex flex-col gap-3">
-                  <Link
-                    to="/account"
-                    onClick={closeMobileMenu}
-                    className="flex items-center gap-3 text-xs uppercase tracking-wider text-[#c5c1b9] transition-colors hover:text-[#c6a15b]"
-                  >
-                    <UserRound size={16} />
-                    <span>My Account</span>
-                  </Link>
-
-                  <Link
-                    to="/cart"
-                    onClick={closeMobileMenu}
-                    className="flex items-center gap-3 text-xs uppercase tracking-wider text-[#c5c1b9] transition-colors hover:text-[#c6a15b]"
-                  >
-                    <ShoppingBag size={16} />
-                    <span>View Cart (0)</span>
-                  </Link>
-                </div>
-
-                <p className="mt-6 text-[10px] tracking-wide text-[#8e8a82]">
-                  Authentic luxury fragrances, decanted.
-                </p>
               </div>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

@@ -110,7 +110,7 @@ export default function FeaturedDecants() {
             to="/products"
             className="inline-flex items-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
           >
-            Explore All 160+ Perfumes
+            Explore all 90+ Perfumes
             <ArrowRight size={15} />
           </Link>
         </div>

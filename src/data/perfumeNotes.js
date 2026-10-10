@@ -752,7 +752,7 @@ const KNOWN_PERFUMES = [
 /**
  * Retrieve the most accurate profile for any perfume in the catalog
  */
-export function getPerfumeProfile(name = "", category = "", weather = "", type = "", gender = "") {
+export function getPerfumeProfile(name = "", category = "", weather = "", type = "") {
   const cleanName = name.toLowerCase().trim();
 
   // Try direct match from curated authentic database
@@ -764,7 +764,6 @@ export function getPerfumeProfile(name = "", category = "", weather = "", type =
 
   // Smart fallback based on category and season for any remaining perfumes
   const isWinter = (weather || "").toLowerCase().includes("winter");
-  const isNiche = (category || "").toLowerCase().includes("niche");
   const isMiddleEastern = (category || "").toLowerCase().includes("middle");
 
   if (isMiddleEastern) {

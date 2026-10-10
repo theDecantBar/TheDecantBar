@@ -4,23 +4,20 @@ import ProductCard from "../../components/products/ProductCard";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const genderParam = searchParams.get("gender") || "";
-  const categoryParam = searchParams.get("category") || "";
   const searchParam = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const gender = searchParams.get("gender") || "";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState(searchParam);
-  const [category, setCategory] = useState(categoryParam);
-  const [gender, setGender] = useState(genderParam);
+  const [prevSearchParam, setPrevSearchParam] = useState(searchParam);
 
-  // Sync internal filter state when URL searchParams change
-  useEffect(() => {
-    setCategory(searchParams.get("category") || "");
-    setSearch(searchParams.get("search") || "");
-    setGender(searchParams.get("gender") || "");
-  }, [searchParams]);
+  if (prevSearchParam !== searchParam) {
+    setPrevSearchParam(searchParam);
+    setSearch(searchParam);
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -70,7 +67,6 @@ function Products() {
 
   const handleCategoryChange = (e) => {
     const newCat = e.target.value;
-    setCategory(newCat);
     const newParams = new URLSearchParams(searchParams);
     if (newCat) {
       newParams.set("category", newCat);
@@ -82,8 +78,6 @@ function Products() {
 
   const handleClearFilters = () => {
     setSearch("");
-    setCategory("");
-    setGender("");
     setSearchParams({});
   };
 
