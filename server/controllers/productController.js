@@ -78,6 +78,13 @@ export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
+    const numericId = parseInt(id, 10);
+    if (!Number.isInteger(numericId) || numericId <= 0 || !/^\d+$/.test(String(id).trim())) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
     const result = await pool.query(
       `
       SELECT
@@ -101,7 +108,7 @@ export const getProductById = async (req, res) => {
       WHERE p.id = $1
       GROUP BY p.id
       `,
-      [id]
+      [numericId]
     );
 
     if (result.rows.length === 0) {
