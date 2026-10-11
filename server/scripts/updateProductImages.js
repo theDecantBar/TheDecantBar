@@ -23,27 +23,22 @@ const imageMap = {
   "Hawas verde": "IMG_9600.JPG.jpeg",
   "Hawas black": "IMG_9601.JPG.jpeg",
   "Hawas kobra": "IMG_9602.WEBP",
-
   "Tomford ombre leather parfum": "IMG_9614.WEBP",
   "Creed aventus": "IMG_9615.JPG.jpeg",
   "Creed aventus absolu": "IMG_9616.WEBP",
   "Creed mountain silver": "IMG_9618.JPG.jpeg",
-
   "Versace eros": "IMG_9625.JPG.jpeg",
   "versace flame": "IMG_9626.JPG.jpeg",
   "Kilian angle share": "IMG_9628.JPG.jpeg",
   "Kilian blue moon": "IMG_9629.JPG.jpeg",
   "kilian roses on ice": "IMG_9630.JPG.jpeg",
-
   "Christian Dior Gris dior": "IMG_9632.WEBP",
   "Christian Dior oud isphan": "IMG_9633.JPG.jpeg",
   "Dior sauvage elixer": "IMG_9634.WEBP",
   "Dior homme intense parfum": "IMG_9635.JPG.jpeg",
-
   "Xerjoff Erba Pura": "IMG_9644.JPG.jpeg",
   "Xerjoff Naxos": "IMG_9645.PNG",
   "Xerjoff Accento": "IMG_9646.JPG.jpeg",
-
   "Oud Stallion": "IMG_9649.JPG.jpeg",
   "ROJA Harrods": "IMG_9650.WEBP",
   "Armani code": "IMG_9651.WEBP",
@@ -52,26 +47,22 @@ const imageMap = {
   "Roberto canvalli splendid vanilla": "IMG_9654.JPG.jpeg",
   "Invictus legend": "IMG_9657.WEBP",
   "Baccarat rouge 540": "IMG_9658.WEBP",
-
   "Afnan 9PM": "IMG_9663.JPG.jpeg",
   "Armaf omb d'or": "IMG_9664.WEBP",
   "Jean Lowe ombre": "IMG_9669.WEBP",
   "lattafa khamrah qahwa": "IMG_9671.WEBP",
   "sharaf blend the club": "IMG_9673.JPG.jpeg",
   "sharaf blend": "IMG_9674.WEBP",
-
   "Valentino born in roma green stravaganza": "IMG_9677.JPG.jpeg",
   "YSL Homme cologne blue": "IMG_9680.JPG.jpeg",
   "YSL L Homme": "IMG_9681.WEBP",
   "YSL L Homme Le Parfum": "IMG_9682.JPG.jpeg",
   "YSL myself L'abslou parfum": "IMG_9684.JPG.jpeg",
-
-  "9PM ELIXER": "IMG_9687.JPG (1).jpeg",
+  "9PM ELIXER": "IMG_9687.JPG.jpeg",
   "Afnan supermacy not only intense": "IMG_9695.JPG.jpeg",
   "Afnan supermacy collector edition": "IMG_9696.WEBP",
   "Armaf Club de nuit intense": "IMG_9697.WEBP",
   "1 Million": "IMG_9700.JPG.jpeg",
-
   "Azzaro most wanted Intense": "IMG_9643.AVIF",
   "Creed Irish": "IMG_9617.AVIF",
   "Creed orijinal vetivar": "IMG_9619.AVIF",
@@ -90,7 +81,6 @@ const imageMap = {
   "Valentino coral": "IMG_9676.PNG",
   "Valentino men Uomo": "IMG_9675.AVIF",
   "Versace pour homme": "IMG_9627.AVIF",
-  // Additional image mappings
   "Azzaro most wanted night": "IMG_9622.JPG.jpeg",
   "Bentley intense": "IMG_9643.AVIF",
   "French avenue Baie EDP": "IMG_9612.WEBP",
