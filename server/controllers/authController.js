@@ -10,17 +10,6 @@ const generateToken = (id) => {
   );
 };
 
-const checkIsAdmin = (user) => {
-  const adminEmails = (process.env.ADMIN_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  return (
-    Boolean(user?.is_admin) ||
-    Boolean(user?.email && adminEmails.includes(user.email.toLowerCase()))
-  );
-};
-
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
@@ -48,27 +37,19 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "An account with this email already exists." });
     }
 
-    // Determine if this user email is configured as an admin
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    const shouldBeAdmin = adminEmails.includes(normalizedEmail);
-
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Insert user
     const result = await pool.query(
-      `INSERT INTO users (full_name, email, phone, password_hash, is_admin)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, created_at`,
-      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash, shouldBeAdmin]
+      `INSERT INTO users (full_name, email, phone, password_hash)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, full_name, email, phone, address, city, state, pincode, created_at`,
+      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash]
     );
 
     const user = result.rows[0];
-    const isAdmin = checkIsAdmin(user);
     const token = generateToken(user.id);
 
     res.status(201).json({
@@ -82,7 +63,6 @@ export const register = async (req, res) => {
         city: user.city,
         state: user.state,
         pincode: user.pincode,
-        isAdmin,
       },
       token,
     });
@@ -122,7 +102,6 @@ export const login = async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    const isAdmin = checkIsAdmin(user);
 
     res.json({
       message: "Login successful.",
@@ -135,7 +114,6 @@ export const login = async (req, res) => {
         city: user.city,
         state: user.state,
         pincode: user.pincode,
-        isAdmin,
       },
       token,
     });
@@ -150,7 +128,6 @@ export const login = async (req, res) => {
 // @access  Private
 export const getProfile = async (req, res) => {
   try {
-    const isAdmin = checkIsAdmin(req.user);
     res.json({
       user: {
         id: req.user.id,
@@ -161,7 +138,6 @@ export const getProfile = async (req, res) => {
         city: req.user.city,
         state: req.user.state,
         pincode: req.user.pincode,
-        isAdmin,
         createdAt: req.user.created_at,
       },
     });
@@ -188,12 +164,11 @@ export const updateProfile = async (req, res) => {
            pincode = COALESCE($6, pincode),
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $7
-       RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin`,
+       RETURNING id, full_name, email, phone, address, city, state, pincode`,
       [fullName, phone, address, city, state, pincode, req.user.id]
     );
 
     const user = result.rows[0];
-    const isAdmin = checkIsAdmin(user);
 
     res.json({
       message: "Profile updated successfully.",
@@ -206,7 +181,6 @@ export const updateProfile = async (req, res) => {
         city: user.city,
         state: user.state,
         pincode: user.pincode,
-        isAdmin,
       },
     });
   } catch (error) {
