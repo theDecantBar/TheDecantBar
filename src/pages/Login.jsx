@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useAuth } from "../context/AuthContext";
@@ -7,10 +7,12 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const emailParam = searchParams.get("email") || "";
   const { login, isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({
-    email: "",
+    email: emailParam,
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -68,9 +70,21 @@ export default function Login() {
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-6 flex items-start gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
-            <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
-            <span>{error}</span>
+          <div className="mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+            <div className="flex items-start gap-3">
+              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+            {error.includes("create an account") && (
+              <div className="mt-3 pl-7">
+                <Link
+                  to={`/register?email=${encodeURIComponent(formData.email)}`}
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#c6a15b] underline hover:text-[#d8c08a] transition"
+                >
+                  Create an account now &rarr;
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

@@ -10,8 +10,6 @@ import {
   MapPin,
   CheckCircle,
   AlertCircle,
-  ChevronRight,
-  Truck,
   ArrowRight
 } from "lucide-react";
 import Container from "../components/ui/Container";
@@ -27,18 +25,32 @@ export default function Account() {
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [ordersError, setOrdersError] = useState("");
 
-  // Profile Form State
-  const [profileForm, setProfileForm] = useState({
-    fullName: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
-  });
+  // Profile Form State initialized directly from user
+  const [profileForm, setProfileForm] = useState(() => ({
+    fullName: user?.fullName || "",
+    phone: user?.phone || "",
+    address: user?.address || "",
+    city: user?.city || "",
+    state: user?.state || "",
+    pincode: user?.pincode || "",
+  }));
   const [profileSuccess, setProfileSuccess] = useState("");
   const [profileError, setProfileError] = useState("");
   const [updatingProfile, setUpdatingProfile] = useState(false);
+
+  // Sync profile form when user changes without cascading renders
+  const [syncedUserId, setSyncedUserId] = useState(user?.id);
+  if (user && user.id !== syncedUserId) {
+    setSyncedUserId(user.id);
+    setProfileForm({
+      fullName: user.fullName || "",
+      phone: user.phone || "",
+      address: user.address || "",
+      city: user.city || "",
+      state: user.state || "",
+      pincode: user.pincode || "",
+    });
+  }
 
   // Password Form State
   const [passwordForm, setPasswordForm] = useState({
@@ -50,36 +62,29 @@ export default function Account() {
   const [passwordError, setPasswordError] = useState("");
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
-  // Sync profile form when user object updates
-  useEffect(() => {
-    if (user) {
-      setProfileForm({
-        fullName: user.fullName || "",
-        phone: user.phone || "",
-        address: user.address || "",
-        city: user.city || "",
-        state: user.state || "",
-        pincode: user.pincode || "",
-      });
-    }
-  }, [user]);
-
   // Load orders when authenticated
   useEffect(() => {
+    let ignore = false;
     if (isAuthenticated && token) {
-      setLoadingOrders(true);
       fetchMyOrders(token)
         .then((data) => {
-          setOrders(data || []);
-          setOrdersError("");
+          if (!ignore) {
+            setOrders(data || []);
+            setOrdersError("");
+            setLoadingOrders(false);
+          }
         })
         .catch((err) => {
-          setOrdersError(err.message || "Failed to load order history.");
-        })
-        .finally(() => {
-          setLoadingOrders(false);
+          if (!ignore) {
+            setOrdersError(err.message || "Failed to load order history.");
+            setLoadingOrders(false);
+          }
         });
     }
+
+    return () => {
+      ignore = true;
+    };
   }, [isAuthenticated, token]);
 
   const handleProfileChange = (e) => {

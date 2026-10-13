@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Lock, Mail, User, Phone, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const emailParam = searchParams.get("email") || "";
   const { register, isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({
     fullName: "",
-    email: "",
+    email: emailParam,
     phone: "",
     password: "",
     confirmPassword: "",
@@ -81,9 +83,21 @@ export default function Register() {
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-6 flex items-start gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
-            <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
-            <span>{error}</span>
+          <div className="mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+            <div className="flex items-start gap-3">
+              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+            {error.includes("Please log in") && (
+              <div className="mt-3 pl-7">
+                <Link
+                  to={`/login?email=${encodeURIComponent(formData.email)}`}
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#c6a15b] underline hover:text-[#d8c08a] transition"
+                >
+                  Sign in to your account now &rarr;
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

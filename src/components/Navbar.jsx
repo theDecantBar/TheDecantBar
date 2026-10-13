@@ -18,7 +18,7 @@ const navItems = [
 export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
   const { cartCount } = useCart();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);

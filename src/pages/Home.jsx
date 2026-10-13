@@ -3,6 +3,7 @@ import Featurebar from "../components/Featurebar";
 import FeaturedDecants from "../components/home/FeaturedDecants";
 import CategoryBanners from "../components/home/CategoryBanners";
 import DecantGuide from "../components/home/DecantGuide";
+import Testimonials from "../components/home/Testimonials";
 import Guarantees from "../components/home/Guarantees";
 
 export default function Home() {
@@ -23,7 +24,10 @@ export default function Home() {
       {/* 5. The Decant Philosophy (2ml, 5ml, 10ml visual size & spray guide) */}
       <DecantGuide />
 
-      {/* 6. The Decant Bar Guarantees (Sterile syringes, authentic juice, fine mist) */}
+      {/* 6. Customer Reviews & Community */}
+      <Testimonials />
+
+      {/* 7. The Decant Bar Guarantees (Sterile syringes, authentic juice, fine mist) */}
       <Guarantees />
     </div>
   );

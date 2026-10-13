@@ -72,7 +72,7 @@ export const createOrder = async (req, res) => {
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [
           order.id,
-          item.id || null,
+          item.productId || item.id || null,
           item.name,
           item.size_ml,
           item.price,

@@ -23,6 +23,13 @@ export function AuthProvider({ children }) {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("tdb_token");
+    localStorage.removeItem("tdb_user");
+  };
+
   // Validate or synchronize user profile on startup if token exists
   useEffect(() => {
     async function verifySession() {
@@ -63,13 +70,6 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("tdb_token");
-    localStorage.removeItem("tdb_user");
-  };
-
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem("tdb_user", JSON.stringify(updatedUser));
@@ -93,6 +93,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

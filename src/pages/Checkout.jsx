@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ShieldCheck,
@@ -24,37 +24,37 @@ export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
   const { user, token, isAuthenticated } = useAuth();
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
+  const [formData, setFormData] = useState(() => ({
+    fullName: user?.fullName || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    address: user?.address || "",
+    city: user?.city || "",
+    state: user?.state || "",
+    pincode: user?.pincode || "",
     paymentMethod: "cod",
     orderNotes: "",
-  });
+  }));
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
 
-  // Auto-fill form if user is logged in
-  useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        fullName: prev.fullName || user.fullName || "",
-        email: prev.email || user.email || "",
-        phone: prev.phone || user.phone || "",
-        address: prev.address || user.address || "",
-        city: prev.city || user.city || "",
-        state: prev.state || user.state || "",
-        pincode: prev.pincode || user.pincode || "",
-      }));
-    }
-  }, [user]);
+  // Auto-fill form if user logs in or profile becomes available
+  const [syncedUserId, setSyncedUserId] = useState(user?.id);
+  if (user && user.id !== syncedUserId) {
+    setSyncedUserId(user.id);
+    setFormData((prev) => ({
+      ...prev,
+      fullName: prev.fullName || user.fullName || "",
+      email: prev.email || user.email || "",
+      phone: prev.phone || user.phone || "",
+      address: prev.address || user.address || "",
+      city: prev.city || user.city || "",
+      state: prev.state || user.state || "",
+      pincode: prev.pincode || user.pincode || "",
+    }));
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,7 +81,9 @@ export default function Checkout() {
         paymentMethod: formData.paymentMethod,
         orderNotes: formData.orderNotes,
         items: cartItems.map((item) => ({
-          id: item.id,
+          id: item.productId || item.id,
+          productId: item.productId || item.id,
+          variantId: item.variantId,
           name: item.name,
           size_ml: item.size_ml,
           price: item.price,

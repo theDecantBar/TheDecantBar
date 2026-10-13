@@ -34,7 +34,7 @@ export const register = async (req, res) => {
     );
 
     if (existing.rows.length > 0) {
-      return res.status(400).json({ message: "An account with this email already exists." });
+      return res.status(400).json({ message: "An account already exists with this email address. Please log in." });
     }
 
     // Hash password
@@ -91,14 +91,14 @@ export const login = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(401).json({ message: "Invalid email or password." });
+      return res.status(404).json({ message: "No account found with this email. Please create an account." });
     }
 
     const user = result.rows[0];
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password." });
+      return res.status(401).json({ message: "Incorrect password. Please try again." });
     }
 
     const token = generateToken(user.id);
