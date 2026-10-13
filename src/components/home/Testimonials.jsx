@@ -19,6 +19,12 @@ import Container from "../ui/Container";
 import TestimonialCard from "../ui/testimonial-card";
 import { useAuth } from "../../context/AuthContext";
 import { fetchMyOrders } from "../../services/authApi";
+import {
+  fetchAllReviews,
+  submitReview,
+  editReview,
+  removeReview,
+} from "../../services/reviewApi";
 
 const REVIEWS_STORAGE_KEY = "thedecantbar_reviews";
 const MY_REVIEWS_STORAGE_KEY = "thedecantbar_my_review_ids";
@@ -53,6 +59,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
   // User's verified purchased perfumes extracted from their orders
   const [userPurchases, setUserPurchases] = useState([]);
   const [loadingPurchases, setLoadingPurchases] = useState(false);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const [activeFilter, setActiveFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
@@ -61,6 +68,24 @@ export default function Testimonials({ showBreadcrumb = false }) {
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [activePhotoPreview, setActivePhotoPreview] = useState(null);
+
+  // Sync with live PostgreSQL database on mount
+  useEffect(() => {
+    let ignore = false;
+    fetchAllReviews()
+      .then((dbReviews) => {
+        if (!ignore && Array.isArray(dbReviews) && dbReviews.length > 0) {
+          setReviews(dbReviews);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load reviews from database:", err);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const [form, setForm] = useState({
     name: user?.fullName || "",
@@ -217,20 +242,27 @@ export default function Testimonials({ showBreadcrumb = false }) {
   };
 
   // Delete own review with confirmation
-  const handleDeleteReview = (id) => {
+  const handleDeleteReview = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete your review?");
     if (!confirmDelete) return;
 
-    setReviews((prev) => prev.filter((r) => r.id !== id));
-    setMyReviewIds((prev) => {
-      const updated = prev.filter((reviewId) => reviewId !== id);
-      try {
-        localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
-      } catch (err) {
-        console.error(err);
+    try {
+      if (token) {
+        await removeReview(id, token);
       }
-      return updated;
-    });
+      setReviews((prev) => prev.filter((r) => r.id !== id));
+      setMyReviewIds((prev) => {
+        const updated = prev.filter((reviewId) => reviewId !== id);
+        try {
+          localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
+        } catch (err) {
+          console.error(err);
+        }
+        return updated;
+      });
+    } catch (err) {
+      alert(err.message || "Failed to delete review.");
+    }
   };
 
   const handleCloseModal = () => {
@@ -250,7 +282,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
   };
 
   // Submit new review or update existing review
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.fragrance.trim()) {
@@ -263,64 +295,78 @@ export default function Testimonials({ showBreadcrumb = false }) {
       return;
     }
 
-    if (editingReviewId) {
-      // Update existing review in place
-      setReviews((prev) =>
-        prev.map((r) =>
-          r.id === editingReviewId
-            ? {
-                ...r,
-                name: form.name.trim(),
-                city: form.city.trim() || "India",
-                fragrance: form.fragrance.trim(),
-                orderNumber: form.orderNumber.trim() || r.orderNumber,
-                rating: Number(form.rating) || 5,
-                text: form.text.trim(),
-                photo: form.photo || null,
-                isEdited: true,
-              }
-            : r
-        )
-      );
-    } else {
-      // Create new strictly verified review
-      const newReview = {
-        id: Date.now(),
-        authorId: user?.id || null,
-        authorEmail: user?.email || null,
-        name: form.name.trim(),
-        city: form.city.trim() || "India",
-        fragrance: form.fragrance.trim(),
-        orderNumber: form.orderNumber.trim() || null,
-        rating: Number(form.rating) || 5,
-        text: form.text.trim(),
-        photo: form.photo || null,
-        verifiedBuyer: true,
-        timestamp: Date.now(),
-        date: new Date().toLocaleDateString("en-IN", {
-          month: "short",
-          year: "numeric",
-        }),
-      };
+    setIsSubmittingReview(true);
 
-      setReviews((prev) => [newReview, ...prev]);
-      setMyReviewIds((prev) => {
-        const updated = [newReview.id, ...prev];
-        try {
-          localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
-        } catch (err) {
-          console.error(err);
-        }
-        return updated;
-      });
+    try {
+      if (editingReviewId) {
+        // Update existing review in PostgreSQL database
+        const updated = await editReview(
+          editingReviewId,
+          {
+            rating: Number(form.rating) || 5,
+            text: form.text.trim(),
+            photo: form.photo || null,
+            city: form.city.trim() || "India",
+          },
+          token
+        );
+
+        setReviews((prev) =>
+          prev.map((r) =>
+            r.id === editingReviewId
+              ? {
+                  ...r,
+                  name: form.name.trim(),
+                  city: form.city.trim() || "India",
+                  fragrance: form.fragrance.trim(),
+                  orderNumber: form.orderNumber.trim() || r.orderNumber,
+                  rating: Number(form.rating) || 5,
+                  text: form.text.trim(),
+                  photo: form.photo || null,
+                  isEdited: true,
+                  ...updated,
+                }
+              : r
+          )
+        );
+      } else {
+        // Create new strictly verified review in PostgreSQL database
+        const savedReview = await submitReview(
+          {
+            name: form.name.trim(),
+            city: form.city.trim() || "India",
+            fragrance: form.fragrance.trim(),
+            orderNumber: form.orderNumber.trim() || null,
+            rating: Number(form.rating) || 5,
+            text: form.text.trim(),
+            photo: form.photo || null,
+          },
+          token
+        );
+
+        setReviews((prev) => [savedReview, ...prev]);
+        setMyReviewIds((prev) => {
+          const updated = [savedReview.id, ...prev];
+          try {
+            localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
+          } catch (err) {
+            console.error(err);
+          }
+          return updated;
+        });
+      }
+
+      setSubmittedSuccess(true);
+
+      setTimeout(() => {
+        setSubmittedSuccess(false);
+        handleCloseModal();
+      }, 1500);
+    } catch (err) {
+      alert(err.message || "Failed to submit review.");
+    } finally {
+      setIsSubmittingReview(false);
     }
-
-    setSubmittedSuccess(true);
-
-    setTimeout(() => {
-      setSubmittedSuccess(false);
-      handleCloseModal();
-    }, 1500);
   };
 
   // ----------------------------------------------------
@@ -924,9 +970,14 @@ export default function Testimonials({ showBreadcrumb = false }) {
                     </button>
                     <button
                       type="submit"
-                      className="rounded-full border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 text-xs uppercase tracking-wider text-[#11110f] font-semibold hover:bg-[#d8c08a] transition cursor-pointer shadow-lg"
+                      disabled={isSubmittingReview}
+                      className="rounded-full border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 text-xs uppercase tracking-wider text-[#11110f] font-semibold hover:bg-[#d8c08a] transition cursor-pointer shadow-lg disabled:opacity-50"
                     >
-                      {editingReviewId ? "Update Review" : "Submit Review"}
+                      {isSubmittingReview
+                        ? "Saving..."
+                        : editingReviewId
+                        ? "Update Review"
+                        : "Submit Review"}
                     </button>
                   </div>
                 </form>
