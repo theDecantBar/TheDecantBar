@@ -246,22 +246,25 @@ export default function Testimonials({ showBreadcrumb = false }) {
     const confirmDelete = window.confirm("Are you sure you want to delete your review?");
     if (!confirmDelete) return;
 
-    try {
-      if (token) {
-        await removeReview(id, token);
+    // 1. Immediately remove from local state and localStorage
+    setReviews((prev) => prev.filter((r) => r.id !== id));
+    setMyReviewIds((prev) => {
+      const updated = prev.filter((reviewId) => reviewId !== id);
+      try {
+        localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
+      } catch (err) {
+        console.error(err);
       }
-      setReviews((prev) => prev.filter((r) => r.id !== id));
-      setMyReviewIds((prev) => {
-        const updated = prev.filter((reviewId) => reviewId !== id);
-        try {
-          localStorage.setItem(MY_REVIEWS_STORAGE_KEY, JSON.stringify(updated));
-        } catch (err) {
-          console.error(err);
-        }
-        return updated;
-      });
-    } catch (err) {
-      alert(err.message || "Failed to delete review.");
+      return updated;
+    });
+
+    // 2. If authenticated, also remove from PostgreSQL database
+    if (token) {
+      try {
+        await removeReview(id, token);
+      } catch (err) {
+        console.warn("Server delete note (review removed locally):", err.message);
+      }
     }
   };
 
