@@ -80,19 +80,19 @@ export default function CategoryCard({ category, index = 0 }) {
               alt={category.alt}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover object-bottom transition-transform duration-700 ease-out group-hover:scale-105"
+              className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </picture>
 
-          {/* 2. Neutral Dark Bottom Vignette (Ensures universal text legibility) */}
+          {/* 2. Neutral Dark Bottom Vignette (Restricted to bottom half, leaves bottles clean and vivid) */}
           <div
-            className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/75 via-45% to-transparent pointer-events-none"
+            className="absolute inset-x-0 bottom-0 h-[52%] bg-gradient-to-t from-black/95 via-black/55 to-transparent pointer-events-none"
             aria-hidden="true"
           />
 
-          {/* 3. Category-Specific Tinted Gradient Overlay */}
+          {/* 3. Category-Specific Tinted Gradient Overlay (Restricted to bottom) */}
           <div
-            className={`absolute inset-0 bg-gradient-to-t ${category.gradient} pointer-events-none opacity-90 transition-opacity duration-500 group-hover:opacity-100`}
+            className={`absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t ${category.gradient} pointer-events-none opacity-70 transition-opacity duration-500 group-hover:opacity-85`}
             aria-hidden="true"
           />
 
