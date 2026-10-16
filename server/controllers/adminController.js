@@ -1,0 +1,490 @@
+import pool from "../config/db.js";
+
+// @desc    Get dashboard executive KPI statistics
+// @route   GET /api/admin/stats
+// @access  Private / Admin
+export const getAdminStats = async (req, res) => {
+  try {
+    // 1. Total revenue & orders count
+    const revenueRes = await pool.query(`
+      SELECT 
+        COALESCE(SUM(total_amount), 0) AS total_revenue,
+        COUNT(*) AS total_orders,
+        COUNT(*) FILTER (WHERE order_status = 'Confirmed') AS confirmed_orders,
+        COUNT(*) FILTER (WHERE order_status = 'In Packaging') AS packaging_orders,
+        COUNT(*) FILTER (WHERE order_status = 'Shipped') AS shipped_orders,
+        COUNT(*) FILTER (WHERE order_status = 'Delivered') AS delivered_orders,
+        COUNT(*) FILTER (WHERE order_status = 'Cancelled') AS cancelled_orders
+      FROM orders
+    `);
+
+    // 2. Product & variant metrics
+    const productRes = await pool.query(`
+      SELECT 
+        COUNT(DISTINCT p.id) AS total_products,
+        COUNT(pv.id) FILTER (WHERE pv.stock <= 5 AND pv.active = true) AS low_stock_count,
+        COUNT(pv.id) FILTER (WHERE pv.stock = 0 AND pv.active = true) AS out_of_stock_count
+      FROM products p
+      LEFT JOIN product_variants pv ON p.id = pv.product_id
+    `);
+
+    // 3. Recent 5 orders
+    const recentOrdersRes = await pool.query(`
+      SELECT 
+        o.id,
+        o.order_number,
+        o.customer_name,
+        o.customer_email,
+        o.total_amount,
+        o.order_status,
+        o.payment_method,
+        o.created_at,
+        COUNT(oi.id) AS items_count
+      FROM orders o
+      LEFT JOIN order_items oi ON o.id = oi.order_id
+      GROUP BY o.id
+      ORDER BY o.created_at DESC
+      LIMIT 5
+    `);
+
+    res.json({
+      revenue: Number(revenueRes.rows[0].total_revenue),
+      totalOrders: Number(revenueRes.rows[0].total_orders),
+      confirmedOrders: Number(revenueRes.rows[0].confirmed_orders),
+      packagingOrders: Number(revenueRes.rows[0].packaging_orders),
+      shippedOrders: Number(revenueRes.rows[0].shipped_orders),
+      deliveredOrders: Number(revenueRes.rows[0].delivered_orders),
+      cancelledOrders: Number(revenueRes.rows[0].cancelled_orders),
+      totalProducts: Number(productRes.rows[0].total_products),
+      lowStockCount: Number(productRes.rows[0].low_stock_count),
+      outOfStockCount: Number(productRes.rows[0].out_of_stock_count),
+      recentOrders: recentOrdersRes.rows,
+    });
+  } catch (error) {
+    console.error("Admin stats error:", error);
+    res.status(500).json({ message: "Failed to load admin statistics." });
+  }
+};
+
+// @desc    Get all orders with optional search and status filter
+// @route   GET /api/admin/orders
+// @access  Private / Admin
+export const getAdminOrders = async (req, res) => {
+  try {
+    const { status, search } = req.query;
+
+    let query = `
+      SELECT 
+        o.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', oi.id,
+              'productId', oi.product_id,
+              'name', oi.product_name,
+              'size_ml', oi.size_ml,
+              'price', oi.price,
+              'quantity', oi.quantity,
+              'image_url', oi.image_url
+            )
+          ) FILTER (WHERE oi.id IS NOT NULL),
+          '[]'::json
+        ) AS items
+      FROM orders o
+      LEFT JOIN order_items oi ON o.id = oi.order_id
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    if (status && status !== "All") {
+      params.push(status);
+      query += ` AND o.order_status = $${params.length}`;
+    }
+
+    if (search && search.trim() !== "") {
+      params.push(`%${search.trim().toLowerCase()}%`);
+      query += ` AND (
+        LOWER(o.order_number) LIKE $${params.length}
+        OR LOWER(o.customer_name) LIKE $${params.length}
+        OR LOWER(o.customer_email) LIKE $${params.length}
+        OR LOWER(o.customer_phone) LIKE $${params.length}
+        OR LOWER(o.city) LIKE $${params.length}
+      )`;
+    }
+
+    query += ` GROUP BY o.id ORDER BY o.created_at DESC`;
+
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Admin orders error:", error);
+    res.status(500).json({ message: "Failed to retrieve orders." });
+  }
+};
+
+// @desc    Update order status and tracking details
+// @route   PUT /api/admin/orders/:id/status
+// @access  Private / Admin
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { orderStatus, courierName, trackingNumber } = req.body;
+
+    const validStatuses = [
+      "Confirmed",
+      "In Packaging",
+      "Shipped",
+      "Out for Delivery",
+      "Delivered",
+      "Cancelled",
+    ];
+
+    if (orderStatus && !validStatuses.includes(orderStatus)) {
+      return res.status(400).json({
+        message: `Invalid order status. Must be one of: ${validStatuses.join(", ")}`,
+      });
+    }
+
+    const result = await pool.query(
+      `UPDATE orders
+       SET 
+         order_status = COALESCE($1, order_status),
+         courier_name = COALESCE($2, courier_name),
+         tracking_number = COALESCE($3, tracking_number),
+         updated_at = CURRENT_TIMESTAMP
+       WHERE id = $4
+       RETURNING *`,
+      [orderStatus || null, courierName || null, trackingNumber || null, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    res.json({
+      message: "Order updated successfully.",
+      order: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Update order error:", error);
+    res.status(500).json({ message: "Failed to update order status." });
+  }
+};
+
+// @desc    Get all catalog products with all size variants & stocks
+// @route   GET /api/admin/products
+// @access  Private / Admin
+export const getAdminProducts = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', pv.id,
+              'size_ml', pv.size_ml,
+              'price', pv.price,
+              'stock', pv.stock,
+              'active', pv.active
+            )
+            ORDER BY pv.size_ml
+          ) FILTER (WHERE pv.id IS NOT NULL),
+          '[]'::json
+        ) AS variants
+      FROM products p
+      LEFT JOIN product_variants pv ON p.id = pv.product_id
+      GROUP BY p.id
+      ORDER BY p.name ASC
+    `);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Admin products error:", error);
+    res.status(500).json({ message: "Failed to retrieve products." });
+  }
+};
+
+// @desc    Create new fragrance product with decant variants
+// @route   POST /api/admin/products
+// @access  Private / Admin
+export const createProduct = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const {
+      name,
+      brand,
+      description,
+      imageUrl,
+      category,
+      gender,
+      weather,
+      type,
+      fullBottlePrice,
+      variants = [],
+    } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ message: "Product name is required." });
+    }
+
+    await client.query("BEGIN");
+
+    // 1. Insert product
+    const productResult = await client.query(
+      `INSERT INTO products 
+        (name, brand, description, image_url, category, gender, weather, type, full_bottle_price)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING *`,
+      [
+        name.trim(),
+        brand ? brand.trim() : null,
+        description ? description.trim() : null,
+        imageUrl ? imageUrl.trim() : null,
+        category || "Designer",
+        gender || "Unisex",
+        weather || "All-Season",
+        type || "EDP",
+        fullBottlePrice ? Number(fullBottlePrice) : null,
+      ]
+    );
+
+    const product = productResult.rows[0];
+
+    // 2. Insert variants (if provided)
+    const insertedVariants = [];
+    if (Array.isArray(variants) && variants.length > 0) {
+      for (const v of variants) {
+        if (!v.size_ml || !v.price) continue;
+        const vResult = await client.query(
+          `INSERT INTO product_variants 
+            (product_id, size_ml, price, stock, active)
+           VALUES ($1, $2, $3, $4, $5)
+           RETURNING *`,
+          [
+            product.id,
+            Number(v.size_ml),
+            Number(v.price),
+            v.stock !== undefined ? Number(v.stock) : 50,
+            v.active !== undefined ? Boolean(v.active) : true,
+          ]
+        );
+        insertedVariants.push(vResult.rows[0]);
+      }
+    }
+
+    await client.query("COMMIT");
+
+    res.status(201).json({
+      message: "Fragrance created successfully.",
+      product: {
+        ...product,
+        variants: insertedVariants,
+      },
+    });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Create product error:", error);
+    res.status(500).json({ message: "Failed to create fragrance." });
+  } finally {
+    client.release();
+  }
+};
+
+// @desc    Update existing product and its decant variants
+// @route   PUT /api/admin/products/:id
+// @access  Private / Admin
+export const updateProduct = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      brand,
+      description,
+      imageUrl,
+      category,
+      gender,
+      weather,
+      type,
+      fullBottlePrice,
+      variants = [],
+    } = req.body;
+
+    await client.query("BEGIN");
+
+    // 1. Update product base info
+    const updateResult = await client.query(
+      `UPDATE products
+       SET 
+         name = COALESCE($1, name),
+         brand = COALESCE($2, brand),
+         description = COALESCE($3, description),
+         image_url = COALESCE($4, image_url),
+         category = COALESCE($5, category),
+         gender = COALESCE($6, gender),
+         weather = COALESCE($7, weather),
+         type = COALESCE($8, type),
+         full_bottle_price = COALESCE($9, full_bottle_price)
+       WHERE id = $10
+       RETURNING *`,
+      [
+        name ? name.trim() : null,
+        brand ? brand.trim() : null,
+        description !== undefined ? description : null,
+        imageUrl !== undefined ? imageUrl : null,
+        category || null,
+        gender || null,
+        weather || null,
+        type || null,
+        fullBottlePrice !== undefined ? Number(fullBottlePrice) : null,
+        id,
+      ]
+    );
+
+    if (updateResult.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    // 2. Synchronize variants if provided
+    if (Array.isArray(variants)) {
+      for (const v of variants) {
+        if (v.id) {
+          // Update existing variant
+          await client.query(
+            `UPDATE product_variants
+             SET 
+               size_ml = $1,
+               price = $2,
+               stock = $3,
+               active = $4
+             WHERE id = $5 AND product_id = $6`,
+            [
+              Number(v.size_ml),
+              Number(v.price),
+              Number(v.stock || 0),
+              v.active !== undefined ? Boolean(v.active) : true,
+              v.id,
+              id,
+            ]
+          );
+        } else if (v.size_ml && v.price) {
+          // Insert new variant
+          await client.query(
+            `INSERT INTO product_variants
+              (product_id, size_ml, price, stock, active)
+             VALUES ($1, $2, $3, $4, $5)`,
+            [
+              id,
+              Number(v.size_ml),
+              Number(v.price),
+              Number(v.stock || 0),
+              v.active !== undefined ? Boolean(v.active) : true,
+            ]
+          );
+        }
+      }
+    }
+
+    await client.query("COMMIT");
+
+    // Re-fetch updated product with all variants
+    const finalResult = await pool.query(
+      `
+      SELECT 
+        p.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', pv.id,
+              'size_ml', pv.size_ml,
+              'price', pv.price,
+              'stock', pv.stock,
+              'active', pv.active
+            )
+            ORDER BY pv.size_ml
+          ) FILTER (WHERE pv.id IS NOT NULL),
+          '[]'::json
+        ) AS variants
+      FROM products p
+      LEFT JOIN product_variants pv ON p.id = pv.product_id
+      WHERE p.id = $1
+      GROUP BY p.id
+    `,
+      [id]
+    );
+
+    res.json({
+      message: "Product updated successfully.",
+      product: finalResult.rows[0],
+    });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Update product error:", error);
+    res.status(500).json({ message: "Failed to update fragrance." });
+  } finally {
+    client.release();
+  }
+};
+
+// @desc    Delete fragrance product and its variants
+// @route   DELETE /api/admin/products/:id
+// @access  Private / Admin
+export const deleteProduct = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+    await client.query("BEGIN");
+    await client.query("DELETE FROM product_variants WHERE product_id = $1", [id]);
+    const result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id, name", [id]);
+    await client.query("COMMIT");
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    res.json({
+      message: `Product '${result.rows[0].name}' deleted successfully.`,
+    });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Delete product error:", error);
+    res.status(500).json({ message: "Failed to delete product." });
+  } finally {
+    client.release();
+  }
+};
+
+// @desc    Get all reviews for moderation
+// @route   GET /api/admin/reviews
+// @access  Private / Admin
+export const getAdminReviews = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM reviews ORDER BY created_at DESC
+    `);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Admin reviews error:", error);
+    res.status(500).json({ message: "Failed to retrieve reviews." });
+  }
+};
+
+// @desc    Delete a review
+// @route   DELETE /api/admin/reviews/:id
+// @access  Private / Admin
+export const deleteReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("DELETE FROM reviews WHERE id = $1 RETURNING id", [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Review not found." });
+    }
+    res.json({ message: "Review removed successfully." });
+  } catch (error) {
+    console.error("Delete review error:", error);
+    res.status(500).json({ message: "Failed to delete review." });
+  }
+};

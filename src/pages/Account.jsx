@@ -10,7 +10,8 @@ import {
   MapPin,
   CheckCircle,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useAuth } from "../context/AuthContext";
@@ -227,6 +228,19 @@ export default function Account() {
         {/* Navigation Tabs */}
         <aside className="lg:col-span-3">
           <nav className="flex flex-row lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
+            {user?.isAdmin && (
+              <Link
+                to="/admin"
+                className="flex items-center justify-between gap-3 px-4 py-3 text-xs uppercase tracking-wider font-semibold transition border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+              >
+                <div className="flex items-center gap-3">
+                  <ShieldCheck size={16} />
+                  <span>Admin Control Hub</span>
+                </div>
+                <ArrowRight size={14} />
+              </Link>
+            )}
+
             <button
               onClick={() => setActiveTab("orders")}
               className={`flex items-center gap-3 px-4 py-3 text-xs uppercase tracking-wider font-medium transition cursor-pointer border text-left whitespace-nowrap ${

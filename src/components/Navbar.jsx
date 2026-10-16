@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, UserRound, ShoppingBag, Menu, X, LogIn } from "lucide-react";
+import { Search, UserRound, ShoppingBag, Menu, X, LogIn, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
@@ -91,7 +91,20 @@ export default function Navbar() {
         </div>
 
         {/* Action Icons */}
-        <div className="flex items-center gap-5 sm:gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Admin Control Hub Link */}
+          {isAuthenticated && user?.isAdmin && (
+            <Link
+              to="/admin"
+              aria-label="Admin Portal"
+              className="inline-flex items-center gap-1.5 border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f] transition rounded"
+              title="Open Admin Control Hub"
+            >
+              <ShieldCheck size={14} />
+              <span className="hidden sm:inline">Admin</span>
+            </Link>
+          )}
+
           <Link
             to="/shop"
             aria-label="Search"
@@ -129,6 +142,7 @@ export default function Navbar() {
           </Link>
         </div>
       </nav>
+
 
       {/* Mobile Slide-Out Drawer */}
       <AnimatePresence>
@@ -204,19 +218,35 @@ export default function Navbar() {
                 <div className="mt-auto border-t border-white/10 bg-[#11110f]/70 px-6 py-5">
                   <div className="space-y-2.5">
                     {isAuthenticated ? (
-                      <Link
-                        to="/account"
-                        onClick={closeMobileMenu}
-                        className="flex items-center justify-between rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
-                      >
-                        <div className="flex items-center gap-3">
-                          <UserRound size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
-                          <span>My Account</span>
-                        </div>
-                        <span className="text-[10px] text-[#c6a15b] font-semibold">
-                          {user?.fullName?.split(" ")[0]}
-                        </span>
-                      </Link>
+                      <>
+                        {user?.isAdmin && (
+                          <Link
+                            to="/admin"
+                            onClick={closeMobileMenu}
+                            className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f] transition-colors"
+                          >
+                            <div className="flex items-center gap-3">
+                              <ShieldCheck size={16} strokeWidth={1.5} />
+                              <span>Admin Control Hub</span>
+                            </div>
+                            <span className="text-[10px] uppercase font-bold">Portal</span>
+                          </Link>
+                        )}
+
+                        <Link
+                          to="/account"
+                          onClick={closeMobileMenu}
+                          className="flex items-center justify-between rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                        >
+                          <div className="flex items-center gap-3">
+                            <UserRound size={16} strokeWidth={1.5} className="text-[#c6a15b]" />
+                            <span>My Account</span>
+                          </div>
+                          <span className="text-[10px] text-[#c6a15b] font-semibold">
+                            {user?.fullName?.split(" ")[0]}
+                          </span>
+                        </Link>
+                      </>
                     ) : (
                       <Link
                         to="/login"
