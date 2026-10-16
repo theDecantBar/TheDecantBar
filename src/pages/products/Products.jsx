@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
+import FilterBar from "../../components/FilterBar";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const gender = searchParams.get("gender") || "";
+  const weather = searchParams.get("weather") || searchParams.get("season") || "";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,13 +29,13 @@ function Products() {
       setError("");
 
       try {
-        const params = new URLSearchParams({
-          search,
-          category,
-          gender,
-        });
+        const params = new URLSearchParams();
+        if (search) params.set("search", search);
+        if (category) params.set("category", category);
+        if (gender) params.set("gender", gender);
+        if (weather) params.set("weather", weather);
 
-        const response = await fetch(`/api/products?${params}`, {
+        const response = await fetch(`/api/products?${params.toString()}`, {
           signal: controller.signal,
         });
 
@@ -63,15 +65,15 @@ function Products() {
     fetchProducts();
 
     return () => controller.abort();
-  }, [search, category, gender]);
+  }, [search, category, gender, weather]);
 
-  const handleCategoryChange = (e) => {
-    const newCat = e.target.value;
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
     const newParams = new URLSearchParams(searchParams);
-    if (newCat) {
-      newParams.set("category", newCat);
+    if (search.trim()) {
+      newParams.set("search", search.trim());
     } else {
-      newParams.delete("category");
+      newParams.delete("search");
     }
     setSearchParams(newParams);
   };
@@ -81,20 +83,20 @@ function Products() {
     setSearchParams({});
   };
 
-  // Dynamic header based on category or gender
+  // Dynamic header based on category, gender, or season
   let pageTitle = "Our Collection";
   let pageSubtitle =
     "Explore our collection of authentic luxury fragrances, carefully decanted for every mood and occasion.";
 
-  if (category.toLowerCase() === "niche") {
+  if (category && category.toLowerCase() === "niche") {
     pageTitle = "Niche Masterpieces";
     pageSubtitle =
       "Rare, artisanal formulations crafted with opulent raw ingredients and uncompromising artistic freedom.";
-  } else if (category.toLowerCase() === "designer") {
+  } else if (category && category.toLowerCase() === "designer") {
     pageTitle = "Designer Icons";
     pageSubtitle =
       "The pinnacle of high-fashion luxury scent craft from Tom Ford, Dior, YSL, Chanel, and more.";
-  } else if (category.toLowerCase().includes("middle")) {
+  } else if (category && category.toLowerCase().includes("middle")) {
     pageTitle = "Middle Eastern Powerhouses";
     pageSubtitle =
       "Rich ambers, hypnotic ouds, and long-lasting oriental elixirs that command the room.";
@@ -110,8 +112,9 @@ function Products() {
   }
 
   return (
-    <div className="min-h-screen bg-[#11110f] px-6 pb-16 pt-12 text-[#f4efe6]">
-      <div className="mx-auto mb-10 max-w-7xl">
+    <div className="min-h-screen bg-[#11110f] text-[#f4efe6]">
+      {/* 1. Header Section */}
+      <div className="mx-auto max-w-7xl px-6 pt-12">
         <p className="text-xs uppercase tracking-[0.35em] text-[#c6a15b]">
           The Decant Bar
         </p>
@@ -127,38 +130,40 @@ function Products() {
         </p>
       </div>
 
-      <div className="mx-auto mb-10 flex max-w-7xl flex-col gap-3 sm:flex-row">
-        <input
-          type="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search fragrances..."
-          aria-label="Search fragrances"
-          className="w-full border border-white/15 bg-[#151512] px-5 py-4 text-[#f4efe6] placeholder:text-[#f4efe6]/40 transition focus:border-[#c6a15b] focus:outline-none sm:flex-1"
-        />
-
-        <select
-          value={category}
-          onChange={handleCategoryChange}
-          aria-label="Filter by category"
-          className="w-full border border-white/15 bg-[#151512] px-5 py-4 text-[#f4efe6] transition focus:border-[#c6a15b] focus:outline-none sm:w-1/3"
-        >
-          <option value="">All Categories</option>
-          <option value="Designer">Designer</option>
-          <option value="Niche">Niche</option>
-          <option value="Middle eastern">Middle Eastern</option>
-        </select>
-
-        {(search || category || gender) && (
-          <button
-            type="button"
-            onClick={handleClearFilters}
-            className="border border-[#c6a15b] px-5 py-3 text-sm uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
-          >
-            Clear Filters
-          </button>
-        )}
+      {/* 2. Premium Apply Filters Bar */}
+      <div className="mt-8">
+        <FilterBar />
       </div>
+
+      <div className="mx-auto max-w-7xl px-6 pb-16 pt-8">
+        {/* Search Bar & Quick Controls */}
+        <form onSubmit={handleSearchSubmit} className="mb-10 flex flex-col gap-3 sm:flex-row">
+          <input
+            type="search"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search fragrances by name..."
+            aria-label="Search fragrances"
+            className="w-full border border-white/15 bg-[#151512] px-5 py-3.5 text-sm text-[#f4efe6] placeholder:text-[#f4efe6]/40 transition focus:border-[#c6a15b] focus:outline-none sm:flex-1"
+          />
+
+          <button
+            type="submit"
+            className="border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
+          >
+            Search
+          </button>
+
+          {(search || category || gender || weather) && (
+            <button
+              type="button"
+              onClick={handleClearFilters}
+              className="border border-white/15 px-5 py-3.5 text-xs uppercase tracking-wider text-[#8e8a82] transition hover:border-[#c6a15b]/50 hover:text-[#f4efe6]"
+            >
+              Clear All
+            </button>
+          )}
+        </form>
 
       {loading ? (
         <p className="py-12 text-center text-[#8e8a82]">Loading fragrances...</p>
@@ -183,6 +188,7 @@ function Products() {
             {products.length} fragrances found
             {category ? ` in ${category}` : ""}
             {gender ? ` for ${gender}` : ""}
+            {weather ? ` (${weather})` : ""}
           </p>
 
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -192,6 +198,7 @@ function Products() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }

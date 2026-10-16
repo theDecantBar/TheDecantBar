@@ -3,14 +3,93 @@ console.log("PRODUCT CONTROLLER FILE LOADED");
 
 import pool from "../config/db.js";
 
-export const getProducts = async (req, res) => {
-  console.log("NEW PRODUCT CONTROLLER IS RUNNING");
+const parseMultiParam = (param) => {
+  if (!param) return [];
+  if (Array.isArray(param)) {
+    return param.flatMap((p) => String(p).split(",")).map((s) => s.trim()).filter(Boolean);
+  }
+  return String(param).split(",").map((s) => s.trim()).filter(Boolean);
+};
 
+export const getProducts = async (req, res) => {
   try {
     const { search, category, gender, weather, type } = req.query;
 
-    const result = await pool.query(
-      `
+    const conditions = [];
+    const values = [];
+
+    // Storefront only displays perfumes with valid image URLs
+    conditions.push("p.image_url IS NOT NULL AND TRIM(p.image_url) != ''");
+
+    // Search query by product name
+    if (search && search.trim() !== "") {
+      values.push(`%${search.trim()}%`);
+      conditions.push(`p.name ILIKE $${values.length}`);
+    }
+
+    // Fragrance Classification / Category (supports single or multiple values)
+    const categories = parseMultiParam(category);
+    if (categories.length > 0) {
+      const catClauses = [];
+      categories.forEach((cat) => {
+        values.push(`%${cat}%`);
+        catClauses.push(`p.category ILIKE $${values.length}`);
+      });
+      conditions.push(`(${catClauses.join(" OR ")})`);
+    }
+
+    // Gender (supports multiple: Men, Women, Unisex)
+    const genders = parseMultiParam(gender).map((g) => g.toUpperCase());
+    if (genders.length > 0) {
+      const genderClauses = [];
+      if (genders.some((g) => ["M", "MEN"].includes(g))) {
+        genderClauses.push(`UPPER(TRIM(p.gender)) IN ('M', 'MEN')`);
+      }
+      if (genders.some((g) => ["W", "WOMEN"].includes(g))) {
+        genderClauses.push(`UPPER(TRIM(p.gender)) IN ('W', 'WOMEN')`);
+      }
+      if (genders.some((g) => ["M/W", "UNISEX", "U"].includes(g))) {
+        genderClauses.push(`UPPER(TRIM(p.gender)) IN ('M/W', 'UNISEX', 'U')`);
+      }
+      if (genderClauses.length > 0) {
+        conditions.push(`(${genderClauses.join(" OR ")})`);
+      }
+    }
+
+    // Season / Weather (supports Summer, Winter)
+    const seasons = parseMultiParam(weather).map((w) => w.toLowerCase());
+    if (seasons.length > 0) {
+      const seasonClauses = [];
+      if (seasons.includes("summer")) {
+        seasonClauses.push(
+          `(p.weather ILIKE '%summer%' OR p.weather ILIKE '%summeer%' OR p.weather ILIKE '%all season%')`
+        );
+      }
+      if (seasons.includes("winter")) {
+        seasonClauses.push(
+          `(p.weather ILIKE '%winter%' OR p.weather ILIKE '%all season%')`
+        );
+      }
+      seasons.forEach((s) => {
+        if (s !== "summer" && s !== "winter") {
+          values.push(`%${s}%`);
+          seasonClauses.push(`p.weather ILIKE $${values.length}`);
+        }
+      });
+      if (seasonClauses.length > 0) {
+        conditions.push(`(${seasonClauses.join(" OR ")})`);
+      }
+    }
+
+    // Type filter (EDP, EDT, Parfum, etc.)
+    if (type && type.trim() !== "") {
+      values.push(`%${type.trim()}%`);
+      conditions.push(`p.type ILIKE $${values.length}`);
+    }
+
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+    const query = `
       SELECT
         p.*,
         COALESCE(
@@ -29,40 +108,12 @@ export const getProducts = async (req, res) => {
       FROM products p
       LEFT JOIN product_variants pv
         ON p.id = pv.product_id
-      WHERE
-        ($1 = '' OR p.name ILIKE '%' || $1 || '%')
-        AND ($2 = '' OR p.category ILIKE '%' || $2 || '%')
-        AND (
-          $3 = ''
-          OR (
-            UPPER($3) IN ('M', 'MEN')
-            AND UPPER(TRIM(p.gender)) = 'M'
-          )
-          OR (
-            UPPER($3) IN ('W', 'WOMEN')
-            AND UPPER(TRIM(p.gender)) = 'W'
-          )
-          OR (
-            UPPER($3) IN ('M/W', 'UNISEX')
-            AND UPPER(TRIM(p.gender)) = 'M/W'
-          )
-        )
-        AND ($4 = '' OR p.weather ILIKE '%' || $4 || '%')
-        AND ($5 = '' OR p.type ILIKE '%' || $5 || '%')
+      ${whereClause}
       GROUP BY p.id
       ORDER BY p.created_at DESC
-      `,
-      [
-        search || "",
-        category || "",
-        gender || "",
-        weather || "",
-        type || "",
-      ]
-    );
+    `;
 
-    console.log(`Successfully fetched ${result.rows.length} products`);
-
+    const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching products:", error);

@@ -1,4 +1,11 @@
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import dotenv from "dotenv";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 import express from "express";
 import cors from "cors";
 
@@ -58,6 +65,22 @@ app.post("/api/test-email", async (req, res) => {
       message: "Email test failed. Check your server logs and Resend configuration.",
     });
   }
+});
+
+// 404 handler for unknown API routes - ensures JSON response instead of HTML
+app.use("/api", (req, res) => {
+  res.status(404).json({
+    message: `API endpoint not found: ${req.method} ${req.originalUrl}`,
+  });
+});
+
+// Global error handler for API (Express requires 4 arguments to recognize error middleware)
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error("Express unhandled error:", err);
+  res.status(err.status || 500).json({
+    message: err.message || "Internal server error",
+  });
 });
 
 export default app;

@@ -75,14 +75,12 @@ export default function FeaturedDecants() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 sm:mb-16 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles size={14} className="text-[#c6a15b]" />
-              <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium">
-                The Curated Selection
-              </p>
+              <Sparkles size={22} className="text-[#c6a15b]" />
+              <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
+                Best Sellers
+              </h2>
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
-              Most Coveted Decants
-            </h2>
+            
             <p className="mt-3 text-xs sm:text-sm text-[#8e8a82] max-w-xl">
               Experience the world's most sought-after niche and designer fragrances in authentic 2ml, 5ml, and 10ml travel decants.
             </p>

@@ -197,7 +197,7 @@ export default function AdminDashboard() {
                           #{ord.order_number} · {ord.customer_name}
                         </p>
                         <p className="text-[11px] text-[#8e8a82] truncate">
-                          {ord.items_count} decant item(s) · {ord.payment_method === "cod" ? "COD" : "Online UPI"}
+                          {ord.items_count} decant item(s) · {ord.payment_method === "cod" ? "COD" : (ord.payment_method || "Online (Razorpay)")}
                         </p>
                       </div>
                     </div>

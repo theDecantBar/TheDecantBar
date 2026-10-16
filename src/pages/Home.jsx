@@ -1,5 +1,5 @@
 import Hero from "../components/Hero";
-import Featurebar from "../components/Featurebar";
+import FilterBar from "../components/FilterBar";
 import FeaturedDecants from "../components/home/FeaturedDecants";
 import CategoryBanners from "../components/home/CategoryBanners";
 import DecantGuide from "../components/home/DecantGuide";
@@ -12,8 +12,8 @@ export default function Home() {
       {/* 1. Hero Welcome Banner */}
       <Hero />
 
-      {/* 2. Top Trust & Feature Bar */}
-      <Featurebar />
+      {/* 2. Compact Premium Apply Filters Bar */}
+      <FilterBar />
 
       {/* 3. Most Coveted Decants (Live Bestsellers with size select & Add to Bag) */}
       <FeaturedDecants />

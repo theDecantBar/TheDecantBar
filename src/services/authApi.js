@@ -1,5 +1,38 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
+/**
+ * Safely parse HTTP response and handle non-JSON (e.g. HTML 404/500/proxy errors)
+ * to avoid "Unexpected token '<', '<!DOCTYPE' is not valid JSON" errors in the browser.
+ */
+async function handleApiResponse(response, defaultErrorMsg = "Request failed.") {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (!contentType.includes("application/json")) {
+    // Non-JSON response (e.g. HTML 404/502/500 or plain text)
+    await response.text().catch(() => "");
+    if (!response.ok) {
+      throw new Error(
+        `Server returned ${response.status} (${response.statusText || "Error"}). Please verify that the backend API server is running.`
+      );
+    }
+    throw new Error("Unexpected non-JSON response from server.");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
+  }
+
+  if (!response.ok) {
+    const errorMsg = data?.message || data?.error || defaultErrorMsg;
+    throw new Error(errorMsg);
+  }
+
+  return data;
+}
+
 export async function loginUser(credentials) {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
@@ -7,11 +40,7 @@ export async function loginUser(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to log in.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to log in.");
 }
 
 export async function registerUser(userData) {
@@ -21,11 +50,7 @@ export async function registerUser(userData) {
     body: JSON.stringify(userData),
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to create account.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to create account.");
 }
 
 export async function getProfile(token) {
@@ -35,11 +60,7 @@ export async function getProfile(token) {
     },
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to retrieve profile.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to retrieve profile.");
 }
 
 export async function updateProfile(profileData, token) {
@@ -52,11 +73,7 @@ export async function updateProfile(profileData, token) {
     body: JSON.stringify(profileData),
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to update profile.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to update profile.");
 }
 
 export async function changePassword(passwordData, token) {
@@ -69,31 +86,40 @@ export async function changePassword(passwordData, token) {
     body: JSON.stringify(passwordData),
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to change password.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to change password.");
 }
 
-export async function placeOrder(orderData, token = null) {
+export async function createRazorpayOrderApi(payload, token = null) {
   const headers = { "Content-Type": "application/json" };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}/orders`, {
+  const response = await fetch(`${API_BASE_URL}/orders/create-razorpay-order`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  return handleApiResponse(response, "Failed to initiate online payment.");
+}
+
+export async function verifyPaymentAndPlaceOrder(orderData, token = null) {
+  const headers = { "Content-Type": "application/json" };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${API_BASE_URL}/orders/verify-payment`, {
     method: "POST",
     headers,
     body: JSON.stringify(orderData),
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to place order.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to confirm payment and place order.");
 }
+
+export const placeOrder = verifyPaymentAndPlaceOrder;
 
 export async function fetchMyOrders(token) {
   const response = await fetch(`${API_BASE_URL}/orders/my-orders`, {
@@ -102,9 +128,5 @@ export async function fetchMyOrders(token) {
     },
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to load order history.");
-  }
-  return data;
+  return handleApiResponse(response, "Failed to load order history.");
 }

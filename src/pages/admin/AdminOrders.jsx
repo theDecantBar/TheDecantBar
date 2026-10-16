@@ -239,7 +239,7 @@ export default function AdminOrders() {
                         {order.order_status}
                       </span>
                       <span className="text-xs uppercase tracking-wider text-[#8e8a82]">
-                        {order.payment_method === "cod" ? "Cash on Delivery" : "Online UPI"}
+                        {order.payment_method === "cod" ? "Cash on Delivery" : (order.payment_method || "Online (Razorpay)")}
                       </span>
                     </div>
 

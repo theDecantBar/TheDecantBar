@@ -8,9 +8,6 @@ import { useAuth } from "../context/AuthContext";
 
 const navItems = [
   { name: "Shop", path: "/products" },
-  { name: "Men", path: "/products?gender=Men" },
-  { name: "Women", path: "/products?gender=Women" },
-  { name: "Unisex", path: "/products?gender=Unisex" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];

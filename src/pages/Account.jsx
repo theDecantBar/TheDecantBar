@@ -350,7 +350,7 @@ export default function Account() {
                                 })}
                               </span>
                               <span>·</span>
-                              <span className="uppercase">{order.payment_method === "cod" ? "Cash on Delivery" : "Online Payment"}</span>
+                              <span className="uppercase">{order.payment_method === "cod" ? "Cash on Delivery" : (order.payment_method || "Online (Razorpay)")}</span>
                             </div>
                           </div>
 
