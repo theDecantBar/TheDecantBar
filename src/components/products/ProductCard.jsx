@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingBag, Plus, Minus } from "lucide-react";
+import { ShoppingBag, Plus, Minus, Bell } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
 
@@ -17,13 +17,16 @@ function ProductCard({ product }) {
     product.variants?.[0] ??
     null;
 
+  const isSoldOut = selectedVariant ? Number(selectedVariant.stock ?? 10) <= 0 : false;
+  const allSoldOut = product.variants?.length > 0 && product.variants.every((v) => Number(v.stock ?? 10) <= 0);
+
   const cartItemId = selectedVariant ? `${product.id}-${selectedVariant.id}` : null;
   const cartItem = cartItems.find((item) => item.cartItemId === cartItemId);
   const itemQuantity = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    if (!selectedVariant) return;
+    if (!selectedVariant || isSoldOut) return;
     addToCart(product, selectedVariant, 1);
   };
 
@@ -42,6 +45,11 @@ function ProductCard({ product }) {
         to={`/product/${product.id}`}
         className="aspect-[4/5] bg-[#1c1c18] flex items-center justify-center overflow-hidden relative cursor-pointer"
       >
+        {(isSoldOut || allSoldOut) && (
+          <div className="absolute top-3 right-3 px-2 py-0.5 text-[9px] tracking-[0.2em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/60 backdrop-blur-sm z-10">
+            Sold Out
+          </div>
+        )}
         {product.image_url && !imageError ? (
           <img
             src={product.image_url}
@@ -98,14 +106,19 @@ function ProductCard({ product }) {
             <div className="flex flex-wrap gap-2">
               {product.variants.map((variant) => {
                 const isSelected = selectedVariant?.id === variant.id;
+                const variantSoldOut = Number(variant.stock ?? 10) <= 0;
                 return (
                   <button
                     key={variant.id}
                     type="button"
                     onClick={() => setSelectedVariantId(variant.id)}
                     className={`inline-flex items-center justify-center min-w-[46px] px-3 py-1.5 text-xs transition cursor-pointer border ${isSelected
-                        ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
-                        : "border-white/15 text-[#f4efe6]/80 hover:border-[#c6a15b] hover:text-[#c6a15b]"
+                        ? variantSoldOut
+                          ? "border-red-500/70 bg-red-950/40 text-red-300 font-semibold"
+                          : "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
+                        : variantSoldOut
+                          ? "border-white/10 text-[#f4efe6]/40 line-through hover:border-red-500/40"
+                          : "border-white/15 text-[#f4efe6]/80 hover:border-[#c6a15b] hover:text-[#c6a15b]"
                       }`}
                   >
                     {variant.size_ml}ml
@@ -116,8 +129,16 @@ function ProductCard({ product }) {
           </div>
         )}
 
-        {/* Action Button: In-Card Quantity Stepper OR Add to Bag */}
-        {itemQuantity > 0 ? (
+        {/* Action Button: Sold Out / Notify Me OR In-Card Quantity Stepper OR Add to Bag */}
+        {isSoldOut ? (
+          <Link
+            to={`/product/${product.id}`}
+            className="w-full mt-auto py-3 px-4 flex items-center justify-center gap-2 border border-red-500/40 bg-red-950/20 text-red-300 hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f] text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 cursor-pointer"
+          >
+            <Bell size={14} strokeWidth={1.5} />
+            Sold Out · Notify Me
+          </Link>
+        ) : itemQuantity > 0 ? (
           <div className="w-full mt-auto flex items-center justify-between border border-[#c6a15b] bg-[#1c1c18] text-[#f4efe6]">
             <button
               type="button"

@@ -9,6 +9,8 @@ import {
   deleteProduct,
   getAdminReviews,
   deleteReview,
+  updateVariantStock,
+  bulkUpdateAllStock,
 } from "../controllers/adminController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
@@ -29,6 +31,10 @@ router.get("/products", getAdminProducts);
 router.post("/products", createProduct);
 router.put("/products/:id", updateProduct);
 router.delete("/products/:id", deleteProduct);
+
+// Decant Variant Stock & Restock Operations
+router.put("/variants/:id/stock", updateVariantStock);
+router.post("/variants/bulk-stock", bulkUpdateAllStock);
 
 // Review Moderation
 router.get("/reviews", getAdminReviews);

@@ -14,7 +14,10 @@ import {
   Sun,
   Leaf,
   Flame,
-  ArrowRight
+  ArrowRight,
+  Bell,
+  XCircle,
+  Send,
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
@@ -39,10 +42,16 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [added, setAdded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Notify Me When In Stock State
+  const [notifyModalOpen, setNotifyModalOpen] = useState(false);
+  const [notifyContact, setNotifyContact] = useState("");
+  const [notifyLoading, setNotifyLoading] = useState(false);
+  const [notifySubmitted, setNotifySubmitted] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -97,6 +106,36 @@ export default function ProductDetail() {
     navigate("/checkout");
   };
 
+  const handleNotifySubmit = async (e) => {
+    e.preventDefault();
+    if (!notifyContact.trim() || !product) return;
+
+    setNotifyLoading(true);
+    try {
+      const response = await fetch("/api/products/notify-restock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product.id,
+          variantId: selectedVariant?.id,
+          contactInfo: notifyContact.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register notification request");
+      }
+
+      setNotifySubmitted(true);
+      setNotifyContact("");
+    } catch (err) {
+      console.error("Notify error:", err);
+      alert("Could not register notification request. Please try again.");
+    } finally {
+      setNotifyLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <Container className="py-24">
@@ -126,6 +165,7 @@ export default function ProductDetail() {
     );
   }
 
+  const isSoldOut = selectedVariant ? Number(selectedVariant.stock ?? 10) <= 0 : false;
   const currentPrice = selectedVariant ? Number(selectedVariant.price) : 0;
   const genderLabel =
     product.gender === "M/W" ? "Unisex" :
@@ -171,7 +211,12 @@ export default function ProductDetail() {
         {/* Left Column: Fragrance Visual */}
         <div className="lg:col-span-6">
           <div className="sticky top-28">
-            <div className="aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#171715] flex items-center justify-center p-8 group">
+            <div className="aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#171715] flex items-center justify-center p-8 group relative">
+              {isSoldOut && (
+                <div className="absolute top-4 right-4 px-3 py-1 text-[11px] tracking-[0.25em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/70 backdrop-blur-md z-10 shadow-lg">
+                  Sold Out
+                </div>
+              )}
               {product.image_url && !imageError ? (
                 <img
                   src={product.image_url}
@@ -342,12 +387,13 @@ export default function ProductDetail() {
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                   {product.variants.map((variant) => {
                     const isSelected = selectedVariant?.id === variant.id;
+                    const variantSoldOut = Number(variant.stock) <= 0;
                     return (
                       <button
                         key={variant.id}
                         type="button"
                         onClick={() => setSelectedVariant(variant)}
-                        className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer ${
+                        className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer relative ${
                           isSelected
                             ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_12px_rgba(198,161,91,0.2)]"
                             : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
@@ -356,8 +402,12 @@ export default function ProductDetail() {
                         <span className="text-sm font-semibold tracking-wider">
                           {variant.size_ml} ml
                         </span>
-                        <span className="mt-1 text-xs text-[#c6a15b]">
-                          ₹{variant.price}
+                        <span className="mt-1 text-xs">
+                          {variantSoldOut ? (
+                            <span className="text-red-400 font-semibold tracking-tight">Sold Out</span>
+                          ) : (
+                            <span className="text-[#c6a15b]">₹{variant.price}</span>
+                          )}
                         </span>
                       </button>
                     );
@@ -369,71 +419,172 @@ export default function ProductDetail() {
               </div>
             )}
 
-            {/* Quantity Selector & Action Buttons */}
-            <div className="mt-6 space-y-3.5">
-              <div className="flex items-center gap-3">
-                {/* Quantity Stepper */}
-                <div className="flex h-13 items-center border border-white/15 bg-[#171715]">
+            {/* Quantity Selector & Action Buttons (Or Sold Out State) */}
+            {isSoldOut ? (
+              <div className="mt-6 space-y-3">
+                <div className="p-3.5 bg-red-950/30 border border-red-500/30 rounded flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-red-300">
+                    <XCircle size={16} className="text-red-400 shrink-0" />
+                    <span>This {selectedVariant?.size_ml}ml decant size is currently <strong>Sold Out</strong>.</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNotifySubmitted(false);
+                    setNotifyModalOpen(true);
+                  }}
+                  className="w-full h-13 flex items-center justify-center gap-2.5 border border-[#c6a15b] bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer shadow-lg shadow-[#c6a15b]/10 rounded-sm"
+                >
+                  <Bell size={16} />
+                  Notify Me When Available
+                </button>
+              </div>
+            ) : (
+              <div className="mt-6 space-y-3.5">
+                <div className="flex items-center gap-3">
+                  {/* Quantity Stepper */}
+                  <div className="flex h-13 items-center border border-white/15 bg-[#171715]">
+                    <button
+                      type="button"
+                      aria-label="Decrease quantity"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                    >
+                      <Minus size={15} />
+                    </button>
+                    <span className="w-10 text-center text-sm font-semibold text-[#f4efe6]">
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label="Increase quantity"
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                    >
+                      <Plus size={15} />
+                    </button>
+                  </div>
+
+                  {/* Add to Bag Button */}
                   <button
                     type="button"
-                    aria-label="Decrease quantity"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                    onClick={handleAddToCart}
+                    className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
+                      added
+                        ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
+                        : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+                    }`}
                   >
-                    <Minus size={15} />
-                  </button>
-                  <span className="w-10 text-center text-sm font-semibold text-[#f4efe6]">
-                    {quantity}
-                  </span>
-                  <button
-                    type="button"
-                    aria-label="Increase quantity"
-                    onClick={() => setQuantity((q) => q + 1)}
-                    className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
-                  >
-                    <Plus size={15} />
+                    {added ? (
+                      <>
+                        <Check size={16} strokeWidth={2.5} />
+                        Added to Bag
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag size={16} strokeWidth={1.5} />
+                        Add to Bag
+                      </>
+                    )}
                   </button>
                 </div>
 
-                {/* Add to Bag Button */}
+                {/* Buy Now Direct Button */}
                 <button
                   type="button"
-                  onClick={handleAddToCart}
-                  className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
-                    added
-                      ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
-                      : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
-                  }`}
+                  onClick={handleBuyNow}
+                  className="w-full h-13 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-lg shadow-[#c6a15b]/10"
                 >
-                  {added ? (
-                    <>
-                      <Check size={16} strokeWidth={2.5} />
-                      Added to Bag
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag size={16} strokeWidth={1.5} />
-                      Add to Bag
-                    </>
-                  )}
+                  Buy It Now
+                  <ArrowRight size={15} />
                 </button>
               </div>
-
-              {/* Buy Now Direct Button */}
-              <button
-                type="button"
-                onClick={handleBuyNow}
-                className="w-full h-13 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-lg shadow-[#c6a15b]/10"
-              >
-                Buy It Now
-                <ArrowRight size={15} />
-              </button>
-            </div>
+            )}
           </div>
 
           {/* Note: "About The Decant Bar Decants" completely removed as requested */}
         </div>
       </div>
+
+      {/* Customer Restock Notification Modal */}
+      {notifyModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl rounded-lg p-6 relative">
+            <button
+              type="button"
+              onClick={() => setNotifyModalOpen(false)}
+              className="absolute top-4 right-4 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-full bg-[#c6a15b]/10 text-[#c6a15b] border border-[#c6a15b]/30 shrink-0">
+                <Bell size={24} />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#f4efe6]">
+                  Notify Me When Back in Stock
+                </h3>
+                <p className="text-xs text-[#c5c1b9] mt-1">
+                  We'll send you an instant alert the moment <strong>{product.name} ({selectedVariant?.size_ml}ml)</strong> is restocked.
+                </p>
+              </div>
+            </div>
+
+            {notifySubmitted ? (
+              <div className="mt-5 p-4 border border-emerald-500/30 bg-emerald-950/30 rounded text-center text-xs text-emerald-300 space-y-2">
+                <Check size={28} className="mx-auto text-emerald-400" />
+                <p className="font-semibold text-sm text-[#f4efe6]">You're on the priority list!</p>
+                <p>We've registered your notification request and will contact you as soon as bottles are back in stock.</p>
+                <button
+                  type="button"
+                  onClick={() => setNotifyModalOpen(false)}
+                  className="mt-3 px-5 py-2 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/10 text-xs font-semibold rounded cursor-pointer transition"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleNotifySubmit} className="mt-5 space-y-4">
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-[#8e8a82] mb-1.5">
+                    Email Address or WhatsApp Number
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={notifyContact}
+                    onChange={(e) => setNotifyContact(e.target.value)}
+                    placeholder="e.g. yourname@gmail.com or +91 98765 43210"
+                    className="w-full px-3.5 py-2.5 bg-[#11110f] border border-white/20 rounded text-xs text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setNotifyModalOpen(false)}
+                    className="px-4 py-2 border border-white/15 hover:bg-white/5 text-xs text-[#c5c1b9] rounded font-medium transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={notifyLoading}
+                    className="flex items-center gap-2 px-5 py-2 bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs font-semibold rounded transition cursor-pointer disabled:opacity-50"
+                  >
+                    {notifyLoading ? "Registering..." : "Submit Alert Request"}
+                    <Send size={13} />
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

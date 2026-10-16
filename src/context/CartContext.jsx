@@ -29,7 +29,13 @@ export function CartProvider({ children }) {
    * If the exact same product and size already exists in the cart, increases its quantity.
    */
   const addToCart = (product, selectedVariant, quantity = 1) => {
-    if (!product || !selectedVariant) return;
+    if (!product || !selectedVariant) return false;
+
+    const availableStock = Number(selectedVariant.stock ?? 10);
+    if (availableStock <= 0) {
+      alert("This size is currently sold out! Please click 'Notify Me' on the product page to be alerted on restock.");
+      return false;
+    }
 
     const cartItemId = `${product.id}-${selectedVariant.id}`;
 
@@ -39,10 +45,21 @@ export function CartProvider({ children }) {
       if (existingIndex > -1) {
         // Item exists, update quantity
         const updated = [...prevItems];
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + quantity,
-        };
+        const newQty = updated[existingIndex].quantity + quantity;
+        if (newQty > availableStock) {
+          alert(`Only ${availableStock} bottle(s) currently available in stock.`);
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            quantity: availableStock,
+            maxStock: availableStock,
+          };
+        } else {
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            quantity: newQty,
+            maxStock: availableStock,
+          };
+        }
         return updated;
       }
 
@@ -56,11 +73,13 @@ export function CartProvider({ children }) {
         image_url: product.image_url || "",
         size_ml: selectedVariant.size_ml,
         price: Number(selectedVariant.price),
-        quantity,
+        quantity: Math.min(quantity, availableStock),
+        maxStock: availableStock,
       };
 
       return [...prevItems, newItem];
     });
+    return true;
   };
 
   /**

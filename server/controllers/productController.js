@@ -178,3 +178,49 @@ export const getProductById = async (req, res) => {
     });
   }
 };
+
+// @desc    Register a customer restock notification request
+// @route   POST /api/products/notify-restock
+// @access  Public
+export const requestStockNotification = async (req, res) => {
+  try {
+    let { productId, variantId, productName, sizeMl, contactInfo } = req.body;
+
+    if (!contactInfo || !contactInfo.trim()) {
+      return res.status(400).json({ message: "Please provide an email or WhatsApp number." });
+    }
+
+    if (!productName && productId) {
+      const pRes = await pool.query("SELECT name FROM products WHERE id = $1", [productId]);
+      if (pRes.rows.length > 0) productName = pRes.rows[0].name;
+    }
+
+    if (!sizeMl && variantId) {
+      const vRes = await pool.query("SELECT size_ml FROM product_variants WHERE id = $1", [variantId]);
+      if (vRes.rows.length > 0) sizeMl = vRes.rows[0].size_ml;
+    }
+
+    const result = await pool.query(
+      `INSERT INTO stock_notifications 
+        (product_id, variant_id, product_name, size_ml, contact_info)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [
+        productId || null,
+        variantId || null,
+        productName ? productName.trim() : null,
+        sizeMl ? Number(sizeMl) : null,
+        contactInfo.trim(),
+      ]
+    );
+
+    res.status(201).json({
+      message: "Notification registered! We'll alert you the moment this perfume is back in stock.",
+      notification: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Error creating stock notification:", error);
+    res.status(500).json({ message: "Failed to register restock notification." });
+  }
+};
+

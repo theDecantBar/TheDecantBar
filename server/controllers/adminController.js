@@ -488,3 +488,121 @@ export const deleteReview = async (req, res) => {
     res.status(500).json({ message: "Failed to delete review." });
   }
 };
+
+// @desc    Update single decant variant stock quantity & active state
+// @route   PUT /api/admin/variants/:id/stock
+// @access  Private / Admin
+export const updateVariantStock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { stock, active } = req.body;
+
+    if (stock === undefined && active === undefined) {
+      return res.status(400).json({ message: "Stock quantity or active state is required." });
+    }
+
+    const cleanStock = stock !== undefined ? Math.max(0, parseInt(stock, 10) || 0) : null;
+
+    let query;
+    let params;
+
+    if (cleanStock !== null && active !== undefined) {
+      query = `
+        UPDATE product_variants
+        SET stock = $1, active = $2
+        WHERE id = $3
+        RETURNING *
+      `;
+      params = [cleanStock, Boolean(active), id];
+    } else if (cleanStock !== null) {
+      query = `
+        UPDATE product_variants
+        SET stock = $1
+        WHERE id = $2
+        RETURNING *
+      `;
+      params = [cleanStock, id];
+    } else {
+      query = `
+        UPDATE product_variants
+        SET active = $1
+        WHERE id = $2
+        RETURNING *
+      `;
+      params = [Boolean(active), id];
+    }
+
+    const result = await pool.query(query, params);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Decant variant not found." });
+    }
+
+    const updatedVariant = result.rows[0];
+
+    // Trigger low stock email alert to owner when stock drops to <= 5
+    if (cleanStock !== null && cleanStock <= 5) {
+      (async () => {
+        try {
+          const prodRes = await pool.query(
+            "SELECT name, brand FROM products WHERE id = $1",
+            [updatedVariant.product_id]
+          );
+          const productName = prodRes.rows[0]?.name || "Fragrance";
+          const ownerEmail = (process.env.ADMIN_EMAILS || "thedecantbarofficial@gmail.com").split(",")[0].trim();
+
+          if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
+            const { sendEmail } = await import("../services/emailService.js");
+            await sendEmail({
+              to: ownerEmail,
+              subject: `🚨 Low Stock Alert: ${productName} (${updatedVariant.size_ml}ml) has only ${cleanStock} bottle(s) left!`,
+              html: `
+                <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
+                  <h2 style="color: #c6a15b; margin-top: 0;">The Decant Bar · Inventory Alert</h2>
+                  <p>Attention Owner,</p>
+                  <p>A decant size is running low on inventory and requires restocking:</p>
+                  <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 16px; margin: 16px 0;">
+                    <p style="margin: 4px 0;"><strong>Fragrance:</strong> ${productName}</p>
+                    <p style="margin: 4px 0;"><strong>Decant Size:</strong> ${updatedVariant.size_ml}ml</p>
+                    <p style="margin: 4px 0;"><strong>Remaining Stock:</strong> <span style="color: ${cleanStock === 0 ? '#ef4444' : '#f59e0b'}; font-weight: bold;">${cleanStock} bottle(s) ${cleanStock === 0 ? '(SOLD OUT)' : ''}</span></p>
+                  </div>
+                  <p>You can adjust bottle stock directly from your <a href="http://localhost:5173/admin/inventory" style="color: #c6a15b; font-weight: bold;">Inventory Operations Hub</a>.</p>
+                </div>
+              `,
+              text: `Low Stock Alert: ${productName} (${updatedVariant.size_ml}ml) has only ${cleanStock} bottle(s) left. Please restock in your inventory hub.`,
+            });
+          }
+        } catch (emailErr) {
+          console.warn("Low stock alert email skipped/failed:", emailErr.message);
+        }
+      })();
+    }
+
+    res.json({
+      message: "Variant stock updated successfully.",
+      variant: updatedVariant,
+    });
+  } catch (error) {
+    console.error("Update variant stock error:", error);
+    res.status(500).json({ message: "Failed to update decant variant stock." });
+  }
+};
+
+// @desc    Bulk set all variants stock in database (e.g. Set all to 10)
+// @route   POST /api/admin/variants/bulk-stock
+// @access  Private / Admin
+export const bulkUpdateAllStock = async (req, res) => {
+  try {
+    const { stock = 10 } = req.body;
+    const cleanStock = Math.max(0, parseInt(stock, 10) || 0);
+    const result = await pool.query("UPDATE product_variants SET stock = $1 RETURNING id", [cleanStock]);
+    res.json({
+      message: `All ${result.rowCount} bottle variants successfully updated to ${cleanStock} units.`,
+      updatedCount: result.rowCount,
+    });
+  } catch (error) {
+    console.error("Bulk stock update error:", error);
+    res.status(500).json({ message: "Failed to bulk update variant stock." });
+  }
+};
+

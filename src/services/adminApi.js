@@ -129,3 +129,17 @@ export async function updateAdminVariantStock(token, variantId, { stock, active 
   return res.json();
 }
 
+export async function bulkUpdateAllAdminStock(token, stock = 10) {
+  const res = await fetch(`/api/admin/variants/bulk-stock`, {
+    method: "POST",
+    headers: getHeaders(token),
+    body: JSON.stringify({ stock }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to bulk update stock");
+  }
+  return res.json();
+}
+
+

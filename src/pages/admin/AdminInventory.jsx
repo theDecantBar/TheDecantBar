@@ -18,7 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchAdminProducts, updateAdminVariantStock } from "../../services/adminApi";
+import { fetchAdminProducts, updateAdminVariantStock, bulkUpdateAllAdminStock } from "../../services/adminApi";
 
 export default function AdminInventory() {
   const { token } = useAuth();
@@ -26,6 +26,20 @@ export default function AdminInventory() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
   const [feedback, setFeedback] = useState(null);
+  const [draftStock, setDraftStock] = useState({});
+  const [modalLoading, setModalLoading] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    productName: "",
+    sizeMl: "",
+    currentStock: 0,
+    addedStock: 0,
+    targetStock: 0,
+    variantId: null,
+    isBulkAll: false,
+  });
 
   // Filters & Search
   const [searchQuery, setSearchQuery] = useState("");
@@ -173,8 +187,40 @@ export default function AdminInventory() {
     [activeProduct, selectedVariantId]
   );
 
+  const [requireConfirmSingle, setRequireConfirmSingle] = useState(true);
+
+  // Safe Stock Change Requester (routes through confirmation popup)
+  const requestStockChange = (row, delta) => {
+    const current = Number(row.stock) || 0;
+    const target = Math.max(0, current + delta);
+
+    if (delta < 0 && current <= 0) return;
+
+    // Optional direct mode for single clicks if owner unchecks confirmation
+    if (!requireConfirmSingle && Math.abs(delta) === 1) {
+      handleStockUpdate(row.variantId, target, row.productName, row.sizeMl);
+      return;
+    }
+
+    const actionText = delta > 0 ? `Add +${delta}` : `Deduct ${Math.abs(delta)}`;
+    const amountLabel = Math.abs(delta) === 1 ? "1 bottle" : `${Math.abs(delta)} bottles`;
+
+    setConfirmModal({
+      isOpen: true,
+      title: delta > 0 ? `Confirm ${actionText} Bottles` : `Confirm Deducting ${amountLabel}`,
+      message: `Do you want to ${delta > 0 ? "add" : "deduct"} ${amountLabel} of ${row.productName} (${row.sizeMl}ml)?`,
+      productName: row.productName,
+      sizeMl: row.sizeMl,
+      currentStock: current,
+      addedStock: delta,
+      targetStock: target,
+      variantId: row.variantId,
+      isBulkAll: false,
+    });
+  };
+
   // Quick Inline Stock Update Handler
-  const handleStockUpdate = async (variantId, newStock) => {
+  const handleStockUpdate = async (variantId, newStock, productName = "", sizeMl = "") => {
     const cleanStock = Math.max(0, parseInt(newStock, 10) || 0);
     setUpdatingId(variantId);
     try {
@@ -183,16 +229,55 @@ export default function AdminInventory() {
         prev.map((p) => ({
           ...p,
           variants: (p.variants || []).map((v) =>
-            v.id === variantId ? { ...v, stock: cleanStock } : v
+            String(v.id) === String(variantId) ? { ...v, stock: cleanStock } : v
           ),
         }))
       );
-      setFeedback({ type: "success", message: `Stock updated to ${cleanStock} units` });
-      setTimeout(() => setFeedback(null), 3000);
+      setDraftStock((prev) => {
+        const next = { ...prev };
+        delete next[String(variantId)];
+        return next;
+      });
+      const label = productName ? `${productName} (${sizeMl}ml)` : "Bottle variant";
+      setFeedback({
+        type: "success",
+        message: `✓ ${label} updated to ${cleanStock} bottles in database.`,
+      });
+      setTimeout(() => setFeedback(null), 4000);
     } catch (err) {
       setFeedback({ type: "error", message: err.message || "Failed to update stock" });
+      setTimeout(() => setFeedback(null), 5000);
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  // Safe Confirmation Restock Handler
+  const handleConfirmRestock = async () => {
+    if (!confirmModal.isOpen) return;
+    setModalLoading(true);
+    try {
+      if (confirmModal.isBulkAll) {
+        await bulkUpdateAllAdminStock(token, confirmModal.targetStock || 10);
+        await refreshInventory();
+        setFeedback({
+          type: "success",
+          message: `✓ Successfully set stock to ${confirmModal.targetStock || 10} units for all 323 bottles in the live database!`,
+        });
+        setTimeout(() => setFeedback(null), 5000);
+      } else {
+        await handleStockUpdate(
+          confirmModal.variantId,
+          confirmModal.targetStock,
+          confirmModal.productName,
+          confirmModal.sizeMl
+        );
+      }
+      setConfirmModal({ isOpen: false });
+    } catch (err) {
+      setFeedback({ type: "error", message: err.message || "Failed to complete restock operation" });
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -264,19 +349,34 @@ export default function AdminInventory() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() =>
+              setConfirmModal({
+                isOpen: true,
+                isBulkAll: true,
+                title: "Confirm Catalog-Wide Restock (Set All to 10)",
+                targetStock: 10,
+              })
+            }
+            className="flex items-center gap-2 px-3.5 py-2 border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-500/20 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition cursor-pointer rounded-sm"
+          >
+            <Boxes size={14} />
+            Restock All to 10
+          </button>
           <button
             type="button"
             onClick={refreshInventory}
             disabled={loading}
-            className="flex items-center gap-2 px-3.5 py-2 border border-white/15 bg-[#171715] hover:border-[#c6a15b] text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 border border-white/15 bg-[#171715] hover:border-[#c6a15b] text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition cursor-pointer rounded-sm"
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
           <Link
             to="/admin/products"
-            className="flex items-center gap-2 px-3.5 py-2 border border-[#c6a15b] bg-[#c6a15b]/10 hover:bg-[#c6a15b] hover:text-[#11110f] text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 border border-[#c6a15b] bg-[#c6a15b]/10 hover:bg-[#c6a15b] hover:text-[#11110f] text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition cursor-pointer rounded-sm"
           >
             <Sparkles size={14} />
             Full Catalog
@@ -304,64 +404,88 @@ export default function AdminInventory() {
         </div>
       )}
 
-      {/* Key Stock Performance Indicators (KPI Cards) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Stock */}
-        <div className="bg-[#171715] border border-white/10 p-5 rounded-sm">
+      {/* Key Stock Performance Indicators (KPI Cards - 6 Core Metrics) */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        {/* 1. Total Fragrances in Catalog */}
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
-            <span className="uppercase tracking-wider">Total Units in Stock</span>
-            <Package size={16} className="text-[#c6a15b]" />
+            <span className="uppercase tracking-wider text-[10px]">Total Perfumes</span>
+            <Sparkles size={15} className="text-[#c6a15b]" />
           </div>
-          <p className="text-2xl font-bold font-display text-[#f4efe6] mt-2">
-            {stats.totalUnits.toLocaleString()}
+          <p className="text-xl font-bold font-display text-[#f4efe6] mt-2">
+            {products.length}
           </p>
-          <p className="text-[11px] text-[#8e8a82] mt-1">Across all bottle sizes</p>
+          <p className="text-[10px] text-[#8e8a82] mt-0.5">Catalog Fragrances</p>
         </div>
 
-        {/* Low Stock Alerts */}
+        {/* 2. Total Decant Bottle Sizes */}
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+          <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
+            <span className="uppercase tracking-wider text-[10px]">Decant Sizes</span>
+            <Boxes size={15} className="text-[#c6a15b]" />
+          </div>
+          <p className="text-xl font-bold font-display text-[#f4efe6] mt-2">
+            {inventoryRows.length}
+          </p>
+          <p className="text-[10px] text-[#8e8a82] mt-0.5">Active Bottle Variants</p>
+        </div>
+
+        {/* 3. Total Stock */}
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+          <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
+            <span className="uppercase tracking-wider text-[10px]">Total Stock</span>
+            <Package size={15} className="text-[#c6a15b]" />
+          </div>
+          <p className="text-xl font-bold font-display text-[#f4efe6] mt-2">
+            {stats.totalUnits.toLocaleString()}
+          </p>
+          <p className="text-[10px] text-[#8e8a82] mt-0.5">Total Decant Units</p>
+        </div>
+
+        {/* 4. Low Stock Alerts */}
         <div
           onClick={() => setActiveTab("low")}
-          className={`bg-[#171715] border p-5 rounded-sm transition cursor-pointer ${
+          className={`bg-[#171715] border p-4 rounded-sm transition cursor-pointer ${
             activeTab === "low" ? "border-amber-500 bg-amber-950/20" : "border-amber-500/30 hover:border-amber-500/60"
           }`}
         >
           <div className="flex items-center justify-between text-xs text-amber-400">
-            <span className="uppercase tracking-wider font-semibold">Low Stock Alerts</span>
-            <AlertTriangle size={16} />
+            <span className="uppercase tracking-wider text-[10px] font-semibold">Low Stock</span>
+            <AlertTriangle size={15} />
           </div>
-          <p className="text-2xl font-bold font-display text-amber-400 mt-2">
+          <p className="text-xl font-bold font-display text-amber-400 mt-2">
             {stats.lowCount}
           </p>
-          <p className="text-[11px] text-amber-400/70 mt-1">≤ 5 bottles remaining</p>
+          <p className="text-[10px] text-amber-400/70 mt-0.5">≤ 5 bottles remaining</p>
         </div>
 
-        {/* Out of Stock */}
+        {/* 5. Out of Stock */}
         <div
           onClick={() => setActiveTab("out")}
-          className={`bg-[#171715] border p-5 rounded-sm transition cursor-pointer ${
+          className={`bg-[#171715] border p-4 rounded-sm transition cursor-pointer ${
             activeTab === "out" ? "border-red-500 bg-red-950/20" : "border-red-500/30 hover:border-red-500/60"
           }`}
         >
           <div className="flex items-center justify-between text-xs text-red-400">
-            <span className="uppercase tracking-wider font-semibold">Sold Out</span>
-            <XCircle size={16} />
+            <span className="uppercase tracking-wider text-[10px] font-semibold">Sold Out</span>
+            <XCircle size={15} />
           </div>
-          <p className="text-2xl font-bold font-display text-red-400 mt-2">
+          <p className="text-xl font-bold font-display text-red-400 mt-2">
             {stats.outCount}
           </p>
-          <p className="text-[11px] text-red-400/70 mt-1">Requires immediate restock</p>
+          <p className="text-[10px] text-red-400/70 mt-0.5">Out of stock</p>
         </div>
 
-        {/* Inventory Value */}
-        <div className="bg-[#171715] border border-white/10 p-5 rounded-sm">
+        {/* 6. Inventory Value */}
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
-            <span className="uppercase tracking-wider">Inventory Value</span>
-            <DollarSign size={16} className="text-[#c6a15b]" />
+            <span className="uppercase tracking-wider text-[10px]">Stock Value</span>
+            <DollarSign size={15} className="text-[#c6a15b]" />
           </div>
-          <p className="text-2xl font-bold font-display text-[#f4efe6] mt-2">
+          <p className="text-xl font-bold font-display text-[#f4efe6] mt-2 truncate">
             ₹{stats.totalVal.toLocaleString()}
           </p>
-          <p className="text-[11px] text-[#8e8a82] mt-1">Estimated retail stock value</p>
+          <p className="text-[10px] text-[#8e8a82] mt-0.5">Retail Inventory Value</p>
         </div>
       </div>
 
@@ -764,15 +888,15 @@ export default function AdminInventory() {
                         )}
                       </td>
 
-                      {/* Direct Editable Stepper */}
+                      {/* Direct Editable Stepper with Safe Live Sync */}
                       <td className="py-3.5 px-4">
-                        <div className="flex items-center justify-center gap-1">
+                        <div className="flex items-center justify-center gap-1.5">
                           <div className="flex h-9 items-center border border-white/20 bg-[#11110f] rounded">
                             <button
                               type="button"
-                              title="Deduct 1 bottle"
+                              title="Deduct 1 bottle (requires confirmation)"
                               disabled={isUpdating || row.stock <= 0}
-                              onClick={() => handleStockUpdate(row.variantId, row.stock - 1)}
+                              onClick={() => requestStockChange(row, -1)}
                               className="w-8 h-full flex items-center justify-center text-[#c5c1b9] hover:text-amber-400 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                               <Minus size={13} />
@@ -780,44 +904,64 @@ export default function AdminInventory() {
                             <input
                               type="number"
                               min="0"
-                              value={row.stock}
+                              value={draftStock[row.variantId] !== undefined ? draftStock[row.variantId] : row.stock}
                               disabled={isUpdating}
                               onChange={(e) =>
-                                handleStockUpdate(row.variantId, parseInt(e.target.value, 10))
+                                setDraftStock((prev) => ({
+                                  ...prev,
+                                  [row.variantId]: e.target.value,
+                                }))
                               }
-                              className="w-14 text-center bg-transparent text-xs font-semibold text-[#f4efe6] focus:outline-none"
+                              onBlur={(e) => {
+                                const val = parseInt(e.target.value, 10);
+                                if (!isNaN(val) && val !== row.stock) {
+                                  requestStockChange(row, val - row.stock);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  const val = parseInt(e.currentTarget.value, 10);
+                                  if (!isNaN(val) && val !== row.stock) {
+                                    requestStockChange(row, val - row.stock);
+                                  }
+                                }
+                              }}
+                              className="w-14 text-center bg-transparent text-xs font-semibold text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
                             />
                             <button
                               type="button"
-                              title="Add 1 bottle"
+                              title="Add 1 bottle (requires confirmation)"
                               disabled={isUpdating}
-                              onClick={() => handleStockUpdate(row.variantId, row.stock + 1)}
+                              onClick={() => requestStockChange(row, 1)}
                               className="w-8 h-full flex items-center justify-center text-[#c5c1b9] hover:text-emerald-400 transition cursor-pointer disabled:opacity-30"
                             >
                               <Plus size={13} />
                             </button>
                           </div>
+                          {isUpdating && (
+                            <RefreshCw size={12} className="animate-spin text-[#c6a15b]" />
+                          )}
                         </div>
                       </td>
 
-                      {/* Quick Restock (+5 / +10) & Storefront Link */}
+                      {/* Quick Restock (+5 / +10 with Confirmation Modal) & Storefront Link */}
                       <td className="py-3.5 px-4 text-right">
                         <div className="inline-flex items-center gap-2">
                           <button
                             type="button"
-                            title="Add 5 to stock"
+                            title="Add 5 to stock (requires confirmation)"
                             disabled={isUpdating}
-                            onClick={() => handleStockUpdate(row.variantId, row.stock + 5)}
-                            className="px-2 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded text-[10px] font-mono font-semibold transition cursor-pointer"
+                            onClick={() => requestStockChange(row, 5)}
+                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +5
                           </button>
                           <button
                             type="button"
-                            title="Add 10 to stock"
+                            title="Add 10 to stock (requires confirmation)"
                             disabled={isUpdating}
-                            onClick={() => handleStockUpdate(row.variantId, row.stock + 10)}
-                            className="px-2 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded text-[10px] font-mono font-semibold transition cursor-pointer"
+                            onClick={() => requestStockChange(row, 10)}
+                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +10
                           </button>
@@ -840,6 +984,136 @@ export default function AdminInventory() {
           </table>
         </div>
       </div>
+
+      {/* Confirmation Modal for Stock Changes (+, -, +5, +10, Bulk All) */}
+      {confirmModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl rounded-lg p-6 relative">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-full bg-[#c6a15b]/10 text-[#c6a15b] border border-[#c6a15b]/30 shrink-0">
+                <Boxes size={24} />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-base font-semibold text-[#f4efe6]">
+                  {confirmModal.title}
+                </h3>
+                <p className="text-xs text-[#c5c1b9] mt-1">
+                  {confirmModal.message || "Please confirm updating stock quantity for this product in the database."}
+                </p>
+              </div>
+            </div>
+
+            {!confirmModal.isBulkAll && (
+              <div className="mt-4 p-3.5 border border-white/10 bg-[#11110f] rounded space-y-2 text-xs">
+                <div className="flex justify-between text-[#8e8a82]">
+                  <span>Perfume:</span>
+                  <span className="font-semibold text-[#f4efe6] text-right truncate max-w-[200px]">
+                    {confirmModal.productName}
+                  </span>
+                </div>
+                <div className="flex justify-between text-[#8e8a82]">
+                  <span>Decant Size:</span>
+                  <span className="font-medium text-[#c6a15b]">
+                    {confirmModal.sizeMl}ml
+                  </span>
+                </div>
+                <div className="h-px bg-white/10 my-1" />
+                <div className="flex justify-between text-[#8e8a82]">
+                  <span>Current Stock:</span>
+                  <span className="font-medium text-[#f4efe6]">
+                    {confirmModal.currentStock} bottles
+                  </span>
+                </div>
+                <div className="flex justify-between text-[#8e8a82]">
+                  <span>{confirmModal.addedStock > 0 ? "Adding:" : "Deducting:"}</span>
+                  <span className={confirmModal.addedStock > 0 ? "font-semibold text-emerald-400" : "font-semibold text-amber-400"}>
+                    {confirmModal.addedStock > 0 ? `+${confirmModal.addedStock}` : confirmModal.addedStock} bottles
+                  </span>
+                </div>
+                <div className="flex justify-between text-[#8e8a82] pt-1 border-t border-white/10">
+                  <span className="font-medium text-[#f4efe6]">New Stock in Database:</span>
+                  <span className="font-bold text-base text-[#c6a15b]">
+                    {confirmModal.targetStock} bottles
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {confirmModal.isBulkAll && (
+              <div className="mt-4 p-3.5 border border-amber-500/20 bg-amber-950/20 rounded text-xs text-amber-200/90 space-y-1.5">
+                <p className="font-semibold text-amber-300">Catalog-Wide Synchronization</p>
+                <p>
+                  This will safely set the stock of <strong>all 323 bottle variants</strong> across all 99 perfumes to <strong>10 units</strong> directly in the database.
+                </p>
+                <p className="text-[#8e8a82] text-[11px]">
+                  You can fine-tune or reduce individual quantities later at any time from this dashboard.
+                </p>
+              </div>
+            )}
+
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                disabled={modalLoading}
+                onClick={() => setConfirmModal({ isOpen: false })}
+                className="px-4 py-2 border border-white/15 hover:bg-white/5 text-xs text-[#c5c1b9] rounded font-medium transition cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={modalLoading}
+                onClick={handleConfirmRestock}
+                className="flex items-center gap-2 px-5 py-2 bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs font-semibold rounded transition cursor-pointer disabled:opacity-50 shadow-md"
+              >
+                {modalLoading ? (
+                  <>
+                    <RefreshCw size={14} className="animate-spin" />
+                    <span>Updating Database...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 size={14} />
+                    <span>OK / Confirm</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Bottom-Right Toast for Instant Feedback */}
+      {feedback && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm animate-in slide-in-from-bottom-5 duration-300">
+          <div
+            className={`p-4 border rounded shadow-2xl flex items-start gap-3 ${
+              feedback.type === "success"
+                ? "bg-[#171715] border-emerald-500/60 text-emerald-300"
+                : "bg-[#171715] border-red-500/60 text-red-300"
+            }`}
+          >
+            {feedback.type === "success" ? (
+              <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+            ) : (
+              <AlertTriangle size={18} className="text-red-400 shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1 text-xs leading-relaxed">
+              <p className="font-semibold text-[#f4efe6]">
+                {feedback.type === "success" ? "Database Synchronized" : "Inventory Alert"}
+              </p>
+              <p className="mt-0.5 text-[#c5c1b9]">{feedback.message}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFeedback(null)}
+              className="text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
