@@ -162,9 +162,47 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found." });
     }
 
+    const updatedOrder = result.rows[0];
+
+    // Trigger Order Shipped notification email if status is Shipped
+    if (orderStatus === "Shipped" && updatedOrder.customer_email) {
+      (async () => {
+        try {
+          if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
+            const { sendEmail } = await import("../services/emailService.js");
+            await sendEmail({
+              to: updatedOrder.customer_email,
+              subject: `📦 Your Order Has Shipped: ${updatedOrder.order_number} - The Decant Bar`,
+              html: `
+                <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
+                  <h2 style="color: #c6a15b; margin-top: 0; text-align: center;">The Decant Bar</h2>
+                  <p style="text-align: center; color: #8e8a82; font-size: 13px;">Your Handcrafted Decants Are On The Way!</p>
+                  <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
+                  <p>Dear ${updatedOrder.customer_name},</p>
+                  <p>Great news! Your fragrance decants have been securely packaged and handed over to our courier partner.</p>
+                  <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 14px 18px; margin: 16px 0;">
+                    <p style="margin: 4px 0;"><strong>Order Number:</strong> ${updatedOrder.order_number}</p>
+                    <p style="margin: 4px 0;"><strong>Courier Partner:</strong> ${updatedOrder.courier_name || "Express Courier"}</p>
+                    <p style="margin: 4px 0;"><strong>Tracking AWB:</strong> <span style="color: #c6a15b; font-weight: bold;">${updatedOrder.tracking_number || "Provided upon pickup"}</span></p>
+                    <p style="margin: 4px 0;"><strong>Delivery Destination:</strong> ${updatedOrder.shipping_address}, ${updatedOrder.city} - ${updatedOrder.pincode}</p>
+                  </div>
+                  <p style="font-size: 13px; color: #c5c1b9;">
+                    Your parcel will typically arrive within 2–4 business days. Allow your decants 24 hours to settle after transit before sampling for optimal fragrance notes.
+                  </p>
+                </div>
+              `,
+              text: `Your order ${updatedOrder.order_number} has shipped via ${updatedOrder.courier_name || "Express Courier"}. Tracking: ${updatedOrder.tracking_number || "In transit"}.`,
+            });
+          }
+        } catch (emailErr) {
+          console.warn("Order shipped email skipped/failed:", emailErr.message);
+        }
+      })();
+    }
+
     res.json({
       message: "Order updated successfully.",
-      order: result.rows[0],
+      order: updatedOrder,
     });
   } catch (error) {
     console.error("Update order error:", error);

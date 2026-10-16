@@ -130,3 +130,39 @@ export async function fetchMyOrders(token) {
 
   return handleApiResponse(response, "Failed to load order history.");
 }
+
+export async function sendSignupOtpApi(email) {
+  const response = await fetch(`${API_BASE_URL}/auth/send-signup-otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  return handleApiResponse(response, "Failed to send verification code.");
+}
+
+export async function verifySignupOtpApi(payload) {
+  const response = await fetch(`${API_BASE_URL}/auth/verify-signup-otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  return handleApiResponse(response, "Failed to verify registration code.");
+}
+
+export async function sendForgotPasswordOtpApi(email) {
+  const response = await fetch(`${API_BASE_URL}/auth/forgot-password-otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  return handleApiResponse(response, "Failed to send reset code.");
+}
+
+export async function resetPasswordOtpApi(payload) {
+  const response = await fetch(`${API_BASE_URL}/auth/reset-password-otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  return handleApiResponse(response, "Failed to reset password.");
+}
