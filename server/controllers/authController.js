@@ -41,12 +41,19 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
+    // Check if this registered email is configured as an Administrator in .env
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    const isConfiguredAdmin = adminEmails.includes(normalizedEmail);
+
     // Insert user
     const result = await pool.query(
-      `INSERT INTO users (full_name, email, phone, password_hash)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, full_name, email, phone, address, city, state, pincode, created_at`,
-      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash]
+      `INSERT INTO users (full_name, email, phone, password_hash, is_admin)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, created_at`,
+      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash, isConfiguredAdmin]
     );
 
     const user = result.rows[0];
@@ -63,6 +70,7 @@ export const register = async (req, res) => {
         city: user.city,
         state: user.state,
         pincode: user.pincode,
+        isAdmin: Boolean(user.is_admin),
       },
       token,
     });
@@ -101,6 +109,18 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Incorrect password. Please try again." });
     }
 
+    // Auto-promote if email is configured in .env ADMIN_EMAILS
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+
+    let isAdmin = Boolean(user.is_admin);
+    if (!isAdmin && adminEmails.includes(normalizedEmail)) {
+      await pool.query("UPDATE users SET is_admin = true WHERE id = $1", [user.id]);
+      isAdmin = true;
+    }
+
     const token = generateToken(user.id);
 
     res.json({
@@ -114,6 +134,7 @@ export const login = async (req, res) => {
         city: user.city,
         state: user.state,
         pincode: user.pincode,
+        isAdmin,
       },
       token,
     });
@@ -128,6 +149,12 @@ export const login = async (req, res) => {
 // @access  Private
 export const getProfile = async (req, res) => {
   try {
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    const isAdmin = Boolean(req.user.is_admin) || adminEmails.includes((req.user.email || "").toLowerCase());
+
     res.json({
       user: {
         id: req.user.id,
@@ -138,6 +165,7 @@ export const getProfile = async (req, res) => {
         city: req.user.city,
         state: req.user.state,
         pincode: req.user.pincode,
+        isAdmin,
         createdAt: req.user.created_at,
       },
     });

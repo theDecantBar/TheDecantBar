@@ -124,9 +124,9 @@ export default function ProductDetail() {
   const currentPrice = selectedVariant ? Number(selectedVariant.price) : 0;
   const genderLabel =
     product.gender === "M/W" ? "Unisex" :
-    product.gender === "M" ? "Men" :
-    product.gender === "W" ? "Women" :
-    product.gender || "Fragrance";
+      product.gender === "M" ? "Men" :
+        product.gender === "W" ? "Women" :
+          product.gender || "Fragrance";
 
   const profile = getPerfumeProfile(
     product.name,
@@ -242,11 +242,10 @@ export default function ProductDetail() {
                       key={variant.id}
                       type="button"
                       onClick={() => setSelectedVariant(variant)}
-                      className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer ${
-                        isSelected
+                      className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer ${isSelected
                           ? "border-[#c6a15b] bg-[#c6a15b]/10 text-[#f4efe6]"
                           : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
-                      }`}
+                        }`}
                     >
                       <span className="text-sm font-semibold tracking-wider">
                         {variant.size_ml} ml
@@ -294,11 +293,10 @@ export default function ProductDetail() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
-                  added
+                className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${added
                     ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
                     : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
-                }`}
+                  }`}
               >
                 {added ? (
                   <>

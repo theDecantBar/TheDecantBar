@@ -103,11 +103,10 @@ function ProductCard({ product }) {
                     key={variant.id}
                     type="button"
                     onClick={() => setSelectedVariantId(variant.id)}
-                    className={`inline-flex items-center justify-center min-w-[46px] px-3 py-1.5 text-xs transition cursor-pointer border ${
-                      isSelected
+                    className={`inline-flex items-center justify-center min-w-[46px] px-3 py-1.5 text-xs transition cursor-pointer border ${isSelected
                         ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
                         : "border-white/15 text-[#f4efe6]/80 hover:border-[#c6a15b] hover:text-[#c6a15b]"
-                    }`}
+                      }`}
                   >
                     {variant.size_ml}ml
                   </button>

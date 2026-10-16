@@ -7,7 +7,16 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem("tdb_user");
-      return savedUser ? JSON.parse(savedUser) : null;
+      if (!savedUser) return null;
+      const parsed = JSON.parse(savedUser);
+      if (parsed) {
+        parsed.isAdmin = Boolean(
+          parsed.isAdmin ||
+          parsed.is_admin ||
+          parsed.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
+        );
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -38,8 +47,16 @@ export function AuthProvider({ children }) {
         try {
           const res = await getProfile(savedToken);
           if (res?.user) {
-            setUser(res.user);
-            localStorage.setItem("tdb_user", JSON.stringify(res.user));
+            const userObj = {
+              ...res.user,
+              isAdmin: Boolean(
+                res.user.isAdmin ||
+                res.user.is_admin ||
+                res.user.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
+              ),
+            };
+            setUser(userObj);
+            localStorage.setItem("tdb_user", JSON.stringify(userObj));
           }
         } catch (err) {
           console.warn("Session expired or invalid, logging out:", err.message);
@@ -54,12 +71,21 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     const data = await loginUser(credentials);
-    setUser(data.user);
+    const userObj = {
+      ...data.user,
+      isAdmin: Boolean(
+        data.user.isAdmin ||
+        data.user.is_admin ||
+        data.user.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
+      ),
+    };
+    setUser(userObj);
     setToken(data.token);
     localStorage.setItem("tdb_token", data.token);
-    localStorage.setItem("tdb_user", JSON.stringify(data.user));
+    localStorage.setItem("tdb_user", JSON.stringify(userObj));
     return data;
   };
+
 
   const register = async (userData) => {
     const data = await registerUser(userData);
