@@ -9,14 +9,19 @@ import {
   ShieldCheck,
   Sparkles,
   Droplets,
-  Calendar,
-  Layers,
+  Crown,
+  Snowflake,
+  Sun,
+  Leaf,
   Flame,
   ArrowRight
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
 import { getPerfumeProfile } from "../data/perfumeNotes";
+import MainAccords from "../components/product/MainAccords";
+import WhenToWear from "../components/product/WhenToWear";
+import PerfumePyramid from "../components/product/PerfumePyramid";
 
 const SPRAY_ESTIMATES = {
   2: "~30 sprays · ~7–10 days of wear",
@@ -136,6 +141,14 @@ export default function ProductDetail() {
     product.gender
   );
 
+  // Custom season icon helper
+  const weatherLower = (product.weather || "").toLowerCase();
+  const SeasonIcon = weatherLower.includes("winter")
+    ? Snowflake
+    : weatherLower.includes("summer")
+    ? Sun
+    : Leaf;
+
   return (
     <Container className="py-8 sm:py-16">
       {/* Breadcrumb Navigation */}
@@ -190,9 +203,9 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Right Column: Scent Info & Purchase Actions */}
+        {/* Right Column: Scent Journey & Purchase at End */}
         <div className="lg:col-span-6 flex flex-col">
-          {/* Category & Badge */}
+          {/* 1. Category & Gender Badge */}
           <div className="flex items-center gap-3">
             <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
               {product.category || "Designer"}
@@ -203,264 +216,89 @@ export default function ProductDetail() {
             </span>
           </div>
 
-          {/* Fragrance Name */}
+          {/* 2. Fragrance Name */}
           <h1 className="mt-3 font-display text-4xl text-[#f4efe6] sm:text-5xl lg:text-6xl leading-[1.05]">
             {product.name}
           </h1>
 
-          {/* Price & Current Size */}
-          <div className="mt-6 flex items-baseline gap-4 border-b border-white/10 pb-6">
-            <span className="font-display text-4xl text-[#f4efe6] sm:text-5xl">
-              ₹{currentPrice * quantity}
-            </span>
-            {selectedVariant && (
-              <span className="text-xs text-[#8e8a82]">
-                for {quantity > 1 ? `${quantity} × ` : ""}{selectedVariant.size_ml}ml Decant Atomizer
-              </span>
-            )}
-          </div>
-
-          {/* Decant Size Selector */}
-          {product.variants && product.variants.length > 0 && (
-            <div className="mt-8">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs uppercase tracking-wider text-[#f4efe6] font-medium">
-                  Select Decant Size
-                </span>
-                {selectedVariant && SPRAY_ESTIMATES[selectedVariant.size_ml] && (
-                  <span className="text-[11px] text-[#c6a15b]">
-                    {SPRAY_ESTIMATES[selectedVariant.size_ml]}
-                  </span>
-                )}
-              </div>
-
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                {product.variants.map((variant) => {
-                  const isSelected = selectedVariant?.id === variant.id;
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setSelectedVariant(variant)}
-                      className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer ${isSelected
-                          ? "border-[#c6a15b] bg-[#c6a15b]/10 text-[#f4efe6]"
-                          : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
-                        }`}
-                    >
-                      <span className="text-sm font-semibold tracking-wider">
-                        {variant.size_ml} ml
-                      </span>
-                      <span className="mt-1 text-xs text-[#c6a15b]">
-                        ₹{variant.price}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-2.5 text-[11px] text-[#8e8a82]">
-                *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
-              </p>
-            </div>
+          {/* 3. Authentic Fragrantica-style 1-line Description */}
+          {profile.description && (
+            <p className="mt-4 text-xs sm:text-sm text-[#c5c1b9] leading-relaxed border-l-2 border-[#c6a15b] pl-3.5 py-0.5">
+              {profile.description}
+            </p>
           )}
 
-          {/* Quantity Selector & Action Buttons */}
-          <div className="mt-8 space-y-4">
-            <div className="flex items-center gap-4">
-              {/* Quantity Stepper */}
-              <div className="flex h-13 items-center border border-white/15 bg-[#171715]">
-                <button
-                  type="button"
-                  aria-label="Decrease quantity"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
-                >
-                  <Minus size={15} />
-                </button>
-                <span className="w-10 text-center text-sm font-semibold text-[#f4efe6]">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  aria-label="Increase quantity"
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
-                >
-                  <Plus size={15} />
-                </button>
-              </div>
+          {/* 4. Main Accords Bar Section */}
+          <MainAccords accords={profile.accords} />
 
-              {/* Add to Bag Button */}
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${added
-                    ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
-                    : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
-                  }`}
-              >
-                {added ? (
-                  <>
-                    <Check size={16} strokeWidth={2.5} />
-                    Added to Bag
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag size={16} strokeWidth={1.5} />
-                    Add to Bag
-                  </>
-                )}
-              </button>
+          {/* 5. Luxury When to Wear Section (Without user ratings or numerical counts) */}
+          <WhenToWear whenToWear={profile.whenToWear} />
+
+          {/* 6. Perfume Pyramid (stepped tiered pyramid: Top, Middle, Base) */}
+          <PerfumePyramid
+            topNotes={profile.topNotes}
+            middleNotes={profile.middleNotes}
+            baseNotes={profile.baseNotes}
+            vibe={profile.vibe}
+          />
+
+          {/* 7. Performance Badges (Longevity & Projection) */}
+          <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
+            <div className="border border-white/10 bg-[#171715] p-3.5 flex items-center justify-between">
+              <span className="text-[#8e8a82]">Longevity</span>
+              <span className="font-medium text-[#f4efe6]">{profile.longevity}</span>
             </div>
-
-            {/* Buy Now Direct Button */}
-            <button
-              type="button"
-              onClick={handleBuyNow}
-              className="w-full h-13 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer"
-            >
-              Buy It Now
-              <ArrowRight size={15} />
-            </button>
-          </div>
-
-          {/* Scent Description in Bullet Points */}
-          <div className="mt-8 border-t border-white/10 pt-6">
-            <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium mb-3">
-              Fragrance Experience & Highlights
-            </h3>
-            <ul className="space-y-2.5 text-xs sm:text-sm text-[#c5c1b9] leading-relaxed">
-              {profile.highlights.map((point, index) => (
-                <li key={index} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#c6a15b] shrink-0" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Olfactory Notes in Cards */}
-          <div className="mt-8 border-t border-white/10 pt-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-4">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium">
-                Olfactory Notes Pyramid
-              </h3>
-              <span className="text-[11px] text-[#8e8a82]">
-                Vibe: <strong className="text-[#f4efe6] font-normal">{profile.vibe}</strong>
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {/* Top Notes Card */}
-              <div className="border border-white/10 bg-[#171715] p-4 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="uppercase tracking-wider font-semibold text-[#f4efe6]">Top Notes</span>
-                    <span className="text-[10px] text-[#c6a15b]">Opening</span>
-                  </div>
-                  <p className="text-[10px] text-[#8e8a82] mb-3">First 15–30 mins</p>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mt-auto">
-                  {profile.topNotes.map((note) => (
-                    <span
-                      key={note}
-                      className="border border-white/15 bg-[#1c1c18] px-2.5 py-1 text-xs text-[#f4efe6]"
-                    >
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Heart Notes Card */}
-              <div className="border border-white/10 bg-[#171715] p-4 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="uppercase tracking-wider font-semibold text-[#f4efe6]">Heart Notes</span>
-                    <span className="text-[10px] text-[#c6a15b]">Core Body</span>
-                  </div>
-                  <p className="text-[10px] text-[#8e8a82] mb-3">Hours 2–5</p>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mt-auto">
-                  {profile.heartNotes.map((note) => (
-                    <span
-                      key={note}
-                      className="border border-white/15 bg-[#1c1c18] px-2.5 py-1 text-xs text-[#f4efe6]"
-                    >
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Base Notes Card */}
-              <div className="border border-white/10 bg-[#171715] p-4 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="uppercase tracking-wider font-semibold text-[#f4efe6]">Base Notes</span>
-                    <span className="text-[10px] text-[#c6a15b]">Dry Down</span>
-                  </div>
-                  <p className="text-[10px] text-[#8e8a82] mb-3">Hours 6–12+</p>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mt-auto">
-                  {profile.baseNotes.map((note) => (
-                    <span
-                      key={note}
-                      className="border border-white/15 bg-[#1c1c18] px-2.5 py-1 text-xs text-[#f4efe6]"
-                    >
-                      {note}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Performance Badges */}
-            <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
-              <div className="border border-white/10 bg-[#171715] p-3 flex items-center justify-between">
-                <span className="text-[#8e8a82]">Longevity</span>
-                <span className="font-medium text-[#f4efe6]">{profile.longevity}</span>
-              </div>
-              <div className="border border-white/10 bg-[#171715] p-3 flex items-center justify-between">
-                <span className="text-[#8e8a82]">Projection</span>
-                <span className="font-medium text-[#c6a15b]">{profile.projection}</span>
-              </div>
+            <div className="border border-white/10 bg-[#171715] p-3.5 flex items-center justify-between">
+              <span className="text-[#8e8a82]">Projection</span>
+              <span className="font-medium text-[#c6a15b]">{profile.projection}</span>
             </div>
           </div>
 
-          {/* Scent Profile Specification Cards */}
+          {/* 8. Fragrance Specifications with Distinct Symbols */}
           <div className="mt-8 border-t border-white/10 pt-6">
             <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium mb-3">
               Fragrance Specifications
             </h3>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 text-xs">
+              {/* Category Symbol */}
               <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1">
-                  <Layers size={14} className="text-[#c6a15b]" />
+                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
+                  <Crown size={14} className="text-[#c6a15b]" />
                   <span>Category</span>
                 </div>
                 <p className="font-medium text-[#f4efe6]">{product.category || "Designer"}</p>
               </div>
 
+              {/* Concentration Symbol */}
               <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1">
+                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
                   <Flame size={14} className="text-[#c6a15b]" />
                   <span>Concentration</span>
                 </div>
                 <p className="font-medium text-[#f4efe6]">{product.type || "Eau de Parfum"}</p>
               </div>
 
+              {/* Season Symbol */}
               <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1">
-                  <Calendar size={14} className="text-[#c6a15b]" />
+                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
+                  <SeasonIcon size={14} className="text-[#c6a15b]" />
                   <span>Season</span>
                 </div>
                 <p className="font-medium text-[#f4efe6]">{product.weather || "All-Season"}</p>
               </div>
 
+              {/* Gender Symbol */}
               <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1">
-                  <Droplets size={14} className="text-[#c6a15b]" />
+                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
+                  {/* Intertwined / Elegant Gender Symbol */}
+                  <svg className="w-3.5 h-3.5 text-[#c6a15b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="9" cy="9" r="6" />
+                    <line x1="13.5" y1="4.5" x2="20" y2="4.5" />
+                    <line x1="20" y1="4.5" x2="20" y2="11" />
+                    <line x1="13.2" y1="4.8" x2="19.5" y2="4.8" />
+                    <circle cx="15" cy="15" r="5" strokeDasharray="3 3" opacity="0.6" />
+                  </svg>
                   <span>Gender</span>
                 </div>
                 <p className="font-medium text-[#f4efe6]">{genderLabel}</p>
@@ -468,18 +306,134 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Decanting Authenticity Notice */}
-          <div className="mt-8 border border-white/10 bg-[#151512] p-5 text-xs text-[#8e8a82] leading-relaxed">
-            <p className="font-semibold text-[#f4efe6] mb-1">
-              About The Decant Bar Decants:
-            </p>
-            <p>
-              All fragrances are 100% genuine and transferred directly from the authentic manufacturer's bottle using sterile laboratory-grade instruments. Packaged in custom leak-proof glass spray bottles.
-            </p>
+          {/* 9. Purchase & Decant Sizing Card (Moved to the end as requested) */}
+          <div className="mt-10 border border-[#c6a15b]/30 bg-[#151512] p-6 rounded-lg">
+            {/* Price & Current Size */}
+            <div className="flex items-baseline justify-between border-b border-white/10 pb-5">
+              <div>
+                <span className="text-[11px] uppercase tracking-wider text-[#8e8a82] block mb-1">
+                  Selected Price
+                </span>
+                <span className="font-display text-4xl text-[#f4efe6] sm:text-5xl">
+                  ₹{currentPrice * quantity}
+                </span>
+              </div>
+              {selectedVariant && (
+                <span className="text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-3 py-1.5 rounded">
+                  {quantity > 1 ? `${quantity} × ` : ""}{selectedVariant.size_ml}ml Decant Atomizer
+                </span>
+              )}
+            </div>
+
+            {/* Decant Size Selector */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs uppercase tracking-wider text-[#f4efe6] font-medium">
+                    Select Decant Size
+                  </span>
+                  {selectedVariant && SPRAY_ESTIMATES[selectedVariant.size_ml] && (
+                    <span className="text-[11px] text-[#c6a15b]">
+                      {SPRAY_ESTIMATES[selectedVariant.size_ml]}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  {product.variants.map((variant) => {
+                    const isSelected = selectedVariant?.id === variant.id;
+                    return (
+                      <button
+                        key={variant.id}
+                        type="button"
+                        onClick={() => setSelectedVariant(variant)}
+                        className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer ${
+                          isSelected
+                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_12px_rgba(198,161,91,0.2)]"
+                            : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
+                        }`}
+                      >
+                        <span className="text-sm font-semibold tracking-wider">
+                          {variant.size_ml} ml
+                        </span>
+                        <span className="mt-1 text-xs text-[#c6a15b]">
+                          ₹{variant.price}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2.5 text-[11px] text-[#8e8a82]">
+                  *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
+                </p>
+              </div>
+            )}
+
+            {/* Quantity Selector & Action Buttons */}
+            <div className="mt-6 space-y-3.5">
+              <div className="flex items-center gap-3">
+                {/* Quantity Stepper */}
+                <div className="flex h-13 items-center border border-white/15 bg-[#171715]">
+                  <button
+                    type="button"
+                    aria-label="Decrease quantity"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                  >
+                    <Minus size={15} />
+                  </button>
+                  <span className="w-10 text-center text-sm font-semibold text-[#f4efe6]">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Increase quantity"
+                    onClick={() => setQuantity((q) => q + 1)}
+                    className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                  >
+                    <Plus size={15} />
+                  </button>
+                </div>
+
+                {/* Add to Bag Button */}
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
+                    added
+                      ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
+                      : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+                  }`}
+                >
+                  {added ? (
+                    <>
+                      <Check size={16} strokeWidth={2.5} />
+                      Added to Bag
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag size={16} strokeWidth={1.5} />
+                      Add to Bag
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Buy Now Direct Button */}
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="w-full h-13 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-lg shadow-[#c6a15b]/10"
+              >
+                Buy It Now
+                <ArrowRight size={15} />
+              </button>
+            </div>
           </div>
+
+          {/* Note: "About The Decant Bar Decants" completely removed as requested */}
         </div>
       </div>
     </Container>
   );
 }
-
