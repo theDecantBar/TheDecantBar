@@ -5,15 +5,17 @@ import {
   createCodOrder,
   handlePlaceOrder,
   getMyOrders,
+  getOrderById,
 } from "../controllers/orderController.js";
-import { protect, optionalAuth } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/create-razorpay-order", optionalAuth, createRazorpayOrder);
-router.post("/verify-payment", optionalAuth, verifyPaymentAndCreateOrder);
-router.post("/cod", optionalAuth, createCodOrder);
-router.post("/", optionalAuth, handlePlaceOrder);
+router.post("/create-razorpay-order", protect, createRazorpayOrder);
+router.post("/verify-payment", protect, verifyPaymentAndCreateOrder);
+router.post("/cod", protect, createCodOrder);
+router.post("/", protect, handlePlaceOrder);
 router.get("/my-orders", protect, getMyOrders);
+router.get("/:id", protect, getOrderById);
 
 export default router;

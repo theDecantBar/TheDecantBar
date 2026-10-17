@@ -14,39 +14,31 @@ export const protect = async (req, res, next) => {
     }
   }
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || "thedecantbar_fallback_secret_key"
-      );
-
-      const result = await pool.query(
-        "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin, created_at FROM users WHERE id = $1",
-        [decoded.id]
-      );
-
-      if (result.rows.length > 0) {
-        req.user = result.rows[0];
-        return next();
-      }
-    } catch (error) {
-      console.warn("Token verify failed:", error.message);
-    }
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized. Please log in to continue." });
   }
 
-  // Development convenience fallback: auto-authenticate registered administrator so owner is never blocked
-  if (process.env.NODE_ENV !== "production") {
-    const adminRes = await pool.query(
-      "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin, created_at FROM users WHERE is_admin = true OR email = 'thedecantbarofficial@gmail.com' LIMIT 1"
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "thedecantbar_fallback_secret_key"
     );
-    if (adminRes.rows.length > 0) {
-      req.user = adminRes.rows[0];
-      return next();
-    }
-  }
 
-  return res.status(401).json({ message: "Not authorized, please log in as administrator." });
+    const result = await pool.query(
+      "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin, created_at FROM users WHERE id = $1",
+      [decoded.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: "Not authorized. User account not found." });
+    }
+
+    req.user = result.rows[0];
+    return next();
+  } catch (error) {
+    console.warn("Token verification failed:", error.message);
+    return res.status(401).json({ message: "Not authorized. Session expired or invalid token." });
+  }
 };
 
 // Admin-only authorization guard

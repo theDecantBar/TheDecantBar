@@ -39,12 +39,14 @@ export default function Register() {
   const [cooldown, setCooldown] = useState(0);
   const [sandboxNotice, setSandboxNotice] = useState("");
 
+  const from = searchParams.get("redirect") || "/account";
+
   // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/account", { replace: true });
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, from]);
 
   // 60-second Resend countdown timer
   useEffect(() => {
@@ -139,7 +141,7 @@ export default function Register() {
       localStorage.setItem("tdb_token", data.token);
       localStorage.setItem("tdb_user", JSON.stringify(data.user));
 
-      navigate("/account", { replace: true });
+      navigate(from, { replace: true });
       window.location.reload(); // Refresh auth state
     } catch (err) {
       setError(err.message || "Invalid verification code. Please try again.");

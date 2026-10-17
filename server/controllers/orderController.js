@@ -88,6 +88,80 @@ async function validateAndCalculateCart(client, items) {
   return { validatedItems, subtotal, shippingFee, total };
 }
 
+/**
+ * Server-side validation for customer contact and shipping details.
+ * Rejects whitespace-only inputs, invalid Indian phone numbers, invalid emails,
+ * and invalid 6-digit Indian PIN codes.
+ */
+export function validateCustomerAndShippingDetails({
+  fullName,
+  email,
+  phone,
+  address,
+  city,
+  state,
+  pincode,
+  orderNotes,
+}) {
+  const cleanName = String(fullName || "").trim();
+  const cleanEmail = String(email || "").trim().toLowerCase();
+  const rawPhone = String(phone || "").trim();
+  const cleanPhone = rawPhone.replace(/^(\+91|91|0)/, "").replace(/[\s-]/g, "");
+  const cleanAddress = String(address || "").trim();
+  const cleanCity = String(city || "").trim();
+  const cleanState = String(state || "").trim();
+  const cleanPincode = String(pincode || "").trim();
+  const cleanNotes = String(orderNotes || "").trim().slice(0, 500);
+
+  if (!cleanName || cleanName.length < 2) {
+    return { error: "Please enter your full name (minimum 2 characters)." };
+  }
+  if (!/^[A-Za-z\s.'-]+$/.test(cleanName)) {
+    return { error: "Full name contains invalid characters." };
+  }
+
+  // Mobile number validation (10 digits starting with 6, 7, 8, or 9)
+  if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+    return { error: "Please provide a valid 10-digit Indian mobile number." };
+  }
+
+  // Standard email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail)) {
+    return { error: "Please provide a valid email address." };
+  }
+
+  // Delivery address validation
+  if (!cleanAddress || cleanAddress.length < 5) {
+    return { error: "Please enter a complete delivery address (minimum 5 characters)." };
+  }
+
+  // City & state validation
+  if (!cleanCity) {
+    return { error: "Please provide a valid delivery city." };
+  }
+  if (!cleanState) {
+    return { error: "Please provide a valid delivery state." };
+  }
+
+  // 6-digit Indian PIN code validation
+  if (!/^[1-9]\d{5}$/.test(cleanPincode)) {
+    return { error: "Please provide a valid 6-digit Indian PIN code." };
+  }
+
+  return {
+    validDetails: {
+      fullName: cleanName,
+      email: cleanEmail,
+      phone: cleanPhone,
+      address: cleanAddress,
+      city: cleanCity,
+      state: cleanState,
+      pincode: cleanPincode,
+      orderNotes: cleanNotes,
+    },
+  };
+}
+
 // @desc    Create Razorpay Order
 // @route   POST /api/orders/create-razorpay-order
 // @access  Public (Guest or Authenticated)
@@ -98,6 +172,21 @@ export const createRazorpayOrder = async (req, res) => {
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "Cart cannot be empty." });
+    }
+
+    // Validate customer contact before creating Razorpay order
+    const cleanName = String(fullName || "").trim();
+    const cleanEmail = String(email || "").trim().toLowerCase();
+    const cleanPhone = String(phone || "").trim().replace(/^(\+91|91|0)/, "").replace(/[\s-]/g, "");
+
+    if (!cleanName || cleanName.length < 2) {
+      return res.status(400).json({ message: "Please provide your full name before initiating payment." });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail)) {
+      return res.status(400).json({ message: "Please provide a valid email address." });
+    }
+    if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      return res.status(400).json({ message: "Please provide a valid 10-digit Indian mobile number." });
     }
 
     // Server-side calculation of order total directly from database records
@@ -163,7 +252,8 @@ export const createRazorpayOrder = async (req, res) => {
         "Razorpay authentication failed. Please verify that your RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env are valid Test/Live keys.";
     }
 
-    res.status(error.statusCode || 500).json({
+    const responseStatus = error.statusCode === 401 ? 502 : (error.statusCode || 500);
+    res.status(responseStatus).json({
       message: errorMessage,
       error: errorMessage,
     });
@@ -182,6 +272,20 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
+      items,
+    } = req.body;
+
+    // 1. Validate required contact and shipping details
+    const validation = validateCustomerAndShippingDetails(req.body);
+    if (validation.error) {
+      return res.status(400).json({ message: validation.error });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "Cart cannot be empty when creating an order." });
+    }
+
+    const {
       fullName,
       email,
       phone,
@@ -190,17 +294,7 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
       state,
       pincode,
       orderNotes,
-      items,
-    } = req.body;
-
-    // 1. Validate required contact and shipping details
-    if (!fullName || !email || !phone || !address || !city || !state || !pincode) {
-      return res.status(400).json({ message: "Missing required contact or shipping fields." });
-    }
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ message: "Cart cannot be empty when creating an order." });
-    }
+    } = validation.validDetails;
 
     // 2. Cryptographic signature verification
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -246,7 +340,7 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
 
     const { validatedItems, subtotal, shippingFee, total } = calculation;
 
-    const userId = req.user ? req.user.id : null;
+    const userId = req.user.id;
     const orderNumber = `TDB-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const orderResult = await client.query(
@@ -458,6 +552,18 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
 export const createCodOrder = async (req, res) => {
   const client = await pool.connect();
   try {
+    const { items } = req.body;
+
+    // 1. Validate required contact and shipping details
+    const validation = validateCustomerAndShippingDetails(req.body);
+    if (validation.error) {
+      return res.status(400).json({ message: validation.error });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "Cart cannot be empty when creating an order." });
+    }
+
     const {
       fullName,
       email,
@@ -467,17 +573,7 @@ export const createCodOrder = async (req, res) => {
       state,
       pincode,
       orderNotes,
-      items,
-    } = req.body;
-
-    // 1. Validate required contact and shipping details
-    if (!fullName || !email || !phone || !address || !city || !state || !pincode) {
-      return res.status(400).json({ message: "Missing required contact or shipping fields." });
-    }
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ message: "Cart cannot be empty when creating an order." });
-    }
+    } = validation.validDetails;
 
     // 2. Begin transaction
     await client.query("BEGIN");
@@ -493,7 +589,7 @@ export const createCodOrder = async (req, res) => {
 
     const { validatedItems, subtotal, shippingFee, total } = calculation;
 
-    const userId = req.user ? req.user.id : null;
+    const userId = req.user.id;
     const orderNumber = `TDB-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const orderResult = await client.query(
@@ -707,8 +803,8 @@ export const createCodOrder = async (req, res) => {
  * Otherwise routes to Razorpay payment verification.
  */
 export const handlePlaceOrder = async (req, res) => {
-  const method = String(req.body?.paymentMethod || "").toLowerCase();
-  if (method === "cod" || !req.body?.razorpay_payment_id) {
+  const method = String(req.body?.paymentMethod || "").toLowerCase().trim();
+  if (method === "cod" || method === "cash on delivery" || (!req.body?.razorpay_payment_id && method !== "online")) {
     return createCodOrder(req, res);
   }
   return verifyPaymentAndCreateOrder(req, res);
@@ -752,5 +848,58 @@ export const getMyOrders = async (req, res) => {
   } catch (error) {
     console.error("Get my orders error:", error);
     res.status(500).json({ message: "Failed to fetch order history." });
+  }
+};
+
+// @desc    Get single order by ID
+// @route   GET /api/orders/:id
+// @access  Private (Owner or Admin only)
+export const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `
+      SELECT
+        o.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', oi.id,
+              'product_id', oi.product_id,
+              'name', oi.product_name,
+              'size_ml', oi.size_ml,
+              'price', oi.price,
+              'quantity', oi.quantity,
+              'image_url', oi.image_url
+            )
+          ) FILTER (WHERE oi.id IS NOT NULL),
+          '[]'::json
+        ) AS items
+      FROM orders o
+      LEFT JOIN order_items oi ON o.id = oi.order_id
+      WHERE o.id = $1
+      GROUP BY o.id
+      `,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    const order = result.rows[0];
+
+    // Ensure customer can only access their own order unless they are an admin
+    const isOwner = Number(order.user_id) === Number(req.user.id);
+    const isAdmin = Boolean(req.user.is_admin);
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ message: "Access denied. You can only view your own orders." });
+    }
+
+    res.json(order);
+  } catch (error) {
+    console.error("Get order by ID error:", error);
+    res.status(500).json({ message: "Failed to fetch order details." });
   }
 };

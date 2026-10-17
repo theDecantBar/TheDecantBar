@@ -57,7 +57,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
 
   // User's verified purchased perfumes extracted from their orders
   const [userPurchases, setUserPurchases] = useState([]);
-  const [loadingPurchases, setLoadingPurchases] = useState(false);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const [activeFilter, setActiveFilter] = useState("all");
@@ -125,9 +124,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
         })
         .catch((err) => {
           console.error("Failed to load user purchases:", err);
-        })
-        .finally(() => {
-          if (!ignore) setLoadingPurchases(false);
         });
     }
 
@@ -198,30 +194,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
   const removePhoto = () => {
     setForm((prev) => ({ ...prev, photo: null }));
     if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  // Handle selecting a purchased fragrance from user's verified orders
-  const handleSelectPurchase = (e) => {
-    const idx = e.target.value;
-    if (idx === "") {
-      setForm((prev) => ({
-        ...prev,
-        selectedPurchaseIndex: "",
-        fragrance: "",
-        orderNumber: "",
-      }));
-      return;
-    }
-
-    const purchase = userPurchases[Number(idx)];
-    if (purchase) {
-      setForm((prev) => ({
-        ...prev,
-        selectedPurchaseIndex: idx,
-        fragrance: `${purchase.name} (${purchase.size_ml}ml)`,
-        orderNumber: purchase.orderNumber,
-      }));
-    }
   };
 
   // Open modal to edit existing review
