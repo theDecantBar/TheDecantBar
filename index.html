@@ -1,13 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="background-color: #11110f;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TheDecantBar</title>
+    <meta name="theme-color" content="#11110f" />
+    <title>The Decant Bar — Luxury Perfume Decants</title>
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="margin: 0; background-color: #11110f; color: #f4efe6; overflow-x: hidden;">
+    <div id="root">
+      <!-- Zero-flash static fallback while JS chunk is loading -->
+      <div style="position: fixed; inset: 0; background-color: #11110f; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', Georgia, serif; user-select: none;">
+        <div style="font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(198,161,91,0.7); margin-bottom: 10px;">✦ Haute Parfumerie ✦</div>
+        <div style="font-size: 22px; letter-spacing: 0.35em; text-transform: uppercase; color: #f4efe6;">The Decant Bar</div>
+        <div style="width: 160px; height: 1px; background: linear-gradient(90deg, transparent, #c6a15b, transparent); margin-top: 14px;"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
