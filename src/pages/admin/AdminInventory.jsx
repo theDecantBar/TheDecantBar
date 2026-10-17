@@ -187,7 +187,7 @@ export default function AdminInventory() {
     [activeProduct, selectedVariantId]
   );
 
-  const [requireConfirmSingle, setRequireConfirmSingle] = useState(true);
+  const [requireConfirmSingle] = useState(true);
 
   // Safe Stock Change Requester (routes through confirmation popup)
   const requestStockChange = (row, delta) => {

@@ -33,13 +33,8 @@ const SEASON_PRESETS = [
   "All-Season",
   "Summer",
   "Winter",
-  "Spring",
-  "Autumn / Fall",
-  "Summer / Winter",
-  "Spring / Summer",
-  "Autumn / Winter",
 ];
-const SEASON_CHIPS = ["Winter", "Summer", "Spring", "Autumn", "All-Season"];
+const SEASON_CHIPS = ["Winter", "Summer",  "All-Season"];
 
 function isSeasonActive(weatherString, chip) {
   if (!weatherString) return false;
@@ -56,7 +51,7 @@ function toggleSeasonInString(currentWeather = "", chip) {
   }
 
   let parts = currentWeather
-    .split(/[\/,]/)
+    .split(/[/,]/)
     .map((s) => s.trim())
     .filter(Boolean);
 
@@ -743,7 +738,7 @@ function ProductModal({ product, onClose, onSave, token }) {
                 type="text"
                 value={formData.weather}
                 onChange={(e) => setFormData({ ...formData, weather: e.target.value })}
-                placeholder="e.g. Winter / Autumn / Spring"
+                placeholder="e.g. Winter / Summer"
                 className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
               />
 

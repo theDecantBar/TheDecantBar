@@ -1,4 +1,3 @@
-import React from "react";
 import { getNoteVisual } from "../../data/fragranceNotesData";
 
 function NoteCard({ noteName }) {

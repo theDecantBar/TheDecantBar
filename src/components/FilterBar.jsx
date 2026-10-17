@@ -14,8 +14,6 @@ const CLASSIFICATION_OPTIONS = [
 const SEASON_OPTIONS = [
   { label: "Summer", value: "Summer" },
   { label: "Winter", value: "Winter" },
-  { label: "Spring", value: "Spring" },
-  { label: "Autumn / Fall", value: "Autumn" },
   { label: "All-Season", value: "All Season" },
 ];
 

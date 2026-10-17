@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Clock,
   Snowflake,
@@ -50,20 +49,20 @@ export default function WhenToWear({
   ];
 
   return (
-    <div className="mt-8 border-t border-white/10 pt-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="mt-6 border-t border-white/10 pt-5">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Clock size={14} className="text-[#c6a15b]" />
+          <Clock size={13} className="text-[#c6a15b]" />
           <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium">
             When to Wear
           </h3>
         </div>
-        <span className="text-[11px] text-[#8e8a82]">
+        <span className="text-[10px] text-[#8e8a82]">
           Seasonal & Time Suitability
         </span>
       </div>
 
-      <div className="border border-white/10 bg-[#151512] rounded-lg p-4 sm:p-5">
+      <div className="border border-white/10 bg-[#151512] rounded-lg p-3 sm:p-4">
         <div className="grid grid-cols-6 gap-2 sm:gap-3 text-center">
           {/* Seasons */}
           {seasons.map((item) => {

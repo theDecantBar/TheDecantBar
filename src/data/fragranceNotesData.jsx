@@ -1,4 +1,3 @@
-import React from "react";
 import localNotesMap from "./localNotesMap.json";
 
 /**

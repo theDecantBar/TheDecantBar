@@ -34,6 +34,61 @@ const SPRAY_ESTIMATES = {
   50: "~750 sprays · 6+ months signature supply",
 };
 
+/**
+ * Condenses fragrance descriptions to 1–2 brief sentences (~20–30 words)
+ * while preserving key notes, scent character, concentration, and season.
+ */
+function getShortDescription(rawDesc, profile, product) {
+  if (!rawDesc) {
+    if (profile?.vibe) {
+      return `${product?.name || "This fragrance"} features ${profile.vibe.toLowerCase()}, crafted for ${product?.weather || "all-season"} wear.`;
+    }
+    return "";
+  }
+
+  const trimmed = rawDesc.trim();
+  const words = trimmed.split(/\s+/);
+  if (words.length <= 32) {
+    return trimmed;
+  }
+
+  // If description follows the template: "Opens with vibrant top notes of ..., transitioning into ..., rested on ..."
+  if (/Opens with vibrant top notes of/i.test(trimmed)) {
+    const parts = trimmed.split(/(?<=[.!?])\s+/);
+    let firstSentence = parts[0] || "";
+    // Clean up all-caps acronyms
+    firstSentence = firstSentence
+      .replace(/EXTRAIT DE PARFUM/gi, "Extrait de Parfum")
+      .replace(/\bEDP\b/g, "Eau de Parfum")
+      .replace(/\bEDT\b/g, "Eau de Toilette");
+
+    const topNote = profile?.topNotes?.[0] || "";
+    const heartNote = profile?.middleNotes?.[0] || profile?.heartNotes?.[0] || "";
+    const baseNote = profile?.baseNotes?.[0] || "";
+
+    if (topNote && baseNote) {
+      const secondSentence = `Opens with ${topNote}${heartNote ? ` and ${heartNote}` : ""}, resting on an authentic ${baseNote} base.`;
+      const combined = `${firstSentence} ${secondSentence}`;
+      if (combined.split(/\s+/).length <= 32) return combined;
+    }
+    return firstSentence;
+  }
+
+  // If description has standard multiple sentences, keep the first 1-2 within 32 words
+  const sentences = trimmed.split(/(?<=[.!?])\s+/);
+  if (sentences.length >= 2) {
+    const two = `${sentences[0]} ${sentences[1]}`.trim();
+    if (two.split(/\s+/).length <= 32) {
+      return two;
+    }
+    if (sentences[0].split(/\s+/).length <= 32) {
+      return sentences[0];
+    }
+  }
+
+  return words.slice(0, 28).join(" ") + "...";
+}
+
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -181,6 +236,8 @@ export default function ProductDetail() {
     product.gender
   );
 
+  const shortDescription = getShortDescription(profile.description, profile, product);
+
   // Custom season icon helper
   const weatherLower = (product.weather || "").toLowerCase();
   const SeasonIcon = weatherLower.includes("all")
@@ -192,9 +249,9 @@ export default function ProductDetail() {
     : Leaf;
 
   return (
-    <Container className="py-8 sm:py-16">
+    <Container className="py-6 sm:py-10">
       {/* Breadcrumb Navigation */}
-      <nav className="mb-8 flex items-center gap-2 text-xs text-[#8e8a82]">
+      <nav className="mb-5 flex items-center gap-2 text-xs text-[#8e8a82]">
         <Link to="/" className="hover:text-[#c6a15b] transition-colors">
           Home
         </Link>
@@ -209,11 +266,11 @@ export default function ProductDetail() {
       </nav>
 
       {/* Main Product Showcase Grid */}
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Left Column: Fragrance Visual */}
         <div className="lg:col-span-6">
           <div className="sticky top-28">
-            <div className="aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#171715] flex items-center justify-center p-8 group relative">
+            <div className="aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#171715] flex items-center justify-center p-6 sm:p-8 group relative">
               {isSoldOut && (
                 <div className="absolute top-4 right-4 px-3 py-1 text-[11px] tracking-[0.25em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/70 backdrop-blur-md z-10 shadow-lg">
                   Sold Out
@@ -237,136 +294,57 @@ export default function ProductDetail() {
             </div>
 
             {/* Trust highlights below image */}
-            <div className="mt-6 grid grid-cols-2 gap-4 text-xs text-[#8e8a82]">
-              <div className="flex items-center gap-2.5 border border-white/10 bg-[#151512] p-3.5">
-                <ShieldCheck size={18} className="text-[#c6a15b] shrink-0" />
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-[#8e8a82]">
+              <div className="flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
+                <ShieldCheck size={16} className="text-[#c6a15b] shrink-0" />
                 <span>100% Genuine Formula</span>
               </div>
-              <div className="flex items-center gap-2.5 border border-white/10 bg-[#151512] p-3.5">
-                <Sparkles size={18} className="text-[#c6a15b] shrink-0" />
+              <div className="flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
+                <Sparkles size={16} className="text-[#c6a15b] shrink-0" />
                 <span>Precision Glass Spray</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Scent Journey & Purchase at End */}
+        {/* Right Column: Scent Info, Accords & Immediate Purchase */}
         <div className="lg:col-span-6 flex flex-col">
           {/* 1. Category & Gender Badge */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
+          <div className="flex items-center gap-2.5">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
               {product.category || "Designer"}
             </span>
             <span className="h-1 w-1 rounded-full bg-white/20" />
-            <span className="text-xs text-[#8e8a82] uppercase tracking-wider">
+            <span className="text-[11px] text-[#8e8a82] uppercase tracking-wider">
               {genderLabel}
             </span>
           </div>
 
-          {/* 2. Fragrance Name */}
-          <h1 className="mt-3 font-display text-4xl text-[#f4efe6] sm:text-5xl lg:text-6xl leading-[1.05]">
+          {/* 2. Fragrance Name - Balanced responsive title size */}
+          <h1 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl text-[#f4efe6] leading-tight tracking-tight">
             {product.name}
           </h1>
 
-          {/* 3. Authentic Fragrantica-style 1-line Description */}
-          {profile.description && (
-            <p className="mt-4 text-xs sm:text-sm text-[#c5c1b9] leading-relaxed border-l-2 border-[#c6a15b] pl-3.5 py-0.5">
-              {profile.description}
+          {/* 3. Shortened Fragrance Description (1-2 sentences, ~20-30 words) */}
+          {shortDescription && (
+            <p className="mt-3 text-xs sm:text-[13px] text-[#c5c1b9] leading-relaxed border-l-2 border-[#c6a15b] pl-3 py-0.5">
+              {shortDescription}
             </p>
           )}
-
-          {/* 4. Main Accords Bar Section */}
-          <MainAccords accords={profile.accords} />
-
-          {/* 5. Luxury When to Wear Section (Without user ratings or numerical counts) */}
-          <WhenToWear whenToWear={profile.whenToWear} weather={product.weather} />
-
-          {/* 6. Perfume Pyramid (stepped tiered pyramid: Top, Middle, Base) */}
-          <PerfumePyramid
-            topNotes={profile.topNotes}
-            middleNotes={profile.middleNotes}
-            baseNotes={profile.baseNotes}
-            vibe={profile.vibe}
-          />
-
-          {/* 7. Performance Badges (Longevity & Projection) */}
-          <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-            <div className="border border-white/10 bg-[#171715] p-3.5 flex items-center justify-between">
-              <span className="text-[#8e8a82]">Longevity</span>
-              <span className="font-medium text-[#f4efe6]">{profile.longevity}</span>
-            </div>
-            <div className="border border-white/10 bg-[#171715] p-3.5 flex items-center justify-between">
-              <span className="text-[#8e8a82]">Projection</span>
-              <span className="font-medium text-[#c6a15b]">{profile.projection}</span>
-            </div>
-          </div>
-
-          {/* 8. Fragrance Specifications with Distinct Symbols */}
-          <div className="mt-8 border-t border-white/10 pt-6">
-            <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium mb-3">
-              Fragrance Specifications
-            </h3>
-
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 text-xs">
-              {/* Category Symbol */}
-              <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
-                  <Crown size={14} className="text-[#c6a15b]" />
-                  <span>Category</span>
-                </div>
-                <p className="font-medium text-[#f4efe6]">{product.category || "Designer"}</p>
-              </div>
-
-              {/* Concentration Symbol */}
-              <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
-                  <Flame size={14} className="text-[#c6a15b]" />
-                  <span>Concentration</span>
-                </div>
-                <p className="font-medium text-[#f4efe6]">{product.type || "Eau de Parfum"}</p>
-              </div>
-
-              {/* Season Symbol */}
-              <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
-                  <SeasonIcon size={14} className="text-[#c6a15b]" />
-                  <span>Season</span>
-                </div>
-                <p className="font-medium text-[#f4efe6]">{product.weather || "All-Season"}</p>
-              </div>
-
-              {/* Gender Symbol */}
-              <div className="border border-white/10 bg-[#171715] p-3.5">
-                <div className="flex items-center gap-2 text-[#8e8a82] mb-1.5">
-                  {/* Intertwined / Elegant Gender Symbol */}
-                  <svg className="w-3.5 h-3.5 text-[#c6a15b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="9" cy="9" r="6" />
-                    <line x1="13.5" y1="4.5" x2="20" y2="4.5" />
-                    <line x1="20" y1="4.5" x2="20" y2="11" />
-                    <line x1="13.2" y1="4.8" x2="19.5" y2="4.8" />
-                    <circle cx="15" cy="15" r="5" strokeDasharray="3 3" opacity="0.6" />
-                  </svg>
-                  <span>Gender</span>
-                </div>
-                <p className="font-medium text-[#f4efe6]">{genderLabel}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* 9. Purchase & Decant Sizing Card (Moved to the end as requested) */}
-          <div className="mt-10 border border-[#c6a15b]/30 bg-[#151512] p-6 rounded-lg">
+          {/* 5. Purchase & Decant Sizing Card (Visually prominent, easily reachable) */}
+          <div className="mt-5 border border-[#c6a15b]/30 bg-[#151512] p-5 sm:p-6 rounded-lg shadow-lg">
             {/* Price & Current Size */}
-            <div className="flex items-baseline justify-between border-b border-white/10 pb-5">
+            <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#8e8a82] block mb-1">
-                  Selected Price
+                <span className="text-[10px] uppercase tracking-wider text-[#8e8a82] block mb-0.5">
+                  Price
                 </span>
-                <span className="font-display text-4xl text-[#f4efe6] sm:text-5xl">
+                <span className="font-display text-3xl sm:text-4xl text-[#f4efe6]">
                   ₹{currentPrice * quantity}
                 </span>
               </div>
               {selectedVariant && (
-                <span className="text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-3 py-1.5 rounded">
+                <span className="text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-2.5 py-1 rounded">
                   {quantity > 1 ? `${quantity} × ` : ""}{selectedVariant.size_ml}ml Decant Atomizer
                 </span>
               )}
@@ -374,8 +352,8 @@ export default function ProductDetail() {
 
             {/* Decant Size Selector */}
             {product.variants && product.variants.length > 0 && (
-              <div className="mt-6">
-                <div className="flex items-center justify-between mb-3">
+              <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
                   <span className="text-xs uppercase tracking-wider text-[#f4efe6] font-medium">
                     Select Decant Size
                   </span>
@@ -386,7 +364,7 @@ export default function ProductDetail() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                   {product.variants.map((variant) => {
                     const isSelected = selectedVariant?.id === variant.id;
                     const variantSoldOut = Number(variant.stock) <= 0;
@@ -395,16 +373,16 @@ export default function ProductDetail() {
                         key={variant.id}
                         type="button"
                         onClick={() => setSelectedVariant(variant)}
-                        className={`flex flex-col items-center justify-center p-3.5 border transition cursor-pointer relative ${
+                        className={`flex flex-col items-center justify-center p-2.5 sm:p-3 border transition cursor-pointer relative ${
                           isSelected
-                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_12px_rgba(198,161,91,0.2)]"
+                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_10px_rgba(198,161,91,0.2)]"
                             : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
                         }`}
                       >
-                        <span className="text-sm font-semibold tracking-wider">
+                        <span className="text-xs sm:text-sm font-semibold tracking-wider">
                           {variant.size_ml} ml
                         </span>
-                        <span className="mt-1 text-xs">
+                        <span className="mt-0.5 text-xs">
                           {variantSoldOut ? (
                             <span className="text-red-400 font-semibold tracking-tight">Sold Out</span>
                           ) : (
@@ -415,7 +393,7 @@ export default function ProductDetail() {
                     );
                   })}
                 </div>
-                <p className="mt-2.5 text-[11px] text-[#8e8a82]">
+                <p className="mt-2 text-[10px] text-[#8e8a82]">
                   *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
                 </p>
               </div>
@@ -423,10 +401,10 @@ export default function ProductDetail() {
 
             {/* Quantity Selector & Action Buttons (Or Sold Out State) */}
             {isSoldOut ? (
-              <div className="mt-6 space-y-3">
-                <div className="p-3.5 bg-red-950/30 border border-red-500/30 rounded flex items-center justify-between text-xs">
+              <div className="mt-4 space-y-2.5">
+                <div className="p-3 bg-red-950/30 border border-red-500/30 rounded flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2 text-red-300">
-                    <XCircle size={16} className="text-red-400 shrink-0" />
+                    <XCircle size={15} className="text-red-400 shrink-0" />
                     <span>This {selectedVariant?.size_ml}ml decant size is currently <strong>Sold Out</strong>.</span>
                   </div>
                 </div>
@@ -437,35 +415,35 @@ export default function ProductDetail() {
                     setNotifySubmitted(false);
                     setNotifyModalOpen(true);
                   }}
-                  className="w-full h-13 flex items-center justify-center gap-2.5 border border-[#c6a15b] bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer shadow-lg shadow-[#c6a15b]/10 rounded-sm"
+                  className="w-full h-11 sm:h-12 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer shadow-md rounded-sm"
                 >
-                  <Bell size={16} />
+                  <Bell size={15} />
                   Notify Me When Available
                 </button>
               </div>
             ) : (
-              <div className="mt-6 space-y-3.5">
+              <div className="mt-5 space-y-3">
                 <div className="flex items-center gap-3">
                   {/* Quantity Stepper */}
-                  <div className="flex h-13 items-center border border-white/15 bg-[#171715]">
+                  <div className="flex h-11 sm:h-12 items-center border border-white/15 bg-[#171715]">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="flex h-full w-10 sm:w-11 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
-                      <Minus size={15} />
+                      <Minus size={14} />
                     </button>
-                    <span className="w-10 text-center text-sm font-semibold text-[#f4efe6]">
+                    <span className="w-8 text-center text-xs sm:text-sm font-semibold text-[#f4efe6]">
                       {quantity}
                     </span>
                     <button
                       type="button"
                       aria-label="Increase quantity"
                       onClick={() => setQuantity((q) => q + 1)}
-                      className="flex h-full w-12 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="flex h-full w-10 sm:w-11 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
-                      <Plus size={15} />
+                      <Plus size={14} />
                     </button>
                   </div>
 
@@ -473,7 +451,7 @@ export default function ProductDetail() {
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className={`flex-1 h-13 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
+                    className={`flex-1 h-11 sm:h-12 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
                       added
                         ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
                         : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
@@ -481,12 +459,12 @@ export default function ProductDetail() {
                   >
                     {added ? (
                       <>
-                        <Check size={16} strokeWidth={2.5} />
+                        <Check size={15} strokeWidth={2.5} />
                         Added to Bag
                       </>
                     ) : (
                       <>
-                        <ShoppingBag size={16} strokeWidth={1.5} />
+                        <ShoppingBag size={15} strokeWidth={1.5} />
                         Add to Bag
                       </>
                     )}
@@ -497,16 +475,99 @@ export default function ProductDetail() {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="w-full h-13 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-lg shadow-[#c6a15b]/10"
+                  className="w-full h-11 sm:h-12 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-md"
                 >
                   Buy It Now
-                  <ArrowRight size={15} />
+                  <ArrowRight size={14} />
                 </button>
               </div>
             )}
           </div>
 
-          {/* Note: "About The Decant Bar Decants" completely removed as requested */}
+          {/* 4. Main Accords & Themes (Positioned directly above Purchase section) */}
+          {profile.accords && profile.accords.length > 0 && (
+            <MainAccords accords={profile.accords} />
+          )}
+
+
+          {/* 6. Perfume Pyramid (Stepped Tiered Pyramid: Top, Middle, Base) */}
+          <PerfumePyramid
+            topNotes={profile.topNotes}
+            middleNotes={profile.middleNotes}
+            baseNotes={profile.baseNotes}
+            vibe={profile.vibe}
+          />
+
+          {/* 7. Luxury When to Wear Section */}
+          <WhenToWear whenToWear={profile.whenToWear} weather={product.weather} />
+
+          {/* 8. Fragrance Specifications & Performance (Unified compact grid) */}
+          <div className="mt-6 border-t border-white/10 pt-5">
+            <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium mb-3">
+              Fragrance Specifications & Performance
+            </h3>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+              {/* Category */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <Crown size={13} className="text-[#c6a15b]" />
+                  <span className="text-[11px]">Category</span>
+                </div>
+                <p className="font-medium text-[#f4efe6] truncate">{product.category || "Designer"}</p>
+              </div>
+
+              {/* Concentration */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <Flame size={13} className="text-[#c6a15b]" />
+                  <span className="text-[11px]">Concentration</span>
+                </div>
+                <p className="font-medium text-[#f4efe6] truncate">{product.type || "Eau de Parfum"}</p>
+              </div>
+
+              {/* Season */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <SeasonIcon size={13} className="text-[#c6a15b]" />
+                  <span className="text-[11px]">Season</span>
+                </div>
+                <p className="font-medium text-[#f4efe6] truncate">{product.weather || "All-Season"}</p>
+              </div>
+
+              {/* Gender */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <svg className="w-3.5 h-3.5 text-[#c6a15b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="9" cy="9" r="6" />
+                    <line x1="13.5" y1="4.5" x2="20" y2="4.5" />
+                    <line x1="20" y1="4.5" x2="20" y2="11" />
+                    <circle cx="15" cy="15" r="5" strokeDasharray="3 3" opacity="0.6" />
+                  </svg>
+                  <span className="text-[11px]">Gender</span>
+                </div>
+                <p className="font-medium text-[#f4efe6] truncate">{genderLabel}</p>
+              </div>
+
+              {/* Longevity */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <Droplets size={13} className="text-[#c6a15b]" />
+                  <span className="text-[11px]">Longevity</span>
+                </div>
+                <p className="font-medium text-[#f4efe6] truncate">{profile.longevity || "8 – 10 Hours"}</p>
+              </div>
+
+              {/* Projection */}
+              <div className="border border-white/10 bg-[#171715] p-3">
+                <div className="flex items-center gap-1.5 text-[#8e8a82] mb-1">
+                  <Sparkles size={13} className="text-[#c6a15b]" />
+                  <span className="text-[11px]">Projection</span>
+                </div>
+                <p className="font-medium text-[#c6a15b] truncate">{profile.projection || "Moderate"}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
