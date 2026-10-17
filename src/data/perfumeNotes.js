@@ -7383,7 +7383,7 @@ export const KNOWN_PERFUMES = [
 /**
  * Retrieve the most accurate profile for any perfume in the catalog
  */
-export function getPerfumeProfile(name = "", category = "", weather = "", type = "", gender = "") {
+export function getPerfumeProfile(name = "") {
   const cleanName = name.toLowerCase().trim();
 
   // Try direct match from curated authentic database

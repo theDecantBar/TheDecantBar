@@ -33,13 +33,8 @@ const SEASON_PRESETS = [
   "All-Season",
   "Summer",
   "Winter",
-  "Spring",
-  "Autumn / Fall",
-  "Summer / Winter",
-  "Spring / Summer",
-  "Autumn / Winter",
 ];
-const SEASON_CHIPS = ["Winter", "Summer", "Spring", "Autumn", "All-Season"];
+const SEASON_CHIPS = ["Winter", "Summer",  "All-Season"];
 
 function isSeasonActive(weatherString, chip) {
   if (!weatherString) return false;
@@ -56,7 +51,7 @@ function toggleSeasonInString(currentWeather = "", chip) {
   }
 
   let parts = currentWeather
-    .split(/[\/,]/)
+    .split(/[/,]/)
     .map((s) => s.trim())
     .filter(Boolean);
 
@@ -737,6 +732,40 @@ function ProductModal({ product, onClose, onSave, token }) {
                 )}
               </div>
 
+              <input
+                type="text"
+                value={formData.weather}
+                onChange={(e) => setFormData({ ...formData, weather: e.target.value })}
+                placeholder="e.g. Winter / Summer"
+                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+              />
+
+              {/* Clickable Quick Season Chips for multiple combinations */}
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {SEASON_CHIPS.map((chip) => {
+                  const active = isSeasonActive(formData.weather, chip);
+                  return (
+                    <button
+                      key={chip}
+                      type="button"
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          weather: toggleSeasonInString(prev.weather, chip),
+                        }))
+                      }
+                      className={`text-[10px] px-2 py-1 rounded border transition-colors cursor-pointer ${
+                        active
+                          ? "bg-[#c6a15b]/20 border-[#c6a15b] text-[#f4efe6] font-medium shadow-sm"
+                          : "bg-white/5 border-white/10 text-[#8e8a82] hover:text-[#f4efe6] hover:border-white/20"
+                      }`}
+                      title={`Toggle ${chip} in season`}
+                    >
+                      {active ? `✓ ${chip}` : `+ ${chip}`}
+                    </button>
+                  );
+                })}
+              </div>
               {!isCustomWeather ? (
                 <select
                   value={
@@ -772,7 +801,7 @@ function ProductModal({ product, onClose, onSave, token }) {
                     type="text"
                     value={formData.weather}
                     onChange={(e) => setFormData({ ...formData, weather: e.target.value })}
-                    placeholder="e.g. Winter / Autumn / Spring"
+                    placeholder="e.g. Winter / Autumn"
                     className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                     autoFocus
                   />
