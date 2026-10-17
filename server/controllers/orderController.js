@@ -79,7 +79,10 @@ async function validateAndCalculateCart(client, items) {
     });
   }
 
-  const shippingFee = subtotal > 0 ? 99 : 0;
+  // Shipping calculation:
+  // - Subtotal below ₹500: ₹80 shipping fee
+  // - Subtotal ₹500 or above: FREE shipping (₹0)
+  const shippingFee = subtotal >= 500 ? 0 : (subtotal > 0 ? 80 : 0);
   const total = subtotal + shippingFee;
 
   return { validatedItems, subtotal, shippingFee, total };

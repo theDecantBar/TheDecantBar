@@ -21,8 +21,11 @@ import {
   verifyPaymentAndPlaceOrder,
   placeCodOrder,
 } from "../services/authApi";
-
-const SHIPPING_FEE = 99;
+import {
+  calculateShippingFee,
+  calculateOrderTotal,
+  FREE_SHIPPING_THRESHOLD,
+} from "../utils/shipping";
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -81,7 +84,10 @@ export default function Checkout() {
     if (errorMessage) setErrorMessage("");
   };
 
-  const finalTotal = cartSubtotal + (cartItems.length > 0 ? SHIPPING_FEE : 0);
+  const shippingFee = cartItems.length > 0 ? calculateShippingFee(cartSubtotal) : 0;
+  const finalTotal = cartItems.length > 0 ? calculateOrderTotal(cartSubtotal) : 0;
+  const isFreeShipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD;
+  const amountForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -130,7 +136,7 @@ export default function Checkout() {
           items: res.order?.items || [...cartItems],
           total: res.order?.total ? Number(res.order.total) : finalTotal,
           subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
-          shippingFee: res.order?.shippingFee ? Number(res.order.shippingFee) : SHIPPING_FEE,
+          shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
           customer: {
             ...formData,
             paymentMethod: "Cash on Delivery",
@@ -175,7 +181,7 @@ export default function Checkout() {
         {
           total: finalTotal,
           subtotal: cartSubtotal,
-          shippingFee: SHIPPING_FEE,
+          shippingFee: shippingFee,
           fullName: formData.fullName,
           email: formData.email,
           phone: formData.phone,
@@ -216,7 +222,7 @@ export default function Checkout() {
               orderNotes: formData.orderNotes,
               items: itemPayload,
               subtotal: cartSubtotal,
-              shippingFee: SHIPPING_FEE,
+              shippingFee: shippingFee,
               total: finalTotal,
             };
 
@@ -227,7 +233,7 @@ export default function Checkout() {
               items: res.order?.items || [...cartItems],
               total: res.order?.total ? Number(res.order.total) : finalTotal,
               subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
-              shippingFee: res.order?.shippingFee ? Number(res.order.shippingFee) : SHIPPING_FEE,
+              shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
               customer: {
                 ...formData,
                 paymentMethod: "Online (Razorpay)",
@@ -357,6 +363,12 @@ export default function Checkout() {
                 </span>
               </div>
             )}
+            <div className="flex justify-between">
+              <span>Standard Shipping:</span>
+              <span className={Number(completedOrder.shippingFee) === 0 ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                {Number(completedOrder.shippingFee) === 0 ? "FREE" : `₹${completedOrder.shippingFee}`}
+              </span>
+            </div>
             <div className="flex justify-between border-t border-white/10 pt-4 text-sm font-semibold text-[#f4efe6]">
               <span>{isCod ? "Amount Due on Delivery:" : "Total Amount Paid:"}</span>
               <span className="font-display text-2xl text-[#c6a15b]">
@@ -767,6 +779,23 @@ export default function Checkout() {
               Order Summary ({cartCount} {cartCount === 1 ? "bottle" : "bottles"})
             </h2>
 
+            {/* Free Shipping Alert / Status */}
+            {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
+              <div className="mb-6 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+                <div className="flex items-center gap-2">
+                  <Truck size={14} className="text-[#c6a15b] shrink-0" />
+                  <span>
+                    Add <strong className="text-[#f4efe6]">₹{amountForFreeShipping}</strong> more to unlock <strong className="text-[#c6a15b]">FREE shipping</strong>
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
+                <Sparkles size={14} className="text-emerald-400 shrink-0" />
+                <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
+              </div>
+            )}
+
             {/* Items Mini List */}
             <div className="divide-y divide-white/10 max-h-72 overflow-y-auto pr-1">
               {cartItems.map((item) => (
@@ -805,9 +834,11 @@ export default function Checkout() {
                 <span>Subtotal</span>
                 <span className="text-[#f4efe6] font-medium">₹{cartSubtotal}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span>Standard Insured Shipping</span>
-                <span className="text-[#f4efe6] font-medium">₹{SHIPPING_FEE}</span>
+                <span className={isFreeShipping ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                  {isFreeShipping ? "FREE" : `₹${shippingFee}`}
+                </span>
               </div>
               <div className="flex justify-between border-t border-white/10 pt-4 text-base font-semibold text-[#f4efe6]">
                 <span>Total Due</span>

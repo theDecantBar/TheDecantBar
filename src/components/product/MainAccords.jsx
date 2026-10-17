@@ -11,9 +11,7 @@ export default function MainAccords({ accords = [], className = "" }) {
         <h3 className="text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium flex items-center gap-2">
           <span>Main Accords & Themes</span>
         </h3>
-        <span className="text-[10px] text-[#8e8a82]">
-          Dominant scent profile
-        </span>
+        
       </div>
 
       <div className="space-y-1.5 max-w-md">
