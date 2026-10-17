@@ -183,7 +183,9 @@ export default function ProductDetail() {
 
   // Custom season icon helper
   const weatherLower = (product.weather || "").toLowerCase();
-  const SeasonIcon = weatherLower.includes("winter")
+  const SeasonIcon = weatherLower.includes("all")
+    ? Sparkles
+    : weatherLower.includes("winter")
     ? Snowflake
     : weatherLower.includes("summer")
     ? Sun
@@ -277,7 +279,7 @@ export default function ProductDetail() {
           <MainAccords accords={profile.accords} />
 
           {/* 5. Luxury When to Wear Section (Without user ratings or numerical counts) */}
-          <WhenToWear whenToWear={profile.whenToWear} />
+          <WhenToWear whenToWear={profile.whenToWear} weather={product.weather} />
 
           {/* 6. Perfume Pyramid (stepped tiered pyramid: Top, Middle, Base) */}
           <PerfumePyramid

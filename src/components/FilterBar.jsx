@@ -7,11 +7,16 @@ const CLASSIFICATION_OPTIONS = [
   { label: "Designer", value: "Designer" },
   { label: "Niche", value: "Niche" },
   { label: "Middle Eastern", value: "Middle eastern" },
+  { label: "Fresh", value: "Fresh" },
+  { label: "Woody", value: "Woody" },
 ];
 
 const SEASON_OPTIONS = [
   { label: "Summer", value: "Summer" },
   { label: "Winter", value: "Winter" },
+  { label: "Spring", value: "Spring" },
+  { label: "Autumn / Fall", value: "Autumn" },
+  { label: "All-Season", value: "All Season" },
 ];
 
 const GENDER_OPTIONS = [

@@ -12,7 +12,8 @@ import {
  * Displays seasonal and day/night suitability via subtle gold meters without numerical ratings.
  */
 export default function WhenToWear({
-  whenToWear = { winter: 4000, spring: 1400, summer: 564, fall: 3900, day: 2100, night: 3800 }
+  whenToWear = { winter: 4000, spring: 1400, summer: 564, fall: 3900, day: 2100, night: 3800 },
+  weather = "",
 }) {
   const maxWearCount = Math.max(
     whenToWear.winter || 1,
@@ -22,6 +23,19 @@ export default function WhenToWear({
     whenToWear.day || 1,
     whenToWear.night || 1
   );
+
+  const weatherLower = (weather || "").toLowerCase().trim();
+  const hasCustomWeather = weatherLower.length > 0;
+
+  const matchesSeason = (key) => {
+    if (!hasCustomWeather) return false;
+    if (weatherLower.includes("all")) return true;
+    if (key === "winter" && weatherLower.includes("winter")) return true;
+    if (key === "summer" && (weatherLower.includes("summer") || weatherLower.includes("summeer"))) return true;
+    if (key === "spring" && weatherLower.includes("spring")) return true;
+    if (key === "fall" && (weatherLower.includes("fall") || weatherLower.includes("autumn"))) return true;
+    return false;
+  };
 
   const seasons = [
     { key: "winter", label: "Winter", icon: Snowflake, count: whenToWear.winter || 0 },
@@ -54,8 +68,12 @@ export default function WhenToWear({
           {/* Seasons */}
           {seasons.map((item) => {
             const Icon = item.icon;
-            const barWidth = Math.max(12, Math.round((item.count / maxWearCount) * 100));
-            const isDominant = barWidth >= 75;
+            const barWidth = hasCustomWeather
+              ? (matchesSeason(item.key) ? 92 : 24)
+              : Math.max(12, Math.round((item.count / maxWearCount) * 100));
+            const isDominant = hasCustomWeather
+              ? matchesSeason(item.key)
+              : barWidth >= 75;
 
             return (
               <div key={item.key} className="flex flex-col items-center py-1.5 px-1">

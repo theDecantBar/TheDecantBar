@@ -361,27 +361,27 @@ export const updateProduct = async (req, res) => {
     const updateResult = await client.query(
       `UPDATE products
        SET 
-         name = COALESCE($1, name),
-         brand = COALESCE($2, brand),
-         description = COALESCE($3, description),
-         image_url = COALESCE($4, image_url),
-         category = COALESCE($5, category),
-         gender = COALESCE($6, gender),
-         weather = COALESCE($7, weather),
-         type = COALESCE($8, type),
-         full_bottle_price = COALESCE($9, full_bottle_price)
+         name = COALESCE(NULLIF(TRIM($1), ''), name),
+         brand = TRIM($2),
+         description = TRIM($3),
+         image_url = TRIM($4),
+         category = COALESCE(NULLIF(TRIM($5), ''), category),
+         gender = COALESCE(NULLIF(TRIM($6), ''), gender),
+         weather = TRIM($7),
+         type = TRIM($8),
+         full_bottle_price = $9
        WHERE id = $10
        RETURNING *`,
       [
         name ? name.trim() : null,
         brand ? brand.trim() : null,
-        description !== undefined ? description : null,
-        imageUrl !== undefined ? imageUrl : null,
-        category || null,
-        gender || null,
-        weather || null,
-        type || null,
-        fullBottlePrice !== undefined ? Number(fullBottlePrice) : null,
+        description !== undefined ? (description ? description.trim() : null) : null,
+        imageUrl !== undefined ? (imageUrl ? imageUrl.trim() : null) : null,
+        category ? category.trim() : "Designer",
+        gender ? gender.trim() : "Unisex",
+        weather !== undefined ? (weather ? weather.trim() : null) : null,
+        type !== undefined ? (type ? type.trim() : null) : null,
+        fullBottlePrice !== undefined && fullBottlePrice !== "" ? Number(fullBottlePrice) : null,
         id,
       ]
     );

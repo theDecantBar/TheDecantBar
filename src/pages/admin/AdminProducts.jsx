@@ -18,8 +18,60 @@ import {
   uploadAdminProductImage,
 } from "../../services/adminApi";
 
-const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
+const CATEGORIES = ["Designer", "Niche", "Middle Eastern", "Fresh", "Woody"];
 const GENDERS = ["Men", "Women", "Unisex"];
+const CONCENTRATIONS = [
+  "EDP",
+  "EDT",
+  "Extrait de Parfum",
+  "Parfum",
+  "Elixir",
+  "EDC",
+  "Eau Fraiche",
+];
+const SEASON_PRESETS = [
+  "All-Season",
+  "Summer",
+  "Winter",
+  "Spring",
+  "Autumn / Fall",
+  "Summer / Winter",
+  "Spring / Summer",
+  "Autumn / Winter",
+];
+const SEASON_CHIPS = ["Winter", "Summer", "Spring", "Autumn", "All-Season"];
+
+function isSeasonActive(weatherString, chip) {
+  if (!weatherString) return false;
+  const lower = weatherString.toLowerCase();
+  if (chip === "All-Season") {
+    return lower.includes("all");
+  }
+  return lower.includes(chip.toLowerCase());
+}
+
+function toggleSeasonInString(currentWeather = "", chip) {
+  if (chip === "All-Season") {
+    return currentWeather.toLowerCase().includes("all") ? "" : "All-Season";
+  }
+
+  let parts = currentWeather
+    .split(/[\/,]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  parts = parts.filter((p) => !p.toLowerCase().includes("all"));
+
+  const idx = parts.findIndex((p) => p.toLowerCase() === chip.toLowerCase());
+
+  if (idx >= 0) {
+    parts.splice(idx, 1);
+  } else {
+    parts.push(chip);
+  }
+
+  return parts.join(" / ");
+}
 
 export default function AdminProducts() {
   const { token } = useAuth();
@@ -327,6 +379,20 @@ function ProductModal({ product, onClose, onSave, token }) {
     fullBottlePrice: product?.full_bottle_price || "",
   });
 
+  const [isCustomType, setIsCustomType] = useState(() => {
+    if (!product?.type) return false;
+    return !CONCENTRATIONS.some(
+      (c) => c.toLowerCase() === product.type.trim().toLowerCase()
+    );
+  });
+
+  const [isCustomCategory, setIsCustomCategory] = useState(() => {
+    if (!product?.category) return false;
+    return !CATEGORIES.some(
+      (c) => c.toLowerCase() === product.category.trim().toLowerCase()
+    );
+  });
+
   const handleFileSelect = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -500,148 +566,218 @@ function ProductModal({ product, onClose, onSave, token }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          {/* Row 2: Category, Target Gender, Concentration Type (3 clean balanced dropdown columns) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Category with Dropdown + Custom option */}
             <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
-                Category
-              </label>
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
-              >
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
+                  Category
+                </label>
+                {isCustomCategory && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCustomCategory(false);
+                      setFormData({ ...formData, category: "Designer" });
+                    }}
+                    className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer"
+                  >
+                    Preset list
+                  </button>
+                )}
+              </div>
+              {!isCustomCategory ? (
+                <select
+                  value={
+                    CATEGORIES.some(
+                      (c) => c.toLowerCase() === (formData.category || "").toLowerCase()
+                    )
+                      ? CATEGORIES.find(
+                          (c) => c.toLowerCase() === (formData.category || "").toLowerCase()
+                        )
+                      : "__custom__"
+                  }
+                  onChange={(e) => {
+                    if (e.target.value === "__custom__") {
+                      setIsCustomCategory(true);
+                    } else {
+                      setFormData({ ...formData, category: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c} className="bg-[#171715] text-[#f4efe6]">
+                      {c}
+                    </option>
+                  ))}
+                  <option value="__custom__" className="bg-[#171715] text-[#c6a15b]">
+                    + Custom Category...
                   </option>
-                ))}
-              </select>
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  placeholder="e.g. Gourmand / Aquatic"
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                  autoFocus
+                />
+              )}
             </div>
 
+            {/* Target Gender */}
             <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
+              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">
                 Target Gender
               </label>
               <select
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
               >
                 {GENDERS.map((g) => (
-                  <option key={g} value={g}>
+                  <option key={g} value={g} className="bg-[#171715] text-[#f4efe6]">
                     {g}
                   </option>
                 ))}
               </select>
             </div>
 
+            {/* Concentration Type with Dropdown + Custom option */}
             <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
-                Weather / Season
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
+                  Concentration Type
+                </label>
+                {isCustomType && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCustomType(false);
+                      setFormData({ ...formData, type: "EDP" });
+                    }}
+                    className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer"
+                  >
+                    Preset list
+                  </button>
+                )}
+              </div>
+
+              {!isCustomType ? (
+                <select
+                  value={
+                    CONCENTRATIONS.some(
+                      (c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase()
+                    )
+                      ? CONCENTRATIONS.find(
+                          (c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase()
+                        )
+                      : "__custom__"
+                  }
+                  onChange={(e) => {
+                    if (e.target.value === "__custom__") {
+                      setIsCustomType(true);
+                    } else {
+                      setFormData({ ...formData, type: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                >
+                  {CONCENTRATIONS.map((c) => (
+                    <option key={c} value={c} className="bg-[#171715] text-[#f4efe6]">
+                      {c}
+                    </option>
+                  ))}
+                  <option value="__custom__" className="bg-[#171715] text-[#c6a15b]">
+                    + Custom Concentration...
+                  </option>
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={formData.type}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  placeholder="e.g. Absolu / Cologne Intense"
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                  autoFocus
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Row 3: Weather / Season & Reference Price (2 spacious balanced columns) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Weather / Season with Presets Dropdown + Quick Combo Chips + Editable Input */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
+                  Weather / Season
+                </label>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] text-[#8e8a82]">Presets:</span>
+                  <select
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        setFormData({ ...formData, weather: e.target.value });
+                        e.target.value = "";
+                      }
+                    }}
+                    defaultValue=""
+                    className="bg-[#11110f] border border-white/15 text-[11px] text-[#c6a15b] px-2 py-0.5 rounded hover:border-[#c6a15b] cursor-pointer focus:outline-none"
+                    title="Choose a season preset"
+                  >
+                    <option value="" disabled>Select ▾</option>
+                    {SEASON_PRESETS.map((sp) => (
+                      <option key={sp} value={sp} className="bg-[#171715] text-[#f4efe6]">
+                        {sp}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <input
                 type="text"
                 value={formData.weather}
                 onChange={(e) => setFormData({ ...formData, weather: e.target.value })}
-                placeholder="e.g. Summer / Winter / All"
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
-                Concentration Type
-              </label>
-              <input
-                type="text"
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                placeholder="EDP / Parfum / Extrait"
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
-                  Bottle Image URL
-                </label>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploadingImage}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer disabled:opacity-50"
-                  title="Browse photo from your phone or laptop"
-                >
-                  {uploadingImage ? (
-                    <>
-                      <Loader2 size={12} className="animate-spin" />
-                      <span>Uploading...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Upload size={12} />
-                      <span>Browse File</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Hidden file input for file picker */}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileSelect}
-                accept="image/*"
-                className="hidden"
+                placeholder="e.g. Winter / Autumn / Spring"
+                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
               />
 
-              <div className="flex items-center gap-2">
-                {formData.imageUrl && (
-                  <div className="relative w-10 h-10 shrink-0 border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center rounded">
-                    <img
-                      src={formData.imageUrl}
-                      alt="Bottle preview"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  </div>
-                )}
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    placeholder="/images/perfumes/aventus.png or browse photo"
-                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-8"
-                  />
-                  {formData.imageUrl && (
+              {/* Clickable Quick Season Chips for multiple combinations */}
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {SEASON_CHIPS.map((chip) => {
+                  const active = isSeasonActive(formData.weather, chip);
+                  return (
                     <button
+                      key={chip}
                       type="button"
-                      onClick={() => setFormData({ ...formData, imageUrl: "" })}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] transition"
-                      title="Clear image"
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          weather: toggleSeasonInString(prev.weather, chip),
+                        }))
+                      }
+                      className={`text-[10px] px-2 py-1 rounded border transition-colors cursor-pointer ${
+                        active
+                          ? "bg-[#c6a15b]/20 border-[#c6a15b] text-[#f4efe6] font-medium shadow-sm"
+                          : "bg-white/5 border-white/10 text-[#8e8a82] hover:text-[#f4efe6] hover:border-white/20"
+                      }`}
+                      title={`Toggle ${chip} in season`}
                     >
-                      <X size={14} />
+                      {active ? `✓ ${chip}` : `+ ${chip}`}
                     </button>
-                  )}
-                </div>
+                  );
+                })}
               </div>
-
-              {uploadError && (
-                <p className="text-[11px] text-rose-400 mt-1">{uploadError}</p>
-              )}
-              <p className="text-[10px] text-[#8e8a82] mt-1">
-                Browse photo from laptop/phone or paste an image URL. Supports JPG, PNG, WEBP, AVIF.
-              </p>
             </div>
 
+            {/* Full Bottle Reference Price */}
             <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
+              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">
                 Full Bottle Reference Price (₹)
               </label>
               <input
@@ -649,9 +785,90 @@ function ProductModal({ product, onClose, onSave, token }) {
                 value={formData.fullBottlePrice}
                 onChange={(e) => setFormData({ ...formData, fullBottlePrice: e.target.value })}
                 placeholder="e.g. 28000"
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
               />
+              <p className="text-[10px] text-[#8e8a82] mt-2">
+                Original retail price of the full presentation bottle for savings comparison.
+              </p>
             </div>
+          </div>
+
+          {/* Row 4: Bottle Image URL & Upload */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
+                Bottle Image URL
+              </label>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadingImage}
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer disabled:opacity-50"
+                title="Browse photo from your phone or laptop"
+              >
+                {uploadingImage ? (
+                  <>
+                    <Loader2 size={12} className="animate-spin" />
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload size={12} />
+                    <span>Browse File</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Hidden file input for file picker */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              accept="image/*"
+              className="hidden"
+            />
+
+            <div className="flex items-center gap-3">
+              {formData.imageUrl && (
+                <div className="relative w-11 h-11 shrink-0 border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center rounded">
+                  <img
+                    src={formData.imageUrl}
+                    alt="Bottle preview"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+              )}
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  placeholder="/images/perfumes/aventus.png or browse photo"
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-8"
+                />
+                {formData.imageUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, imageUrl: "" })}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
+                    title="Clear image"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {uploadError && (
+              <p className="text-[11px] text-rose-400 mt-1">{uploadError}</p>
+            )}
+            <p className="text-[10px] text-[#8e8a82] mt-1.5">
+              Upload a bottle photo from laptop/phone or paste an image URL. Supports JPG, PNG, WEBP, AVIF.
+            </p>
           </div>
 
           <div>
