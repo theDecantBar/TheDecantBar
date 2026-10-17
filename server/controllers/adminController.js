@@ -1,4 +1,9 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import pool from "../config/db.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // @desc    Get dashboard executive KPI statistics
 // @route   GET /api/admin/stats
@@ -641,6 +646,67 @@ export const bulkUpdateAllStock = async (req, res) => {
   } catch (error) {
     console.error("Bulk stock update error:", error);
     res.status(500).json({ message: "Failed to bulk update variant stock." });
+  }
+};
+
+// @desc    Upload product bottle image (saves to public/images/perfumes or returns data URI fallback)
+// @route   POST /api/admin/upload-image
+// @access  Private / Admin
+export const uploadProductImage = async (req, res) => {
+  try {
+    const { image, filename } = req.body;
+    if (!image) {
+      return res.status(400).json({ message: "No image data provided" });
+    }
+
+    // Match data URI scheme: data:image/png;base64,....
+    const matches = image.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+    if (!matches) {
+      // If it's already a URL or path, just echo it back
+      return res.json({ success: true, imageUrl: image });
+    }
+
+    let ext = matches[1].toLowerCase();
+    if (ext === "jpeg") ext = "jpg";
+    if (ext.includes("svg")) ext = "svg";
+    if (ext.includes("webp")) ext = "webp";
+    if (ext.includes("avif")) ext = "avif";
+    if (ext.includes("png")) ext = "png";
+
+    ext = ext.replace(/[^a-z0-9]/g, "");
+    if (!ext) ext = "jpg";
+
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, "base64");
+
+    const cleanBaseName = filename
+      ? path.parse(filename).name.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 40)
+      : "bottle";
+    const uniqueFileName = `${cleanBaseName}_${Date.now()}.${ext}`;
+
+    const uploadsDir = path.resolve(__dirname, "../../public/images/perfumes");
+    try {
+      await fs.mkdir(uploadsDir, { recursive: true });
+      const targetPath = path.join(uploadsDir, uniqueFileName);
+      await fs.writeFile(targetPath, buffer);
+
+      return res.json({
+        success: true,
+        imageUrl: `/images/perfumes/${uniqueFileName}`,
+      });
+    } catch (fsErr) {
+      console.warn(
+        "Could not save to local filesystem, returning base64 data URI fallback:",
+        fsErr.message
+      );
+      return res.json({
+        success: true,
+        imageUrl: image,
+      });
+    }
+  } catch (error) {
+    console.error("Upload image error:", error);
+    res.status(500).json({ message: "Failed to process image upload." });
   }
 };
 

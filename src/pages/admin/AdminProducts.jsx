@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Plus,
   Search,
@@ -6,6 +6,8 @@ import {
   Trash2,
   Sparkles,
   X,
+  Upload,
+  Loader2,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -13,6 +15,7 @@ import {
   createAdminProduct,
   updateAdminProduct,
   deleteAdminProduct,
+  uploadAdminProductImage,
 } from "../../services/adminApi";
 
 const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
@@ -299,6 +302,7 @@ export default function AdminProducts() {
           product={editingProduct}
           onClose={() => setModalOpen(false)}
           onSave={handleModalSave}
+          token={token}
         />
       )}
     </div>
@@ -306,7 +310,11 @@ export default function AdminProducts() {
 }
 
 // Sub-component: Add / Edit Product Modal
-function ProductModal({ product, onClose, onSave }) {
+function ProductModal({ product, onClose, onSave, token }) {
+  const fileInputRef = useRef(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
   const [formData, setFormData] = useState({
     name: product?.name || "",
     brand: product?.brand || "",
@@ -318,6 +326,78 @@ function ProductModal({ product, onClose, onSave }) {
     type: product?.type || "EDP",
     fullBottlePrice: product?.full_bottle_price || "",
   });
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Please select an image file (PNG, JPG, WEBP, AVIF)");
+      return;
+    }
+
+    setUploadingImage(true);
+    setUploadError("");
+
+    try {
+      // 1. Read file as Data URL
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Failed to read image file"));
+        reader.readAsDataURL(file);
+      });
+
+      // 2. Client-side resize/compress large photos (e.g. 5-15MB phone camera shots)
+      const optimizedDataUrl = await new Promise((resolve) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          const mime = file.type === "image/png" ? "image/png" : "image/jpeg";
+          resolve(canvas.toDataURL(mime, 0.88));
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
+
+      // 3. Upload to backend server
+      try {
+        const res = await uploadAdminProductImage(token, optimizedDataUrl, file.name);
+        if (res?.imageUrl) {
+          setFormData((prev) => ({ ...prev, imageUrl: res.imageUrl }));
+        } else {
+          setFormData((prev) => ({ ...prev, imageUrl: optimizedDataUrl }));
+        }
+      } catch (uploadErr) {
+        console.warn("Upload endpoint failed, using base64 fallback:", uploadErr);
+        setFormData((prev) => ({ ...prev, imageUrl: optimizedDataUrl }));
+      }
+    } catch (err) {
+      console.error("Error processing image file:", err);
+      setUploadError(err.message || "Failed to process image file");
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   // Variants list
   const [variants, setVariants] = useState(() => {
@@ -484,16 +564,80 @@ function ProductModal({ product, onClose, onSave }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">
-                Bottle Image URL
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
+                  Bottle Image URL
+                </label>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadingImage}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer disabled:opacity-50"
+                  title="Browse photo from your phone or laptop"
+                >
+                  {uploadingImage ? (
+                    <>
+                      <Loader2 size={12} className="animate-spin" />
+                      <span>Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={12} />
+                      <span>Browse File</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Hidden file input for file picker */}
               <input
-                type="text"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="/images/perfumes/aventus.png"
-                className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                accept="image/*"
+                className="hidden"
               />
+
+              <div className="flex items-center gap-2">
+                {formData.imageUrl && (
+                  <div className="relative w-10 h-10 shrink-0 border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center rounded">
+                    <img
+                      src={formData.imageUrl}
+                      alt="Bottle preview"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </div>
+                )}
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={formData.imageUrl}
+                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                    placeholder="/images/perfumes/aventus.png or browse photo"
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-8"
+                  />
+                  {formData.imageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, imageUrl: "" })}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] transition"
+                      title="Clear image"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {uploadError && (
+                <p className="text-[11px] text-rose-400 mt-1">{uploadError}</p>
+              )}
+              <p className="text-[10px] text-[#8e8a82] mt-1">
+                Browse photo from laptop/phone or paste an image URL. Supports JPG, PNG, WEBP, AVIF.
+              </p>
             </div>
 
             <div>

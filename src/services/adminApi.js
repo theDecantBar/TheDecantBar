@@ -55,6 +55,19 @@ export async function fetchAdminProducts(token) {
   return res.json();
 }
 
+export async function uploadAdminProductImage(token, base64Data, filename) {
+  const res = await fetch("/api/admin/upload-image", {
+    method: "POST",
+    headers: getHeaders(token),
+    body: JSON.stringify({ image: base64Data, filename }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to upload image");
+  }
+  return res.json();
+}
+
 export async function createAdminProduct(token, productData) {
   const res = await fetch("/api/admin/products", {
     method: "POST",

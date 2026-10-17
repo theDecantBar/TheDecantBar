@@ -11,6 +11,7 @@ import {
   deleteReview,
   updateVariantStock,
   bulkUpdateAllStock,
+  uploadProductImage,
 } from "../controllers/adminController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
@@ -25,6 +26,9 @@ router.get("/stats", getAdminStats);
 // Orders management
 router.get("/orders", getAdminOrders);
 router.put("/orders/:id/status", updateOrderStatus);
+
+// Image Upload
+router.post("/upload-image", uploadProductImage);
 
 // Fragrance Products & Decant Variants CRUD
 router.get("/products", getAdminProducts);
