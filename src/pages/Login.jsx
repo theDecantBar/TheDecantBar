@@ -107,12 +107,9 @@ export default function Login() {
       const res = await sendForgotPasswordOtpApi(forgotEmail.trim());
       setForgotStep(2);
       setForgotCooldown(30);
-      setForgotSuccess(res.warning || "Verification code sent to your email.");
-      if (res.devOtp) {
-        setForgotOtp(res.devOtp);
-      }
+      setForgotSuccess(res.message || "Verification code sent to your email address.");
     } catch (err) {
-      setForgotError(err.message || "Failed to send reset code.");
+      setForgotError(err.message || "Unable to send the verification code. Please try again.");
     } finally {
       setForgotSubmitting(false);
     }
@@ -122,16 +119,14 @@ export default function Login() {
   const handleResendForgotOtp = async () => {
     if (forgotCooldown > 0 || forgotSubmitting) return;
     setForgotError("");
+    setForgotSuccess("");
     setForgotSubmitting(true);
     try {
       const res = await sendForgotPasswordOtpApi(forgotEmail.trim());
       setForgotCooldown(30);
-      setForgotSuccess("A fresh code has been generated.");
-      if (res.devOtp) {
-        setForgotOtp(res.devOtp);
-      }
+      setForgotSuccess(res.message || "Verification code sent to your email address.");
     } catch (err) {
-      setForgotError(err.message || "Failed to resend code.");
+      setForgotError(err.message || "Unable to send the verification code. Please try again.");
     } finally {
       setForgotSubmitting(false);
     }

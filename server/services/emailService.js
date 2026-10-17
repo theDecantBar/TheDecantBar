@@ -24,8 +24,10 @@ export async function sendEmail({ to, subject, html, text }) {
   });
 
   if (error) {
-    console.error("Resend error:", error.message);
-    throw new Error("Resend could not send the email.");
+    const err = new Error(error.message || "Resend could not send the email.");
+    err.name = error.name || "ResendError";
+    err.statusCode = error.statusCode || 500;
+    throw err;
   }
 
   return data;
