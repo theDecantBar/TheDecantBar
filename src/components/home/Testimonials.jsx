@@ -10,7 +10,6 @@ import {
   Trash2,
   ArrowRight,
   Sparkles,
-  ShoppingBag,
   LogIn,
   LayoutGrid,
   MoveHorizontal,
@@ -288,11 +287,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.fragrance.trim()) {
-      alert("Please select the perfume you actually purchased from your orders list.");
-      return;
-    }
-
     if (!form.name.trim() || !form.text.trim()) {
       alert("Please fill in your name and review text.");
       return;
@@ -301,6 +295,8 @@ export default function Testimonials({ showBreadcrumb = false }) {
     setIsSubmittingReview(true);
 
     try {
+      const cleanFragrance = form.fragrance?.trim() || null;
+
       if (editingReviewId) {
         // Update existing review in PostgreSQL database
         const updated = await editReview(
@@ -310,6 +306,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
             text: form.text.trim(),
             photo: form.photo || null,
             city: form.city.trim() || "India",
+            fragrance: cleanFragrance,
           },
           token
         );
@@ -321,7 +318,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
                   ...r,
                   name: form.name.trim(),
                   city: form.city.trim() || "India",
-                  fragrance: form.fragrance.trim(),
+                  fragrance: cleanFragrance,
                   orderNumber: form.orderNumber.trim() || r.orderNumber,
                   rating: Number(form.rating) || 5,
                   text: form.text.trim(),
@@ -333,12 +330,12 @@ export default function Testimonials({ showBreadcrumb = false }) {
           )
         );
       } else {
-        // Create new strictly verified review in PostgreSQL database
+        // Create new review in PostgreSQL database
         const savedReview = await submitReview(
           {
             name: form.name.trim(),
             city: form.city.trim() || "India",
-            fragrance: form.fragrance.trim(),
+            fragrance: cleanFragrance,
             orderNumber: form.orderNumber.trim() || null,
             rating: Number(form.rating) || 5,
             text: form.text.trim(),
@@ -457,7 +454,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
               Customer Reviews & Ratings
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-[#8e8a82] max-w-xl">
-              Authentic feedback and verified bottle photos exclusively from customers who purchased from The Decant Bar.
+              Authentic feedback, decant reviews, and photos from our customer community.
             </p>
           </div>
 
@@ -616,7 +613,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
             </h3>
 
             <p className="text-xs sm:text-sm text-[#8e8a82] max-w-md mx-auto leading-relaxed mb-8">
-              Order our signature luxury decants, authentic juices, or travel atomizers to write a verified review.
+              Share your thoughts on our authentic fragrances, atomizers, packaging, or customer service.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -717,17 +714,17 @@ export default function Testimonials({ showBreadcrumb = false }) {
               onClick={() => !submittedSuccess && handleCloseModal()}
             />
 
-            <div className="relative z-10 w-full max-w-lg rounded-2xl border border-white/15 bg-[#171715] p-6 sm:p-8 text-[#f4efe6] shadow-2xl my-8">
+            <div className="relative z-10 w-full max-w-lg rounded-2xl border border-white/15 bg-[#171715] p-6 sm:p-8 text-[#f4efe6] shadow-2xl my-8 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <ShieldCheck size={18} className="text-[#c6a15b]" />
                     <h3 className="font-display text-2xl text-[#f4efe6]">
-                      {editingReviewId ? "Edit Your Review" : "Write a Verified Review"}
+                      {editingReviewId ? "Edit Your Review" : "Share Your Experience"}
                     </h3>
                   </div>
                   <p className="text-xs text-[#8e8a82]">
-                    Only fragrances you have actually ordered can be reviewed.
+                    Share your review about a fragrance or our decant service & packaging.
                   </p>
                 </div>
 
@@ -749,20 +746,20 @@ export default function Testimonials({ showBreadcrumb = false }) {
                     {editingReviewId ? "Review Updated!" : `Thank You, ${form.name || "Customer"}!`}
                   </h4>
                   <p className="mt-2 text-xs text-[#8e8a82] max-w-xs mx-auto leading-relaxed">
-                    Your verified review and feedback are published to the community.
+                    Your review and feedback have been published to the community.
                   </p>
                 </div>
               ) : !isAuthenticated ? (
-                /* Guard 1: Not Signed In */
+                /* Guard: Not Signed In */
                 <div className="py-6 text-center">
                   <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b]">
                     <LogIn size={26} />
                   </div>
                   <h4 className="font-display text-2xl text-[#f4efe6] mb-2">
-                    Sign In to Verify Your Purchase
+                    Sign In to Write a Review
                   </h4>
                   <p className="text-xs sm:text-sm text-[#8e8a82] max-w-sm mx-auto leading-relaxed mb-6">
-                    To guarantee 100% genuine reviews, you must be signed in with the account you used to order so we can verify your purchased fragrances.
+                    To keep our community reviews genuine, please log in or sign up before submitting your review.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <Link
@@ -780,42 +777,8 @@ export default function Testimonials({ showBreadcrumb = false }) {
                     </button>
                   </div>
                 </div>
-              ) : loadingPurchases ? (
-                /* Loading orders */
-                <div className="py-12 text-center text-[#8e8a82] text-xs">
-                  Verifying your order history...
-                </div>
-              ) : userPurchases.length === 0 && !editingReviewId ? (
-                /* Guard 2: Signed In, But 0 Orders Found */
-                <div className="py-6 text-center">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b]">
-                    <ShoppingBag size={26} />
-                  </div>
-                  <h4 className="font-display text-2xl text-[#f4efe6] mb-2">
-                    No Purchases Found
-                  </h4>
-                  <p className="text-xs sm:text-sm text-[#8e8a82] max-w-sm mx-auto leading-relaxed mb-6">
-                    Hi <strong className="text-[#f4efe6]">{user?.fullName || "there"}</strong>, we couldn't find any completed perfume orders under your account (<span className="text-[#c6a15b]">{user?.email}</span>). Once you purchase a decant, you'll be able to review it here!
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <Link
-                      to="/products"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
-                    >
-                      <span>Explore Fragrances</span>
-                      <ArrowRight size={14} />
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="w-full sm:w-auto rounded-full border border-white/15 px-5 py-2.5 text-xs uppercase tracking-wider text-[#c5c1b9] hover:bg-white/5 transition cursor-pointer"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
               ) : (
-                /* Verified Purchase Form */
+                /* Review Form for logged-in users */
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Rating Selector */}
                   <div>
@@ -842,32 +805,82 @@ export default function Testimonials({ showBreadcrumb = false }) {
                     </div>
                   </div>
 
-                  {/* Strictly Verified Perfume Dropdown (From actual orders) */}
+                  {/* Manual Fragrance Input + Optional quick picks from past orders */}
                   <div>
-                    <label className="block text-xs uppercase tracking-wider text-[#c5c1b9] mb-1.5 font-medium">
-                      Select Your Purchased Fragrance <span className="text-[#c6a15b]">* (Verified)</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs uppercase tracking-wider text-[#c5c1b9] font-medium">
+                        Fragrance Name <span className="text-[#8e8a82] font-normal lowercase">(Optional)</span>
+                      </label>
+                      {form.fragrance && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((prev) => ({
+                              ...prev,
+                              fragrance: "",
+                              selectedPurchaseIndex: "",
+                              orderNumber: "",
+                            }))
+                          }
+                          className="text-[11px] text-[#8e8a82] hover:text-[#c6a15b] transition cursor-pointer"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
 
-                    {editingReviewId ? (
-                      /* Display locked-in fragrance during edit */
-                      <div className="border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#c6a15b] font-medium rounded-lg">
-                        {form.fragrance} (Order #{form.orderNumber || "Verified"})
+                    <input
+                      type="text"
+                      value={form.fragrance}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          fragrance: e.target.value,
+                          selectedPurchaseIndex: "",
+                        }))
+                      }
+                      placeholder="e.g. Creed Aventus, Tom Ford, or leave blank for store review"
+                      className="w-full rounded-lg border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
+                    />
+
+                    {/* Quick suggestion chips from previous orders (if any) */}
+                    {userPurchases.length > 0 && (
+                      <div className="mt-2.5">
+                        <span className="text-[11px] text-[#8e8a82] block mb-1">
+                          Quick pick from your orders:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
+                          {userPurchases.map((item, idx) => {
+                            const label = `${item.name} (${item.size_ml}ml)`;
+                            const isSelected = form.fragrance === label;
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => {
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    fragrance: label,
+                                    orderNumber: item.orderNumber || prev.orderNumber,
+                                    selectedPurchaseIndex: String(idx),
+                                  }));
+                                }}
+                                className={`text-[11px] px-2.5 py-1 rounded-md border transition cursor-pointer ${
+                                  isSelected
+                                    ? "border-[#c6a15b] bg-[#c6a15b]/20 text-[#c6a15b] font-medium"
+                                    : "border-white/10 bg-[#1f1f1b] text-[#c5c1b9] hover:border-white/20 hover:text-[#f4efe6]"
+                                }`}
+                              >
+                                {label}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    ) : (
-                      <select
-                        required
-                        value={form.selectedPurchaseIndex}
-                        onChange={handleSelectPurchase}
-                        className="w-full rounded-lg border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
-                      >
-                        <option value="">-- Choose from your purchased fragrances --</option>
-                        {userPurchases.map((item, idx) => (
-                          <option key={idx} value={idx}>
-                            {item.name} ({item.size_ml}ml) · Order #{item.orderNumber}
-                          </option>
-                        ))}
-                      </select>
                     )}
+                    <p className="text-[11px] text-[#8e8a82] mt-1.5">
+                      Optional — leave blank if reviewing packaging, delivery, or general store experience.
+                    </p>
                   </div>
 
                   {/* Customer Name & City */}
@@ -910,7 +923,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
                       rows={3}
                       value={form.text}
                       onChange={(e) => setForm({ ...form, text: e.target.value })}
-                      placeholder="How did the fragrance smell, project, and last? How was the atomizer quality?"
+                      placeholder="How was the fragrance, atomizer projection, packaging, delivery, or customer service?"
                       className="w-full rounded-lg border border-white/15 bg-[#11110f] p-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none resize-none"
                     />
                   </div>
@@ -918,7 +931,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
                   {/* Photo Upload Option */}
                   <div>
                     <label className="block text-xs uppercase tracking-wider text-[#c5c1b9] mb-1.5 font-medium">
-                      Add a Photo of Your Decant (Optional)
+                      Add a Photo (Optional)
                     </label>
 
                     <input
@@ -957,7 +970,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
                         className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-[#11110f] p-4 text-xs text-[#8e8a82] hover:border-[#c6a15b] hover:text-[#f4efe6] transition cursor-pointer"
                       >
                         <Camera size={16} className="text-[#c6a15b]" />
-                        <span>Click to upload bottle / packaging photo (PNG, JPG, up to 5MB)</span>
+                        <span>Click or tap to capture or browse bottle/package photo (PNG, JPG, up to 5MB)</span>
                       </label>
                     )}
                   </div>
