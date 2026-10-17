@@ -13,7 +13,7 @@ async function initReviewsDb() {
         author_name VARCHAR(255) NOT NULL,
         author_email VARCHAR(255),
         city VARCHAR(100),
-        fragrance VARCHAR(255) NOT NULL,
+        fragrance VARCHAR(255),
         order_number VARCHAR(100),
         rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
         review_text TEXT NOT NULL,

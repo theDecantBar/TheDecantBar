@@ -47,9 +47,9 @@ export const createReview = async (req, res) => {
   try {
     const { fragrance, rating, text, photo, city, orderNumber } = req.body;
 
-    if (!fragrance || !text || !rating) {
+    if (!text || !rating) {
       return res.status(400).json({
-        message: "Please provide the fragrance, rating, and review text.",
+        message: "Please provide your rating and review text.",
       });
     }
 
@@ -63,24 +63,23 @@ export const createReview = async (req, res) => {
     const userName = req.user.full_name || req.body.name || "Customer";
     const userCity = city?.trim() || req.user.city || "India";
 
-    // Strictly check if customer has actually ordered perfumes from the store
-    const orderCheck = await pool.query(
-      `SELECT o.order_number, oi.product_name
-       FROM orders o
-       JOIN order_items oi ON o.id = oi.order_id
-       WHERE (o.user_id = $1 OR LOWER(o.customer_email) = LOWER($2))`,
-      [userId, userEmail]
-    );
-
-    if (orderCheck.rows.length === 0) {
-      return res.status(403).json({
-        message: "Only customers with completed perfume orders can submit a review.",
-      });
+    // Optional: check if customer has previous orders to link order_number if not provided
+    let verifiedOrderNumber = orderNumber?.trim() || null;
+    if (!verifiedOrderNumber) {
+      try {
+        const orderCheck = await pool.query(
+          `SELECT order_number FROM orders WHERE (user_id = $1 OR LOWER(customer_email) = LOWER($2)) ORDER BY created_at DESC LIMIT 1`,
+          [userId, userEmail]
+        );
+        if (orderCheck.rows.length > 0) {
+          verifiedOrderNumber = orderCheck.rows[0].order_number;
+        }
+      } catch (err) {
+        console.warn("Optional order lookup note:", err.message);
+      }
     }
 
-    // Attach verified order number
-    const verifiedOrderNumber =
-      orderNumber || orderCheck.rows[0]?.order_number || null;
+    const cleanFragrance = fragrance?.trim() || null;
 
     const insertResult = await pool.query(
       `INSERT INTO reviews
@@ -92,7 +91,7 @@ export const createReview = async (req, res) => {
         userName.trim(),
         userEmail.trim().toLowerCase(),
         userCity,
-        fragrance.trim(),
+        cleanFragrance,
         verifiedOrderNumber,
         numRating,
         text.trim(),
@@ -135,7 +134,7 @@ export const createReview = async (req, res) => {
 export const updateReview = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rating, text, photo, city } = req.body;
+    const { rating, text, photo, city, fragrance } = req.body;
 
     const findResult = await pool.query("SELECT * FROM reviews WHERE id = $1", [id]);
     if (findResult.rows.length === 0) {
@@ -157,13 +156,15 @@ export const updateReview = async (req, res) => {
     const updatedText = text !== undefined ? text.trim() : review.review_text;
     const updatedPhoto = photo !== undefined ? photo : review.photo;
     const updatedCity = city !== undefined ? city.trim() : review.city;
+    const updatedFragrance =
+      fragrance !== undefined ? (fragrance?.trim() || null) : review.fragrance;
 
     const updateResult = await pool.query(
       `UPDATE reviews
-       SET rating = $1, review_text = $2, photo = $3, city = $4, is_edited = true, updated_at = NOW()
-       WHERE id = $5
+       SET rating = $1, review_text = $2, photo = $3, city = $4, fragrance = $5, is_edited = true, updated_at = NOW()
+       WHERE id = $6
        RETURNING *`,
-      [numRating, updatedText, updatedPhoto, updatedCity, id]
+      [numRating, updatedText, updatedPhoto, updatedCity, updatedFragrance, id]
     );
 
     const row = updateResult.rows[0];
