@@ -331,20 +331,20 @@ export default function ProductDetail() {
               {shortDescription}
             </p>
           )}
-          {/* 5. Purchase & Decant Sizing Card (Visually prominent, easily reachable) */}
-          <div className="mt-5 border border-[#c6a15b]/30 bg-[#151512] p-5 sm:p-6 rounded-lg shadow-lg">
+          {/* 5. Purchase & Decant Sizing Card (Compact & Prominent) */}
+          <div className="mt-4 border border-[#c6a15b]/30 bg-[#151512] p-4 sm:p-4.5 rounded-lg shadow-lg">
             {/* Price & Current Size */}
-            <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
+            <div className="flex items-baseline justify-between border-b border-white/10 pb-3">
               <div>
                 <span className="text-[10px] uppercase tracking-wider text-[#8e8a82] block mb-0.5">
                   Price
                 </span>
-                <span className="font-display text-3xl sm:text-4xl text-[#f4efe6]">
+                <span className="font-display text-2xl sm:text-3xl text-[#f4efe6]">
                   ₹{currentPrice * quantity}
                 </span>
               </div>
               {selectedVariant && (
-                <span className="text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-2.5 py-1 rounded">
+                <span className="text-[11px] sm:text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-2 py-0.5 rounded">
                   {quantity > 1 ? `${quantity} × ` : ""}{selectedVariant.size_ml}ml Decant Atomizer
                 </span>
               )}
@@ -352,9 +352,9 @@ export default function ProductDetail() {
 
             {/* Decant Size Selector */}
             {product.variants && product.variants.length > 0 && (
-              <div className="mt-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs uppercase tracking-wider text-[#f4efe6] font-medium">
+              <div className="mt-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[11px] sm:text-xs uppercase tracking-wider text-[#f4efe6] font-medium">
                     Select Decant Size
                   </span>
                   {selectedVariant && SPRAY_ESTIMATES[selectedVariant.size_ml] && (
@@ -364,7 +364,7 @@ export default function ProductDetail() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {product.variants.map((variant) => {
                     const isSelected = selectedVariant?.id === variant.id;
                     const variantSoldOut = Number(variant.stock) <= 0;
@@ -373,16 +373,16 @@ export default function ProductDetail() {
                         key={variant.id}
                         type="button"
                         onClick={() => setSelectedVariant(variant)}
-                        className={`flex flex-col items-center justify-center p-2.5 sm:p-3 border transition cursor-pointer relative ${
+                        className={`flex flex-col items-center justify-center py-1.5 px-2 sm:py-2 sm:px-2.5 border transition cursor-pointer relative ${
                           isSelected
-                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_10px_rgba(198,161,91,0.2)]"
+                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_8px_rgba(198,161,91,0.2)]"
                             : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
                         }`}
                       >
-                        <span className="text-xs sm:text-sm font-semibold tracking-wider">
+                        <span className="text-xs sm:text-[13px] font-semibold tracking-wider">
                           {variant.size_ml} ml
                         </span>
-                        <span className="mt-0.5 text-xs">
+                        <span className="mt-0.5 text-[11px] sm:text-xs">
                           {variantSoldOut ? (
                             <span className="text-red-400 font-semibold tracking-tight">Sold Out</span>
                           ) : (
@@ -393,7 +393,7 @@ export default function ProductDetail() {
                     );
                   })}
                 </div>
-                <p className="mt-2 text-[10px] text-[#8e8a82]">
+                <p className="mt-1.5 text-[10px] text-[#8e8a82]">
                   *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
                 </p>
               </div>
@@ -401,10 +401,10 @@ export default function ProductDetail() {
 
             {/* Quantity Selector & Action Buttons (Or Sold Out State) */}
             {isSoldOut ? (
-              <div className="mt-4 space-y-2.5">
-                <div className="p-3 bg-red-950/30 border border-red-500/30 rounded flex items-center justify-between text-xs">
+              <div className="mt-3 space-y-2">
+                <div className="p-2.5 bg-red-950/30 border border-red-500/30 rounded flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2 text-red-300">
-                    <XCircle size={15} className="text-red-400 shrink-0" />
+                    <XCircle size={14} className="text-red-400 shrink-0" />
                     <span>This {selectedVariant?.size_ml}ml decant size is currently <strong>Sold Out</strong>.</span>
                   </div>
                 </div>
@@ -415,35 +415,35 @@ export default function ProductDetail() {
                     setNotifySubmitted(false);
                     setNotifyModalOpen(true);
                   }}
-                  className="w-full h-11 sm:h-12 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer shadow-md rounded-sm"
+                  className="w-full h-9.5 sm:h-10 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-[11px] sm:text-xs uppercase tracking-[0.18em] font-semibold transition cursor-pointer shadow-md rounded-sm"
                 >
-                  <Bell size={15} />
+                  <Bell size={14} />
                   Notify Me When Available
                 </button>
               </div>
             ) : (
-              <div className="mt-5 space-y-3">
-                <div className="flex items-center gap-3">
+              <div className="mt-3.5 space-y-2.5">
+                <div className="flex items-center gap-2.5">
                   {/* Quantity Stepper */}
-                  <div className="flex h-11 sm:h-12 items-center border border-white/15 bg-[#171715]">
+                  <div className="flex h-9.5 sm:h-10 items-center border border-white/15 bg-[#171715]">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="flex h-full w-10 sm:w-11 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="flex h-full w-8 sm:w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
-                      <Minus size={14} />
+                      <Minus size={13} />
                     </button>
-                    <span className="w-8 text-center text-xs sm:text-sm font-semibold text-[#f4efe6]">
+                    <span className="w-7 text-center text-xs sm:text-[13px] font-semibold text-[#f4efe6]">
                       {quantity}
                     </span>
                     <button
                       type="button"
                       aria-label="Increase quantity"
                       onClick={() => setQuantity((q) => q + 1)}
-                      className="flex h-full w-10 sm:w-11 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="flex h-full w-8 sm:w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
-                      <Plus size={14} />
+                      <Plus size={13} />
                     </button>
                   </div>
 
@@ -451,7 +451,7 @@ export default function ProductDetail() {
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className={`flex-1 h-11 sm:h-12 flex items-center justify-center gap-2 border text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 cursor-pointer ${
+                    className={`flex-1 h-9.5 sm:h-10 flex items-center justify-center gap-2 border text-[11px] sm:text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 cursor-pointer ${
                       added
                         ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
                         : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
@@ -459,12 +459,12 @@ export default function ProductDetail() {
                   >
                     {added ? (
                       <>
-                        <Check size={15} strokeWidth={2.5} />
+                        <Check size={14} strokeWidth={2.5} />
                         Added to Bag
                       </>
                     ) : (
                       <>
-                        <ShoppingBag size={15} strokeWidth={1.5} />
+                        <ShoppingBag size={14} strokeWidth={1.5} />
                         Add to Bag
                       </>
                     )}
@@ -475,10 +475,10 @@ export default function ProductDetail() {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="w-full h-11 sm:h-12 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-md"
+                  className="w-full h-10 sm:h-10.5 flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-[11px] sm:text-xs uppercase tracking-[0.18em] font-semibold hover:bg-[#d8c08a] transition-colors cursor-pointer shadow-md"
                 >
                   Buy It Now
-                  <ArrowRight size={14} />
+                  <ArrowRight size={13} />
                 </button>
               </div>
             )}

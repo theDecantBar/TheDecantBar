@@ -388,6 +388,13 @@ function ProductModal({ product, onClose, onSave, token }) {
     );
   });
 
+  const [isCustomWeather, setIsCustomWeather] = useState(() => {
+    if (!product?.weather) return false;
+    return !SEASON_PRESETS.some(
+      (sp) => sp.toLowerCase() === product.weather.trim().toLowerCase()
+    );
+  });
+
   const handleFileSelect = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -705,33 +712,24 @@ function ProductModal({ product, onClose, onSave, token }) {
 
           {/* Row 3: Weather / Season & Reference Price (2 spacious balanced columns) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Weather / Season with Presets Dropdown + Quick Combo Chips + Editable Input */}
+            {/* Weather / Season with select option inside the bar itself */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">
                   Weather / Season
                 </label>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] text-[#8e8a82]">Presets:</span>
-                  <select
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        setFormData({ ...formData, weather: e.target.value });
-                        e.target.value = "";
-                      }
+                {isCustomWeather && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCustomWeather(false);
+                      setFormData({ ...formData, weather: "All-Season" });
                     }}
-                    defaultValue=""
-                    className="bg-[#11110f] border border-white/15 text-[11px] text-[#c6a15b] px-2 py-0.5 rounded hover:border-[#c6a15b] cursor-pointer focus:outline-none"
-                    title="Choose a season preset"
+                    className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer"
                   >
-                    <option value="" disabled>Select ▾</option>
-                    {SEASON_PRESETS.map((sp) => (
-                      <option key={sp} value={sp} className="bg-[#171715] text-[#f4efe6]">
-                        {sp}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    Preset list
+                  </button>
+                )}
               </div>
 
               <input
@@ -768,6 +766,73 @@ function ProductModal({ product, onClose, onSave, token }) {
                   );
                 })}
               </div>
+              {!isCustomWeather ? (
+                <select
+                  value={
+                    SEASON_PRESETS.some(
+                      (sp) => sp.toLowerCase() === (formData.weather || "").trim().toLowerCase()
+                    )
+                      ? SEASON_PRESETS.find(
+                          (sp) => sp.toLowerCase() === (formData.weather || "").trim().toLowerCase()
+                        )
+                      : "__custom__"
+                  }
+                  onChange={(e) => {
+                    if (e.target.value === "__custom__") {
+                      setIsCustomWeather(true);
+                    } else {
+                      setFormData({ ...formData, weather: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                >
+                  {SEASON_PRESETS.map((sp) => (
+                    <option key={sp} value={sp} className="bg-[#171715] text-[#f4efe6]">
+                      {sp}
+                    </option>
+                  ))}
+                  <option value="__custom__" className="bg-[#171715] text-[#c6a15b]">
+                    + Custom / Combined Seasons...
+                  </option>
+                </select>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    value={formData.weather}
+                    onChange={(e) => setFormData({ ...formData, weather: e.target.value })}
+                    placeholder="e.g. Winter / Autumn"
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    autoFocus
+                  />
+                  {/* Clickable Quick Season Chips for multiple combinations */}
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {SEASON_CHIPS.map((chip) => {
+                      const active = isSeasonActive(formData.weather, chip);
+                      return (
+                        <button
+                          key={chip}
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              weather: toggleSeasonInString(prev.weather, chip),
+                            }))
+                          }
+                          className={`text-[10px] px-2 py-1 rounded border transition-colors cursor-pointer ${
+                            active
+                              ? "bg-[#c6a15b]/20 border-[#c6a15b] text-[#f4efe6] font-medium shadow-sm"
+                              : "bg-white/5 border-white/10 text-[#8e8a82] hover:text-[#f4efe6] hover:border-white/20"
+                          }`}
+                          title={`Toggle ${chip} in season`}
+                        >
+                          {active ? `✓ ${chip}` : `+ ${chip}`}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Full Bottle Reference Price */}
