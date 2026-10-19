@@ -5,6 +5,13 @@
 export default function MainAccords({ accords = [], className = "" }) {
   if (!accords || accords.length === 0) return null;
 
+  // Automatically arrange accords descending by percentage (highest on top)
+  const sortedAccords = [...accords].sort((a, b) => {
+    const pctA = typeof a === "object" && typeof a?.percentage === "number" ? a.percentage : 50;
+    const pctB = typeof b === "object" && typeof b?.percentage === "number" ? b.percentage : 50;
+    return pctB - pctA;
+  });
+
   return (
     <div className={`mt-4 pt-3.5 border-t border-white/10 ${className}`}>
       <div className="flex items-center justify-between mb-2.5">
@@ -15,7 +22,7 @@ export default function MainAccords({ accords = [], className = "" }) {
       </div>
 
       <div className="space-y-1.5 max-w-md">
-        {accords.map((accordItem, idx) => {
+        {sortedAccords.map((accordItem, idx) => {
           const name = typeof accordItem === "string" ? accordItem : (accordItem?.name || "");
           if (!name) return null;
           const color = typeof accordItem === "object" && accordItem?.color ? accordItem.color : "#543e2e";

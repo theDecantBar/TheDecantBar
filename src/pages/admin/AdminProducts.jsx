@@ -1,41 +1,186 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
   Plus, Search, Edit2, Trash2, Sparkles, X, Upload, Loader2,
-  ChevronDown, ChevronUp,
+  ChevronDown, ChevronUp, Check,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
   fetchAdminProducts, createAdminProduct, updateAdminProduct,
   deleteAdminProduct, uploadAdminProductImage,
 } from "../../services/adminApi";
-import { getPerfumeProfile } from "../../data/perfumeNotes";
+import { getPerfumeProfile, KNOWN_PERFUMES } from "../../data/perfumeNotes";
 
 const CATEGORIES = ["Designer", "Niche", "Middle Eastern", "Fresh", "Woody", "Oriental", "Gourmand"];
 const GENDERS = ["Men", "Women", "Unisex"];
 const CONCENTRATIONS = ["EDP", "EDT", "Extrait de Parfum", "Parfum", "Elixir", "EDC", "Eau Fraiche"];
 const SEASON_CHIPS = ["Winter", "Summer", "All-Season"];
-const LONGEVITY_OPTIONS = ["2 – 4 Hours","4 – 6 Hours","6 – 8 Hours","8 – 10 Hours","10 – 13 Hours","13+ Hours"];
-const PROJECTION_OPTIONS = ["Soft & Intimate","Moderate","Good Sillage","Strong & Enveloping","Beast Mode"];
-const ACCORD_COLORS = ["#8B4513","#9c2759","#b85428","#d9822b","#c49e49","#6e4f32","#4a4a4e","#2d6a4f","#1d3557","#5c4a7f","#a8332a","#3d6b8f","#7a5c3d","#4f7942","#8e6b3a"];
+const LONGEVITY_OPTIONS = ["2 – 4 Hours", "4 – 6 Hours", "6 – 8 Hours", "8 – 10 Hours", "10 – 13 Hours", "13+ Hours"];
+const PROJECTION_OPTIONS = ["Soft & Intimate", "Moderate", "Good Sillage", "Strong & Enveloping", "Beast Mode"];
+const ACCORD_COLORS = ["#8B4513", "#9c2759", "#b85428", "#d9822b", "#c49e49", "#6e4f32", "#4a4a4e", "#2d6a4f", "#1d3557", "#5c4a7f", "#a8332a", "#3d6b8f", "#7a5c3d", "#4f7942", "#8e6b3a"];
 const WHEN_TO_WEAR_DEFAULTS = { winter: 50, spring: 50, summer: 50, fall: 50, day: 50, night: 50 };
 
-const PRESET_ACCORDS = [
-  { name: "Woody", color: "#8B5A2B", pct: 85 },
-  { name: "Warm Spicy", color: "#C0392B", pct: 80 },
-  { name: "Citrus", color: "#D4AF37", pct: 75 },
-  { name: "Vanilla", color: "#E0A96D", pct: 70 },
-  { name: "Amber", color: "#C68B59", pct: 70 },
-  { name: "Aromatic", color: "#4A7C59", pct: 65 },
-  { name: "Fresh", color: "#2E86AB", pct: 65 },
-  { name: "Smoky", color: "#5D6D7E", pct: 60 },
-  { name: "Leather", color: "#6E2C00", pct: 60 },
-  { name: "Sweet", color: "#AF7AC5", pct: 55 },
-  { name: "Floral", color: "#C25975", pct: 65 },
-  { name: "Fruity", color: "#D97736", pct: 70 },
-  { name: "Oud", color: "#3F292B", pct: 90 },
-  { name: "Musky", color: "#7B6D8D", pct: 60 },
-  { name: "Powdery", color: "#9B8B7B", pct: 55 },
+export const POPULAR_BRANDS = [
+  "Acqua di Parma",
+  "Afnan",
+  "Al Haramain",
+  "Amouage",
+  "Armaf",
+  "Azzaro",
+  "Bentley",
+  "Bespoke Collection",
+  "Burberry",
+  "Bvlgari",
+  "Byredo",
+  "Carolina Herrera",
+  "Cartier",
+  "Chanel",
+  "Clive Christian",
+  "Creed",
+  "Dior",
+  "Diptyque",
+  "Dolce & Gabbana",
+  "Frederic Malle",
+  "French Avenue",
+  "Giorgio Armani",
+  "Givenchy",
+  "Gucci",
+  "Guerlain",
+  "Hermès",
+  "Hugo Boss",
+  "Initio Parfums Prives",
+  "Issey Miyake",
+  "Jean Paul Gaultier",
+  "Jo Malone London",
+  "Kilian Paris",
+  "Lattafa",
+  "Le Labo",
+  "Maison Crivelli",
+  "Maison Francis Kurkdjian",
+  "Maison Margiela",
+  "Mancera",
+  "Montale",
+  "Montblanc",
+  "Moschino",
+  "Narciso Rodriguez",
+  "Nishane",
+  "Paco Rabanne",
+  "Parfums de Marly",
+  "Penhaligon's",
+  "Prada",
+  "Ralph Lauren",
+  "Rasasi",
+  "Roberto Cavalli",
+  "Roja Parfums",
+  "Serge Lutens",
+  "Swiss Arabian",
+  "Tiziana Terenzi",
+  "Tom Ford",
+  "Valentino",
+  "Versace",
+  "Viktor&Rolf",
+  "Xerjoff",
+  "Yves Saint Laurent",
+  "Zimaya",
 ];
+
+export const ACCORD_CATEGORIES = [
+  { id: "all", label: "All Accords" },
+  { id: "popular", label: "★ Popular" },
+  { id: "woody", label: "🪵 Woody & Smoky" },
+  { id: "fresh", label: "🌊 Fresh & Aquatic" },
+  { id: "spicy", label: "🔥 Warm & Spicy" },
+  { id: "sweet", label: "🍯 Sweet & Gourmand" },
+  { id: "floral", label: "🌸 Floral & Musky" },
+];
+
+export const PRESET_ACCORDS = [
+  // Woody & Smoky
+  { name: "Woody", color: "#8B5A2B", pct: 85, category: "woody", popular: true },
+  { name: "Smoky", color: "#5D6D7E", pct: 60, category: "woody", popular: false },
+  { name: "Oud", color: "#3F292B", pct: 90, category: "woody", popular: true },
+  { name: "Leather", color: "#6E2C00", pct: 65, category: "woody", popular: true },
+  { name: "Tobacco", color: "#8B4513", pct: 80, category: "woody", popular: true },
+  { name: "Earthy", color: "#556B2F", pct: 55, category: "woody", popular: false },
+  { name: "Mossy", color: "#4A5D4E", pct: 50, category: "woody", popular: false },
+  { name: "Patchouli", color: "#6B4423", pct: 65, category: "woody", popular: false },
+
+  // Fresh & Aquatic
+  { name: "Fresh", color: "#2E86AB", pct: 75, category: "fresh", popular: true },
+  { name: "Citrus", color: "#D4AF37", pct: 75, category: "fresh", popular: true },
+  { name: "Aquatic", color: "#3A86C8", pct: 70, category: "fresh", popular: true },
+  { name: "Marine", color: "#1F618D", pct: 65, category: "fresh", popular: false },
+  { name: "Aromatic", color: "#4A7C59", pct: 65, category: "fresh", popular: true },
+  { name: "Green", color: "#2E7D32", pct: 60, category: "fresh", popular: false },
+  { name: "Salty", color: "#7F8C8D", pct: 45, category: "fresh", popular: false },
+
+  // Warm & Spicy
+  { name: "Warm Spicy", color: "#C0392B", pct: 80, category: "spicy", popular: true },
+  { name: "Fresh Spicy", color: "#D35400", pct: 65, category: "spicy", popular: false },
+  { name: "Amber", color: "#C68B59", pct: 70, category: "spicy", popular: true },
+  { name: "Balsamic", color: "#935116", pct: 60, category: "spicy", popular: false },
+  { name: "Cinnamon", color: "#BA4A00", pct: 65, category: "spicy", popular: false },
+  { name: "Resinous", color: "#784212", pct: 55, category: "spicy", popular: false },
+
+  // Sweet & Gourmand
+  { name: "Sweet", color: "#AF7AC5", pct: 70, category: "sweet", popular: true },
+  { name: "Vanilla", color: "#E0A96D", pct: 75, category: "sweet", popular: true },
+  { name: "Boozy", color: "#922B21", pct: 70, category: "sweet", popular: false },
+  { name: "Gourmand", color: "#A04000", pct: 65, category: "sweet", popular: false },
+  { name: "Coffee", color: "#4E342E", pct: 60, category: "sweet", popular: false },
+  { name: "Cacao", color: "#5D4037", pct: 60, category: "sweet", popular: false },
+  { name: "Honey", color: "#D4AC0D", pct: 55, category: "sweet", popular: false },
+  { name: "Fruity", color: "#D97736", pct: 70, category: "sweet", popular: true },
+
+  // Floral & Musky
+  { name: "Floral", color: "#C25975", pct: 65, category: "floral", popular: true },
+  { name: "White Floral", color: "#E8A598", pct: 60, category: "floral", popular: false },
+  { name: "Rose", color: "#CD6155", pct: 65, category: "floral", popular: false },
+  { name: "Iris", color: "#884EA0", pct: 55, category: "floral", popular: false },
+  { name: "Lavender", color: "#7D3C98", pct: 60, category: "floral", popular: false },
+  { name: "Musky", color: "#7B6D8D", pct: 60, category: "floral", popular: true },
+  { name: "Powdery", color: "#9B8B7B", pct: 55, category: "floral", popular: true },
+  { name: "Animalic", color: "#512E5F", pct: 45, category: "floral", popular: false },
+];
+
+function levenshteinDistance(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[m][n];
+}
+
+function brandMatchesQuery(brand, query) {
+  if (!query) return true;
+  const qClean = query.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+  const bClean = brand.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+  if (!qClean) return true;
+  if (bClean.includes(qClean)) return true;
+  if (brand.toLowerCase().includes(query.toLowerCase().trim())) return true;
+  // Brand abbreviation / alias matching
+  if (qClean === "ysl" && bClean.includes("saintlaurent")) return true;
+  if (qClean === "pdm" && bClean.includes("marly")) return true;
+  if (qClean === "tf" && bClean.includes("tomford")) return true;
+  if (qClean === "mfk" && bClean.includes("kurkdjian")) return true;
+  if (qClean === "jpg" && bClean.includes("gaultier")) return true;
+  if (qClean === "adp" && bClean.includes("parma")) return true;
+  if ((qClean === "dg" || qClean === "dng") && bClean.includes("gabbana")) return true;
+  // Typo tolerance: e.g. "deor" -> "dior"
+  if (qClean.length >= 3) {
+    if (levenshteinDistance(qClean, bClean.slice(0, qClean.length + 1)) <= 1) return true;
+    const words = brand.toLowerCase().split(/\s+/);
+    for (const w of words) {
+      if (levenshteinDistance(qClean, w) <= 1) return true;
+    }
+  }
+  return false;
+}
 
 function normalizeAccord(item, index = 0) {
   if (!item) return null;
@@ -71,7 +216,10 @@ function normalizeAccords(list) {
     }
   }
   if (Array.isArray(list)) {
-    return list.map((item, idx) => normalizeAccord(item, idx)).filter(Boolean);
+    return list
+      .map((item, idx) => normalizeAccord(item, idx))
+      .filter(Boolean)
+      .sort((a, b) => (b.percentage ?? 0) - (a.percentage ?? 0));
   }
   return [];
 }
@@ -134,14 +282,216 @@ function TagInput({ label, tags, onChange, placeholder }) {
   );
 }
 
+// ─── Brand Autocomplete / Combobox ──────────────────────────────────────────────
+function BrandAutocompleteInput({ value, onChange, existingBrands = [] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState(value || "");
+  const wrapperRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    setQuery(value || "");
+  }, [value]);
+
+  const allBrands = useMemo(() => {
+    const set = new Set([...POPULAR_BRANDS, ...existingBrands.filter(Boolean)]);
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [existingBrands]);
+
+  const filteredBrands = useMemo(() => {
+    if (!query || !query.trim()) return allBrands;
+    return allBrands.filter((b) => brandMatchesQuery(b, query));
+  }, [allBrands, query]);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (brandName) => {
+    setQuery(brandName);
+    onChange(brandName);
+    setIsOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    onChange(val);
+    if (!isOpen) setIsOpen(true);
+  };
+
+  const exactMatch = allBrands.some(
+    (b) => b.toLowerCase().trim() === query.toLowerCase().trim()
+  );
+
+  return (
+    <div ref={wrapperRef} className="relative w-full">
+      <div className="relative flex items-center">
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          onFocus={() => setIsOpen(true)}
+          placeholder="e.g. Creed / Dior / Tom Ford (or type custom)"
+          className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-16"
+        />
+        <div className="absolute right-2 flex items-center gap-1">
+          {query && (
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                onChange("");
+                inputRef.current?.focus();
+              }}
+              className="p-1 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
+              title="Clear brand"
+            >
+              <X size={12} />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="p-1 text-[#8e8a82] hover:text-[#c6a15b] transition-colors cursor-pointer"
+            title="Toggle brand dropdown list"
+          >
+            {isOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+          </button>
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-60 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded py-1 text-xs divide-y divide-white/5">
+          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-[#8e8a82] bg-black/40 flex items-center justify-between">
+            <span>Popular Brands ({filteredBrands.length})</span>
+            {query && <span className="text-[#c6a15b] lowercase">matches "{query}"</span>}
+          </div>
+
+          <div className="py-1">
+            {filteredBrands.length > 0 ? (
+              filteredBrands.map((b) => {
+                const isCurrent = (value || "").toLowerCase().trim() === b.toLowerCase().trim();
+                return (
+                  <button
+                    key={b}
+                    type="button"
+                    onClick={() => handleSelect(b)}
+                    className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#c6a15b]/20 hover:text-[#c6a15b] transition cursor-pointer ${isCurrent ? "bg-[#c6a15b]/15 text-[#c6a15b] font-semibold" : "text-[#f4efe6]"
+                      }`}
+                  >
+                    <span>{b}</span>
+                    {isCurrent && <span className="text-[10px] text-[#c6a15b] font-semibold">✓ Selected</span>}
+                  </button>
+                );
+              })
+            ) : (
+              <div className="px-3 py-2.5 text-[#8e8a82] italic text-[11px]">
+                No brand matches "{query}". Select below to use as a new custom brand.
+              </div>
+            )}
+          </div>
+
+          {query.trim() && !exactMatch && (
+            <button
+              type="button"
+              onClick={() => handleSelect(query.trim())}
+              className="w-full text-left px-3 py-2.5 bg-black/50 text-[#c6a15b] hover:bg-[#c6a15b]/20 cursor-pointer flex items-center gap-1.5 font-medium transition"
+            >
+              <span>+ Use custom brand:</span>
+              <span className="italic font-bold underline">"{query.trim()}"</span>
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Fragrance Name Input with Catalog Match Suggestions ────────────────────────
+function FragranceNameInput({ value, onChange, onSelectCatalogPerfume }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const suggestions = useMemo(() => {
+    if (!value || value.trim().length < 2) return [];
+    const q = value.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+    return KNOWN_PERFUMES.filter((p) => {
+      const nameMatch = p.name.toLowerCase().replace(/[^a-z0-9]/g, "").includes(q);
+      const matchesMatch = (p.matches || []).some((m) => m.toLowerCase().replace(/[^a-z0-9]/g, "").includes(q));
+      return nameMatch || matchesMatch;
+    }).slice(0, 6);
+  }, [value]);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="relative w-full">
+      <input
+        type="text"
+        required
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setIsOpen(true);
+        }}
+        onFocus={() => setIsOpen(true)}
+        placeholder="e.g. Aventus / Sauvage / 1 Million"
+        className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+      />
+      {isOpen && suggestions.length > 0 && (
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-56 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded py-1 text-xs divide-y divide-white/5">
+          <div className="px-3 py-1 text-[10px] uppercase tracking-wider text-[#8e8a82] bg-black/40">
+            Catalog Matches (Click to auto-fill)
+          </div>
+          {suggestions.map((p) => (
+            <button
+              key={p.name}
+              type="button"
+              onClick={() => {
+                onSelectCatalogPerfume(p);
+                setIsOpen(false);
+              }}
+              className="w-full text-left px-3 py-2 hover:bg-[#c6a15b]/20 hover:text-[#c6a15b] transition cursor-pointer flex items-center justify-between"
+            >
+              <div>
+                <span className="text-[#f4efe6] font-medium">{p.name}</span>
+                {p.brand && <span className="text-[10px] text-[#8e8a82] ml-2">({p.brand})</span>}
+              </div>
+              <span className="text-[10px] text-[#c6a15b] flex items-center gap-1 font-medium">
+                <Sparkles size={11} /> Auto-fill
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Accord Row ─────────────────────────────────────────────────────────────────
-function AccordRow({ accord, index, onChange, onRemove }) {
+function AccordRow({ accord, index, onChange, onRemove, onSortRequest }) {
   const safeAccord = typeof accord === "object" && accord !== null
     ? accord
     : { name: String(accord || ""), percentage: 60, color: "#c6a15b" };
 
   return (
-    <div className="flex items-center gap-2.5 bg-[#171715] border border-white/5 p-2.5 rounded">
+    <div className="flex items-center gap-2.5 bg-[#171715] border border-white/5 p-2.5 rounded transition-all duration-200">
       <input
         type="color"
         value={safeAccord.color || "#c6a15b"}
@@ -154,30 +504,32 @@ function AccordRow({ accord, index, onChange, onRemove }) {
         value={safeAccord.name || ""}
         onChange={(e) => onChange(index, "name", e.target.value)}
         placeholder="e.g. Tobacco / Amber"
-        className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded min-w-[100px]"
+        className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded min-w-[80px]"
       />
-      <div className="flex items-center gap-1.5 w-28 shrink-0">
+      <div className="flex items-center gap-2 shrink-0">
         <input
           type="range"
-          min={5}
+          min={1}
           max={100}
-          step={5}
+          step={1}
           value={safeAccord.percentage ?? 50}
-          onChange={(e) => onChange(index, "percentage", Number(e.target.value))}
-          className="flex-1 accent-[#c6a15b] cursor-pointer"
+          onChange={(e) => onChange(index, "percentage", Math.max(1, Math.min(100, Number(e.target.value))))}
+          onMouseUp={onSortRequest}
+          onTouchEnd={onSortRequest}
+          className="w-20 sm:w-28 accent-[#c6a15b] cursor-pointer"
         />
-        <span className="text-[11px] text-[#c6a15b] font-semibold w-8 text-right">
+        <span className="text-[11px] text-[#c6a15b] font-mono font-bold w-10 text-right tabular-nums select-none">
           {safeAccord.percentage ?? 50}%
         </span>
+        <button
+          type="button"
+          onClick={() => onRemove(index)}
+          className="text-red-400 hover:text-red-300 p-1.5 hover:bg-red-500/15 rounded transition cursor-pointer shrink-0 ml-1"
+          title="Remove accord"
+        >
+          <Trash2 size={14} />
+        </button>
       </div>
-      <button
-        type="button"
-        onClick={() => onRemove(index)}
-        className="text-red-400 hover:text-red-300 p-1 cursor-pointer shrink-0"
-        title="Remove accord"
-      >
-        <Trash2 size={13} />
-      </button>
     </div>
   );
 }
@@ -258,11 +610,10 @@ function WhenToWearSliders({ values, onChange }) {
           return (
             <div
               key={key}
-              className={`p-2.5 rounded border transition-colors ${
-                isHigh
+              className={`p-2.5 rounded border transition-colors ${isHigh
                   ? "bg-[#c6a15b]/10 border-[#c6a15b]/40"
                   : "bg-[#11110f] border-white/10"
-              }`}
+                }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <button
@@ -273,11 +624,10 @@ function WhenToWearSliders({ values, onChange }) {
                 >
                   <span>{label}</span>
                   <span
-                    className={`text-[9px] px-1 py-0.2 rounded font-semibold ${
-                      isHigh
+                    className={`text-[9px] px-1 py-0.2 rounded font-semibold ${isHigh
                         ? "bg-[#c6a15b] text-[#11110f]"
                         : "bg-white/10 text-[#8e8a82]"
-                    }`}
+                      }`}
                   >
                     {isHigh ? "Active" : "Subtle"}
                   </span>
@@ -290,7 +640,7 @@ function WhenToWearSliders({ values, onChange }) {
                 type="range"
                 min={0}
                 max={100}
-                step={5}
+                step={1}
                 value={val}
                 onChange={(e) =>
                   onChange({ ...values, [key]: Number(e.target.value) })
@@ -474,8 +824,8 @@ export default function AdminProducts() {
               type="button"
               onClick={() => setSelectedCategory(cat)}
               className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition cursor-pointer border ${selectedCategory === cat
-                  ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
-                  : "border-white/10 bg-[#171715] text-[#c5c1b9] hover:border-white/20"
+                ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
+                : "border-white/10 bg-[#171715] text-[#c5c1b9] hover:border-white/20"
                 }`}
             >
               {cat}
@@ -571,6 +921,7 @@ export default function AdminProducts() {
           onClose={() => setModalOpen(false)}
           onSave={handleModalSave}
           token={token}
+          existingBrands={Array.from(new Set(products.map((p) => p.brand).filter(Boolean)))}
         />
       )}
     </div>
@@ -578,7 +929,7 @@ export default function AdminProducts() {
 }
 
 // ─── Product Modal ──────────────────────────────────────────────────────────────
-function ProductModal({ product, onClose, onSave, token }) {
+function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) {
   const fileInputRef = useRef(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -652,7 +1003,7 @@ function ProductModal({ product, onClose, onSave, token }) {
       try {
         const parsed = JSON.parse(product.accords);
         if (Array.isArray(parsed) && parsed.length > 0) raw = parsed;
-      } catch {}
+      } catch { }
     } else if (fallback?.accords?.length > 0) {
       raw = fallback.accords;
     }
@@ -672,7 +1023,7 @@ function ProductModal({ product, onClose, onSave, token }) {
         if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
           return { ...WHEN_TO_WEAR_DEFAULTS, ...parsed };
         }
-      } catch {}
+      } catch { }
     }
     if (fallback?.whenToWear) {
       const maxVal = Math.max(...Object.values(fallback.whenToWear).filter((v) => typeof v === "number"), 1);
@@ -715,6 +1066,50 @@ function ProductModal({ product, onClose, onSave, token }) {
       setFormData((prev) => ({ ...prev, description: template.description }));
     }
   };
+
+  const handleSelectCatalogPerfume = (template) => {
+    if (!template) return;
+    setFormData((prev) => ({
+      ...prev,
+      name: template.name || prev.name,
+      brand: template.brand || prev.brand,
+      description: prev.description || template.description || "",
+    }));
+    if (template.topNotes?.length) setTopNotes(template.topNotes);
+    if (template.middleNotes?.length) setMiddleNotes(template.middleNotes);
+    if (template.baseNotes?.length) setBaseNotes(template.baseNotes);
+    if (template.accords?.length) setAccords(normalizeAccords(template.accords));
+    if (template.vibe) setVibe(template.vibe);
+    if (template.longevity) setLongevity(template.longevity);
+    if (template.projection) setProjection(template.projection);
+    if (template.whenToWear) {
+      const maxVal = Math.max(...Object.values(template.whenToWear).filter((v) => typeof v === "number"), 1);
+      const converted = {};
+      for (const [k, v] of Object.entries(template.whenToWear)) {
+        converted[k] = typeof v === "number" ? (v > 100 ? Math.round((v / maxVal) * 100) : v) : 50;
+      }
+      setWhenToWear({ ...WHEN_TO_WEAR_DEFAULTS, ...converted });
+    }
+  };
+
+  // Section C Accord Filtering State
+  const [accordCategory, setAccordCategory] = useState("all");
+  const [accordSearch, setAccordSearch] = useState("");
+
+  const filteredPresetAccords = useMemo(() => {
+    let list = PRESET_ACCORDS;
+    if (accordSearch && accordSearch.trim()) {
+      const q = accordSearch.toLowerCase().trim();
+      return list.filter((a) => a.name.toLowerCase().includes(q));
+    }
+    if (accordCategory === "popular") {
+      return list.filter((a) => a.popular);
+    }
+    if (accordCategory !== "all") {
+      return list.filter((a) => a.category === accordCategory);
+    }
+    return list;
+  }, [accordCategory, accordSearch]);
 
   // Decant Variants
   const [variants, setVariants] = useState(() => {
@@ -769,6 +1164,14 @@ function ProductModal({ product, onClose, onSave, token }) {
     finally { setUploadingImage(false); if (fileInputRef.current) fileInputRef.current.value = ""; }
   };
 
+  const sortTimeoutRef = useRef(null);
+
+  const handleSortAccords = () => {
+    setAccords((prev) =>
+      [...prev].sort((a, b) => (b.percentage ?? 0) - (a.percentage ?? 0))
+    );
+  };
+
   const handleAccordChange = (index, field, value) => {
     setAccords((prev) => {
       const copy = [...prev];
@@ -779,11 +1182,22 @@ function ProductModal({ product, onClose, onSave, token }) {
       copy[index] = cur;
       return copy;
     });
+
+    if (field === "percentage") {
+      if (sortTimeoutRef.current) clearTimeout(sortTimeoutRef.current);
+      sortTimeoutRef.current = setTimeout(() => {
+        handleSortAccords();
+      }, 700);
+    }
   };
 
   const handleAddAccord = () => {
     const nextColor = ACCORD_COLORS[accords.length % ACCORD_COLORS.length];
-    setAccords((prev) => [...prev, { name: "", percentage: 60, color: nextColor }]);
+    setAccords((prev) =>
+      [...prev, { name: "", percentage: 50, color: nextColor }].sort(
+        (a, b) => (b.percentage ?? 0) - (a.percentage ?? 0)
+      )
+    );
   };
 
   const handleRemoveAccord = (index) => {
@@ -866,11 +1280,19 @@ function ProductModal({ product, onClose, onSave, token }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">Fragrance Name *</label>
-                <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. Aventus / Tobacco Vanille" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                <FragranceNameInput
+                  value={formData.name}
+                  onChange={(name) => setFormData((prev) => ({ ...prev, name }))}
+                  onSelectCatalogPerfume={handleSelectCatalogPerfume}
+                />
               </div>
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">Fragrance Brand</label>
-                <input type="text" value={formData.brand} onChange={(e) => setFormData({ ...formData, brand: e.target.value })} placeholder="e.g. Creed / Tom Ford / Roja" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                <BrandAutocompleteInput
+                  value={formData.brand}
+                  onChange={(brand) => setFormData((prev) => ({ ...prev, brand }))}
+                  existingBrands={existingBrands}
+                />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1055,57 +1477,171 @@ function ProductModal({ product, onClose, onSave, token }) {
             </p>
 
             {/* Quick Add Preset Accords */}
-            <div className="p-3 bg-white/5 rounded border border-white/10 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
-                  Quick Add / Toggle Accords:
-                </span>
-                <span className="text-[10px] text-[#c6a15b]">
-                  {accords.length} selected
-                </span>
+            <div className="p-3.5 bg-white/5 rounded border border-white/10 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
+                    Quick Add / Toggle Accords:
+                  </span>
+                  <span className="text-[10px] bg-[#c6a15b]/20 text-[#c6a15b] px-2 py-0.5 rounded font-mono font-medium">
+                    {accords.length} selected
+                  </span>
+                </div>
+
+                {/* Search accords filter */}
+                <div className="relative w-full sm:w-56">
+                  <input
+                    type="text"
+                    value={accordSearch}
+                    onChange={(e) => setAccordSearch(e.target.value)}
+                    placeholder="Filter accords (e.g. tobacco, fresh)..."
+                    className="w-full bg-[#11110f] border border-white/15 px-2.5 py-1 text-[11px] text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded pr-6"
+                  />
+                  {accordSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setAccordSearch("")}
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
+                    >
+                      <X size={11} />
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-wrap items-center gap-1.5">
-                {PRESET_ACCORDS.map((acc) => {
-                  const isSelected = accords.some(
-                    (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() === acc.name.toLowerCase()
-                  );
+
+              {/* Category Filter Chips */}
+              <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-white/10">
+                {ACCORD_CATEGORIES.map((cat) => {
+                  const isActive = accordCategory === cat.id;
                   return (
                     <button
-                      key={acc.name}
+                      key={cat.id}
                       type="button"
                       onClick={() => {
-                        if (isSelected) {
-                          // Toggle OFF (remove from list)
-                          setAccords((prev) =>
-                            prev.filter(
-                              (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() !== acc.name.toLowerCase()
-                            )
-                          );
-                        } else {
-                          // Toggle ON (add to list)
-                          setAccords((prev) => [
-                            ...prev,
-                            { name: acc.name, percentage: acc.pct, color: acc.color },
-                          ]);
-                        }
+                        setAccordCategory(cat.id);
+                        setAccordSearch("");
                       }}
-                      className={`text-[11px] px-2.5 py-1 rounded transition cursor-pointer flex items-center gap-1.5 border font-medium ${
-                        isSelected
-                          ? "bg-[#c6a15b] text-[#11110f] border-[#c6a15b] shadow-sm font-semibold"
-                          : "bg-[#171715] hover:bg-[#c6a15b]/20 text-[#c5c1b9] hover:text-[#c6a15b] border-white/10 hover:border-[#c6a15b]/40"
-                      }`}
-                      title={isSelected ? `Click to remove ${acc.name}` : `Click to add ${acc.name}`}
+                      className={`text-[10px] px-2.5 py-1 rounded transition cursor-pointer font-medium ${isActive
+                          ? "bg-[#c6a15b] text-[#11110f] font-semibold shadow-sm"
+                          : "bg-white/5 hover:bg-white/10 text-[#8e8a82] hover:text-[#f4efe6]"
+                        }`}
                     >
-                      <span className="font-bold">{isSelected ? "✓" : "+"}</span>
-                      <span>{acc.name}</span>
+                      {cat.label}
                     </button>
                   );
                 })}
               </div>
+
+              {/* Accord chips */}
+              <div className="flex flex-wrap items-center gap-1.5 max-h-48 overflow-y-auto pr-1">
+                {filteredPresetAccords.length > 0 ? (
+                  filteredPresetAccords.map((acc) => {
+                    const isSelected = accords.some(
+                      (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() === acc.name.toLowerCase()
+                    );
+                    return (
+                      <button
+                        key={acc.name}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            // Toggle OFF (remove from list)
+                            setAccords((prev) =>
+                              prev.filter(
+                                (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() !== acc.name.toLowerCase()
+                              )
+                            );
+                          } else {
+                            // Toggle ON (add to list)
+                            setAccords((prev) => [
+                              ...prev,
+                              { name: acc.name, percentage: acc.pct, color: acc.color },
+                            ]);
+                          }
+                        }}
+                        className={`text-[11px] px-2.5 py-1 rounded transition cursor-pointer flex items-center gap-1.5 border font-medium ${isSelected
+                            ? "bg-[#c6a15b] text-[#11110f] border-[#c6a15b] shadow-sm font-semibold"
+                            : "bg-[#171715] hover:bg-[#c6a15b]/20 text-[#c5c1b9] hover:text-[#c6a15b] border-white/10 hover:border-[#c6a15b]/40"
+                          }`}
+                        title={isSelected ? `Click to remove ${acc.name}` : `Click to add ${acc.name}`}
+                      >
+                        <span
+                          className="w-2 h-2 rounded-full shrink-0 border border-black/30"
+                          style={{ backgroundColor: acc.color }}
+                        />
+                        <span className="font-bold">{isSelected ? "✓" : "+"}</span>
+                        <span>{acc.name}</span>
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="text-[11px] text-[#8e8a82] italic py-2">
+                    No accords matching "{accordSearch}". You can click "Add Custom Accord" below.
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Live Bar Chart Preview (Auto-arranged Highest % on Top) */}
+            {accords.length > 0 && (
+              <div className="p-3 bg-black/40 rounded border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-[#c6a15b] font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📊 Live Bar Chart Preview (Highest % on top)</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleSortAccords}
+                    className="text-[10px] text-[#c6a15b] hover:text-[#e4cf9b] underline cursor-pointer flex items-center gap-1"
+                    title="Sort slider rows below from highest to lowest"
+                  >
+                    <span>⇅ Sort Slider Rows</span>
+                  </button>
+                </div>
+                <div className="space-y-1.5 max-w-lg">
+                  {[...accords]
+                    .filter((a) => (a.name || "").trim())
+                    .sort((a, b) => (b.percentage ?? 0) - (a.percentage ?? 0))
+                    .map((a, idx) => {
+                      const widthPercent = Math.max(20, Math.min(100, a.percentage ?? 50));
+                      return (
+                        <div
+                          key={(a.name || "") + idx}
+                          className="h-6 rounded flex items-center justify-between px-2.5 border border-white/5 shadow-sm transition-all duration-300"
+                          style={{
+                            backgroundColor: a.color || "#c6a15b",
+                            width: `${widthPercent}%`,
+                          }}
+                        >
+                          <span className="text-[11px] font-medium text-white/95 capitalize drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] truncate">
+                            {a.name}
+                          </span>
+                          <span className="text-[10px] font-mono font-bold text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ml-2 shrink-0">
+                            {a.percentage ?? 50}%
+                          </span>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
 
             {/* Accord Rows */}
             <div className="space-y-2">
+              <div className="flex items-center justify-between px-0.5">
+                <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
+                  Accord Sliders (Auto-Sorted by %):
+                </span>
+                {accords.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={handleSortAccords}
+                    className="text-[10px] text-[#c6a15b] hover:text-[#e4cf9b] cursor-pointer"
+                  >
+                    ⇅ Sort Highest First
+                  </button>
+                )}
+              </div>
               {accords.map((accord, i) => (
                 <AccordRow
                   key={i}
@@ -1113,6 +1649,7 @@ function ProductModal({ product, onClose, onSave, token }) {
                   index={i}
                   onChange={handleAccordChange}
                   onRemove={handleRemoveAccord}
+                  onSortRequest={handleSortAccords}
                 />
               ))}
             </div>
