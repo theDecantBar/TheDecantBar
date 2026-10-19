@@ -819,12 +819,22 @@ function ProductModal({ product, onClose, onSave, token }) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/85 backdrop-blur-sm overflow-y-auto">
       <div className="relative w-full max-w-3xl bg-[#171715] border border-white/15 p-6 lg:p-8 text-xs my-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 mb-6 gap-3">
+        {/* Pinned Top-Right Close Button */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-5 right-5 text-[#8e8a82] hover:text-[#f4efe6] hover:bg-white/10 p-1.5 rounded-full transition cursor-pointer z-10"
+          title="Close (Esc)"
+        >
+          <X size={18} />
+        </button>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 mb-6 gap-3 pr-10">
           <div>
             <h2 className="font-display text-2xl text-[#f4efe6]">{product ? `Edit: ${product.name}` : "Add New Fragrance"}</h2>
             <p className="text-[11px] text-[#8e8a82] mt-0.5">Fill in basic details, then expand sections below to edit or add olfactory data.</p>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
             <button
               type="button"
               onClick={handleToggleAll}
@@ -841,7 +851,6 @@ function ProductModal({ product, onClose, onSave, token }) {
               <Sparkles size={13} />
               <span>Auto-Fill Standard Notes</span>
             </button>
-            <button type="button" onClick={onClose} className="text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer p-1"><X size={20} /></button>
           </div>
         </div>
 
