@@ -36,16 +36,21 @@ export default function WhenToWear({
     return false;
   };
 
+  // Check if whenToWear contains direct percentage values (e.g. 0-100 from admin sliders)
+  const isDirectPercentage = Object.values(whenToWear || {}).some(
+    (v) => typeof v === "number" && v >= 0 && v <= 100
+  );
+
   const seasons = [
-    { key: "winter", label: "Winter", icon: Snowflake, count: whenToWear.winter || 0 },
-    { key: "spring", label: "Spring", icon: Leaf, count: whenToWear.spring || 0 },
-    { key: "summer", label: "Summer", icon: Sun, count: whenToWear.summer || 0 },
-    { key: "fall", label: "Fall", icon: Leaf, count: whenToWear.fall || 0 },
+    { key: "winter", label: "Winter", icon: Snowflake, count: whenToWear.winter ?? 0 },
+    { key: "spring", label: "Spring", icon: Leaf, count: whenToWear.spring ?? 0 },
+    { key: "summer", label: "Summer", icon: Sun, count: whenToWear.summer ?? 0 },
+    { key: "fall", label: "Fall", icon: Leaf, count: whenToWear.fall ?? 0 },
   ];
 
   const times = [
-    { key: "day", label: "Day", icon: Sun, count: whenToWear.day || 0 },
-    { key: "night", label: "Night", icon: Moon, count: whenToWear.night || 0 },
+    { key: "day", label: "Day", icon: Sun, count: whenToWear.day ?? 0 },
+    { key: "night", label: "Night", icon: Moon, count: whenToWear.night ?? 0 },
   ];
 
   return (
@@ -67,12 +72,19 @@ export default function WhenToWear({
           {/* Seasons */}
           {seasons.map((item) => {
             const Icon = item.icon;
-            const barWidth = hasCustomWeather
-              ? (matchesSeason(item.key) ? 92 : 24)
-              : Math.max(12, Math.round((item.count / maxWearCount) * 100));
-            const isDominant = hasCustomWeather
-              ? matchesSeason(item.key)
-              : barWidth >= 75;
+            let barWidth = 20;
+            let isDominant = false;
+
+            if (isDirectPercentage) {
+              barWidth = Math.max(8, Math.min(100, Math.round(item.count)));
+              isDominant = barWidth >= 60;
+            } else if (hasCustomWeather) {
+              barWidth = matchesSeason(item.key) ? 92 : 24;
+              isDominant = matchesSeason(item.key);
+            } else {
+              barWidth = Math.max(12, Math.round((item.count / maxWearCount) * 100));
+              isDominant = barWidth >= 75;
+            }
 
             return (
               <div key={item.key} className="flex flex-col items-center py-1.5 px-1">
@@ -108,8 +120,10 @@ export default function WhenToWear({
           {/* Times of day */}
           {times.map((item) => {
             const Icon = item.icon;
-            const barWidth = Math.max(12, Math.round((item.count / maxWearCount) * 100));
-            const isDominant = barWidth >= 75;
+            const barWidth = isDirectPercentage
+              ? Math.max(8, Math.min(100, Math.round(item.count)))
+              : Math.max(12, Math.round((item.count / maxWearCount) * 100));
+            const isDominant = isDirectPercentage ? barWidth >= 60 : barWidth >= 75;
 
             return (
               <div key={item.key} className="flex flex-col items-center py-1.5 px-1 border-l border-white/10 pl-2 sm:pl-3">

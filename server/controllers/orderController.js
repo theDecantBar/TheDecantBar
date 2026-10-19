@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { invalidateProductCache } from "./productController.js";
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
 
@@ -318,6 +319,7 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
     }
 
     await client.query("COMMIT");
+    invalidateProductCache();
 
     // Asynchronously dispatch Owner Alert & Customer Confirmation Emails
     (async () => {
@@ -371,6 +373,7 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
             `,
             text: `New order ${order.order_number} received from ${order.customer_name} for ₹${order.total_amount}. Shipping to: ${order.shipping_address}, ${order.city}, ${order.pincode}.`,
           });
+          console.log(`📧 Owner alert email successfully dispatched to ${ownerEmail} for order ${order.order_number}`);
 
           // 2. Send Customer Order Confirmation Receipt
           try {
@@ -565,6 +568,7 @@ export const createCodOrder = async (req, res) => {
     }
 
     await client.query("COMMIT");
+    invalidateProductCache();
 
     // Asynchronously dispatch Owner Alert & Customer Confirmation Emails for COD
     (async () => {
@@ -619,6 +623,7 @@ export const createCodOrder = async (req, res) => {
             `,
             text: `New COD order ${order.order_number} received from ${order.customer_name} for ₹${order.total_amount}. Shipping to: ${order.shipping_address}, ${order.city}, ${order.pincode}.`,
           });
+          console.log(`📧 Owner alert email successfully dispatched to ${ownerEmail} for COD order ${order.order_number}`);
 
           // 2. Send Customer Order Confirmation Receipt
           try {

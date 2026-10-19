@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pool from "../config/db.js";
+import { invalidateProductCache } from "./productController.js";
+import { uploadPerfumeImage } from "../services/supabaseStorage.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -266,10 +268,30 @@ export const createProduct = async (req, res) => {
       type,
       fullBottlePrice,
       variants = [],
+      // Fragrance Profile Fields
+      topNotes = [],
+      middleNotes = [],
+      baseNotes = [],
+      accords = [],
+      vibe = null,
+      longevity = null,
+      projection = null,
+      whenToWear = {},
     } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({ message: "Product name is required." });
+    }
+
+    let cleanImageUrl = imageUrl ? imageUrl.trim() : null;
+    if (cleanImageUrl && cleanImageUrl.startsWith("data:image/")) {
+      const match = cleanImageUrl.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (match) {
+        const mimeType = `image/${match[1].toLowerCase()}`;
+        const buffer = Buffer.from(match[2], "base64");
+        const uploaded = await uploadPerfumeImage({ buffer, filename: name, mimeType });
+        cleanImageUrl = uploaded.imageUrl;
+      }
     }
 
     await client.query("BEGIN");
@@ -277,19 +299,28 @@ export const createProduct = async (req, res) => {
     // 1. Insert product
     const productResult = await client.query(
       `INSERT INTO products 
-        (name, brand, description, image_url, category, gender, weather, type, full_bottle_price)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        (name, brand, description, image_url, category, gender, weather, type, full_bottle_price,
+         top_notes, middle_notes, base_notes, accords, vibe, longevity, projection, when_to_wear)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
        RETURNING *`,
       [
         name.trim(),
         brand ? brand.trim() : null,
         description ? description.trim() : null,
-        imageUrl ? imageUrl.trim() : null,
+        cleanImageUrl,
         category || "Designer",
         gender || "Unisex",
         weather || "All-Season",
         type || "EDP",
         fullBottlePrice ? Number(fullBottlePrice) : null,
+        Array.isArray(topNotes) ? topNotes.filter(Boolean) : [],
+        Array.isArray(middleNotes) ? middleNotes.filter(Boolean) : [],
+        Array.isArray(baseNotes) ? baseNotes.filter(Boolean) : [],
+        JSON.stringify(Array.isArray(accords) ? accords : []),
+        vibe ? vibe.trim() : null,
+        longevity ? longevity.trim() : null,
+        projection ? projection.trim() : null,
+        JSON.stringify(whenToWear || {}),
       ]
     );
 
@@ -318,6 +349,7 @@ export const createProduct = async (req, res) => {
     }
 
     await client.query("COMMIT");
+    invalidateProductCache();
 
     res.status(201).json({
       message: "Fragrance created successfully.",
@@ -353,7 +385,27 @@ export const updateProduct = async (req, res) => {
       type,
       fullBottlePrice,
       variants = [],
+      // Fragrance Profile Fields
+      topNotes,
+      middleNotes,
+      baseNotes,
+      accords,
+      vibe,
+      longevity,
+      projection,
+      whenToWear,
     } = req.body;
+
+    let cleanImageUrl = imageUrl !== undefined ? (imageUrl ? imageUrl.trim() : null) : undefined;
+    if (cleanImageUrl && cleanImageUrl.startsWith("data:image/")) {
+      const match = cleanImageUrl.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (match) {
+        const mimeType = `image/${match[1].toLowerCase()}`;
+        const buffer = Buffer.from(match[2], "base64");
+        const uploaded = await uploadPerfumeImage({ buffer, filename: name || "perfume", mimeType });
+        cleanImageUrl = uploaded.imageUrl;
+      }
+    }
 
     await client.query("BEGIN");
 
@@ -364,25 +416,41 @@ export const updateProduct = async (req, res) => {
          name = COALESCE(NULLIF(TRIM($1), ''), name),
          brand = TRIM($2),
          description = TRIM($3),
-         image_url = TRIM($4),
+         image_url = CASE WHEN $4::text IS NOT NULL THEN TRIM($4) ELSE image_url END,
          category = COALESCE(NULLIF(TRIM($5), ''), category),
          gender = COALESCE(NULLIF(TRIM($6), ''), gender),
          weather = TRIM($7),
          type = TRIM($8),
-         full_bottle_price = $9
+         full_bottle_price = $9,
+         top_notes    = COALESCE($11, top_notes),
+         middle_notes = COALESCE($12, middle_notes),
+         base_notes   = COALESCE($13, base_notes),
+         accords      = COALESCE($14::jsonb, accords),
+         vibe         = COALESCE($15, vibe),
+         longevity    = COALESCE($16, longevity),
+         projection   = COALESCE($17, projection),
+         when_to_wear = COALESCE($18::jsonb, when_to_wear)
        WHERE id = $10
        RETURNING *`,
       [
         name ? name.trim() : null,
         brand ? brand.trim() : null,
         description !== undefined ? (description ? description.trim() : null) : null,
-        imageUrl !== undefined ? (imageUrl ? imageUrl.trim() : null) : null,
+        cleanImageUrl !== undefined ? cleanImageUrl : null,
         category ? category.trim() : "Designer",
         gender ? gender.trim() : "Unisex",
         weather !== undefined ? (weather ? weather.trim() : null) : null,
         type !== undefined ? (type ? type.trim() : null) : null,
         fullBottlePrice !== undefined && fullBottlePrice !== "" ? Number(fullBottlePrice) : null,
         id,
+        topNotes !== undefined ? (Array.isArray(topNotes) ? topNotes.filter(Boolean) : []) : null,
+        middleNotes !== undefined ? (Array.isArray(middleNotes) ? middleNotes.filter(Boolean) : []) : null,
+        baseNotes !== undefined ? (Array.isArray(baseNotes) ? baseNotes.filter(Boolean) : []) : null,
+        accords !== undefined ? JSON.stringify(Array.isArray(accords) ? accords : []) : null,
+        vibe !== undefined ? (vibe ? vibe.trim() : null) : null,
+        longevity !== undefined ? (longevity ? longevity.trim() : null) : null,
+        projection !== undefined ? (projection ? projection.trim() : null) : null,
+        whenToWear !== undefined ? JSON.stringify(whenToWear || {}) : null,
       ]
     );
 
@@ -432,6 +500,7 @@ export const updateProduct = async (req, res) => {
     }
 
     await client.query("COMMIT");
+    invalidateProductCache();
 
     // Re-fetch updated product with all variants
     const finalResult = await pool.query(
@@ -483,6 +552,7 @@ export const deleteProduct = async (req, res) => {
     await client.query("DELETE FROM product_variants WHERE product_id = $1", [id]);
     const result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id, name", [id]);
     await client.query("COMMIT");
+    invalidateProductCache();
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Product not found." });
@@ -666,44 +736,21 @@ export const uploadProductImage = async (req, res) => {
       return res.json({ success: true, imageUrl: image });
     }
 
-    let ext = matches[1].toLowerCase();
-    if (ext === "jpeg") ext = "jpg";
-    if (ext.includes("svg")) ext = "svg";
-    if (ext.includes("webp")) ext = "webp";
-    if (ext.includes("avif")) ext = "avif";
-    if (ext.includes("png")) ext = "png";
-
-    ext = ext.replace(/[^a-z0-9]/g, "");
-    if (!ext) ext = "jpg";
-
+    const mimeType = `image/${matches[1].toLowerCase()}`;
     const base64Data = matches[2];
     const buffer = Buffer.from(base64Data, "base64");
 
-    const cleanBaseName = filename
-      ? path.parse(filename).name.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 40)
-      : "bottle";
-    const uniqueFileName = `${cleanBaseName}_${Date.now()}.${ext}`;
+    const result = await uploadPerfumeImage({
+      buffer,
+      filename: filename || "perfume",
+      mimeType,
+    });
 
-    const uploadsDir = path.resolve(__dirname, "../../public/images/perfumes");
-    try {
-      await fs.mkdir(uploadsDir, { recursive: true });
-      const targetPath = path.join(uploadsDir, uniqueFileName);
-      await fs.writeFile(targetPath, buffer);
-
-      return res.json({
-        success: true,
-        imageUrl: `/images/perfumes/${uniqueFileName}`,
-      });
-    } catch (fsErr) {
-      console.warn(
-        "Could not save to local filesystem, returning base64 data URI fallback:",
-        fsErr.message
-      );
-      return res.json({
-        success: true,
-        imageUrl: image,
-      });
-    }
+    return res.json({
+      success: true,
+      imageUrl: result.imageUrl,
+      storage: result.storage,
+    });
   } catch (error) {
     console.error("Upload image error:", error);
     res.status(500).json({ message: "Failed to process image upload." });

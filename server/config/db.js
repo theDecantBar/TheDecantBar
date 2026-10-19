@@ -5,12 +5,20 @@ dotenv.config();
 
 const { Pool } = pg;
 
+const isSsl = process.env.DB_SSL === "true" || process.env.DB_SSL === true || String(process.env.DB_HOST || "").includes("supabase");
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT) || 6543,
+  ssl: isSsl ? { rejectUnauthorized: false } : false,
+  max: 20,
+  idleTimeoutMillis: 60000,
+  connectionTimeoutMillis: 15000,
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000,
 });
 
 pool.on("error", (err) => {

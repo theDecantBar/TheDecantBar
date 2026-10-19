@@ -3,6 +3,16 @@ console.log("PRODUCT CONTROLLER FILE LOADED");
 
 import pool from "../config/db.js";
 
+// Fast in-memory cache for catalog products
+let allProductsCache = null;
+let allProductsCacheTime = 0;
+const CACHE_LIFETIME_MS = 60 * 1000; // 60 seconds
+
+export const invalidateProductCache = () => {
+  allProductsCache = null;
+  allProductsCacheTime = 0;
+};
+
 const parseMultiParam = (param) => {
   if (!param) return [];
   if (Array.isArray(param)) {
@@ -14,6 +24,11 @@ const parseMultiParam = (param) => {
 export const getProducts = async (req, res) => {
   try {
     const { search, category, gender, weather, type } = req.query;
+
+    const isDefaultCatalog = !search && !category && !gender && !weather && !type;
+    if (isDefaultCatalog && allProductsCache && (Date.now() - allProductsCacheTime < CACHE_LIFETIME_MS)) {
+      return res.json(allProductsCache);
+    }
 
     const conditions = [];
     const values = [];
@@ -114,6 +129,10 @@ export const getProducts = async (req, res) => {
     `;
 
     const result = await pool.query(query, values);
+    if (isDefaultCatalog) {
+      allProductsCache = result.rows;
+      allProductsCacheTime = Date.now();
+    }
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching products:", error);

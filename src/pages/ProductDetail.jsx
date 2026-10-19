@@ -228,13 +228,66 @@ export default function ProductDetail() {
         product.gender === "W" ? "Women" :
           product.gender || "Fragrance";
 
-  const profile = getPerfumeProfile(
+  const defaultProfile = getPerfumeProfile(
     product.name,
     product.category,
     product.weather,
     product.type,
     product.gender
   );
+
+  const parseJsonField = (val, fallback) => {
+    if (!val) return fallback;
+    if (typeof val === "object") return val;
+    try {
+      return JSON.parse(val);
+    } catch {
+      return fallback;
+    }
+  };
+
+  const dbAccords = parseJsonField(product.accords, null);
+  const dbWhenToWear = parseJsonField(product.when_to_wear, null);
+
+  const profile = {
+    ...defaultProfile,
+    topNotes:
+      Array.isArray(product.top_notes) && product.top_notes.length > 0
+        ? product.top_notes
+        : defaultProfile.topNotes,
+    middleNotes:
+      Array.isArray(product.middle_notes) && product.middle_notes.length > 0
+        ? product.middle_notes
+        : defaultProfile.middleNotes,
+    baseNotes:
+      Array.isArray(product.base_notes) && product.base_notes.length > 0
+        ? product.base_notes
+        : defaultProfile.baseNotes,
+    accords:
+      Array.isArray(dbAccords) && dbAccords.length > 0
+        ? dbAccords
+        : defaultProfile.accords,
+    vibe:
+      product.vibe && product.vibe.trim()
+        ? product.vibe.trim()
+        : defaultProfile.vibe,
+    longevity:
+      product.longevity && product.longevity.trim()
+        ? product.longevity.trim()
+        : defaultProfile.longevity,
+    projection:
+      product.projection && product.projection.trim()
+        ? product.projection.trim()
+        : defaultProfile.projection,
+    whenToWear:
+      dbWhenToWear && Object.keys(dbWhenToWear).length > 0
+        ? dbWhenToWear
+        : defaultProfile.whenToWear,
+    description:
+      product.description && product.description.trim()
+        ? product.description
+        : defaultProfile.description,
+  };
 
   const shortDescription = getShortDescription(profile.description, profile, product);
 
