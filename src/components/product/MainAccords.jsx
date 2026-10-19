@@ -15,19 +15,23 @@ export default function MainAccords({ accords = [], className = "" }) {
       </div>
 
       <div className="space-y-1.5 max-w-md">
-        {accords.map((accord, idx) => {
-          const widthPercent = Math.max(24, Math.min(100, accord.percentage || (100 - idx * 10)));
+        {accords.map((accordItem, idx) => {
+          const name = typeof accordItem === "string" ? accordItem : (accordItem?.name || "");
+          if (!name) return null;
+          const color = typeof accordItem === "object" && accordItem?.color ? accordItem.color : "#543e2e";
+          const rawPct = typeof accordItem === "object" && typeof accordItem?.percentage === "number" ? accordItem.percentage : (100 - idx * 10);
+          const widthPercent = Math.max(24, Math.min(100, rawPct));
           return (
             <div
-              key={accord.name || idx}
+              key={name + idx}
               className="h-6 rounded flex items-center px-3 border border-white/5 shadow-sm transition-all duration-300 hover:brightness-110"
               style={{
-                backgroundColor: accord.color || "#543e2e",
+                backgroundColor: color,
                 width: `${widthPercent}%`,
               }}
             >
               <span className="text-[11px] font-medium text-white/95 tracking-wide capitalize drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                {accord.name}
+                {name}
               </span>
             </div>
           );

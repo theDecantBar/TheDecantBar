@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pool from "../config/db.js";
 import { invalidateProductCache } from "./productController.js";
-import { uploadPerfumeImage } from "../services/supabaseStorage.js";
+import { uploadPerfumeImage, deletePerfumeImage } from "../services/supabaseStorage.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -407,6 +407,10 @@ export const updateProduct = async (req, res) => {
       }
     }
 
+    // Check existing image to clean up if replaced
+    const existingProductRes = await client.query("SELECT image_url FROM products WHERE id = $1", [id]);
+    const oldImageUrl = existingProductRes.rows[0]?.image_url;
+
     await client.query("BEGIN");
 
     // 1. Update product base info
@@ -502,6 +506,13 @@ export const updateProduct = async (req, res) => {
     await client.query("COMMIT");
     invalidateProductCache();
 
+    // If perfume image was replaced, automatically delete previous image to avoid duplicates
+    if (cleanImageUrl && oldImageUrl && cleanImageUrl !== oldImageUrl) {
+      deletePerfumeImage(oldImageUrl).catch((err) =>
+        console.warn("[Storage Cleanup] Could not delete replaced image:", err.message)
+      );
+    }
+
     // Re-fetch updated product with all variants
     const finalResult = await pool.query(
       `
@@ -550,12 +561,19 @@ export const deleteProduct = async (req, res) => {
     const { id } = req.params;
     await client.query("BEGIN");
     await client.query("DELETE FROM product_variants WHERE product_id = $1", [id]);
-    const result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id, name", [id]);
+    const result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id, name, image_url", [id]);
     await client.query("COMMIT");
     invalidateProductCache();
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Product not found." });
+    }
+
+    // Purge perfume image from storage upon product deletion
+    if (result.rows[0]?.image_url) {
+      deletePerfumeImage(result.rows[0].image_url).catch((err) =>
+        console.warn("[Storage Cleanup] Could not delete image on product delete:", err.message)
+      );
     }
 
     res.json({

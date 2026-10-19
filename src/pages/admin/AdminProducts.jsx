@@ -10,7 +10,7 @@ import {
 } from "../../services/adminApi";
 import { getPerfumeProfile } from "../../data/perfumeNotes";
 
-const CATEGORIES = ["Designer", "Niche", "Middle Eastern", "Fresh", "Woody"];
+const CATEGORIES = ["Designer", "Niche", "Middle Eastern", "Fresh", "Woody", "Oriental", "Gourmand"];
 const GENDERS = ["Men", "Women", "Unisex"];
 const CONCENTRATIONS = ["EDP", "EDT", "Extrait de Parfum", "Parfum", "Elixir", "EDC", "Eau Fraiche"];
 const SEASON_CHIPS = ["Winter", "Summer", "All-Season"];
@@ -18,6 +18,63 @@ const LONGEVITY_OPTIONS = ["2 – 4 Hours","4 – 6 Hours","6 – 8 Hours","8 �
 const PROJECTION_OPTIONS = ["Soft & Intimate","Moderate","Good Sillage","Strong & Enveloping","Beast Mode"];
 const ACCORD_COLORS = ["#8B4513","#9c2759","#b85428","#d9822b","#c49e49","#6e4f32","#4a4a4e","#2d6a4f","#1d3557","#5c4a7f","#a8332a","#3d6b8f","#7a5c3d","#4f7942","#8e6b3a"];
 const WHEN_TO_WEAR_DEFAULTS = { winter: 50, spring: 50, summer: 50, fall: 50, day: 50, night: 50 };
+
+const PRESET_ACCORDS = [
+  { name: "Woody", color: "#8B5A2B", pct: 85 },
+  { name: "Warm Spicy", color: "#C0392B", pct: 80 },
+  { name: "Citrus", color: "#D4AF37", pct: 75 },
+  { name: "Vanilla", color: "#E0A96D", pct: 70 },
+  { name: "Amber", color: "#C68B59", pct: 70 },
+  { name: "Aromatic", color: "#4A7C59", pct: 65 },
+  { name: "Fresh", color: "#2E86AB", pct: 65 },
+  { name: "Smoky", color: "#5D6D7E", pct: 60 },
+  { name: "Leather", color: "#6E2C00", pct: 60 },
+  { name: "Sweet", color: "#AF7AC5", pct: 55 },
+  { name: "Floral", color: "#C25975", pct: 65 },
+  { name: "Fruity", color: "#D97736", pct: 70 },
+  { name: "Oud", color: "#3F292B", pct: 90 },
+  { name: "Musky", color: "#7B6D8D", pct: 60 },
+  { name: "Powdery", color: "#9B8B7B", pct: 55 },
+];
+
+function normalizeAccord(item, index = 0) {
+  if (!item) return null;
+  const defaultColor = ACCORD_COLORS[index % ACCORD_COLORS.length];
+  if (typeof item === "string") {
+    const trimmed = item.trim();
+    if (!trimmed) return null;
+    return {
+      name: trimmed,
+      percentage: Math.max(30, 95 - index * 8),
+      color: defaultColor,
+    };
+  }
+  if (typeof item === "object") {
+    const name = String(item.name || item.title || "").trim();
+    if (!name) return null;
+    const percentage = typeof item.percentage === "number" ? item.percentage : 60;
+    const color = item.color || defaultColor;
+    return { name, percentage, color };
+  }
+  return null;
+}
+
+function normalizeAccords(list) {
+  if (!list) return [];
+  if (typeof list === "string") {
+    try {
+      const parsed = JSON.parse(list);
+      if (Array.isArray(parsed)) return normalizeAccords(parsed);
+    } catch {
+      const parts = list.split(/[,/]/).map((s) => s.trim()).filter(Boolean);
+      return normalizeAccords(parts);
+    }
+  }
+  if (Array.isArray(list)) {
+    return list.map((item, idx) => normalizeAccord(item, idx)).filter(Boolean);
+  }
+  return [];
+}
 
 function isSeasonActive(weatherString, chip) {
   if (!weatherString) return false;
@@ -79,15 +136,48 @@ function TagInput({ label, tags, onChange, placeholder }) {
 
 // ─── Accord Row ─────────────────────────────────────────────────────────────────
 function AccordRow({ accord, index, onChange, onRemove }) {
+  const safeAccord = typeof accord === "object" && accord !== null
+    ? accord
+    : { name: String(accord || ""), percentage: 60, color: "#c6a15b" };
+
   return (
     <div className="flex items-center gap-2.5 bg-[#171715] border border-white/5 p-2.5 rounded">
-      <input type="color" value={accord.color || "#c6a15b"} onChange={(e) => onChange(index, "color", e.target.value)} className="w-7 h-7 rounded cursor-pointer border-0 bg-transparent p-0" title="Accord bar colour" />
-      <input type="text" value={accord.name || ""} onChange={(e) => onChange(index, "name", e.target.value)} placeholder="e.g. Tobacco" className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded" />
+      <input
+        type="color"
+        value={safeAccord.color || "#c6a15b"}
+        onChange={(e) => onChange(index, "color", e.target.value)}
+        className="w-7 h-7 rounded cursor-pointer border-0 bg-transparent p-0 shrink-0"
+        title="Accord bar colour"
+      />
+      <input
+        type="text"
+        value={safeAccord.name || ""}
+        onChange={(e) => onChange(index, "name", e.target.value)}
+        placeholder="e.g. Tobacco / Amber"
+        className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded min-w-[100px]"
+      />
       <div className="flex items-center gap-1.5 w-28 shrink-0">
-        <input type="range" min={5} max={100} step={5} value={accord.percentage || 50} onChange={(e) => onChange(index, "percentage", Number(e.target.value))} className="flex-1 accent-[#c6a15b] cursor-pointer" />
-        <span className="text-[11px] text-[#c6a15b] font-semibold w-8 text-right">{accord.percentage || 50}%</span>
+        <input
+          type="range"
+          min={5}
+          max={100}
+          step={5}
+          value={safeAccord.percentage ?? 50}
+          onChange={(e) => onChange(index, "percentage", Number(e.target.value))}
+          className="flex-1 accent-[#c6a15b] cursor-pointer"
+        />
+        <span className="text-[11px] text-[#c6a15b] font-semibold w-8 text-right">
+          {safeAccord.percentage ?? 50}%
+        </span>
       </div>
-      <button type="button" onClick={() => onRemove(index)} className="text-red-400 hover:text-red-300 p-1 cursor-pointer"><Trash2 size={13} /></button>
+      <button
+        type="button"
+        onClick={() => onRemove(index)}
+        className="text-red-400 hover:text-red-300 p-1 cursor-pointer shrink-0"
+        title="Remove accord"
+      >
+        <Trash2 size={13} />
+      </button>
     </div>
   );
 }
@@ -95,37 +185,148 @@ function AccordRow({ accord, index, onChange, onRemove }) {
 // ─── When To Wear Sliders ───────────────────────────────────────────────────────
 function WhenToWearSliders({ values, onChange }) {
   const slots = [
-    { key: "winter", label: "❄️ Winter" }, { key: "spring", label: "🌸 Spring" },
-    { key: "summer", label: "☀️ Summer" }, { key: "fall", label: "🍂 Fall / Autumn" },
-    { key: "day", label: "🌤 Day" }, { key: "night", label: "🌙 Night" },
+    { key: "winter", label: "❄️ Winter" },
+    { key: "spring", label: "🌸 Spring" },
+    { key: "summer", label: "☀️ Summer" },
+    { key: "fall", label: "🍂 Fall / Autumn" },
+    { key: "day", label: "🌤 Day" },
+    { key: "night", label: "🌙 Night" },
   ];
+
+  const presets = [
+    {
+      label: "✨ All-Season Daily",
+      desc: "Balanced for any day & weather",
+      data: { winter: 75, spring: 80, summer: 70, fall: 75, day: 85, night: 70 },
+    },
+    {
+      label: "❄️ Winter / Night Beast",
+      desc: "Warm, spicy, evening wear",
+      data: { winter: 95, spring: 40, summer: 15, fall: 85, day: 35, night: 95 },
+    },
+    {
+      label: "☀️ Summer / Fresh Day",
+      desc: "Bright, aquatic, office / gym",
+      data: { winter: 20, spring: 85, summer: 95, fall: 35, day: 95, night: 40 },
+    },
+    {
+      label: "🌙 Date Night / Clubbing",
+      desc: "Sensual, loud, projection wear",
+      data: { winter: 85, spring: 55, summer: 30, fall: 90, day: 25, night: 95 },
+    },
+  ];
+
+  const applyPreset = (presetData) => {
+    onChange({ ...values, ...presetData });
+  };
+
+  const toggleSlot = (key) => {
+    const current = values[key] ?? 50;
+    const nextVal = current >= 60 ? 20 : 85;
+    onChange({ ...values, [key]: nextVal });
+  };
+
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-      {slots.map(({ key, label }) => (
-        <div key={key}>
-          <div className="flex justify-between mb-1">
-            <span className="text-[11px] text-[#c5c1b9]">{label}</span>
-            <span className="text-[11px] text-[#c6a15b] font-semibold">{values[key] ?? 50}%</span>
-          </div>
-          <input type="range" min={0} max={100} step={5} value={values[key] ?? 50} onChange={(e) => onChange({ ...values, [key]: Number(e.target.value) })} className="w-full accent-[#c6a15b] cursor-pointer" />
+    <div className="space-y-4">
+      {/* 1-Click Quick Presets */}
+      <div>
+        <span className="block text-[10px] uppercase tracking-wider text-[#8e8a82] mb-1.5 font-medium">
+          Quick 1-Click Presets:
+        </span>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {presets.map((p) => (
+            <button
+              key={p.label}
+              type="button"
+              onClick={() => applyPreset(p.data)}
+              className="px-2.5 py-2 text-left bg-white/5 hover:bg-[#c6a15b]/15 border border-white/10 hover:border-[#c6a15b]/40 rounded transition cursor-pointer group"
+            >
+              <div className="text-[11px] font-medium text-[#f4efe6] group-hover:text-[#c6a15b]">
+                {p.label}
+              </div>
+              <div className="text-[9px] text-[#8e8a82] truncate">{p.desc}</div>
+            </button>
+          ))}
         </div>
-      ))}
+      </div>
+
+      {/* Clickable Season / Time Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {slots.map(({ key, label }) => {
+          const val = values[key] ?? 50;
+          const isHigh = val >= 60;
+          return (
+            <div
+              key={key}
+              className={`p-2.5 rounded border transition-colors ${
+                isHigh
+                  ? "bg-[#c6a15b]/10 border-[#c6a15b]/40"
+                  : "bg-[#11110f] border-white/10"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <button
+                  type="button"
+                  onClick={() => toggleSlot(key)}
+                  className="text-[11px] font-medium hover:text-[#c6a15b] cursor-pointer flex items-center gap-1.5"
+                  title="Click to toggle active / subtle"
+                >
+                  <span>{label}</span>
+                  <span
+                    className={`text-[9px] px-1 py-0.2 rounded font-semibold ${
+                      isHigh
+                        ? "bg-[#c6a15b] text-[#11110f]"
+                        : "bg-white/10 text-[#8e8a82]"
+                    }`}
+                  >
+                    {isHigh ? "Active" : "Subtle"}
+                  </span>
+                </button>
+                <span className="text-[11px] text-[#c6a15b] font-semibold">
+                  {val}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={5}
+                value={val}
+                onChange={(e) =>
+                  onChange({ ...values, [key]: Number(e.target.value) })
+                }
+                className="w-full accent-[#c6a15b] cursor-pointer"
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 // ─── Collapsible Section ────────────────────────────────────────────────────────
-function CollapsibleSection({ title, subtitle, children, defaultOpen = false, badge }) {
-  const [open, setOpen] = useState(defaultOpen);
+function CollapsibleSection({ title, subtitle, children, defaultOpen = false, badge, isOpen, onToggle }) {
+  const [localOpen, setLocalOpen] = useState(defaultOpen);
+  const open = isOpen !== undefined ? isOpen : localOpen;
+  const toggle = () => {
+    if (onToggle) onToggle(!open);
+    else setLocalOpen(!open);
+  };
+
   return (
     <div className="border border-white/10 rounded overflow-hidden">
-      <button type="button" onClick={() => setOpen((v) => !v)} className="w-full flex items-center justify-between px-4 py-3 bg-[#141412] hover:bg-[#1a1a17] transition cursor-pointer">
-        <div className="flex items-center gap-2">
+      <button
+        type="button"
+        onClick={toggle}
+        className="w-full flex items-center justify-between px-4 py-3 bg-[#141412] hover:bg-[#1a1a17] transition cursor-pointer text-left"
+      >
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b]">{title}</span>
-          {badge && <span className="text-[10px] px-1.5 py-0.5 bg-[#c6a15b]/20 text-[#c6a15b] rounded">{badge}</span>}
+          {badge && <span className="text-[10px] px-1.5 py-0.5 bg-[#c6a15b]/20 text-[#c6a15b] rounded font-medium">{badge}</span>}
           {subtitle && <span className="text-[10px] text-[#8e8a82] hidden sm:inline">{subtitle}</span>}
         </div>
-        {open ? <ChevronUp size={14} className="text-[#8e8a82]" /> : <ChevronDown size={14} className="text-[#8e8a82]" />}
+        {open ? <ChevronUp size={14} className="text-[#8e8a82] shrink-0" /> : <ChevronDown size={14} className="text-[#8e8a82] shrink-0" />}
       </button>
       {open && <div className="px-4 py-4 bg-[#141412] space-y-4">{children}</div>}
     </div>
@@ -383,6 +584,34 @@ function ProductModal({ product, onClose, onSave, token }) {
   const [uploadError, setUploadError] = useState("");
   const [saving, setSaving] = useState(false);
 
+  // Section visibility state
+  const [allExpanded, setAllExpanded] = useState(false);
+  const [sectionsOpen, setSectionsOpen] = useState({
+    info: true,
+    notes: true,
+    accords: true, // Section C is open by default
+    performance: false,
+    whenToWear: false,
+    variants: true,
+  });
+
+  const toggleSection = (key) => {
+    setSectionsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleToggleAll = () => {
+    const next = !allExpanded;
+    setAllExpanded(next);
+    setSectionsOpen({
+      info: next,
+      notes: next,
+      accords: next,
+      performance: next,
+      whenToWear: next,
+      variants: next,
+    });
+  };
+
   // Basic fields
   const [formData, setFormData] = useState({
     name: product?.name || "",
@@ -414,17 +643,22 @@ function ProductModal({ product, onClose, onSave, token }) {
     if (fallback?.baseNotes?.length > 0) return fallback.baseNotes;
     return [];
   });
+
   const [accords, setAccords] = useState(() => {
-    if (Array.isArray(product?.accords) && product.accords.length > 0) return product.accords;
-    if (typeof product?.accords === "string") {
+    let raw = [];
+    if (Array.isArray(product?.accords) && product.accords.length > 0) {
+      raw = product.accords;
+    } else if (typeof product?.accords === "string") {
       try {
         const parsed = JSON.parse(product.accords);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) raw = parsed;
       } catch {}
+    } else if (fallback?.accords?.length > 0) {
+      raw = fallback.accords;
     }
-    if (fallback?.accords?.length > 0) return fallback.accords;
-    return [];
+    return normalizeAccords(raw);
   });
+
   const [vibe, setVibe] = useState(product?.vibe || fallback?.vibe || "");
   const [longevity, setLongevity] = useState(product?.longevity || fallback?.longevity || "8 – 10 Hours");
   const [projection, setProjection] = useState(product?.projection || fallback?.projection || "Moderate");
@@ -465,7 +699,7 @@ function ProductModal({ product, onClose, onSave, token }) {
     if (template.topNotes?.length) setTopNotes(template.topNotes);
     if (template.middleNotes?.length) setMiddleNotes(template.middleNotes);
     if (template.baseNotes?.length) setBaseNotes(template.baseNotes);
-    if (template.accords?.length) setAccords(template.accords);
+    if (template.accords?.length) setAccords(normalizeAccords(template.accords));
     if (template.vibe) setVibe(template.vibe);
     if (template.longevity) setLongevity(template.longevity);
     if (template.projection) setProjection(template.projection);
@@ -535,9 +769,26 @@ function ProductModal({ product, onClose, onSave, token }) {
     finally { setUploadingImage(false); if (fileInputRef.current) fileInputRef.current.value = ""; }
   };
 
-  const handleAccordChange = (index, field, value) => setAccords((prev) => { const u = [...prev]; u[index] = { ...u[index], [field]: value }; return u; });
-  const handleAddAccord = () => { const nextColor = ACCORD_COLORS[accords.length % ACCORD_COLORS.length]; setAccords((prev) => [...prev, { name: "", percentage: 60, color: nextColor }]); };
-  const handleRemoveAccord = (index) => setAccords((prev) => prev.filter((_, i) => i !== index));
+  const handleAccordChange = (index, field, value) => {
+    setAccords((prev) => {
+      const copy = [...prev];
+      const cur = typeof copy[index] === "object" && copy[index] !== null
+        ? { ...copy[index] }
+        : { name: String(copy[index] || ""), percentage: 60, color: "#c6a15b" };
+      cur[field] = value;
+      copy[index] = cur;
+      return copy;
+    });
+  };
+
+  const handleAddAccord = () => {
+    const nextColor = ACCORD_COLORS[accords.length % ACCORD_COLORS.length];
+    setAccords((prev) => [...prev, { name: "", percentage: 60, color: nextColor }]);
+  };
+
+  const handleRemoveAccord = (index) => {
+    setAccords((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleVariantChange = (index, field, value) => setVariants((prev) => { const u = [...prev]; u[index] = { ...u[index], [field]: value }; return u; });
   const handleAddVariant = () => setVariants((prev) => [...prev, { size_ml: 20, price: 2499, stock: 15, active: true }]);
@@ -547,7 +798,19 @@ function ProductModal({ product, onClose, onSave, token }) {
     e.preventDefault();
     if (!formData.name.trim()) { alert("Perfume name is required."); return; }
     setSaving(true);
-    await onSave({ ...formData, variants, topNotes, middleNotes, baseNotes, accords, vibe, longevity, projection, whenToWear });
+    const cleanAccords = normalizeAccords(accords).filter((a) => a.name && a.name.trim());
+    await onSave({
+      ...formData,
+      variants,
+      topNotes: Array.isArray(topNotes) ? topNotes.filter(Boolean) : [],
+      middleNotes: Array.isArray(middleNotes) ? middleNotes.filter(Boolean) : [],
+      baseNotes: Array.isArray(baseNotes) ? baseNotes.filter(Boolean) : [],
+      accords: cleanAccords,
+      vibe,
+      longevity,
+      projection,
+      whenToWear,
+    });
     setSaving(false);
   };
 
@@ -561,7 +824,14 @@ function ProductModal({ product, onClose, onSave, token }) {
             <h2 className="font-display text-2xl text-[#f4efe6]">{product ? `Edit: ${product.name}` : "Add New Fragrance"}</h2>
             <p className="text-[11px] text-[#8e8a82] mt-0.5">Fill in basic details, then expand sections below to edit or add olfactory data.</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              type="button"
+              onClick={handleToggleAll}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-[#c5c1b9] hover:text-[#f4efe6] bg-white/5 hover:bg-white/10 border border-white/15 rounded transition cursor-pointer"
+            >
+              <span>{allExpanded ? "Collapse Sections" : "Expand All Sections"}</span>
+            </button>
             <button
               type="button"
               onClick={handleAutoFillFromCatalog}
@@ -577,8 +847,13 @@ function ProductModal({ product, onClose, onSave, token }) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
-          {/* ── SECTION 1: Basic Info ── */}
-          <CollapsibleSection title="Basic Information" subtitle="Name, Brand, Category, Gender, Type" defaultOpen={true}>
+          {/* ── SECTION A: Basic Info ── */}
+          <CollapsibleSection
+            title="A. Basic Information"
+            subtitle="Name, Brand, Category, Gender, Type"
+            isOpen={sectionsOpen.info}
+            onToggle={() => toggleSection("info")}
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">Fragrance Name *</label>
@@ -593,15 +868,49 @@ function ProductModal({ product, onClose, onSave, token }) {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">Category</label>
-                  {isCustomCategory && <button type="button" onClick={() => { setIsCustomCategory(false); setFormData({ ...formData, category: "Designer" }); }} className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer">Preset list</button>}
+                  {isCustomCategory && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomCategory(false);
+                        setFormData((prev) => ({ ...prev, category: "Designer" }));
+                      }}
+                      className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer"
+                    >
+                      ← Back to presets
+                    </button>
+                  )}
                 </div>
                 {!isCustomCategory ? (
-                  <select value={CATEGORIES.some((c) => c.toLowerCase() === (formData.category || "").toLowerCase()) ? CATEGORIES.find((c) => c.toLowerCase() === (formData.category || "").toLowerCase()) : "__custom__"} onChange={(e) => { if (e.target.value === "__custom__") setIsCustomCategory(true); else setFormData({ ...formData, category: e.target.value }); }} className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
-                    {CATEGORIES.map((c) => <option key={c} value={c} className="bg-[#171715]">{c}</option>)}
+                  <select
+                    value={
+                      CATEGORIES.some((c) => c.toLowerCase() === (formData.category || "").toLowerCase())
+                        ? CATEGORIES.find((c) => c.toLowerCase() === (formData.category || "").toLowerCase())
+                        : "__custom__"
+                    }
+                    onChange={(e) => {
+                      if (e.target.value === "__custom__") {
+                        setIsCustomCategory(true);
+                      } else {
+                        setFormData((prev) => ({ ...prev, category: e.target.value }));
+                      }
+                    }}
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c} value={c} className="bg-[#171715]">{c}</option>
+                    ))}
                     <option value="__custom__" className="bg-[#171715] text-[#c6a15b]">+ Custom Category...</option>
                   </select>
                 ) : (
-                  <input type="text" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} placeholder="e.g. Gourmand / Aquatic" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" autoFocus />
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
+                    placeholder="e.g. Gourmand / Aquatic"
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    autoFocus
+                  />
                 )}
               </div>
               <div>
@@ -613,15 +922,49 @@ function ProductModal({ product, onClose, onSave, token }) {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">Concentration</label>
-                  {isCustomType && <button type="button" onClick={() => { setIsCustomType(false); setFormData({ ...formData, type: "EDP" }); }} className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer">Preset list</button>}
+                  {isCustomType && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomType(false);
+                        setFormData((prev) => ({ ...prev, type: "EDP" }));
+                      }}
+                      className="text-[10px] text-[#c6a15b] hover:underline cursor-pointer"
+                    >
+                      ← Back to presets
+                    </button>
+                  )}
                 </div>
                 {!isCustomType ? (
-                  <select value={CONCENTRATIONS.some((c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase()) ? CONCENTRATIONS.find((c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase()) : "__custom__"} onChange={(e) => { if (e.target.value === "__custom__") setIsCustomType(true); else setFormData({ ...formData, type: e.target.value }); }} className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
-                    {CONCENTRATIONS.map((c) => <option key={c} value={c} className="bg-[#171715]">{c}</option>)}
+                  <select
+                    value={
+                      CONCENTRATIONS.some((c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase())
+                        ? CONCENTRATIONS.find((c) => c.toLowerCase() === (formData.type || "").trim().toLowerCase())
+                        : "__custom__"
+                    }
+                    onChange={(e) => {
+                      if (e.target.value === "__custom__") {
+                        setIsCustomType(true);
+                      } else {
+                        setFormData((prev) => ({ ...prev, type: e.target.value }));
+                      }
+                    }}
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                  >
+                    {CONCENTRATIONS.map((c) => (
+                      <option key={c} value={c} className="bg-[#171715]">{c}</option>
+                    ))}
                     <option value="__custom__" className="bg-[#171715] text-[#c6a15b]">+ Custom Concentration...</option>
                   </select>
                 ) : (
-                  <input type="text" value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })} placeholder="e.g. Absolu / Cologne Intense" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" autoFocus />
+                  <input
+                    type="text"
+                    value={formData.type}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value }))}
+                    placeholder="e.g. Absolu / Cologne Intense"
+                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    autoFocus
+                  />
                 )}
               </div>
             </div>
@@ -665,26 +1008,140 @@ function ProductModal({ product, onClose, onSave, token }) {
             </div>
           </CollapsibleSection>
 
-          {/* ── SECTION 2: Perfume Pyramid (Notes) ── */}
-          <CollapsibleSection title="Perfume Pyramid — Notes" subtitle="Top, Heart & Base notes shown on product page" badge={totalNotes > 0 ? `${totalNotes} notes` : "not set"}>
-            <p className="text-[11px] text-[#8e8a82] -mt-1">Type each note and press Enter or comma to add it. Click × to remove.</p>
+          {/* ── SECTION B: Perfume Pyramid (Notes) ── */}
+          <CollapsibleSection
+            title="B. Perfume Pyramid — Notes"
+            subtitle="Top, Heart & Base notes shown on product page"
+            badge={totalNotes > 0 ? `${totalNotes} notes` : "not set"}
+            isOpen={sectionsOpen.notes}
+            onToggle={() => toggleSection("notes")}
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-white/5">
+              <p className="text-[11px] text-[#8e8a82]">Type each note and press Enter or comma to add it. Click × to remove.</p>
+              <button
+                type="button"
+                onClick={handleAutoFillFromCatalog}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/15 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer self-start sm:self-auto shrink-0"
+                title="Fill notes and accords automatically from standard perfume database"
+              >
+                <Sparkles size={12} />
+                <span>Auto-Fill Notes for "{formData.name || product?.name || 'Perfume'}"</span>
+              </button>
+            </div>
             <TagInput label="🔝 Top Notes — Opening (First 15–30 mins)" tags={topNotes} onChange={setTopNotes} placeholder="e.g. Bergamot, Lemon, Pink Pepper..." />
             <TagInput label="💛 Middle / Heart Notes — Core Body (Hours 2–5)" tags={middleNotes} onChange={setMiddleNotes} placeholder="e.g. Rose, Iris, Jasmine..." />
             <TagInput label="🌑 Base Notes — Dry Down (Hours 5+)" tags={baseNotes} onChange={setBaseNotes} placeholder="e.g. Vanilla, Cedarwood, Amber, Musk..." />
           </CollapsibleSection>
 
-          {/* ── SECTION 3: Main Accords ── */}
-          <CollapsibleSection title="Main Accords & Themes" subtitle="Coloured bars shown under the fragrance name" badge={accords.length > 0 ? `${accords.length} accords` : "not set"}>
-            <p className="text-[11px] text-[#8e8a82] -mt-1">Pick a colour, type the accord name, drag the slider for strength. Sort strongest to weakest.</p>
-            <div className="space-y-2">
-              {accords.map((accord, i) => <AccordRow key={i} accord={accord} index={i} onChange={handleAccordChange} onRemove={handleRemoveAccord} />)}
+          {/* ── SECTION C: Main Accords ── */}
+          <CollapsibleSection
+            title="C. Main Accords & Themes"
+            subtitle="Coloured bars shown under the fragrance name"
+            badge={accords.length > 0 ? `${accords.length} active` : "0 set"}
+            isOpen={sectionsOpen.accords}
+            onToggle={() => toggleSection("accords")}
+          >
+            <p className="text-[11px] text-[#8e8a82] -mt-1">
+              Click any quick-add tag below to toggle it on/off, or click "Add Custom Accord". Drag slider to adjust bar width.
+            </p>
+
+            {/* Quick Add Preset Accords */}
+            <div className="p-3 bg-white/5 rounded border border-white/10 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
+                  Quick Add / Toggle Accords:
+                </span>
+                <span className="text-[10px] text-[#c6a15b]">
+                  {accords.length} selected
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {PRESET_ACCORDS.map((acc) => {
+                  const isSelected = accords.some(
+                    (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() === acc.name.toLowerCase()
+                  );
+                  return (
+                    <button
+                      key={acc.name}
+                      type="button"
+                      onClick={() => {
+                        if (isSelected) {
+                          // Toggle OFF (remove from list)
+                          setAccords((prev) =>
+                            prev.filter(
+                              (a) => (typeof a === "string" ? a : a?.name || "").trim().toLowerCase() !== acc.name.toLowerCase()
+                            )
+                          );
+                        } else {
+                          // Toggle ON (add to list)
+                          setAccords((prev) => [
+                            ...prev,
+                            { name: acc.name, percentage: acc.pct, color: acc.color },
+                          ]);
+                        }
+                      }}
+                      className={`text-[11px] px-2.5 py-1 rounded transition cursor-pointer flex items-center gap-1.5 border font-medium ${
+                        isSelected
+                          ? "bg-[#c6a15b] text-[#11110f] border-[#c6a15b] shadow-sm font-semibold"
+                          : "bg-[#171715] hover:bg-[#c6a15b]/20 text-[#c5c1b9] hover:text-[#c6a15b] border-white/10 hover:border-[#c6a15b]/40"
+                      }`}
+                      title={isSelected ? `Click to remove ${acc.name}` : `Click to add ${acc.name}`}
+                    >
+                      <span className="font-bold">{isSelected ? "✓" : "+"}</span>
+                      <span>{acc.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <button type="button" onClick={handleAddAccord} className="inline-flex items-center gap-1.5 text-[11px] text-[#c6a15b] hover:underline font-semibold cursor-pointer mt-1"><Plus size={12} /> Add Accord</button>
-            {accords.length === 0 && <p className="text-[11px] text-[#8e8a82] italic">No accords added yet — click Add Accord to start.</p>}
+
+            {/* Accord Rows */}
+            <div className="space-y-2">
+              {accords.map((accord, i) => (
+                <AccordRow
+                  key={i}
+                  accord={accord}
+                  index={i}
+                  onChange={handleAccordChange}
+                  onRemove={handleRemoveAccord}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <button
+                type="button"
+                onClick={handleAddAccord}
+                className="inline-flex items-center gap-1.5 text-[11px] text-[#c6a15b] hover:text-[#e4cf9b] hover:underline font-semibold cursor-pointer"
+              >
+                <Plus size={13} /> Add Custom Accord
+              </button>
+              {accords.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setAccords([])}
+                  className="text-[10px] text-red-400 hover:text-red-300 underline cursor-pointer"
+                >
+                  Clear all accords
+                </button>
+              )}
+            </div>
+
+            {accords.length === 0 && (
+              <p className="text-[11px] text-[#8e8a82] italic">
+                No accords added yet — click any tag above or "Add Custom Accord".
+              </p>
+            )}
           </CollapsibleSection>
 
-          {/* ── SECTION 4: Performance & Character ── */}
-          <CollapsibleSection title="Performance & Character" subtitle="Longevity, Projection & Vibe shown in product specs" badge={(longevity || projection || vibe) ? "set" : "not set"}>
+          {/* ── SECTION D: Performance & Character ── */}
+          <CollapsibleSection
+            title="D. Performance & Character"
+            subtitle="Longevity, Projection & Vibe shown in product specs"
+            badge={(longevity || projection || vibe) ? "set" : "not set"}
+            isOpen={sectionsOpen.performance}
+            onToggle={() => toggleSection("performance")}
+          >
             <div>
               <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Scent Vibe / Character</label>
               <input type="text" value={vibe} onChange={(e) => setVibe(e.target.value)} placeholder="e.g. Aged Pipe Tobacco, Warm Spices & Rich Resins" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
@@ -708,14 +1165,25 @@ function ProductModal({ product, onClose, onSave, token }) {
             </div>
           </CollapsibleSection>
 
-          {/* ── SECTION 5: When to Wear ── */}
-          <CollapsibleSection title="When to Wear — Season & Time Ratings" subtitle="Displayed as the season suitability chart">
+          {/* ── SECTION E: When to Wear ── */}
+          <CollapsibleSection
+            title="E. When to Wear — Season & Time Ratings"
+            subtitle="Displayed as the season suitability chart"
+            isOpen={sectionsOpen.whenToWear}
+            onToggle={() => toggleSection("whenToWear")}
+          >
             <p className="text-[11px] text-[#8e8a82] -mt-1">Drag each slider to set suitability. Higher % = more recommended.</p>
             <WhenToWearSliders values={whenToWear} onChange={setWhenToWear} />
           </CollapsibleSection>
 
-          {/* ── SECTION 6: Decant Sizes ── */}
-          <CollapsibleSection title="Decant Sizes & Pricing (₹)" subtitle="Atomizer sizes, prices, and stock levels" defaultOpen={true} badge={`${variants.length} size${variants.length !== 1 ? "s" : ""}`}>
+          {/* ── SECTION F: Decant Sizes ── */}
+          <CollapsibleSection
+            title="F. Decant Sizes & Pricing (₹)"
+            subtitle="Atomizer sizes, prices, and stock levels"
+            badge={`${variants.length} size${variants.length !== 1 ? "s" : ""}`}
+            isOpen={sectionsOpen.variants}
+            onToggle={() => toggleSection("variants")}
+          >
             <div className="space-y-2">
               {variants.map((v, idx) => (
                 <div key={idx} className="flex items-center gap-3 bg-[#171715] p-2.5 border border-white/5 rounded">

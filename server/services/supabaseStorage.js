@@ -2,6 +2,9 @@ import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const localUploadsDir = path.resolve(__dirname, "../../public/images/perfumes");
@@ -125,4 +128,56 @@ export async function uploadPerfumeImage({ buffer, filename, mimeType }) {
     imageUrl: localUrl,
     storage: "local",
   };
+}
+
+/**
+ * Safely deletes a perfume image from storage (either Supabase Storage or local disk).
+ * Prevents orphaned duplicate files when photos are replaced or products are deleted.
+ */
+export async function deletePerfumeImage(imageUrl) {
+  if (!imageUrl || typeof imageUrl !== "string") return false;
+
+  const trimmed = imageUrl.trim();
+  if (trimmed.startsWith("data:image/")) return false; // Not a stored file
+
+  const supabase = getSupabase();
+
+  try {
+    // 1. If it's a Supabase Storage CDN URL
+    if (trimmed.includes(".supabase.co/storage/v1/object/public/")) {
+      const parts = trimmed.split(`/${BUCKET_NAME}/`);
+      if (parts.length > 1) {
+        const objectPath = parts[1].split("?")[0];
+        if (supabase) {
+          const { error } = await supabase.storage.from(BUCKET_NAME).remove([objectPath]);
+          if (error) {
+            console.warn(`[Storage Cleanup] Could not delete from Supabase: ${objectPath}`, error.message);
+            return false;
+          }
+          console.log(`[Storage Cleanup] Deleted replaced image from Supabase: ${objectPath}`);
+          return true;
+        }
+      }
+    }
+
+    // 2. If it's a local file path: /images/perfumes/filename.ext
+    if (trimmed.startsWith("/images/perfumes/")) {
+      const filename = path.basename(trimmed);
+      const filePath = path.join(localUploadsDir, filename);
+      try {
+        await fs.unlink(filePath);
+        console.log(`[Storage Cleanup] Deleted replaced local image: ${filename}`);
+        return true;
+      } catch (fsErr) {
+        if (fsErr.code !== "ENOENT") {
+          console.warn(`[Storage Cleanup] Could not delete local file: ${filename}`, fsErr.message);
+        }
+        return false;
+      }
+    }
+  } catch (err) {
+    console.warn(`[Storage Cleanup] Error deleting image '${trimmed}':`, err.message);
+  }
+
+  return false;
 }
