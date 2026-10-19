@@ -45,7 +45,11 @@ export default function Login() {
   const [forgotCooldown, setForgotCooldown] = useState(0);
   const [forgotSubmitting, setForgotSubmitting] = useState(false);
 
-  const from = location.state?.from?.pathname || "/account";
+  const from =
+    location.state?.from?.pathname ||
+    (typeof location.state?.from === "string" ? location.state.from : null) ||
+    searchParams.get("redirect") ||
+    "/account";
 
   // Redirect if already logged in
   useEffect(() => {
@@ -103,12 +107,9 @@ export default function Login() {
       const res = await sendForgotPasswordOtpApi(forgotEmail.trim());
       setForgotStep(2);
       setForgotCooldown(30);
-      setForgotSuccess(res.warning || "Verification code sent to your email.");
-      if (res.devOtp) {
-        setForgotOtp(res.devOtp);
-      }
+      setForgotSuccess(res.message || "Verification code sent to your email address.");
     } catch (err) {
-      setForgotError(err.message || "Failed to send reset code.");
+      setForgotError(err.message || "Unable to send the verification code. Please try again.");
     } finally {
       setForgotSubmitting(false);
     }
@@ -118,16 +119,14 @@ export default function Login() {
   const handleResendForgotOtp = async () => {
     if (forgotCooldown > 0 || forgotSubmitting) return;
     setForgotError("");
+    setForgotSuccess("");
     setForgotSubmitting(true);
     try {
       const res = await sendForgotPasswordOtpApi(forgotEmail.trim());
       setForgotCooldown(30);
-      setForgotSuccess("A fresh code has been generated.");
-      if (res.devOtp) {
-        setForgotOtp(res.devOtp);
-      }
+      setForgotSuccess(res.message || "Verification code sent to your email address.");
     } catch (err) {
-      setForgotError(err.message || "Failed to resend code.");
+      setForgotError(err.message || "Unable to send the verification code. Please try again.");
     } finally {
       setForgotSubmitting(false);
     }
@@ -295,7 +294,7 @@ export default function Login() {
           <div className="mt-6 border-t border-white/10 pt-5 text-center text-xs text-[#8e8a82]">
             New to The Decant Bar?{" "}
             <Link
-              to="/register"
+              to={from && from !== "/account" ? `/register?redirect=${encodeURIComponent(from)}` : "/register"}
               className="text-[#c6a15b] font-medium hover:underline hover:text-[#d8c08a] transition"
             >
               Create an account

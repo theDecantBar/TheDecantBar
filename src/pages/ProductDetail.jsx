@@ -25,6 +25,7 @@ import { getPerfumeProfile } from "../data/perfumeNotes";
 import MainAccords from "../components/product/MainAccords";
 import WhenToWear from "../components/product/WhenToWear";
 import PerfumePyramid from "../components/product/PerfumePyramid";
+import ProductImage from "../components/common/ProductImage";
 
 const SPRAY_ESTIMATES = {
   2: "~30 sprays · ~7–10 days of wear",
@@ -98,7 +99,6 @@ export default function ProductDetail() {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -319,35 +319,28 @@ export default function ProductDetail() {
       </nav>
 
       {/* Main Product Showcase Grid */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[420px_1fr] lg:gap-10">
         {/* Left Column: Fragrance Visual */}
-        <div className="lg:col-span-6">
+        <div className="w-full">
           <div className="sticky top-28">
-            <div className="aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#171715] flex items-center justify-center p-6 sm:p-8 group relative">
-              {isSoldOut && (
-                <div className="absolute top-4 right-4 px-3 py-1 text-[11px] tracking-[0.25em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/70 backdrop-blur-md z-10 shadow-lg">
-                  Sold Out
-                </div>
-              )}
-              {product.image_url && !imageError ? (
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  onError={() => setImageError(true)}
-                  className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
-                />
-              ) : (
-                <div className="text-center text-[#c6a15b]/50">
-                  <Droplets size={48} strokeWidth={1} className="mx-auto mb-3" />
-                  <p className="text-xs uppercase tracking-[0.25em]">
-                    Authentic Handcrafted Decant
-                  </p>
-                </div>
-              )}
+            <div className="w-full max-w-[400px] sm:max-w-[420px] group">
+              <ProductImage
+                src={product.image_url}
+                alt={product.name}
+                aspectRatio="aspect-[4/5]"
+                paddingClassName="p-[15px]"
+                containerClassName="rounded-lg shadow-xl"
+              >
+                {isSoldOut && (
+                  <div className="absolute top-4 right-4 px-3 py-1 text-[11px] tracking-[0.25em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/70 backdrop-blur-md z-10 shadow-lg">
+                    Sold Out
+                  </div>
+                )}
+              </ProductImage>
             </div>
 
             {/* Trust highlights below image */}
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-[#8e8a82]">
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-[#8e8a82] max-w-[400px] sm:max-w-[420px]">
               <div className="flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
                 <ShieldCheck size={16} className="text-[#c6a15b] shrink-0" />
                 <span>100% Genuine Formula</span>
@@ -361,7 +354,7 @@ export default function ProductDetail() {
         </div>
 
         {/* Right Column: Scent Info, Accords & Immediate Purchase */}
-        <div className="lg:col-span-6 flex flex-col">
+        <div className="flex flex-col min-w-0">
           {/* 1. Category & Gender Badge */}
           <div className="flex items-center gap-2.5">
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
@@ -384,10 +377,10 @@ export default function ProductDetail() {
               {shortDescription}
             </p>
           )}
-          {/* 5. Purchase & Decant Sizing Card (Compact & Prominent) */}
-          <div className="mt-4 border border-[#c6a15b]/30 bg-[#151512] p-4 sm:p-4.5 rounded-lg shadow-lg">
+          {/* 5. Purchase & Decant Sizing Card (Left-Aligned, Compact Width) */}
+          <div className="mt-4 w-full sm:w-[82%] max-w-md border border-[#c6a15b]/30 bg-[#151512] p-4 sm:p-4.5 rounded-lg shadow-lg">
             {/* Price & Current Size */}
-            <div className="flex items-baseline justify-between border-b border-white/10 pb-3">
+            <div className="flex items-baseline justify-between gap-2 border-b border-white/10 pb-3">
               <div>
                 <span className="text-[10px] uppercase tracking-wider text-[#8e8a82] block mb-0.5">
                   Price
@@ -397,7 +390,7 @@ export default function ProductDetail() {
                 </span>
               </div>
               {selectedVariant && (
-                <span className="text-[11px] sm:text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-2 py-0.5 rounded">
+                <span className="text-[11px] sm:text-xs text-[#c6a15b] font-medium bg-[#c6a15b]/10 border border-[#c6a15b]/30 px-2 py-0.5 rounded text-right">
                   {quantity > 1 ? `${quantity} × ` : ""}{selectedVariant.size_ml}ml Decant Atomizer
                 </span>
               )}
@@ -478,7 +471,7 @@ export default function ProductDetail() {
               <div className="mt-3.5 space-y-2.5">
                 <div className="flex items-center gap-2.5">
                   {/* Quantity Stepper */}
-                  <div className="flex h-9.5 sm:h-10 items-center border border-white/15 bg-[#171715]">
+                  <div className="flex h-9.5 sm:h-10 items-center border border-white/15 bg-[#171715] shrink-0">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
@@ -504,7 +497,7 @@ export default function ProductDetail() {
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className={`flex-1 h-9.5 sm:h-10 flex items-center justify-center gap-2 border text-[11px] sm:text-xs uppercase tracking-[0.18em] font-semibold transition-all duration-300 cursor-pointer ${
+                    className={`flex-1 min-w-0 h-9.5 sm:h-10 flex items-center justify-center gap-1.5 sm:gap-2 border text-[10px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.18em] font-semibold transition-all duration-300 cursor-pointer ${
                       added
                         ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
                         : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
@@ -512,13 +505,13 @@ export default function ProductDetail() {
                   >
                     {added ? (
                       <>
-                        <Check size={14} strokeWidth={2.5} />
-                        Added to Bag
+                        <Check size={14} strokeWidth={2.5} className="shrink-0" />
+                        <span className="truncate">Added to Bag</span>
                       </>
                     ) : (
                       <>
-                        <ShoppingBag size={14} strokeWidth={1.5} />
-                        Add to Bag
+                        <ShoppingBag size={14} strokeWidth={1.5} className="shrink-0" />
+                        <span className="truncate">Add to Bag</span>
                       </>
                     )}
                   </button>

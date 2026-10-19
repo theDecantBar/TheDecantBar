@@ -360,7 +360,7 @@ export default function AdminOrders() {
                         </div>
 
                         <div className="pt-3 border-t border-white/10 flex justify-between text-xs font-semibold text-[#f4efe6]">
-                          <span>Subtotal + Delivery Fee (₹{order.shipping_fee || 99})</span>
+                          <span>Subtotal + Delivery Fee ({Number(order.shipping_fee) === 0 ? "FREE" : `₹${order.shipping_fee}`})</span>
                           <span className="text-[#c6a15b] font-display text-base">
                             Total: ₹{order.total_amount}
                           </span>

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Sparkles } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
+import { calculateShippingFee, calculateOrderTotal, FREE_SHIPPING_THRESHOLD } from "../utils/shipping";
 
 export default function Cart() {
   const { cartItems, cartCount, cartSubtotal, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -174,21 +175,48 @@ export default function Cart() {
               Order Summary
             </h2>
 
+            {/* Free Shipping Alert / Incentive */}
+            {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
+              <div className="mt-4 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+                <div className="flex items-center gap-2">
+                  <Truck size={15} className="text-[#c6a15b] shrink-0" />
+                  <span>
+                    Add <strong className="text-[#f4efe6]">₹{FREE_SHIPPING_THRESHOLD - cartSubtotal}</strong> more to unlock <strong className="text-[#c6a15b]">FREE shipping</strong>
+                  </span>
+                </div>
+                <div className="mt-2.5 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full bg-[#c6a15b] transition-all duration-300"
+                    style={{
+                      width: `${Math.min(100, Math.round((cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100))}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
+                <Sparkles size={15} className="text-emerald-400 shrink-0" />
+                <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
+              </div>
+            )}
+
             <div className="mt-6 divide-y divide-white/10 text-xs text-[#c5c1b9]">
               <div className="flex justify-between pb-4">
                 <span>Subtotal ({cartCount} {cartCount === 1 ? "item" : "items"})</span>
                 <span className="text-[#f4efe6] font-medium text-sm">₹{cartSubtotal}</span>
               </div>
 
-              <div className="flex justify-between py-4">
-                <span>Shipping</span>
-                <span className="text-[#8e8a82]">Calculated at checkout</span>
+              <div className="flex justify-between items-center py-4">
+                <span>Standard Shipping</span>
+                <span className={cartSubtotal >= FREE_SHIPPING_THRESHOLD ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                  {cartSubtotal >= FREE_SHIPPING_THRESHOLD ? "FREE" : `₹${calculateShippingFee(cartSubtotal)}`}
+                </span>
               </div>
 
               <div className="flex justify-between pt-5 text-sm sm:text-base font-semibold text-[#f4efe6]">
-                <span>Estimated Total</span>
+                <span>Total</span>
                 <span className="font-display text-2xl text-[#c6a15b]">
-                  ₹{cartSubtotal}
+                  ₹{calculateOrderTotal(cartSubtotal)}
                 </span>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Plus, Minus, Bell } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
+import ProductImage from "../common/ProductImage";
 
 function ProductCard({ product }) {
   const shouldReduceMotion = useReducedMotion();
@@ -10,7 +11,6 @@ function ProductCard({ product }) {
   const [selectedVariantId, setSelectedVariantId] = useState(
     () => product.variants?.[0]?.id ?? null
   );
-  const [imageError, setImageError] = useState(false);
 
   const selectedVariant =
     product.variants?.find((v) => v.id === selectedVariantId) ??
@@ -43,26 +43,22 @@ function ProductCard({ product }) {
       {/* Product Image Link */}
       <Link
         to={`/product/${product.id}`}
-        className="aspect-[4/5] bg-[#1c1c18] flex items-center justify-center overflow-hidden relative cursor-pointer"
+        className="block cursor-pointer overflow-hidden"
       >
-        {(isSoldOut || allSoldOut) && (
-          <div className="absolute top-3 right-3 px-2 py-0.5 text-[9px] tracking-[0.2em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/60 backdrop-blur-sm z-10">
-            Sold Out
-          </div>
-        )}
-        {product.image_url && !imageError ? (
-          <img
-            src={product.image_url}
-            alt={product.name}
-            onError={() => setImageError(true)}
-            className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700"
-            loading="lazy"
-          />
-        ) : (
-          <div className="text-[#c6a15b]/50 text-sm tracking-[0.2em] uppercase">
-            No Image
-          </div>
-        )}
+        <ProductImage
+          src={product.image_url}
+          alt={product.name}
+          aspectRatio="aspect-[4/5]"
+          paddingClassName="p-4"
+          containerClassName="bg-[#1c1c18]"
+          loading="lazy"
+        >
+          {(isSoldOut || allSoldOut) && (
+            <div className="absolute top-3 right-3 px-2 py-0.5 text-[9px] tracking-[0.2em] font-semibold uppercase bg-red-950/90 text-red-300 border border-red-800/60 backdrop-blur-sm z-10">
+              Sold Out
+            </div>
+          )}
+        </ProductImage>
       </Link>
 
       {/* Product Information */}

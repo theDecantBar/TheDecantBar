@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import pool from "../config/db.js";
 
 const generateToken = (id) => {
@@ -468,23 +469,30 @@ export const sendForgotPasswordOtp = async (req, res) => {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalizedEmail)) {
+      return res.status(400).json({ message: "Please provide a valid email address." });
+    }
 
-    // 1. Check if user exists
+    // 1. Check if user exists (to prevent enumeration, return generic message if user doesn't exist)
     const userRes = await pool.query(
       "SELECT id, full_name FROM users WHERE LOWER(email) = $1",
       [normalizedEmail]
     );
 
     if (userRes.rows.length === 0) {
-      return res.status(404).json({ message: "No account found with this email address." });
+      // Return safe message without revealing account existence
+      return res.json({
+        message: "If an account is associated with this email, a verification code has been sent.",
+        email: normalizedEmail,
+      });
     }
 
-    const userName = userRes.rows[0].full_name;
+    const userName = userRes.rows[0].full_name || "Valued Client";
 
-    // 2. Generate random 6-digit OTP
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // 2. Generate cryptographically secure random 6-digit OTP
+    const otpCode = crypto.randomInt(100000, 1000000).toString();
 
-    // 3. Clear existing pending password OTPs for this email
+    // 3. Clear existing pending password OTPs for this email to prevent conflicting active codes
     await pool.query(
       "DELETE FROM email_otps WHERE LOWER(email) = $1 AND purpose = 'forgot_password'",
       [normalizedEmail]
@@ -497,56 +505,67 @@ export const sendForgotPasswordOtp = async (req, res) => {
       [normalizedEmail, otpCode]
     );
 
-    console.log(`\n======================================================`);
-    console.log(`🔑 [PASSWORD RESET OTP FOR ${normalizedEmail}]: ${otpCode}`);
-    console.log(`======================================================\n`);
-
-    // 5. Send Password Reset Email via Resend
-    let warning = null;
-    let devOtp = null;
+    // 5. Send Password Reset Email via Resend - confirm delivery acceptance
+    const { sendEmail } = await import("../services/emailService.js");
     try {
-      if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
-        const { sendEmail } = await import("../services/emailService.js");
-        await sendEmail({
-          to: normalizedEmail,
-          subject: `${otpCode} is your The Decant Bar password reset code`,
-          html: `
-            <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 28px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3); max-width: 500px; margin: 0 auto;">
-              <h2 style="color: #c6a15b; margin-top: 0; text-align: center; letter-spacing: 2px;">THE DECANT BAR</h2>
-              <p style="text-align: center; color: #8e8a82; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Password Reset Request</p>
-              <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
-              <p>Hello ${userName},</p>
-              <p>We received a request to reset your password. Use the 6-digit code below to set a new password:</p>
-              <div style="text-align: center; margin: 24px 0;">
-                <span style="display: inline-block; background: #171715; border: 1px solid #c6a15b; padding: 14px 28px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #f4efe6; border-radius: 4px;">
-                  ${otpCode}
-                </span>
-              </div>
-              <p style="font-size: 12px; color: #8e8a82; text-align: center;">
-                This code is valid for <strong>10 minutes</strong>. If you did not request this, you can safely ignore this email.
-              </p>
+      await sendEmail({
+        to: normalizedEmail,
+        subject: `${otpCode} is your The Decant Bar password reset code`,
+        html: `
+          <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 28px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3); max-width: 500px; margin: 0 auto;">
+            <h2 style="color: #c6a15b; margin-top: 0; text-align: center; letter-spacing: 2px;">THE DECANT BAR</h2>
+            <p style="text-align: center; color: #8e8a82; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Password Reset Request</p>
+            <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
+            <p>Hello ${userName},</p>
+            <p>We received a request to reset your password. Use the 6-digit code below to set a new password:</p>
+            <div style="text-align: center; margin: 24px 0;">
+              <span style="display: inline-block; background: #171715; border: 1px solid #c6a15b; padding: 14px 28px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #f4efe6; border-radius: 4px;">
+                ${otpCode}
+              </span>
             </div>
-          `,
-          text: `Your Decant Bar password reset code is: ${otpCode}. Valid for 10 minutes.`,
+            <p style="font-size: 12px; color: #8e8a82; text-align: center;">
+              This code is valid for <strong>10 minutes</strong>. If you did not request this, you can safely ignore this email.
+            </p>
+          </div>
+        `,
+        text: `Your Decant Bar password reset code is: ${otpCode}. Valid for 10 minutes.`,
+      });
+    } catch (emailErr) {
+      // Invalidate the un-delivered OTP immediately
+      await pool.query(
+        "DELETE FROM email_otps WHERE LOWER(email) = $1 AND purpose = 'forgot_password'",
+        [normalizedEmail]
+      );
+
+      // Log failure reason without exposing API keys, OTPs, or passwords
+      console.error(
+        `[Email Delivery Error] Failed to send password reset code to ${normalizedEmail}: ${emailErr.message}`
+      );
+
+      if (
+        emailErr.message?.includes("only send testing emails") ||
+        emailErr.message?.includes("not verified") ||
+        emailErr.statusCode === 403
+      ) {
+        return res.status(502).json({
+          message:
+            "Unable to send the verification code. The email service is in testing mode and can only deliver to the verified domain owner (thedecantbarofficial@gmail.com). Please verify a custom domain in Resend to send to all customers.",
+          error: "RESEND_DOMAIN_RESTRICTION",
         });
       }
-    } catch (emailErr) {
-      console.warn("Password reset OTP email warning:", emailErr.message);
-      if (emailErr.message?.includes("only send testing emails") || emailErr.message?.includes("403")) {
-        warning = "Resend Sandbox Restriction: Testing emails can only be delivered to your registered email (thedecantbarofficial@gmail.com). To send to all customers, connect your custom domain at resend.com/domains.";
-        devOtp = otpCode;
-      }
+
+      return res.status(502).json({
+        message: "Unable to send the verification code. Please try again.",
+      });
     }
 
-    res.json({
-      message: warning ? "Password reset code generated." : "Password reset code sent to your email address.",
+    return res.status(200).json({
+      message: "Verification code sent to your email address.",
       email: normalizedEmail,
-      warning,
-      devOtp,
     });
   } catch (error) {
     console.error("Send forgot password OTP error:", error);
-    res.status(500).json({ message: "Failed to send reset code. Please try again." });
+    res.status(500).json({ message: "Unable to process password reset request. Please try again." });
   }
 };
 

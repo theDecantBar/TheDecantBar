@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   ShieldCheck,
@@ -11,7 +11,8 @@ import {
   ArrowLeft,
   Sparkles,
   Lock,
-  AlertCircle
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
@@ -21,8 +22,11 @@ import {
   verifyPaymentAndPlaceOrder,
   placeCodOrder,
 } from "../services/authApi";
-
-const SHIPPING_FEE = 99;
+import {
+  calculateShippingFee,
+  calculateOrderTotal,
+  FREE_SHIPPING_THRESHOLD,
+} from "../utils/shipping";
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -41,58 +45,198 @@ const loadRazorpayScript = () => {
 
 export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
-  const { user, token, isAuthenticated } = useAuth();
+  const { token, isAuthenticated } = useAuth();
 
-  const [formData, setFormData] = useState(() => ({
-    fullName: user?.fullName || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-    address: user?.address || "",
-    city: user?.city || "",
-    state: user?.state || "",
-    pincode: user?.pincode || "",
+  // Initial checkout form values start completely empty, even when customer is logged in
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
     paymentMethod: "cod",
     orderNotes: "",
-  }));
+  });
 
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
 
-  // Auto-fill form if user logs in or profile becomes available
-  const [syncedUserId, setSyncedUserId] = useState(user?.id);
-  if (user && user.id !== syncedUserId) {
-    setSyncedUserId(user.id);
-    setFormData((prev) => ({
-      ...prev,
-      fullName: prev.fullName || user.fullName || "",
-      email: prev.email || user.email || "",
-      phone: prev.phone || user.phone || "",
-      address: prev.address || user.address || "",
-      city: prev.city || user.city || "",
-      state: prev.state || user.state || "",
-      pincode: prev.pincode || user.pincode || "",
-    }));
-  }
+  const fullNameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const emailRef = useRef(null);
+  const addressRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const pincodeRef = useRef(null);
+  const orderNotesRef = useRef(null);
+
+  const fieldRefs = {
+    fullName: fullNameRef,
+    phone: phoneRef,
+    email: emailRef,
+    address: addressRef,
+    city: cityRef,
+    state: stateRef,
+    pincode: pincodeRef,
+    orderNotes: orderNotesRef,
+  };
+
+  const FIELD_ORDER = [
+    "fullName",
+    "phone",
+    "email",
+    "address",
+    "city",
+    "state",
+    "pincode",
+  ];
+
+  const validateField = (name, value) => {
+    const val = String(value || "").trim();
+    switch (name) {
+      case "fullName": {
+        if (!val) return "Please enter your full name.";
+        if (val.length < 2) return "Full name must be at least 2 characters.";
+        if (!/^[A-Za-z\s.'-]+$/.test(val)) {
+          return "Full name can only contain letters, spaces, dots, and hyphens.";
+        }
+        return "";
+      }
+      case "phone": {
+        let cleanDigits = val.replace(/^(\+91|91|0)/, "").replace(/\D/g, "");
+        if (!cleanDigits) return "Please enter your 10-digit mobile number.";
+        if (!/^[6-9]\d{9}$/.test(cleanDigits)) {
+          return "Please enter a valid 10-digit Indian mobile number.";
+        }
+        return "";
+      }
+      case "email": {
+        if (!val) return "Please enter your email address.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) {
+          return "Please enter a valid email address.";
+        }
+        return "";
+      }
+      case "address": {
+        if (!val) return "Please enter your delivery address.";
+        if (val.length < 5) return "Please enter a complete delivery address (minimum 5 characters).";
+        return "";
+      }
+      case "city": {
+        if (!val) return "Please enter your city.";
+        return "";
+      }
+      case "state": {
+        if (!val) return "Please enter your state.";
+        return "";
+      }
+      case "pincode": {
+        const cleanPin = val.replace(/\D/g, "");
+        if (!cleanPin) return "Please enter your 6-digit PIN code.";
+        if (!/^[1-9]\d{5}$/.test(cleanPin)) {
+          return "Please enter a valid 6-digit Indian PIN code.";
+        }
+        return "";
+      }
+      case "orderNotes": {
+        if (val.length > 300) {
+          return "Order notes must be 300 characters or fewer.";
+        }
+        return "";
+      }
+      default:
+        return "";
+    }
+  };
+
+  const validateAll = (data) => {
+    const newErrors = {};
+    FIELD_ORDER.forEach((field) => {
+      const err = validateField(field, data[field]);
+      if (err) newErrors[field] = err;
+    });
+    if (data.orderNotes) {
+      const noteErr = validateField("orderNotes", data.orderNotes);
+      if (noteErr) newErrors.orderNotes = noteErr;
+    }
+    return newErrors;
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let nextValue = value;
+
+    if (name === "phone") {
+      let cleanDigits = value.replace(/\D/g, "");
+      if (cleanDigits.length > 10 && (cleanDigits.startsWith("91") || cleanDigits.startsWith("0"))) {
+        cleanDigits = cleanDigits.replace(/^(91|0)/, "");
+      }
+      nextValue = cleanDigits.slice(0, 10);
+    } else if (name === "pincode") {
+      nextValue = value.replace(/\D/g, "").slice(0, 6);
+    } else if (name === "orderNotes") {
+      nextValue = value.slice(0, 300);
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
+
+    if (touched[name]) {
+      const err = validateField(name, nextValue);
+      setErrors((prev) => ({ ...prev, [name]: err }));
+    }
+
     if (errorMessage) setErrorMessage("");
   };
 
-  const finalTotal = cartSubtotal + (cartItems.length > 0 ? SHIPPING_FEE : 0);
+  const shippingFee = cartItems.length > 0 ? calculateShippingFee(cartSubtotal) : 0;
+  const finalTotal = cartItems.length > 0 ? calculateOrderTotal(cartSubtotal) : 0;
+  const isFreeShipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD;
+  const amountForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage("");
+    if (isSubmitting) return;
 
     if (cartItems.length === 0) {
       setErrorMessage("Your cart is empty. Please add fragrances before checking out.");
-      setIsSubmitting(false);
       return;
     }
+
+    if (!isAuthenticated || !token) {
+      setErrorMessage("Please log in to place your order.");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const validationErrors = validateAll(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      const allTouched = FIELD_ORDER.reduce((acc, f) => ({ ...acc, [f]: true }), {});
+      setTouched(allTouched);
+      setErrorMessage("Please fill in all required fields correctly before placing your order.");
+
+      const firstInvalidField = FIELD_ORDER.find((f) => validationErrors[f]);
+      if (firstInvalidField && fieldRefs[firstInvalidField]?.current) {
+        fieldRefs[firstInvalidField].current.focus();
+        fieldRefs[firstInvalidField].current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMessage("");
 
     const itemPayload = cartItems.map((item) => ({
       id: item.productId || item.id,
@@ -105,20 +249,25 @@ export default function Checkout() {
       image_url: item.image_url,
     }));
 
+    const cleanPayload = {
+      fullName: formData.fullName.trim(),
+      email: formData.email.trim().toLowerCase(),
+      phone: formData.phone.trim().replace(/^(\+91|91|0)/, "").replace(/\D/g, ""),
+      address: formData.address.trim(),
+      city: formData.city.trim(),
+      state: formData.state.trim(),
+      pincode: formData.pincode.trim().replace(/\D/g, ""),
+      orderNotes: formData.orderNotes.trim().slice(0, 300),
+      paymentMethod: formData.paymentMethod,
+    };
+
     // -------------------------------------------------------------
     // Branch 1: Cash on Delivery (COD) Flow
     // -------------------------------------------------------------
     if (formData.paymentMethod === "cod") {
       try {
         const codPayload = {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          pincode: formData.pincode,
-          orderNotes: formData.orderNotes,
+          ...cleanPayload,
           paymentMethod: "cod",
           items: itemPayload,
         };
@@ -130,9 +279,9 @@ export default function Checkout() {
           items: res.order?.items || [...cartItems],
           total: res.order?.total ? Number(res.order.total) : finalTotal,
           subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
-          shippingFee: res.order?.shippingFee ? Number(res.order.shippingFee) : SHIPPING_FEE,
+          shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
           customer: {
-            ...formData,
+            ...cleanPayload,
             paymentMethod: "Cash on Delivery",
             paymentStatus: res.order?.paymentStatus || "Pending",
           },
@@ -175,10 +324,10 @@ export default function Checkout() {
         {
           total: finalTotal,
           subtotal: cartSubtotal,
-          shippingFee: SHIPPING_FEE,
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
+          shippingFee: shippingFee,
+          fullName: cleanPayload.fullName,
+          email: cleanPayload.email,
+          phone: cleanPayload.phone,
           items: itemPayload,
         },
         token
@@ -206,17 +355,17 @@ export default function Checkout() {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              fullName: formData.fullName,
-              email: formData.email,
-              phone: formData.phone,
-              address: formData.address,
-              city: formData.city,
-              state: formData.state,
-              pincode: formData.pincode,
-              orderNotes: formData.orderNotes,
+              fullName: cleanPayload.fullName,
+              email: cleanPayload.email,
+              phone: cleanPayload.phone,
+              address: cleanPayload.address,
+              city: cleanPayload.city,
+              state: cleanPayload.state,
+              pincode: cleanPayload.pincode,
+              orderNotes: cleanPayload.orderNotes,
               items: itemPayload,
               subtotal: cartSubtotal,
-              shippingFee: SHIPPING_FEE,
+              shippingFee: shippingFee,
               total: finalTotal,
             };
 
@@ -227,9 +376,9 @@ export default function Checkout() {
               items: res.order?.items || [...cartItems],
               total: res.order?.total ? Number(res.order.total) : finalTotal,
               subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
-              shippingFee: res.order?.shippingFee ? Number(res.order.shippingFee) : SHIPPING_FEE,
+              shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
               customer: {
-                ...formData,
+                ...cleanPayload,
                 paymentMethod: "Online (Razorpay)",
                 paymentStatus: "Paid",
               },
@@ -256,12 +405,12 @@ export default function Checkout() {
           }
         },
         prefill: {
-          name: formData.fullName,
-          email: formData.email,
-          contact: formData.phone,
+          name: cleanPayload.fullName,
+          email: cleanPayload.email,
+          contact: cleanPayload.phone,
         },
         notes: {
-          shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}`,
+          shippingAddress: `${cleanPayload.address}, ${cleanPayload.city}, ${cleanPayload.state} - ${cleanPayload.pincode}`,
         },
         theme: {
           color: "#c6a15b",
@@ -357,6 +506,12 @@ export default function Checkout() {
                 </span>
               </div>
             )}
+            <div className="flex justify-between">
+              <span>Standard Shipping:</span>
+              <span className={Number(completedOrder.shippingFee) === 0 ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                {Number(completedOrder.shippingFee) === 0 ? "FREE" : `₹${completedOrder.shippingFee}`}
+              </span>
+            </div>
             <div className="flex justify-between border-t border-white/10 pt-4 text-sm font-semibold text-[#f4efe6]">
               <span>{isCod ? "Amount Due on Delivery:" : "Total Amount Paid:"}</span>
               <span className="font-display text-2xl text-[#c6a15b]">
@@ -463,14 +618,53 @@ export default function Checkout() {
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Left Column: Checkout Input Form */}
         <div className="lg:col-span-7">
-          {errorMessage && (
-            <div className="mb-6 flex items-start gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
-              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
-              <span>{errorMessage}</span>
+          {/* Guest Login Notice Banner */}
+          {!isAuthenticated && (
+            <div className="mb-8 border border-[#c6a15b]/30 bg-[#1a1915] p-5 sm:p-6 text-xs text-[#c5c1b9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+              <div className="flex items-start gap-3.5">
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b]">
+                  <Lock size={15} />
+                </div>
+                <div>
+                  <p className="font-semibold text-[#f4efe6] uppercase tracking-wider text-xs">
+                    Customer Login Required
+                  </p>
+                  <p className="mt-1 text-[#8e8a82] leading-relaxed">
+                    Please log in to place your order. Your selected fragrances will be safely preserved in your bag.
+                  </p>
+                </div>
+              </div>
+              <Link
+                to="/login?redirect=/checkout"
+                state={{ from: "/checkout" }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-5 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
+              >
+                Log In
+                <ArrowRight size={14} />
+              </Link>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-10">
+          {errorMessage && (
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+              <div className="flex items-center gap-3">
+                <AlertCircle size={16} className="text-red-400 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+              {!isAuthenticated && (
+                <Link
+                  to="/login?redirect=/checkout"
+                  state={{ from: "/checkout" }}
+                  className="inline-flex items-center justify-center gap-1.5 border border-[#c6a15b] bg-[#c6a15b] px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
+                >
+                  <span>Log In to Place Order</span>
+                  <ArrowRight size={12} />
+                </Link>
+              )}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate className="space-y-10">
             {/* Section 1: Customer Contact */}
             <div className="border border-white/10 bg-[#171715] p-6 sm:p-8">
               <h2 className="font-display text-2xl text-[#f4efe6] mb-5">
@@ -483,14 +677,25 @@ export default function Checkout() {
                     Full Name <span className="text-[#c6a15b]">*</span>
                   </label>
                   <input
+                    ref={fullNameRef}
                     type="text"
                     name="fullName"
-                    required
                     value={formData.fullName}
                     onChange={handleChange}
-                    placeholder="e.g. Rahul Sharma"
-                    className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    onBlur={handleBlur}
+                    placeholder="Enter your full name"
+                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      touched.fullName && errors.fullName
+                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        : "border-white/15 focus:border-[#c6a15b]"
+                    }`}
                   />
+                  {touched.fullName && errors.fullName && (
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <AlertCircle size={12} className="shrink-0" />
+                      <span>{errors.fullName}</span>
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -498,15 +703,38 @@ export default function Checkout() {
                     <label className="block text-xs uppercase tracking-wider text-[#c5c1b9] mb-1.5 font-medium">
                       Phone Number <span className="text-[#c6a15b]">*</span>
                     </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="+91 98765 43210"
-                      className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
-                    />
+                    <div className="flex">
+                      <span
+                        className={`inline-flex items-center px-3 border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
+                          touched.phone && errors.phone
+                            ? "border-red-500/80"
+                            : "border-white/15"
+                        }`}
+                      >
+                        +91
+                      </span>
+                      <input
+                        ref={phoneRef}
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        maxLength={10}
+                        placeholder="Enter 10-digit mobile number"
+                        className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                          touched.phone && errors.phone
+                            ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                            : "border-white/15 focus:border-[#c6a15b]"
+                        }`}
+                      />
+                    </div>
+                    {touched.phone && errors.phone && (
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                        <AlertCircle size={12} className="shrink-0" />
+                        <span>{errors.phone}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -514,14 +742,25 @@ export default function Checkout() {
                       Email Address <span className="text-[#c6a15b]">*</span>
                     </label>
                     <input
+                      ref={emailRef}
                       type="email"
                       name="email"
-                      required
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="rahul@example.com"
-                      className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                      onBlur={handleBlur}
+                      placeholder="Enter your email address"
+                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                        touched.email && errors.email
+                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          : "border-white/15 focus:border-[#c6a15b]"
+                      }`}
                     />
+                    {touched.email && errors.email && (
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                        <AlertCircle size={12} className="shrink-0" />
+                        <span>{errors.email}</span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -539,14 +778,25 @@ export default function Checkout() {
                     Flat / House No. / Street Address <span className="text-[#c6a15b]">*</span>
                   </label>
                   <input
+                    ref={addressRef}
                     type="text"
                     name="address"
-                    required
                     value={formData.address}
                     onChange={handleChange}
-                    placeholder="e.g. 402, Signature Heights, MG Road"
-                    className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    onBlur={handleBlur}
+                    placeholder="Enter flat, house no., building, or street address"
+                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      touched.address && errors.address
+                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        : "border-white/15 focus:border-[#c6a15b]"
+                    }`}
                   />
+                  {touched.address && errors.address && (
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <AlertCircle size={12} className="shrink-0" />
+                      <span>{errors.address}</span>
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -555,14 +805,25 @@ export default function Checkout() {
                       City <span className="text-[#c6a15b]">*</span>
                     </label>
                     <input
+                      ref={cityRef}
                       type="text"
                       name="city"
-                      required
                       value={formData.city}
                       onChange={handleChange}
-                      placeholder="e.g. Mumbai"
-                      className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                      onBlur={handleBlur}
+                      placeholder="Enter your city"
+                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                        touched.city && errors.city
+                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          : "border-white/15 focus:border-[#c6a15b]"
+                      }`}
                     />
+                    {touched.city && errors.city && (
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                        <AlertCircle size={12} className="shrink-0" />
+                        <span>{errors.city}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -570,14 +831,25 @@ export default function Checkout() {
                       State <span className="text-[#c6a15b]">*</span>
                     </label>
                     <input
+                      ref={stateRef}
                       type="text"
                       name="state"
-                      required
                       value={formData.state}
                       onChange={handleChange}
-                      placeholder="e.g. Maharashtra"
-                      className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                      onBlur={handleBlur}
+                      placeholder="Enter your state"
+                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                        touched.state && errors.state
+                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          : "border-white/15 focus:border-[#c6a15b]"
+                      }`}
                     />
+                    {touched.state && errors.state && (
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                        <AlertCircle size={12} className="shrink-0" />
+                        <span>{errors.state}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -585,15 +857,26 @@ export default function Checkout() {
                       Pincode <span className="text-[#c6a15b]">*</span>
                     </label>
                     <input
+                      ref={pincodeRef}
                       type="text"
                       name="pincode"
-                      required
                       maxLength={6}
                       value={formData.pincode}
                       onChange={handleChange}
-                      placeholder="400001"
-                      className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                      onBlur={handleBlur}
+                      placeholder="Enter 6-digit PIN code"
+                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                        touched.pincode && errors.pincode
+                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          : "border-white/15 focus:border-[#c6a15b]"
+                      }`}
                     />
+                    {touched.pincode && errors.pincode && (
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                        <AlertCircle size={12} className="shrink-0" />
+                        <span>{errors.pincode}</span>
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -602,13 +885,26 @@ export default function Checkout() {
                     Special Packaging or Delivery Instructions (Optional)
                   </label>
                   <input
+                    ref={orderNotesRef}
                     type="text"
                     name="orderNotes"
+                    maxLength={300}
                     value={formData.orderNotes}
                     onChange={handleChange}
-                    placeholder="e.g. Leave with security / Ring bell twice"
-                    className="w-full border border-white/15 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    onBlur={handleBlur}
+                    placeholder="Special packaging or delivery instructions (optional)"
+                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      touched.orderNotes && errors.orderNotes
+                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        : "border-white/15 focus:border-[#c6a15b]"
+                    }`}
                   />
+                  {touched.orderNotes && errors.orderNotes && (
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <AlertCircle size={12} className="shrink-0" />
+                      <span>{errors.orderNotes}</span>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -746,7 +1042,8 @@ export default function Checkout() {
               disabled={isSubmitting}
               className="w-full flex items-center justify-between border border-[#c6a15b] bg-[#c6a15b] px-8 py-5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
             >
-              <span>
+              <span className="flex items-center gap-2">
+                {isSubmitting && <Loader2 size={16} className="animate-spin text-[#11110f]" />}
                 {isSubmitting
                   ? formData.paymentMethod === "cod"
                     ? "Placing Order..."
@@ -755,7 +1052,7 @@ export default function Checkout() {
                   ? `Place Order (Cash on Delivery) · ₹${finalTotal}`
                   : `Pay Online & Place Order · ₹${finalTotal}`}
               </span>
-              <ArrowRight size={16} />
+              {!isSubmitting && <ArrowRight size={16} />}
             </button>
           </form>
         </div>
@@ -766,6 +1063,23 @@ export default function Checkout() {
             <h2 className="font-display text-2xl text-[#f4efe6] mb-6">
               Order Summary ({cartCount} {cartCount === 1 ? "bottle" : "bottles"})
             </h2>
+
+            {/* Free Shipping Alert / Status */}
+            {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
+              <div className="mb-6 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+                <div className="flex items-center gap-2">
+                  <Truck size={14} className="text-[#c6a15b] shrink-0" />
+                  <span>
+                    Add <strong className="text-[#f4efe6]">₹{amountForFreeShipping}</strong> more to unlock <strong className="text-[#c6a15b]">FREE shipping</strong>
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
+                <Sparkles size={14} className="text-emerald-400 shrink-0" />
+                <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
+              </div>
+            )}
 
             {/* Items Mini List */}
             <div className="divide-y divide-white/10 max-h-72 overflow-y-auto pr-1">
@@ -805,9 +1119,11 @@ export default function Checkout() {
                 <span>Subtotal</span>
                 <span className="text-[#f4efe6] font-medium">₹{cartSubtotal}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span>Standard Insured Shipping</span>
-                <span className="text-[#f4efe6] font-medium">₹{SHIPPING_FEE}</span>
+                <span className={isFreeShipping ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                  {isFreeShipping ? "FREE" : `₹${shippingFee}`}
+                </span>
               </div>
               <div className="flex justify-between border-t border-white/10 pt-4 text-base font-semibold text-[#f4efe6]">
                 <span>Total Due</span>
