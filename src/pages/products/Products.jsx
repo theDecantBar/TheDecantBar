@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
@@ -5,10 +6,12 @@ import FilterBar from "../../components/FilterBar";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const searchParam = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const gender = searchParams.get("gender") || "";
-  const weather = searchParams.get("weather") || searchParams.get("season") || "";
+  const weather =
+    searchParams.get("weather") || searchParams.get("season") || "";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,14 +33,16 @@ function Products() {
 
       try {
         const params = new URLSearchParams();
+
         if (search) params.set("search", search);
         if (category) params.set("category", category);
         if (gender) params.set("gender", gender);
         if (weather) params.set("weather", weather);
 
-        const response = await fetch(`/api/products?${params.toString()}`, {
-          signal: controller.signal,
-        });
+        const response = await fetch(
+          `/api/products?${params.toString()}`,
+          { signal: controller.signal }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to load products");
@@ -69,12 +74,15 @@ function Products() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+
     const newParams = new URLSearchParams(searchParams);
+
     if (search.trim()) {
       newParams.set("search", search.trim());
     } else {
       newParams.delete("search");
     }
+
     setSearchParams(newParams);
   };
 
@@ -85,6 +93,7 @@ function Products() {
 
   // Dynamic header based on category, gender, or season
   let pageTitle = "Our Collection";
+
   let pageSubtitle =
     "Explore our collection of authentic luxury fragrances, carefully decanted for every mood and occasion.";
 
@@ -104,16 +113,18 @@ function Products() {
     const label =
       gender.toUpperCase() === "M" || gender.toLowerCase() === "men"
         ? "Men"
-        : gender.toUpperCase() === "W" || gender.toLowerCase() === "women"
+        : gender.toUpperCase() === "W" ||
+          gender.toLowerCase() === "women"
         ? "Women"
         : "Unisex";
+
     pageTitle = `Fragrances for ${label}`;
     pageSubtitle = `Handpicked luxury decants curated especially for ${label.toLowerCase()}.`;
   }
 
   return (
     <div className="min-h-screen bg-[#11110f] text-[#f4efe6]">
-      {/* 1. Header Section */}
+      {/* Header Section */}
       <div className="mx-auto max-w-7xl px-6 pt-12">
         <p className="text-xs uppercase tracking-[0.35em] text-[#c6a15b]">
           The Decant Bar
@@ -130,14 +141,17 @@ function Products() {
         </p>
       </div>
 
-      {/* 2. Premium Apply Filters Bar */}
+      {/* Filters */}
       <div className="mt-8">
         <FilterBar />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 pb-16 pt-8">
         {/* Search Bar & Quick Controls */}
-        <form onSubmit={handleSearchSubmit} className="mb-10 flex flex-col gap-3 sm:flex-row">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="mb-10 flex flex-col gap-3 sm:flex-row"
+        >
           <input
             type="search"
             value={search}
@@ -165,39 +179,47 @@ function Products() {
           )}
         </form>
 
-      {loading ? (
-        <p className="py-12 text-center text-[#8e8a82]">Loading fragrances...</p>
-      ) : error ? (
-        <div className="py-12 text-center">
-          <p className="text-red-300">{error}</p>
-          <button
-            type="button"
-            onClick={() => setSearch((current) => current)}
-            className="mt-4 text-sm text-[#c6a15b] underline"
-          >
-            Retry
-          </button>
-        </div>
-      ) : products.length === 0 ? (
-        <p className="py-12 text-center text-[#f4efe6]/60">
-          No fragrances found. Try changing your filters.
-        </p>
-      ) : (
-        <>
-          <p className="mx-auto mb-5 max-w-7xl text-sm text-[#f4efe6]/60">
-            {products.length} fragrances found
-            {category ? ` in ${category}` : ""}
-            {gender ? ` for ${gender}` : ""}
-            {weather ? ` (${weather})` : ""}
-          </p>
+        {/* Product Results */}
+        {loading ? (
+          <div
+            className="min-h-12 py-6"
+            aria-label="Loading products"
+          />
+        ) : error ? (
+          <div className="py-12 text-center">
+            <p className="text-red-300">{error}</p>
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            <button
+              type="button"
+              onClick={() => setSearch((current) => current)}
+              className="mt-4 text-sm text-[#c6a15b] underline"
+            >
+              Retry
+            </button>
           </div>
-        </>
-      )}
+        ) : products.length === 0 ? (
+          <p className="py-12 text-center text-[#f4efe6]/60">
+            No fragrances found. Try changing your filters.
+          </p>
+        ) : (
+          <>
+            <p className="mx-auto mb-5 max-w-7xl text-sm text-[#f4efe6]/60">
+              {products.length} fragrances found
+              {category ? ` in ${category}` : ""}
+              {gender ? ` for ${gender}` : ""}
+              {weather ? ` (${weather})` : ""}
+            </p>
+
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
