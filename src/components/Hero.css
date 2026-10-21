@@ -1,0 +1,71 @@
+.signature-story { position: relative; height: 280svh; margin-top: -80px; background: #080807; }
+.signature-hero { position: sticky; top: 0; isolation: isolate; height: 100svh; min-height: 640px; overflow: hidden; background: #080807; }
+.signature-hero__art { position: absolute; inset: 0; z-index: -3; }
+.signature-hero__background { position: absolute; bottom: 0; width: 100%; height: 78%; object-fit: fill; mask-image: linear-gradient(to bottom, transparent, black 24%); }
+.signature-hero__art::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 40%, #b4942c44, transparent 65%); }
+.signature-hero__flacon { position: absolute; left: 70%; bottom: 40%; height: min(34%, 19vw); width: auto; filter: drop-shadow(0 12px 14px #0009); }
+.signature-hero__decant { position: absolute; left: 82%; bottom: 40%; height: min(34%, 19vw); transform-origin: bottom center; filter: drop-shadow(0 8px 9px #000a); }
+.signature-hero__decant img { height: 100%; width: auto; }
+.signature-hero__pump { position: absolute; top: 0; left: 17%; width: 62%; height: 15%; border-radius: 3px 3px 0 0; background: linear-gradient(90deg, #080808, #30302c 48%, #080808); }
+.signature-hero__aura { position: absolute; inset: 15% 0 0; background: radial-gradient(ellipse at 40% 60%, #bd973635, transparent 70%); }
+.signature-hero__spray { position: absolute; left: 84%; bottom: 58%; width: 35%; height: 32%; transform-origin: left center; transform: rotate(-24deg); pointer-events: none; }
+.signature-hero__spray svg { width: 100%; height: 100%; overflow: visible; }
+.signature-hero__droplet { animation: mist-flight 1.8s linear infinite; }
+.signature-hero__smoke { position: absolute; inset: 0 -12% -12%; pointer-events: none; mix-blend-mode: screen; }
+.signature-hero__smoke-layer { position: absolute; width: 100%; height: 100%; object-fit: fill; max-width: none; transform-origin: 50% 75%; }
+.signature-hero__smoke-layer--near { animation: smoke-flow-near 23s ease-in-out infinite alternate; opacity: .85; }
+.signature-hero__smoke-layer--far { animation: smoke-flow-far 31s ease-in-out infinite alternate; opacity: .45; }
+@keyframes smoke-flow-near { 0% { transform: translate3d(-3%, 6%, 0) scale(1.04) rotate(-2deg); } 50% { transform: translate3d(2%, -1%, 0) scale(1.1) rotate(1deg); } 100% { transform: translate3d(5%, -6%, 0) scale(1.18) rotate(3deg); } }
+@keyframes smoke-flow-far { 0% { transform: translate3d(8%, 5%, 0) scaleX(-1) scale(1.1); } 100% { transform: translate3d(-6%, -9%, 0) scaleX(-1) scale(1.27); } }
+@keyframes mist-flight { 0% { opacity: 0; transform: translate(-18px, 5px); } 30% { opacity: .85; } 100% { opacity: 0; transform: translate(22px, -9px); } }
+.signature-hero__shade { position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at 50% 40%, #08080755, transparent 75%), linear-gradient(0deg, #11110f, transparent 18%); pointer-events: none; }
+.signature-hero__inner { max-width: 1670px; margin: auto; height: 100%; display: flex; align-items: center; justify-content: flex-start; padding: 110px 6% 85px; }
+.signature-hero__copy { display: grid; align-items: center; width: 62%; container-type: inline-size; text-align: center; overflow: clip; padding-block: 16px; }
+.signature-hero__chapter { grid-area: 1 / 1; min-width: 0; }
+.signature-hero__eyebrow { margin: 0 0 28px; color: #d7b84c; text-transform: uppercase; letter-spacing: .48em; font-size: 10px; font-weight: 600; }
+.signature-hero__title { margin: 0; color: #fffdf7; font-family: 'Inter', sans-serif; font-size: clamp(48px, 17cqw, 160px); line-height: 1.02; letter-spacing: -.06em; font-weight: 700; }
+.signature-hero__title span { display: block; white-space: nowrap; }
+.signature-hero__title em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.06em; letter-spacing: -.055em; }
+.signature-hero__title span + span { margin-top: 0; }
+.signature-hero__statement { max-width: 100%; margin: 0 auto; font-family: 'Inter', sans-serif; font-size: clamp(32px, 7.4cqw, 68px); font-weight: 600; line-height: 1.12; letter-spacing: -.045em; color: #fff9eb; text-wrap: balance; }
+.signature-hero__description { max-width: 510px; margin: 25px auto 0; font-size: clamp(16px, 2.6cqw, 19px); line-height: 1.65; color: #e0d6c3; text-wrap: balance; }
+.signature-hero__actions { margin-top: 35px; display: flex; flex-direction: column; align-items: center; gap: 19px; }
+.signature-hero__cta { position: relative; display: inline-flex; align-items: center; gap: 25px; padding: 19px 29px; border: 1px solid #e1c382; border-radius: 999px; background: linear-gradient(120deg, #edd69d, #c6a15b); color: #21190c; box-shadow: 0 5px 35px #d2ad5b30, inset 0 1px 0 #fff6; text-transform: uppercase; font-size: 11px; letter-spacing: .2em; font-weight: 600; transition: box-shadow .35s, transform .35s; }
+.signature-hero__cta:hover { transform: translateY(-3px); box-shadow: 0 10px 40px #d2ad5b55; }
+.signature-hero__cta:focus-visible, .signature-hero__scroll:focus-visible { outline: 2px solid #efd586; outline-offset: 6px; }
+.signature-hero__sizes { display: flex; align-items: center; gap: 12px; color: #d4c8ae; font-size: 10px; letter-spacing: .18em; }
+.signature-hero__sizes i { width: 2px; height: 2px; border-radius: 50%; background: #c9a65b; }
+.signature-hero__scroll { position: absolute; bottom: 30px; left: 8%; display: flex; align-items: center; gap: 18px; color: #c8bba4; font-size: 9px; text-transform: uppercase; letter-spacing: .22em; }
+.signature-hero__caption { position: absolute; right: 6%; bottom: 27px; margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 17px; color: #c8bba4; }
+.signature-hero__progress { position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #c6a15b; transform-origin: left; }
+.signature-story--reduced { height: auto; }
+.signature-story--reduced .signature-hero { height: auto; min-height: 100svh; }
+.signature-story--reduced .signature-hero__inner { min-height: 100svh; }
+.signature-story--reduced .signature-hero__copy { display: flex; flex-direction: column; gap: 35px; }
+.signature-story--reduced .signature-hero__title { font-size: clamp(46px, 6vw, 90px); }
+.signature-story--reduced .signature-hero__statement { font-size: 28px; }
+@media (max-width: 700px) {
+  .signature-hero { min-height: 860px; }
+  .signature-hero__inner { align-items: flex-start; padding: 110px 6% 0; }
+  .signature-hero__copy { min-height: 310px; width: 100%; }
+  .signature-hero__title { font-size: clamp(40px, 17cqw, 92px); line-height: 1.08; }
+  .signature-hero__eyebrow { font-size: 8px; margin-bottom: 20px; }
+  .signature-hero__statement { font-size: clamp(30px, 8.4cqw, 42px); max-width: 100%; }
+  .signature-hero__description { font-size: 15px; max-width: 360px; margin-top: 20px; }
+  .signature-hero__actions { margin-top: 25px; gap: 12px; }
+  .signature-hero__cta { padding: 16px 23px; font-size: 10px; }
+  .signature-hero__art { inset: 63% 0 0; }
+  .signature-hero__background { width: 180%; max-width: none; left: -80%; height: 100%; }
+  .signature-hero__flacon { left: 46%; bottom: 42%; height: min(46%, 44vw); }
+  .signature-hero__decant { left: 74%; bottom: 42%; height: min(46%, 44vw); }
+  .signature-hero__spray { left: 77%; bottom: 68%; }
+  .signature-hero__smoke { inset: -60% -55% -15%; }
+  .signature-hero__shade { background: linear-gradient(0deg, #11110f, transparent 12%); }
+  .signature-hero__caption { display: none; }
+  .signature-hero__scroll { left: 7%; bottom: 23px; font-size: 8px; }
+  .signature-story--reduced .signature-hero { min-height: 950px; }
+  .signature-story--reduced .signature-hero__art { top: 62%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-hero *, .signature-hero *::before { animation: none !important; transition: none !important; }
+}

@@ -1,4 +1,6 @@
+import { motion, useReducedMotion } from "motion/react";
 import Hero from "../components/Hero";
+import FeatureBar from "../components/Featurebar";
 import FilterBar from "../components/FilterBar";
 import FeaturedDecants from "../components/home/FeaturedDecants";
 import CategoryBanners from "../components/home/CategoryBanners";
@@ -6,29 +8,28 @@ import DecantGuide from "../components/home/DecantGuide";
 import Testimonials from "../components/home/Testimonials";
 import Guarantees from "../components/home/Guarantees";
 
+function Reveal({ children }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.div initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Home() {
   return (
     <div className="bg-[#11110f] text-[#f4efe6]">
-      {/* 1. Hero Welcome Banner */}
       <Hero />
-
-      {/* 2. Compact Premium Apply Filters Bar */}
-      <FilterBar />
-
-      {/* 3. Most Coveted Decants (Live Bestsellers with size select & Add to Bag) */}
-      <FeaturedDecants />
-
-      {/* 4. Shop by Collection (Niche, Designer, Middle Eastern) */}
+      <FeatureBar />
+      <div id="discover" className="scroll-mt-20"><FilterBar /></div>
+      <Reveal><FeaturedDecants /></Reveal>
       <CategoryBanners />
-
-      {/* 5. The Decant Philosophy (2ml, 5ml, 10ml visual size & spray guide) */}
-      <DecantGuide />
-
-      {/* 6. Customer Reviews & Community */}
-      <Testimonials />
-
-      {/* 7. The Decant Bar Guarantees (Sterile syringes, authentic juice, fine mist) */}
-      <Guarantees />
+      <Reveal><DecantGuide /></Reveal>
+      <Reveal><Testimonials /></Reveal>
+      <Reveal><Guarantees /></Reveal>
     </div>
   );
 }

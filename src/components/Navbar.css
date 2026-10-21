@@ -1,0 +1,30 @@
+.storefront-navbar {
+  isolation: isolate;
+  background: transparent;
+}
+
+/* Extend and feather the glass below the links so it melts into the scene. */
+.storefront-navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -24px;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+  backdrop-filter: blur(14px) saturate(125%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+}
+
+.storefront-navbar--home::before {
+  background: linear-gradient(to bottom, rgb(14 12 9 / 24%), rgb(18 15 10 / 9%) 70%, transparent);
+}
+
+.storefront-navbar--page::before {
+  background: linear-gradient(to bottom, rgb(17 17 15 / 88%), rgb(17 17 15 / 70%) 70%, transparent);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .storefront-navbar--home::before { background: rgb(14 12 9 / 45%); }
+  .storefront-navbar--page::before { background: rgb(17 17 15 / 95%); }
+}
