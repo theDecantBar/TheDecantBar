@@ -1,7 +1,6 @@
-
 import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Plus, Minus, Bell } from "lucide-react";
+import { Plus, Minus, Bell } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
 import ProductImage from "../common/ProductImage";
@@ -52,12 +51,24 @@ function ProductCard({ product }) {
     navigate(`/product/${product.id}`);
   }, [navigate, product.id]);
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
+  const handleAddToCart = (event) => {
+    event.preventDefault();
 
     if (!selectedVariant || isSoldOut) return;
 
     addToCart(product, selectedVariant, 1);
+  };
+
+  const handleIncreaseQuantity = () => {
+    if (!selectedVariant || isSoldOut) return;
+
+    addToCart(product, selectedVariant, 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (!cartItemId || itemQuantity <= 0) return;
+
+    updateQuantity(cartItemId, itemQuantity - 1);
   };
 
   const currentPrice = selectedVariant
@@ -75,24 +86,25 @@ function ProductCard({ product }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-30px" }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="group flex h-full flex-col border border-white/10 bg-[#151512] transition-colors duration-500 hover:border-[#c6a15b]/60"
+        className="group flex h-full flex-col overflow-hidden rounded-[40px] border border-white/10 bg-[#151512] transition-colors duration-500 hover:border-[#c6a15b]/60"
       >
-        {/* Product Image Link */}
+        {/* Product Image */}
         <Link
           to={`/product/${product.id}`}
           onClick={handleProductClick}
-          className="block cursor-pointer overflow-hidden"
+          className="block cursor-pointer overflow-hidden rounded-t-[40px]"
         >
           <ProductImage
             src={product.image_url}
             alt={product.name}
-            aspectRatio="aspect-[4/5]"
-            paddingClassName="p-4"
-            containerClassName="bg-[#1c1c18]"
+            aspectRatio="aspect-[5/4]"
+            paddingClassName="p-3"
+            containerClassName="rounded-t-[40px] bg-[#1c1c18]"
+            imageClassName="rounded-[32px]"
             loading="lazy"
           >
             {(isSoldOut || allSoldOut) && (
-              <div className="absolute right-3 top-3 z-10 border border-red-800/60 bg-red-950/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.2em] text-red-300 backdrop-blur-sm">
+              <div className="absolute right-4 top-4 z-10 rounded-full border border-red-800/60 bg-red-950/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-red-300 backdrop-blur-sm">
                 Sold Out
               </div>
             )}
@@ -105,7 +117,7 @@ function ProductCard({ product }) {
             {product.category || "Fragrance"}
           </p>
 
-          {/* Product Name Link */}
+          {/* Product Name */}
           <Link
             to={`/product/${product.id}`}
             onClick={handleProductClick}
@@ -148,7 +160,7 @@ function ProductCard({ product }) {
             </div>
           )}
 
-          {/* Available Sizes Picker */}
+          {/* Available Sizes */}
           {product.variants?.length > 0 && (
             <div className="mb-4 mt-5">
               <p className="mb-2 text-xs uppercase tracking-wider text-[#f4efe6]/50">
@@ -167,16 +179,17 @@ function ProductCard({ product }) {
                     <button
                       key={variant.id}
                       type="button"
+                      disabled={variantSoldOut}
                       onClick={() =>
                         setSelectedVariantId(variant.id)
                       }
-                      className={`inline-flex min-w-[46px] cursor-pointer items-center justify-center border px-3 py-1.5 text-xs transition ${
+                      className={`inline-flex min-w-[46px] cursor-pointer items-center justify-center rounded-full border px-3 py-1.5 text-xs transition ${
                         isSelected
                           ? variantSoldOut
                             ? "border-red-500/70 bg-red-950/40 font-semibold text-red-300"
                             : "border-[#c6a15b] bg-[#c6a15b] font-semibold text-[#11110f]"
                           : variantSoldOut
-                          ? "border-white/10 text-[#f4efe6]/40 line-through hover:border-red-500/40"
+                          ? "cursor-not-allowed border-white/10 text-[#f4efe6]/40 line-through"
                           : "border-white/15 text-[#f4efe6]/80 hover:border-[#c6a15b] hover:text-[#c6a15b]"
                       }`}
                     >
@@ -188,63 +201,62 @@ function ProductCard({ product }) {
             </div>
           )}
 
-          {/* Action Button */}
-          {isSoldOut ? (
-            <Link
-              to={`/product/${product.id}`}
-              onClick={handleProductClick}
-              className="mt-auto flex w-full cursor-pointer items-center justify-center gap-2 border border-red-500/40 bg-red-950/20 px-4 py-3 text-xs font-medium uppercase tracking-[0.2em] text-red-300 transition-all duration-300 hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
-            >
-              <Bell size={14} strokeWidth={1.5} />
-              Sold Out · Notify Me
-            </Link>
-          ) : itemQuantity > 0 ? (
-            <div className="mt-auto flex w-full items-center justify-between border border-[#c6a15b] bg-[#1c1c18] text-[#f4efe6]">
+          {/* Compact Add / Quantity Control */}
+          <div className="mt-auto flex min-h-12 items-center justify-end">
+            {isSoldOut ? (
+              <Link
+                to={`/product/${product.id}`}
+                onClick={handleProductClick}
+                aria-label="Sold out. View product"
+                title="Sold out — view product"
+                className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-red-500/40 bg-red-950/20 text-red-300 transition-all duration-300 hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+              >
+                <Bell size={18} strokeWidth={1.5} />
+              </Link>
+            ) : itemQuantity > 0 ? (
+              <div className="flex items-center gap-1 rounded-full border border-[#c6a15b] bg-[#1c1c18] p-1">
+                <button
+                  type="button"
+                  aria-label="Decrease quantity"
+                  onClick={handleDecreaseQuantity}
+                  className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+                >
+                  <Minus size={16} strokeWidth={1.8} />
+                </button>
+
+                <span className="min-w-6 text-center text-sm font-semibold text-[#f4efe6]">
+                  {itemQuantity}
+                </span>
+
+                <button
+                  type="button"
+                  aria-label="Increase quantity"
+                  onClick={handleIncreaseQuantity}
+                  className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#c6a15b] text-[#11110f] transition-colors hover:bg-[#dfbd78]"
+                >
+                  <Plus size={16} strokeWidth={1.8} />
+                </button>
+              </div>
+            ) : (
               <button
                 type="button"
-                aria-label="Decrease quantity"
-                onClick={() =>
-                  updateQuantity(cartItemId, itemQuantity - 1)
-                }
-                className="flex h-11 w-11 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+                aria-label={`Add ${product.name} to bag`}
+                title="Add to bag"
+                onClick={handleAddToCart}
+                disabled={!selectedVariant}
+                className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] transition-all duration-300 hover:scale-105 hover:bg-[#dfbd78] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <Minus size={14} />
+                <Plus size={22} strokeWidth={1.8} />
               </button>
-
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#c6a15b]">
-                {itemQuantity} in Bag
-              </span>
-
-              <button
-                type="button"
-                aria-label="Increase quantity"
-                onClick={() =>
-                  updateQuantity(cartItemId, itemQuantity + 1)
-                }
-                className="flex h-11 w-11 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
-              >
-                <Plus size={14} />
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="mt-auto flex w-full cursor-pointer items-center justify-center gap-2 border border-[#c6a15b] px-4 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#c6a15b] transition-all duration-300 hover:bg-[#c6a15b] hover:text-[#11110f]"
-            >
-              <ShoppingBag size={14} strokeWidth={1.5} />
-              Add to Bag
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </motion.div>
 
       {/* Black-and-Gold Product Transition */}
       <AnimatePresence>
         {showProductTransition && (
-          <ShopTransition
-            onFinish={finishProductTransition}
-          />
+          <ShopTransition onFinish={finishProductTransition} />
         )}
       </AnimatePresence>
     </>
