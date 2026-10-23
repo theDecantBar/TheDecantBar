@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Search,
   UserRound,
@@ -10,16 +10,15 @@ import {
   LogIn,
   ShieldCheck,
 } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+} from "motion/react";
+
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import ShopTransition from "./ShopTransition";
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Search, UserRound, ShoppingBag, Menu, X, LogIn, ShieldCheck } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
 const navItems = [
@@ -30,29 +29,39 @@ const navItems = [
 
 export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
-  const isHome = useLocation().pathname === "/";
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isHome = location.pathname === "/";
+
   const { cartCount } = useCart();
   const { user, isAuthenticated } = useAuth();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopTransitionOpen, setShopTransitionOpen] = useState(false);
 
-  // Show the transition when Shop is clicked
-  const handleShopClick = useCallback((event) => {
-    event.preventDefault();
+  // Close the mobile menu.
+  const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
-    setShopTransitionOpen(true);
   }, []);
 
-  // Navigate to the products page after the transition
+  // Show the transition when Shop is clicked.
+  const handleShopClick = useCallback(
+    (event) => {
+      event.preventDefault();
+      setMobileMenuOpen(false);
+      setShopTransitionOpen(true);
+    },
+    []
+  );
+
+  // Navigate after the Shop transition finishes.
   const finishShopTransition = useCallback(() => {
     setShopTransitionOpen(false);
-    window.location.assign("/products");
-  }, []);
+    navigate("/products");
+  }, [navigate]);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-
-  // Prevent background scrolling and close the drawer with Escape
+  // Prevent background scrolling and close the menu with Escape.
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
@@ -81,7 +90,11 @@ export default function Navbar() {
         }
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#11110f]/90 backdrop-blur-md"
+        className={`storefront-navbar sticky top-0 z-50 w-full ${
+          isHome
+            ? "storefront-navbar--home"
+            : "storefront-navbar--page"
+        }`}
       >
         <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
           {/* Mobile Hamburger */}
@@ -90,6 +103,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
+              aria-expanded={mobileMenuOpen}
               className="text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
             >
               <Menu size={22} strokeWidth={1.5} />
@@ -100,21 +114,7 @@ export default function Navbar() {
           <Link
             to="/"
             className="flex shrink-0 items-center transition-opacity hover:opacity-90"
-            aria-label="The Decant Bar"
-    <motion.header
-      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
-      className={`storefront-navbar sticky top-0 z-50 w-full ${isHome ? "storefront-navbar--home" : "storefront-navbar--page"}`}
-    >
-      <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
-        {/* Mobile Hamburger */}
-        <div className="flex items-center lg:hidden">
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open menu"
-            className="text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
+            aria-label="The Decant Bar home"
           >
             <img
               src="/images/tdb-logo.png"
@@ -173,7 +173,9 @@ export default function Navbar() {
                 size={20}
                 strokeWidth={1.5}
                 className={
-                  isAuthenticated ? "text-[#c6a15b]" : "text-[#f4efe6]"
+                  isAuthenticated
+                    ? "text-[#c6a15b]"
+                    : "text-[#f4efe6]"
                 }
               />
 
@@ -187,11 +189,11 @@ export default function Navbar() {
             {/* Shopping Cart */}
             <Link
               to="/cart"
-              aria-label="Shopping Cart"
+              aria-label={`Shopping Cart, ${cartCount} items`}
               className="relative text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c6a15b] text-[9px] font-bold text-[#11110f]">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c6a15b] px-1 text-[9px] font-bold text-[#11110f]">
                 {cartCount}
               </span>
             </Link>
@@ -222,7 +224,7 @@ export default function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{
-                  duration: 0.3,
+                  duration: shouldReduceMotion ? 0 : 0.3,
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 className="fixed bottom-0 left-0 top-0 z-50 flex h-screen h-[100dvh] w-[85vw] max-w-[320px] flex-col border-r border-white/10 bg-[#151512] text-[#f4efe6] shadow-2xl"
@@ -233,7 +235,7 @@ export default function Navbar() {
                     to="/"
                     onClick={closeMobileMenu}
                     className="flex items-center transition-opacity hover:opacity-90"
-                    aria-label="The Decant Bar"
+                    aria-label="The Decant Bar home"
                   >
                     <img
                       src="/images/tdb-logo.png"
@@ -345,7 +347,7 @@ export default function Navbar() {
                           />
                           <span>View Cart</span>
                         </div>
-                        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#c6a15b] px-1.5 text-[10px] font-bold text-[#11110f]">
+                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#c6a15b] px-1.5 text-[10px] font-bold text-[#11110f]">
                           {cartCount}
                         </span>
                       </Link>
@@ -362,7 +364,7 @@ export default function Navbar() {
         </AnimatePresence>
       </motion.header>
 
-      {/* Shop Transition — outside the header so it covers the page */}
+      {/* Shop Transition */}
       <AnimatePresence>
         {shopTransitionOpen && (
           <ShopTransition onFinish={finishShopTransition} />
