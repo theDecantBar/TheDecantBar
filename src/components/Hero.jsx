@@ -53,15 +53,11 @@ export default function Hero() {
                 <span>Shop collection</span>
                 <ArrowUpRight size={17} strokeWidth={1.5} />
               </Link>
-              <span className="signature-hero__sizes">2 ml <i /> 5 ml <i /> 10 ml</span>
+              
             </div>
           </div>
         </div>
-        <a href="#discover" className="signature-hero__scroll">
-          <span>Discover collection</span>
-          <ArrowUpRight size={14} />
-        </a>
-        <p className="signature-hero__caption">The art of discovery. By the drop.</p>
+    
       </div>
     </section>
   );
