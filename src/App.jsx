@@ -17,6 +17,12 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Reviews from "./pages/Reviews";
 
+// Legal & Customer Policies
+import Terms from "./pages/legal/Terms";
+import Privacy from "./pages/legal/Privacy";
+import ShippingPolicy from "./pages/legal/ShippingPolicy";
+import RefundPolicy from "./pages/legal/RefundPolicy";
+
 // Admin Portal Components
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./layouts/AdminLayout";
@@ -75,6 +81,16 @@ export default function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="account" element={<Account />} />
+
+            {/* Legal & Customer Policy Routes */}
+            <Route path="terms" element={<Terms />} />
+            <Route path="terms-and-conditions" element={<Terms />} />
+            <Route path="privacy" element={<Privacy />} />
+            <Route path="privacy-policy" element={<Privacy />} />
+            <Route path="shipping" element={<ShippingPolicy />} />
+            <Route path="shipping-policy" element={<ShippingPolicy />} />
+            <Route path="refund-policy" element={<RefundPolicy />} />
+            <Route path="refunds" element={<RefundPolicy />} />
           </Route>
 
           {/* Protected Administrator Hub */}

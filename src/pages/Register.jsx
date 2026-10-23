@@ -37,7 +37,6 @@ export default function Register() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-  const [sandboxNotice, setSandboxNotice] = useState("");
 
   const from = searchParams.get("redirect") || "/account";
 
@@ -81,15 +80,9 @@ export default function Register() {
     setIsSubmitting(true);
 
     try {
-      const res = await sendSignupOtpApi(formData.email.trim());
+      await sendSignupOtpApi(formData.email.trim());
       setStep(2);
       setCooldown(30);
-      if (res.warning) {
-        setSandboxNotice(res.warning);
-      }
-      if (res.devOtp) {
-        setOtpCode(res.devOtp);
-      }
     } catch (err) {
       setError(err.message || "Failed to send verification code. Please try again.");
     } finally {
@@ -104,11 +97,8 @@ export default function Register() {
     setIsSubmitting(true);
 
     try {
-      const res = await sendSignupOtpApi(formData.email.trim());
+      await sendSignupOtpApi(formData.email.trim());
       setCooldown(30);
-      if (res.devOtp) {
-        setOtpCode(res.devOtp);
-      }
     } catch (err) {
       setError(err.message || "Failed to resend code.");
     } finally {
@@ -311,15 +301,6 @@ export default function Register() {
                 <p className="text-xs text-[#c5c1b9]">Verification Code Sent To</p>
                 <p className="text-sm font-semibold text-[#c6a15b] mt-1">{formData.email}</p>
               </div>
-
-              {sandboxNotice && (
-                <div className="p-3 bg-[#1c1c18] border border-[#c6a15b]/40 rounded text-xs text-[#c6a15b] leading-relaxed">
-                  <p className="font-semibold mb-1">ℹ️ Resend Sandbox Notice:</p>
-                  <p className="text-[11px] text-[#c5c1b9]">
-                    Testing emails only deliver to <strong>thedecantbarofficial@gmail.com</strong>. Since you tested with another email, we pre-filled your code <strong>{otpCode}</strong> below so you can proceed with testing immediately!
-                  </p>
-                </div>
-              )}
 
               <div>
                 <label className="block text-xs uppercase tracking-wider text-[#c5c1b9] mb-2 font-medium text-center">

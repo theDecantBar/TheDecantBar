@@ -266,6 +266,9 @@ export const sendSignupOtp = async (req, res) => {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalizedEmail)) {
+      return res.status(400).json({ message: "Please provide a valid email address." });
+    }
 
     // 1. Check if an account already exists
     const existing = await pool.query(
@@ -279,10 +282,10 @@ export const sendSignupOtp = async (req, res) => {
       });
     }
 
-    // 2. Generate random 6-digit OTP
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // 2. Generate cryptographically secure random 6-digit OTP
+    const otpCode = crypto.randomInt(100000, 1000000).toString();
 
-    // 3. Clear any existing pending signup OTPs for this email
+    // 3. Clear any existing pending signup OTPs for this email to prevent conflicting codes
     await pool.query(
       "DELETE FROM email_otps WHERE LOWER(email) = $1 AND purpose = 'signup'",
       [normalizedEmail]
@@ -295,51 +298,62 @@ export const sendSignupOtp = async (req, res) => {
       [normalizedEmail, otpCode]
     );
 
-    console.log(`\n======================================================`);
-    console.log(`🔑 [SIGNUP OTP FOR ${normalizedEmail}]: ${otpCode}`);
-    console.log(`======================================================\n`);
-
-    // 5. Send OTP Email via Resend
-    let warning = null;
-    let devOtp = null;
+    // 5. Send OTP Email via Resend - confirm delivery acceptance
+    const { sendEmail } = await import("../services/emailService.js");
     try {
-      if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
-        const { sendEmail } = await import("../services/emailService.js");
-        await sendEmail({
-          to: normalizedEmail,
-          subject: `${otpCode} is your The Decant Bar verification code`,
-          html: `
-            <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 28px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3); max-width: 500px; margin: 0 auto;">
-              <h2 style="color: #c6a15b; margin-top: 0; text-align: center; letter-spacing: 2px;">THE DECANT BAR</h2>
-              <p style="text-align: center; color: #8e8a82; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Account Verification</p>
-              <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
-              <p>Welcome to The Decant Bar! Please use the 6-digit one-time code below to verify your email address and activate your account:</p>
-              <div style="text-align: center; margin: 24px 0;">
-                <span style="display: inline-block; background: #171715; border: 1px solid #c6a15b; padding: 14px 28px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #f4efe6; border-radius: 4px;">
-                  ${otpCode}
-                </span>
-              </div>
-              <p style="font-size: 12px; color: #8e8a82; text-align: center;">
-                This code is valid for <strong>10 minutes</strong>. Never share this code with anyone.
-              </p>
+      await sendEmail({
+        to: normalizedEmail,
+        subject: `${otpCode} is your The Decant Bar verification code`,
+        html: `
+          <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 28px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3); max-width: 500px; margin: 0 auto;">
+            <h2 style="color: #c6a15b; margin-top: 0; text-align: center; letter-spacing: 2px;">THE DECANT BAR</h2>
+            <p style="text-align: center; color: #8e8a82; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Account Verification</p>
+            <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
+            <p>Welcome to The Decant Bar! Please use the 6-digit one-time code below to verify your email address and activate your account:</p>
+            <div style="text-align: center; margin: 24px 0;">
+              <span style="display: inline-block; background: #171715; border: 1px solid #c6a15b; padding: 14px 28px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #f4efe6; border-radius: 4px;">
+                ${otpCode}
+              </span>
             </div>
-          `,
-          text: `Your Decant Bar verification code is: ${otpCode}. Valid for 10 minutes.`,
+            <p style="font-size: 12px; color: #8e8a82; text-align: center;">
+              This code is valid for <strong>10 minutes</strong>. Never share this code with anyone.
+            </p>
+          </div>
+        `,
+        text: `Your Decant Bar verification code is: ${otpCode}. Valid for 10 minutes.`,
+      });
+    } catch (emailErr) {
+      // Invalidate the un-delivered OTP immediately
+      await pool.query(
+        "DELETE FROM email_otps WHERE LOWER(email) = $1 AND purpose = 'signup'",
+        [normalizedEmail]
+      );
+
+      // Log failure reason without exposing API keys, OTPs, or passwords
+      console.error(
+        `[Email Delivery Error] Failed to send signup verification code to ${normalizedEmail}: ${emailErr.message}`
+      );
+
+      if (
+        emailErr.message?.includes("only send testing emails") ||
+        emailErr.message?.includes("not verified") ||
+        emailErr.statusCode === 403
+      ) {
+        return res.status(502).json({
+          message:
+            "Unable to send the verification code. The email service is in testing mode and can only deliver to the verified domain owner (thedecantbarofficial@gmail.com). Please verify a custom domain in Resend to send to all customers.",
+          error: "RESEND_DOMAIN_RESTRICTION",
         });
       }
-    } catch (emailErr) {
-      console.warn("Signup OTP email delivery warning:", emailErr.message);
-      if (emailErr.message?.includes("only send testing emails") || emailErr.message?.includes("403")) {
-        warning = "Resend Sandbox Restriction: Testing emails can only be delivered to your registered email (thedecantbarofficial@gmail.com). To send to all customers, connect your custom domain at resend.com/domains.";
-        devOtp = otpCode;
-      }
+
+      return res.status(502).json({
+        message: "Unable to send the verification code. Please try again.",
+      });
     }
 
-    res.json({
-      message: warning ? "Verification code generated." : "Verification code sent to your email address.",
+    return res.status(200).json({
+      message: "Verification code sent to your email address.",
       email: normalizedEmail,
-      warning,
-      devOtp,
     });
   } catch (error) {
     console.error("Send signup OTP error:", error);
