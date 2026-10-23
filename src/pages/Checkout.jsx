@@ -344,7 +344,7 @@ export default function Checkout() {
         currency: rzpOrderData.currency || "INR",
         name: "The Decant Bar",
         description: "Authentic Luxury Fragrance Decants",
-        image: "/images/tdb-logo.png",
+        image: "/images/brand/decant-bar-monogram.png",
         order_id: rzpOrderData.orderId,
         handler: async function (response) {
           try {

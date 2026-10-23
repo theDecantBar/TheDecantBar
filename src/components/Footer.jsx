@@ -14,9 +14,14 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Link
               to="/"
-              className="font-display text-xl tracking-wide text-[#f4efe6]"
+              className="inline-block transition-opacity hover:opacity-90"
+              aria-label="The Decant Bar home"
             >
-              The Decant Bar
+              <img
+                src="/images/brand/decant-bar-logo.png"
+                alt="The Decant Bar"
+                className="h-10 w-auto object-contain"
+              />
             </Link>
 
             <p className="mt-4 max-w-md text-xs leading-6 text-[#8e8a82]">

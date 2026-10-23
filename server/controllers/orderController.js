@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { getPrimaryAdminEmail } from "../config/adminConfig.js";
 import { invalidateProductCache } from "./productController.js";
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
@@ -423,7 +424,7 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
       try {
         if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
           const { sendEmail } = await import("../services/emailService.js");
-          const ownerEmail = (process.env.ADMIN_EMAILS || "thedecantbarofficial@gmail.com").split(",")[0].trim();
+          const ownerEmail = getPrimaryAdminEmail();
 
           const itemsHtml = validatedItems
             .map(
@@ -674,7 +675,7 @@ export const createCodOrder = async (req, res) => {
       try {
         if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
           const { sendEmail } = await import("../services/emailService.js");
-          const ownerEmail = (process.env.ADMIN_EMAILS || "thedecantbarofficial@gmail.com").split(",")[0].trim();
+          const ownerEmail = getPrimaryAdminEmail();
 
           const itemsHtml = validatedItems
             .map(

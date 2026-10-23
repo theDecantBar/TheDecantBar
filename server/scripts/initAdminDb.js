@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { getAdminEmails } from "../config/adminConfig.js";
 
 export async function ensureAdminSchema() {
   try {
@@ -23,11 +24,8 @@ export async function ensureAdminSchema() {
       ADD COLUMN IF NOT EXISTS active BOOLEAN DEFAULT true;
     `);
 
-    // 4. Auto-promote emails configured in .env (ADMIN_EMAILS)
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
+    // 4. Auto-promote emails configured in .env (ADMIN_EMAILS / ADMIN_EMAIL)
+    const adminEmails = getAdminEmails();
 
     if (adminEmails.length > 0) {
       const updateRes = await pool.query(

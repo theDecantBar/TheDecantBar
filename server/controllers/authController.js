@@ -2,11 +2,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import pool from "../config/db.js";
+import { isConfiguredAdminEmail } from "../config/adminConfig.js";
 
 const generateToken = (id) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("Server configuration error: JWT_SECRET environment variable is missing.");
+  }
   return jwt.sign(
     { id },
-    process.env.JWT_SECRET || "thedecantbar_fallback_secret_key",
+    secret,
     { expiresIn: "30d" }
   );
 };
@@ -43,11 +48,7 @@ export const register = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Check if this registered email is configured as an Administrator in .env
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    const isConfiguredAdmin = adminEmails.includes(normalizedEmail);
+    const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
 
     // Insert user
     const result = await pool.query(
@@ -110,14 +111,9 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Incorrect password. Please try again." });
     }
 
-    // Auto-promote if email is configured in .env ADMIN_EMAILS
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-
+    // Auto-promote if email is configured in .env ADMIN_EMAILS / ADMIN_EMAIL
     let isAdmin = Boolean(user.is_admin);
-    if (!isAdmin && adminEmails.includes(normalizedEmail)) {
+    if (!isAdmin && isConfiguredAdminEmail(normalizedEmail)) {
       await pool.query("UPDATE users SET is_admin = true WHERE id = $1", [user.id]);
       isAdmin = true;
     }
@@ -150,11 +146,7 @@ export const login = async (req, res) => {
 // @access  Private
 export const getProfile = async (req, res) => {
   try {
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    const isAdmin = Boolean(req.user.is_admin) || adminEmails.includes((req.user.email || "").toLowerCase());
+    const isAdmin = Boolean(req.user.is_admin) || isConfiguredAdminEmail(req.user.email);
 
     res.json({
       user: {
@@ -425,11 +417,7 @@ export const verifySignupOtpAndRegister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const adminEmails = (process.env.ADMIN_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    const isConfiguredAdmin = adminEmails.includes(normalizedEmail);
+    const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
 
     const result = await pool.query(
       `INSERT INTO users (full_name, email, phone, password_hash, is_admin)

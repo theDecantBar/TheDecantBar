@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
+import { isConfiguredAdminEmail } from "../config/adminConfig.js";
 
 export const protect = async (req, res, next) => {
   let token;
@@ -18,11 +19,14 @@ export const protect = async (req, res, next) => {
     return res.status(401).json({ message: "Not authorized. Please log in to continue." });
   }
 
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    console.error("Critical Security Error: JWT_SECRET environment variable is missing.");
+    return res.status(500).json({ message: "Server authentication configuration error." });
+  }
+
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "thedecantbar_fallback_secret_key"
-    );
+    const decoded = jwt.verify(token, secret);
 
     const result = await pool.query(
       "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin, created_at FROM users WHERE id = $1",
@@ -43,42 +47,45 @@ export const protect = async (req, res, next) => {
 
 // Admin-only authorization guard
 export const adminOnly = (req, res, next) => {
-  const adminEmails = (process.env.ADMIN_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authorized. Please log in to continue." });
+  }
 
-  const isConfiguredAdmin =
-    req.user &&
-    req.user.email &&
-    adminEmails.includes(req.user.email.toLowerCase());
+  const isAdmin = Boolean(req.user.is_admin) || isConfiguredAdminEmail(req.user.email);
 
-  if ((req.user && Boolean(req.user.is_admin)) || isConfiguredAdmin) {
+  if (isAdmin) {
     return next();
   }
+
   return res.status(403).json({
     message: "Access forbidden. Administrator privileges required.",
   });
 };
 
-// Optional auth for endpoints like checkout where guest or logged-in users both can place orders
+// Optional auth for endpoints where guest or logged-in users both can proceed
 export const optionalAuth = async (req, res, next) => {
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer ")
   ) {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      console.warn("JWT_SECRET missing during optionalAuth; proceeding as guest.");
+      req.user = null;
+      return next();
+    }
+
     try {
-      const token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || "thedecantbar_fallback_secret_key"
-      );
-      const result = await pool.query(
-        "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin FROM users WHERE id = $1",
-        [decoded.id]
-      );
-      if (result.rows.length > 0) {
-        req.user = result.rows[0];
+      const raw = req.headers.authorization.split(" ")[1];
+      if (raw && raw !== "null" && raw !== "undefined") {
+        const decoded = jwt.verify(raw, secret);
+        const result = await pool.query(
+          "SELECT id, full_name, email, phone, address, city, state, pincode, is_admin FROM users WHERE id = $1",
+          [decoded.id]
+        );
+        if (result.rows.length > 0) {
+          req.user = result.rows[0];
+        }
       }
     } catch {
       // Token expired or invalid, proceed as guest
@@ -87,4 +94,3 @@ export const optionalAuth = async (req, res, next) => {
   }
   next();
 };
-

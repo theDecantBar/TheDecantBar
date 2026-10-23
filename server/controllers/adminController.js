@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pool from "../config/db.js";
+import { getPrimaryAdminEmail } from "../config/adminConfig.js";
 import { invalidateProductCache } from "./productController.js";
 import { uploadPerfumeImage, deletePerfumeImage } from "../services/supabaseStorage.js";
 
@@ -680,7 +681,7 @@ export const updateVariantStock = async (req, res) => {
             [updatedVariant.product_id]
           );
           const productName = prodRes.rows[0]?.name || "Fragrance";
-          const ownerEmail = (process.env.ADMIN_EMAILS || "thedecantbarofficial@gmail.com").split(",")[0].trim();
+          const ownerEmail = getPrimaryAdminEmail();
 
           if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
             const { sendEmail } = await import("../services/emailService.js");

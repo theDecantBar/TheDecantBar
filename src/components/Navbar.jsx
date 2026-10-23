@@ -117,9 +117,9 @@ export default function Navbar() {
             aria-label="The Decant Bar home"
           >
             <img
-              src="/images/tdb-logo.png"
+              src="/images/brand/decant-bar-logo.png"
               alt="The Decant Bar"
-              className="h-10 w-auto object-contain sm:h-12 lg:h-[50px]"
+              className="h-9 w-auto object-contain sm:h-11 lg:h-12"
             />
           </Link>
 
@@ -238,9 +238,9 @@ export default function Navbar() {
                     aria-label="The Decant Bar home"
                   >
                     <img
-                      src="/images/tdb-logo.png"
+                      src="/images/brand/decant-bar-logo.png"
                       alt="The Decant Bar"
-                      className="h-10 w-auto object-contain sm:h-11"
+                      className="h-8 w-auto object-contain sm:h-9"
                     />
                   </Link>
 

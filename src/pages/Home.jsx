@@ -1,12 +1,11 @@
 import { motion, useReducedMotion } from "motion/react";
 import Hero from "../components/Hero";
-import FeatureBar from "../components/Featurebar";
 import FilterBar from "../components/FilterBar";
 import FeaturedDecants from "../components/home/FeaturedDecants";
 import CategoryBanners from "../components/home/CategoryBanners";
 import DecantGuide from "../components/home/DecantGuide";
 import Testimonials from "../components/home/Testimonials";
-import Guarantees from "../components/home/Guarantees";
+
 
 function Reveal({ children }) {
   const reduceMotion = useReducedMotion();
@@ -23,13 +22,12 @@ export default function Home() {
   return (
     <div className="bg-[#11110f] text-[#f4efe6]">
       <Hero />
-      <FeatureBar />
       <div id="discover" className="scroll-mt-20"><FilterBar /></div>
       <Reveal><FeaturedDecants /></Reveal>
       <CategoryBanners />
       <Reveal><DecantGuide /></Reveal>
       <Reveal><Testimonials /></Reveal>
-      <Reveal><Guarantees /></Reveal>
+      
     </div>
   );
 }

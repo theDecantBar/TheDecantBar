@@ -1,4 +1,3 @@
-
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
@@ -10,6 +9,8 @@ import express from "express";
 import cors from "cors";
 
 import { sendEmail } from "./services/emailService.js";
+import { protect, adminOnly } from "./middleware/authMiddleware.js";
+import { getPrimaryAdminEmail } from "./config/adminConfig.js";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
@@ -22,7 +23,37 @@ const app = express();
 // Verify and initialize necessary admin schema columns
 ensureAdminSchema();
 
-app.use(cors());
+// Production-ready CORS policy
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.CLIENT_URL,
+  "https://thedecantbar.com",
+  "https://www.thedecantbar.com",
+].filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser requests or same-origin requests where origin is undefined
+    if (!origin) return callback(null, true);
+
+    const isExplicitMatch = allowedOrigins.includes(origin);
+    const isVercelPreview = /^https:\/\/[\w-]+\.vercel\.app$/.test(origin);
+    const isLocalDev =
+      process.env.NODE_ENV !== "production" &&
+      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+    if (isExplicitMatch || isVercelPreview || isLocalDev) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy blocked access from origin: ${origin}`));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static(path.resolve(__dirname, "../public")));
@@ -39,16 +70,18 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/api/test-email", async (req, res) => {
+// Protected diagnostic test-email endpoint (Requires authenticated Administrator)
+app.post("/api/test-email", protect, adminOnly, async (req, res) => {
   try {
+    const recipient = req.body?.to || getPrimaryAdminEmail();
     const result = await sendEmail({
-      to: process.env.ADMIN_EMAIL,
-      subject: "The Decant Bar - Email Test",
+      to: recipient,
+      subject: "The Decant Bar - Admin Email Test",
       html: `
         <div style="background:#11110f;color:#f4efe6;padding:30px;font-family:Arial">
           <h1 style="color:#c6a15b">The Decant Bar</h1>
           <p>Your email integration is working!</p>
-          <p>This is a test email from your Express backend.</p>
+          <p>This is an authenticated diagnostic test email dispatched by an authorized administrator.</p>
         </div>
       `,
       text: "The Decant Bar: Your email integration is working!",
@@ -56,14 +89,14 @@ app.post("/api/test-email", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Email accepted by Resend",
+      message: `Email accepted by Resend for ${recipient}`,
       id: result?.id,
     });
   } catch (error) {
     console.error("Test email failed:", error.message);
     res.status(500).json({
       success: false,
-      message: "Email test failed. Check your server logs and Resend configuration.",
+      message: error.message || "Email test failed. Check your server logs and Resend configuration.",
     });
   }
 });
