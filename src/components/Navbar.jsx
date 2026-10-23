@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, UserRound, ShoppingBag, Menu, X, LogIn, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import "./Navbar.css";
 
 const navItems = [
   { name: "Shop", path: "/products" },
@@ -14,6 +15,7 @@ const navItems = [
 
 export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
+  const isHome = useLocation().pathname === "/";
   const { cartCount } = useCart();
   const { user, isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,7 +48,7 @@ export default function Navbar() {
       initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#11110f]/90 backdrop-blur-md"
+      className={`storefront-navbar sticky top-0 z-50 w-full ${isHome ? "storefront-navbar--home" : "storefront-navbar--page"}`}
     >
       <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
         {/* Mobile Hamburger */}
