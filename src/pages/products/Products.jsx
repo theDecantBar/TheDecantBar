@@ -1,26 +1,32 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
 import FilterBar from "../../components/FilterBar";
 
+const PRODUCTS_PER_PAGE = 4;
+
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const searchParam = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const gender = searchParams.get("gender") || "";
-  const weather = searchParams.get("weather") || searchParams.get("season") || "";
+  const weather =
+    searchParams.get("weather") || searchParams.get("season") || "";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState(searchParam);
-  const [prevSearchParam, setPrevSearchParam] = useState(searchParam);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  if (prevSearchParam !== searchParam) {
-    setPrevSearchParam(searchParam);
+  // Keep the search field synchronized with the URL.
+  useEffect(() => {
     setSearch(searchParam);
-  }
+  }, [searchParam]);
 
+  // Fetch products using the current search and filters.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -30,12 +36,26 @@ function Products() {
 
       try {
         const params = new URLSearchParams();
-        if (search) params.set("search", search);
-        if (category) params.set("category", category);
-        if (gender) params.set("gender", gender);
-        if (weather) params.set("weather", weather);
 
-        const response = await fetch(`/api/products?${params.toString()}`, {
+        if (searchParam) {
+          params.set("search", searchParam);
+        }
+
+        if (category) {
+          params.set("category", category);
+        }
+
+        if (gender) {
+          params.set("gender", gender);
+        }
+
+        if (weather) {
+          params.set("weather", weather);
+        }
+
+        const url = "/api/products?" + params.toString();
+
+        const response = await fetch(url, {
           signal: controller.signal,
         });
 
@@ -50,6 +70,7 @@ function Products() {
         }
 
         setProducts(data);
+        setCurrentPage(1);
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Error fetching products:", err);
@@ -65,26 +86,58 @@ function Products() {
     fetchProducts();
 
     return () => controller.abort();
-  }, [search, category, gender, weather]);
+  }, [searchParam, category, gender, weather]);
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
+  // Submit the search.
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+
     const newParams = new URLSearchParams(searchParams);
-    if (search.trim()) {
-      newParams.set("search", search.trim());
+    const trimmedSearch = search.trim();
+
+    if (trimmedSearch) {
+      newParams.set("search", trimmedSearch);
     } else {
       newParams.delete("search");
     }
+
+    setCurrentPage(1);
     setSearchParams(newParams);
   };
 
+  // Clear all filters and search parameters.
   const handleClearFilters = () => {
     setSearch("");
+    setCurrentPage(1);
     setSearchParams({});
   };
 
-  // Dynamic header based on category, gender, or season
+  // Calculate pagination.
+  const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+
+  const visibleProducts = products.slice(
+    startIndex,
+    startIndex + PRODUCTS_PER_PAGE
+  );
+
+  // Navigate between pages.
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) {
+      return;
+    }
+
+    setCurrentPage(page);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Dynamic page heading.
   let pageTitle = "Our Collection";
+
   let pageSubtitle =
     "Explore our collection of authentic luxury fragrances, carefully decanted for every mood and occasion.";
 
@@ -101,19 +154,25 @@ function Products() {
     pageSubtitle =
       "Rich ambers, hypnotic ouds, and long-lasting oriental elixirs that command the room.";
   } else if (gender) {
+    const normalizedGender = gender.toLowerCase();
+
     const label =
-      gender.toUpperCase() === "M" || gender.toLowerCase() === "men"
+      normalizedGender === "m" || normalizedGender === "men"
         ? "Men"
-        : gender.toUpperCase() === "W" || gender.toLowerCase() === "women"
+        : normalizedGender === "w" || normalizedGender === "women"
         ? "Women"
         : "Unisex";
-    pageTitle = `Fragrances for ${label}`;
-    pageSubtitle = `Handpicked luxury decants curated especially for ${label.toLowerCase()}.`;
+
+    pageTitle = "Fragrances for " + label;
+    pageSubtitle =
+      "Handpicked luxury decants curated especially for " +
+      label.toLowerCase() +
+      ".";
   }
 
   return (
     <div className="min-h-screen bg-[#11110f] text-[#f4efe6]">
-      {/* 1. Header Section */}
+      {/* Header */}
       <div className="mx-auto max-w-7xl px-6 pt-12">
         <p className="text-xs uppercase tracking-[0.35em] text-[#c6a15b]">
           The Decant Bar
@@ -130,14 +189,17 @@ function Products() {
         </p>
       </div>
 
-      {/* 2. Premium Apply Filters Bar */}
+      {/* Filters */}
       <div className="mt-8">
         <FilterBar />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 pb-16 pt-8">
-        {/* Search Bar & Quick Controls */}
-        <form onSubmit={handleSearchSubmit} className="mb-10 flex flex-col gap-3 sm:flex-row">
+        {/* Search Bar */}
+        <form
+          onSubmit={handleSearchSubmit}
+          className="mb-10 flex flex-col gap-3 sm:flex-row"
+        >
           <input
             type="search"
             value={search}
@@ -165,39 +227,112 @@ function Products() {
           )}
         </form>
 
-      {loading ? (
-        <p className="py-12 text-center text-[#8e8a82]">Loading fragrances...</p>
-      ) : error ? (
-        <div className="py-12 text-center">
-          <p className="text-red-300">{error}</p>
-          <button
-            type="button"
-            onClick={() => setSearch((current) => current)}
-            className="mt-4 text-sm text-[#c6a15b] underline"
-          >
-            Retry
-          </button>
-        </div>
-      ) : products.length === 0 ? (
-        <p className="py-12 text-center text-[#f4efe6]/60">
-          No fragrances found. Try changing your filters.
-        </p>
-      ) : (
-        <>
-          <p className="mx-auto mb-5 max-w-7xl text-sm text-[#f4efe6]/60">
-            {products.length} fragrances found
-            {category ? ` in ${category}` : ""}
-            {gender ? ` for ${gender}` : ""}
-            {weather ? ` (${weather})` : ""}
-          </p>
+        {/* Products */}
+        <div id="product-results">
+          {loading ? (
+            <div
+              className="min-h-12 py-6"
+              aria-label="Loading products"
+            />
+          ) : error ? (
+            <div className="py-12 text-center">
+              <p className="text-red-300">{error}</p>
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </>
-      )}
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchParams(new URLSearchParams(searchParams));
+                }}
+                className="mt-4 text-sm text-[#c6a15b] underline"
+              >
+                Retry
+              </button>
+            </div>
+          ) : products.length === 0 ? (
+            <p className="py-12 text-center text-[#f4efe6]/60">
+              No fragrances found. Try changing your filters.
+            </p>
+          ) : (
+            <>
+              {/* Product Count */}
+              <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-[#f4efe6]/60">
+                  Showing {startIndex + 1}–
+                  {Math.min(
+                    startIndex + PRODUCTS_PER_PAGE,
+                    products.length
+                  )}{" "}
+                  of {products.length} fragrances
+                  {category ? " in " + category : ""}
+                  {gender ? " for " + gender : ""}
+                  {weather ? " (" + weather + ")" : ""}
+                </p>
+
+                <p className="text-xs uppercase tracking-wider text-[#c6a15b]">
+                  Page {currentPage} of {totalPages}
+                </p>
+              </div>
+
+              {/* Four Product Cards Per Page */}
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {visibleProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <nav
+                  className="mt-12 flex flex-wrap items-center justify-center gap-2"
+                  aria-label="Product pagination"
+                >
+                  <button
+                    type="button"
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="border border-white/15 px-4 py-3 text-sm text-[#f4efe6] transition hover:border-[#c6a15b] hover:text-[#c6a15b] disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    ← Prev
+                  </button>
+
+                  {Array.from(
+                    { length: totalPages },
+                    (_, index) => index + 1
+                  ).map((page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() => goToPage(page)}
+                      aria-label={"Go to page " + page}
+                      aria-current={
+                        currentPage === page ? "page" : undefined
+                      }
+                      className={`min-w-11 border px-4 py-3 text-sm font-medium transition ${
+                        currentPage === page
+                          ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
+                          : "border-white/15 text-[#f4efe6] hover:border-[#c6a15b] hover:text-[#c6a15b]"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="border border-white/15 px-4 py-3 text-sm text-[#f4efe6] transition hover:border-[#c6a15b] hover:text-[#c6a15b] disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    Next →
+                  </button>
+                </nav>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
