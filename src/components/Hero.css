@@ -28,6 +28,9 @@
   object-fit: cover;
   object-position: center center;
   display: block;
+  /* Crop the source video's corner watermark out of the hero viewport. */
+  transform: scale(1.2);
+  transform-origin: center;
 }
 
 /* Cinematic Multi-layer Gradient Overlay for Text Readability */
@@ -64,6 +67,34 @@
   text-align: left;
   z-index: 1;
 }
+
+@keyframes signature-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.signature-hero__eyebrow,
+.signature-hero__title > span,
+.signature-hero__statement,
+.signature-hero__description,
+.signature-hero__actions {
+  animation: signature-reveal 1600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.signature-hero__eyebrow { animation-delay: 700ms; }
+.signature-hero__title > span:first-child { animation-delay: 1050ms; }
+.signature-hero__title > span:last-child { animation-delay: 1400ms; }
+.signature-hero__statement { animation-delay: 1750ms; }
+.signature-hero__description { animation-delay: 2100ms; }
+.signature-hero__actions { animation-delay: 2450ms; }
 
 .signature-hero__eyebrow {
   margin: 0 0 16px;

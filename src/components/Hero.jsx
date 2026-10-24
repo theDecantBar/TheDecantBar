@@ -10,7 +10,7 @@ export default function Hero() {
     // Ensure muted video autoplays smoothly on mobile Safari / Chrome
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay handled gracefully; poster fallback remains visible
+        // Keep the hero background visible if autoplay is unavailable.
       });
     }
   }, []);
@@ -28,7 +28,6 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            poster="/images/hero/hero-scene-1.webp"
           >
             <source src="/videos/HomeVideo.mp4" type="video/mp4" />
             <source src="/videos/hero-video.mp4" type="video/mp4" />
