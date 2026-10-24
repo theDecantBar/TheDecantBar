@@ -400,7 +400,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
       : [...filteredReviews, ...filteredReviews];
 
   return (
-    <section className="bg-[#11110f] py-16 sm:py-24 border-b border-white/10 text-[#f4efe6]">
+    <section className="bg-[#11110f] py-10 sm:py-24 border-b border-white/10 text-[#f4efe6]">
       <Container>
         {/* Breadcrumb */}
         {showBreadcrumb && (
@@ -581,7 +581,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
           /* ---------------------------------------------------- */
           /* Sliding Infinite Marquee View                        */
           /* ---------------------------------------------------- */
-          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 -mx-4 sm:mx-0">
+          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-4">
             <div className="group flex overflow-hidden w-full select-none py-2">
               <div className="flex shrink-0 gap-5 animate-marquee flex-row group-hover:[animation-play-state:paused] py-2">
                 {displayLoopItems.map((rev, idx) => {

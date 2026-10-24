@@ -51,10 +51,10 @@ const categoryCardsData = [
 
 export default function CategoryBanners() {
   return (
-    <section className="bg-[#151512] pt-8 sm:pt-10 pb-20 sm:pb-28 border-b border-white/10">
+    <section className="bg-[#151512] pt-8 sm:pt-10 pb-10 sm:pb-28 border-b border-white/10">
       <Container>
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-3">
             <Compass size={14} className="text-[#c6a15b]" />
             <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium">

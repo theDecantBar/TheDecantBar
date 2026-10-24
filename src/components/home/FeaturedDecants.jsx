@@ -69,10 +69,10 @@ export default function FeaturedDecants() {
   if (products.length === 0) return null;
 
   return (
-    <section className="bg-[#11110f] py-20 sm:py-28 border-b border-white/10">
+    <section className="bg-[#11110f] py-10 sm:py-28 border-b border-white/10">
       <Container>
         {/* Section Heading */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 sm:mb-16 gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-7 sm:mb-16 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Sparkles size={22} className="text-[#c6a15b]" />
@@ -103,10 +103,10 @@ export default function FeaturedDecants() {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="mt-14 text-center">
+        <div className="mt-8 sm:mt-14 text-center">
           <Link
             to="/products"
-            className="inline-flex items-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
+            className="inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
           >
             Explore all 90+ Perfumes
             <ArrowRight size={15} />

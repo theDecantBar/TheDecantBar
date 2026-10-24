@@ -97,7 +97,7 @@ export default function Navbar() {
             : "storefront-navbar--page"
         }`}
       >
-        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-8 lg:px-16">
+        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-2 px-4 sm:px-8 lg:px-16">
           {/* Mobile Hamburger */}
           <div className="flex items-center lg:hidden">
             <button
@@ -141,14 +141,14 @@ export default function Navbar() {
           </div>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             {/* Admin Link */}
             {isAuthenticated && user?.isAdmin && (
               <Link
                 to="/admin"
                 aria-label="Admin Portal"
                 title="Open Admin Control Hub"
-                className="inline-flex items-center gap-1.5 rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
               >
                 <ShieldCheck size={14} />
                 <span className="hidden sm:inline">Admin</span>

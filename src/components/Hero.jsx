@@ -1,23 +1,27 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Hero.css";
 
 export default function Hero() {
   const videoRef = useRef(null);
+  const [revealReady, setRevealReady] = useState(false);
 
   useEffect(() => {
+    // Keep content accessible even if the video cannot load or autoplay.
+    const fallbackTimer = window.setTimeout(() => setRevealReady(true), 3000);
     // Ensure muted video autoplays smoothly on mobile Safari / Chrome
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Keep the hero background visible if autoplay is unavailable.
+        setRevealReady(true);
       });
     }
+    return () => window.clearTimeout(fallbackTimer);
   }, []);
 
   return (
     <section className="signature-story" aria-labelledby="hero-title">
-      <div className="signature-hero">
+      <div className={`signature-hero${revealReady ? " signature-hero--ready" : ""}`}>
         {/* Background Cinematic Video Layer */}
         <div className="signature-hero__video-wrap" aria-hidden="true">
           <video
@@ -27,7 +31,13 @@ export default function Hero() {
             muted
             loop
             playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            tabIndex={-1}
             preload="auto"
+            onPlaying={() => setRevealReady(true)}
+            onError={() => setRevealReady(true)}
           >
             <source src="/videos/HomeVideo.mp4" type="video/mp4" />
             <source src="/videos/hero-video.mp4" type="video/mp4" />

@@ -31,6 +31,17 @@
   /* Crop the source video's corner watermark out of the hero viewport. */
   transform: scale(1.2);
   transform-origin: center;
+  pointer-events: none;
+}
+
+/* Safari may show a native play overlay when mobile autoplay is blocked. */
+.signature-hero__video::-webkit-media-controls,
+.signature-hero__video::-webkit-media-controls-enclosure,
+.signature-hero__video::-webkit-media-controls-panel,
+.signature-hero__video::-webkit-media-controls-start-playback-button,
+.signature-hero__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 /* Cinematic Multi-layer Gradient Overlay for Text Readability */
@@ -87,6 +98,15 @@
 .signature-hero__description,
 .signature-hero__actions {
   animation: signature-reveal 1600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-play-state: paused;
+}
+
+.signature-hero--ready .signature-hero__eyebrow,
+.signature-hero--ready .signature-hero__title > span,
+.signature-hero--ready .signature-hero__statement,
+.signature-hero--ready .signature-hero__description,
+.signature-hero--ready .signature-hero__actions {
+  animation-play-state: running;
 }
 
 .signature-hero__eyebrow { animation-delay: 700ms; }
@@ -195,7 +215,7 @@
 @media (max-width: 700px) {
   .signature-hero {
     height: auto;
-    min-height: clamp(520px, 86svh, 680px);
+    min-height: 0;
   }
 
   .signature-hero__overlay {
@@ -206,11 +226,13 @@
   }
 
   .signature-hero__inner {
-    padding: 100px max(16px, 5vw) 56px;
+    height: auto;
+    padding: 112px max(20px, 5vw) 40px;
   }
 
   .signature-hero__copy {
-    width: 92%;
+    width: 100%;
+    min-width: 0;
   }
 
   .signature-hero__eyebrow {
@@ -220,7 +242,7 @@
   }
 
   .signature-hero__title {
-    font-size: clamp(28px, 9vw, 44px);
+    font-size: clamp(30px, 10vw, 56px);
     line-height: 1.08;
   }
 
@@ -234,7 +256,7 @@
   }
 
   .signature-hero__description {
-    font-size: 13px;
+    font-size: clamp(13px, 3.6vw, 16px);
     line-height: 1.5;
     margin-top: 12px;
   }
@@ -242,9 +264,11 @@
   .signature-hero__actions {
     margin-top: 20px;
     gap: 10px;
+    max-width: 100%;
   }
 
   .signature-hero__cta {
+    max-width: 100%;
     min-height: 44px;
     padding: 12px 22px;
     font-size: 10px;
@@ -256,6 +280,21 @@
     width: 15px;
     height: 15px;
   }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .signature-hero {
+    height: auto;
+    min-height: 0;
+  }
+
+  .signature-hero__inner {
+    height: auto;
+    padding: 100px 5% 32px;
+  }
+
+  .signature-hero__copy { width: 100%; }
+  .signature-hero__title { font-size: clamp(30px, 5vw, 44px); }
 }
 
 @media (max-width: 360px) {

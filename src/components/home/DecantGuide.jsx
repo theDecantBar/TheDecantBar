@@ -55,10 +55,10 @@ const sizes = [
 
 export default function DecantGuide() {
   return (
-    <section className="bg-[#11110f] py-20 sm:py-28 border-b border-white/10">
+    <section className="bg-[#11110f] py-10 sm:py-28 border-b border-white/10">
       <Container>
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-3">
             <Sparkles size={14} className="text-[#c6a15b]" />
             <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium">
@@ -78,7 +78,7 @@ export default function DecantGuide() {
           {sizes.map((item) => (
             <div
               key={item.size}
-              className="flex flex-col justify-between border border-white/10 bg-[#161613] p-8 sm:p-9 transition-colors duration-300 hover:border-[#c6a15b]/40"
+              className="flex flex-col justify-between border border-white/10 bg-[#161613] p-5 sm:p-9 transition-colors duration-300 hover:border-[#c6a15b]/40"
             >
               <div>
                 {/* 1. Equal Header Badge & Spray Count */}
@@ -136,7 +136,7 @@ export default function DecantGuide() {
         <div className="mt-14 text-center">
           <Link
             to="/products"
-            className="inline-flex items-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
+            className="inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
           >
             <span>Explore All Fragrances (Choose Any Size)</span>
             <ArrowRight size={15} />
