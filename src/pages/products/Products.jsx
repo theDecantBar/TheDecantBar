@@ -114,6 +114,12 @@ function Products() {
 
   // Calculate pagination.
   const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+  const firstVisiblePage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
+  const visiblePages = Array.from(
+    { length: Math.min(5, totalPages) },
+    (_, index) => firstVisiblePage + index
+  );
+  const paginationButtonClass = "flex h-10 min-w-8 items-center justify-center rounded-sm border border-white/15 px-1.5 text-xs font-medium transition-colors hover:border-[#c6a15b]/70 hover:bg-[#c6a15b]/10 hover:text-[#c6a15b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] disabled:pointer-events-none disabled:opacity-30 sm:h-11 sm:min-w-11 sm:px-3 sm:text-sm";
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
   const visibleProducts = products.slice(
@@ -285,50 +291,24 @@ function Products() {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <nav
-                  className="mt-12 flex flex-wrap items-center justify-center gap-2"
-                  aria-label="Product pagination"
-                >
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="border border-white/15 px-4 py-3 text-sm text-[#f4efe6] transition hover:border-[#c6a15b] hover:text-[#c6a15b] disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    ← Prev
+            <nav aria-label="Collection pagination" className="mt-12 flex flex-col items-center gap-4 border-t border-white/10 pt-8">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <button type="button" aria-label="Previous page" disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)} className={paginationButtonClass}>
+                  ← Prev
+                </button>
+                {firstVisiblePage > 1 && <span aria-hidden="true" className="px-0.5 text-[#8e8a82]">…</span>}
+                {visiblePages.map((page) => (
+                  <button key={page} type="button" aria-label={`Go to page ${page}`} aria-current={page === currentPage ? "page" : undefined} onClick={() => goToPage(page)} className={`${paginationButtonClass} ${page === currentPage ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] hover:bg-[#c6a15b] hover:text-[#11110f]" : "text-[#f4efe6]"}`}>
+                    {page}
                   </button>
-
-                  {Array.from(
-                    { length: totalPages },
-                    (_, index) => index + 1
-                  ).map((page) => (
-                    <button
-                      key={page}
-                      type="button"
-                      onClick={() => goToPage(page)}
-                      aria-label={"Go to page " + page}
-                      aria-current={
-                        currentPage === page ? "page" : undefined
-                      }
-                      className={`min-w-11 border px-4 py-3 text-sm font-medium transition ${
-                        currentPage === page
-                          ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
-                          : "border-white/15 text-[#f4efe6] hover:border-[#c6a15b] hover:text-[#c6a15b]"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="border border-white/15 px-4 py-3 text-sm text-[#f4efe6] transition hover:border-[#c6a15b] hover:text-[#c6a15b] disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    Next →
-                  </button>
-                </nav>
+                ))}
+                {firstVisiblePage + visiblePages.length - 1 < totalPages && <span aria-hidden="true" className="px-0.5 text-[#8e8a82]">…</span>}
+                <button type="button" aria-label="Next page" disabled={currentPage === totalPages} onClick={() => goToPage(currentPage + 1)} className={paginationButtonClass}>
+                  Next →
+                </button>
+              </div>
+              <p aria-live="polite" className="text-xs tracking-wide text-[#8e8a82]">Page {currentPage} of {totalPages}</p>
+            </nav>
               )}
             </>
           )}
