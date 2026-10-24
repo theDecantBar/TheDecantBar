@@ -51,7 +51,7 @@ const categoryCardsData = [
 
 export default function CategoryBanners() {
   return (
-    <section className="bg-[#151512] py-20 sm:py-28 border-b border-white/10">
+    <section className="bg-[#151512] pt-8 sm:pt-10 pb-20 sm:pb-28 border-b border-white/10">
       <Container>
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">

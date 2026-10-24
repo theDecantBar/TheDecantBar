@@ -11,8 +11,6 @@ import {
   ArrowRight,
   Sparkles,
   LogIn,
-  LayoutGrid,
-  MoveHorizontal,
 } from "lucide-react";
 import Container from "../ui/Container";
 import TestimonialCard from "../ui/testimonial-card";
@@ -61,7 +59,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
 
   const [activeFilter, setActiveFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
-  const [viewMode, setViewMode] = useState("marquee");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
@@ -523,38 +520,8 @@ export default function Testimonials({ showBreadcrumb = false }) {
             })}
           </div>
 
-          {/* Controls: View Mode & Sort Dropdown */}
+          {/* Sort Controls */}
           <div className="flex flex-wrap items-center gap-3 self-end sm:self-auto text-xs text-[#8e8a82]">
-            {/* View Mode Toggle */}
-            <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-[#11110f] p-1">
-              <button
-                type="button"
-                onClick={() => setViewMode("marquee")}
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs transition cursor-pointer ${
-                  viewMode === "marquee"
-                    ? "bg-[#c6a15b] font-semibold text-[#11110f]"
-                    : "text-[#8e8a82] hover:text-[#f4efe6]"
-                }`}
-                title="Sliding Marquee View"
-              >
-                <MoveHorizontal size={13} />
-                <span className="hidden sm:inline">Sliding</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("grid")}
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs transition cursor-pointer ${
-                  viewMode === "grid"
-                    ? "bg-[#c6a15b] font-semibold text-[#11110f]"
-                    : "text-[#8e8a82] hover:text-[#f4efe6]"
-                }`}
-                title="Grid Columns View"
-              >
-                <LayoutGrid size={13} />
-                <span className="hidden sm:inline">Grid</span>
-              </button>
-            </div>
-
             {/* Sort Dropdown: Newest, Highest, Lowest */}
             <div className="flex items-center gap-2">
               <span className="shrink-0 font-medium">Sort:</span>
@@ -572,7 +539,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
         </div>
 
         {/* ---------------------------------------------------- */}
-        {/* 3. Empty State Card vs Reviews Grid                   */}
+        {/* 3. Empty State Card or Sliding Reviews                   */}
         {/* ---------------------------------------------------- */}
         {filteredReviews.length === 0 ? (
           <div className="rounded-2xl border border-white/10 bg-[#161613] p-12 sm:p-20 text-center max-w-3xl mx-auto shadow-xl">
@@ -610,7 +577,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
               </button>
             </div>
           </div>
-        ) : viewMode === "marquee" ? (
+        ) : (
           /* ---------------------------------------------------- */
           /* Sliding Infinite Marquee View                        */
           /* ---------------------------------------------------- */
@@ -646,33 +613,6 @@ export default function Testimonials({ showBreadcrumb = false }) {
             {/* Subtle Gradient Edge Vignettes */}
             <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-20 sm:w-40 bg-gradient-to-r from-[#11110f] via-[#11110f]/80 to-transparent sm:block z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-20 sm:w-40 bg-gradient-to-l from-[#11110f] via-[#11110f]/80 to-transparent sm:block z-10" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredReviews.map((rev) => {
-              const canModify = isAuthor(rev);
-              return (
-                <TestimonialCard
-                  key={rev.id}
-                  author={{
-                    name: rev.name,
-                    handle: rev.city || "Verified Buyer",
-                    city: rev.city,
-                  }}
-                  text={rev.text}
-                  fragrance={rev.fragrance}
-                  rating={rev.rating}
-                  date={rev.date}
-                  photo={rev.photo}
-                  verifiedBuyer={rev.verifiedBuyer}
-                  canModify={canModify}
-                  onEdit={() => handleStartEdit(rev)}
-                  onDelete={() => handleDeleteReview(rev.id)}
-                  onPhotoClick={(img) => setActivePhotoPreview(img)}
-                  className="w-full sm:w-full shrink"
-                />
-              );
-            })}
           </div>
         )}
 
