@@ -103,6 +103,11 @@ export default function Footer() {
 
             <ul className="mt-4 space-y-2.5 text-xs">
               <li>
+                <Link to="/faq" className="transition-colors hover:text-[#c6a15b]">
+                  Frequently Asked Questions
+                </Link>
+              </li>
+              <li>
                 <Link to="/shipping" className="transition-colors hover:text-[#c6a15b]">
                   Shipping & Delivery
                 </Link>
@@ -131,6 +136,10 @@ export default function Footer() {
           <p>© {currentYear} The Decant Bar. All rights reserved.</p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 text-[11px]">
+            <Link to="/faq" className="transition-colors hover:text-[#c6a15b]">
+              FAQ
+            </Link>
+            <span className="text-white/20">·</span>
             <Link to="/privacy" className="transition-colors hover:text-[#c6a15b]">
               Privacy Policy
             </Link>

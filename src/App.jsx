@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Reviews from "./pages/Reviews";
+import FAQ from "./pages/FAQ";
 
 // Legal & Customer Policies
 import Terms from "./pages/legal/Terms";
@@ -77,6 +78,8 @@ export default function App() {
             <Route path="checkout" element={<Checkout />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="faqs" element={<FAQ />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

@@ -41,30 +41,59 @@ function ProductCard({ product }) {
 
   const itemQuantity = cartItem ? cartItem.quantity : 0;
 
-  const handleProductClick = useCallback((event) => {
-    event.preventDefault();
-    setShowProductTransition(true);
-  }, []);
+  const handleProductClick = useCallback(
+    (event) => {
+      // If user opened with meta/ctrl key, allow default Link behavior (open in new tab)
+      if (event?.metaKey || event?.ctrlKey || event?.shiftKey) {
+        return;
+      }
+      if (event?.preventDefault) {
+        event.preventDefault();
+      }
+      setShowProductTransition(true);
+    },
+    []
+  );
 
   const finishProductTransition = useCallback(() => {
     setShowProductTransition(false);
     navigate(`/product/${product.id}`);
   }, [navigate, product.id]);
 
+  // Card-level click handler: navigates when clicking non-interactive card regions
+  const handleCardClick = (event) => {
+    // If the click originated from an interactive element (buttons, controls), ignore
+    if (
+      event.target.closest(
+        "button, a, input, select, textarea, [data-interactive='true']"
+      )
+    ) {
+      return;
+    }
+    if (event.metaKey || event.ctrlKey || event.shiftKey) {
+      window.open(`/product/${product.id}`, "_blank");
+      return;
+    }
+    handleProductClick(event);
+  };
+
   const handleAddToCart = (event) => {
-    event.preventDefault();
+    event?.preventDefault();
+    event?.stopPropagation();
     if (!selectedVariant || isSoldOut) return;
     addToCart(product, selectedVariant, 1);
   };
 
   const handleIncreaseQuantity = (event) => {
     event?.preventDefault();
+    event?.stopPropagation();
     if (!selectedVariant || isSoldOut) return;
     addToCart(product, selectedVariant, 1);
   };
 
   const handleDecreaseQuantity = (event) => {
     event?.preventDefault();
+    event?.stopPropagation();
     if (!cartItemId || itemQuantity <= 0) return;
     updateQuantity(cartItemId, itemQuantity - 1);
   };
@@ -106,21 +135,18 @@ function ProductCard({ product }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-30px" }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="group flex h-full flex-col rounded-[26px] border border-white/[0.08] bg-[#121210] p-3.5 sm:p-4 transition-all duration-300 hover:border-[#c6a15b]/40 hover:shadow-xl hover:shadow-black/60"
+        onClick={handleCardClick}
+        className="group relative flex h-full cursor-pointer flex-col rounded-[26px] border border-white/[0.08] bg-[#121210] p-3.5 sm:p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#c6a15b]/40 hover:shadow-xl hover:shadow-black/60"
       >
         {/* Product Image Container */}
-        <Link
-          to={`/product/${product.id}`}
-          onClick={handleProductClick}
-          className="block cursor-pointer overflow-hidden rounded-[18px]"
-        >
+        <div className="block overflow-hidden rounded-[18px]">
           <ProductImage
             src={product.image_url}
             alt={product.name}
             aspectRatio="aspect-square"
             paddingClassName="p-2 sm:p-2.5"
             containerClassName="rounded-[18px] bg-[#181816] border border-white/[0.04]"
-            imageClassName="rounded-[14px]"
+            imageClassName="rounded-[14px] transition-transform duration-500 group-hover:scale-[1.03]"
             loading="lazy"
           >
             {(isSoldOut || allSoldOut) && (
@@ -129,7 +155,7 @@ function ProductCard({ product }) {
               </div>
             )}
           </ProductImage>
-        </Link>
+        </div>
 
         {/* Product Information */}
         <div className="flex flex-1 flex-col pt-3.5">
@@ -138,11 +164,12 @@ function ProductCard({ product }) {
             {categoryLabel}
           </p>
 
-          {/* Product Name in Elegant Serif Typography */}
+          {/* Product Name in Elegant Serif Typography (Semantic Accessibility Link) */}
           <Link
             to={`/product/${product.id}`}
             onClick={handleProductClick}
-            className="mt-1"
+            aria-label={`View ${product.name} details`}
+            className="mt-1 block rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
           >
             <h2 className="font-display text-[18px] sm:text-[20px] font-normal leading-[1.25] text-[#f4efe6] line-clamp-2 min-h-[46px] sm:min-h-[50px] transition-colors group-hover:text-[#c6a15b]">
               {product.name}
@@ -158,7 +185,7 @@ function ProductCard({ product }) {
             <span>{typeLabel}</span>
           </div>
 
-          {/* Subtle Divider Matching Reference */}
+          {/* Subtle Divider */}
           <div className="my-3 w-full border-t border-white/[0.07]" />
 
           {/* Selected Size Label & Price */}
@@ -171,8 +198,12 @@ function ProductCard({ product }) {
             </p>
           </div>
 
-          {/* Size Selectors & Add Button Row */}
-          <div className="mt-auto flex items-center justify-between gap-2">
+          {/* Size Selectors & Add Button Row (Interactive Area - Never triggers Card Navigation) */}
+          <div
+            className="mt-auto flex items-center justify-between gap-2 pt-1"
+            data-interactive="true"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Size Selector Pills */}
             <div
               className="flex flex-wrap items-center gap-1.5"
@@ -188,7 +219,10 @@ function ProductCard({ product }) {
                     key={variant.id}
                     type="button"
                     disabled={variantSoldOut}
-                    onClick={() => setSelectedVariantId(variant.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedVariantId(variant.id);
+                    }}
                     className={`flex h-8 min-w-[38px] cursor-pointer items-center justify-center rounded-full px-2.5 text-xs transition ${
                       isSelected
                         ? "bg-[#d8b570] font-semibold text-[#14120c] shadow-sm"
@@ -206,15 +240,15 @@ function ProductCard({ product }) {
             {/* Circular Gold Add to Bag or Quantity Control */}
             <div className="shrink-0">
               {isSoldOut ? (
-                <Link
-                  to={`/product/${product.id}`}
+                <button
+                  type="button"
                   onClick={handleProductClick}
-                  aria-label="Sold out. View product"
+                  aria-label={`Sold out. View ${product.name}`}
                   title="Sold out — view product"
                   className="flex h-10 w-10 sm:h-11 sm:w-11 cursor-pointer items-center justify-center rounded-full border border-red-500/40 bg-red-950/30 text-red-300 transition hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
                 >
                   <Bell size={17} strokeWidth={1.5} />
-                </Link>
+                </button>
               ) : itemQuantity > 0 ? (
                 <div className="flex h-10 sm:h-11 items-center gap-1 rounded-full border border-[#d8b570] bg-[#1a1916] px-1">
                   <button

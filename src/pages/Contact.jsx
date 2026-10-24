@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, ChevronDown, Check, MessageSquare, Package, Compass } from "lucide-react";
+import { motion } from "motion/react";
+import { ArrowUpRight, Check, MessageSquare, Package, Compass, HelpCircle } from "lucide-react";
 import Container from "../components/ui/Container";
 
 const contactOptions = [
@@ -28,39 +28,6 @@ const contactOptions = [
   },
 ];
 
-const faqs = [
-  {
-    id: "faq-1",
-    question: "What is a fragrance decant?",
-    answer:
-      "A decant is an authentic portion of perfume transferred directly from the original manufacturer's bottle into a smaller, high-grade spray atomizer. It allows you to experience the exact original fragrance without purchasing a full-sized bottle.",
-  },
-  {
-    id: "faq-2",
-    question: "What decant sizes are available?",
-    answer:
-      "Our fragrances are offered in 2 ml (approximately 30 sprays — ideal for first impressions), 5 ml (approximately 75 sprays — ideal for multiple wears), and 10 ml (approximately 150 sprays — perfect for everyday travel).",
-  },
-  {
-    id: "faq-3",
-    question: "Can I try a fragrance before purchasing a full bottle?",
-    answer:
-      "Yes, that is the primary purpose of The Decant Bar. Decants provide an accessible way to wear and test a scent on your skin in real-world settings before committing to a costly full-sized bottle.",
-  },
-  {
-    id: "faq-4",
-    question: "How should I choose a fragrance to explore?",
-    answer:
-      "You can filter by gender, olfactive family, season, or concentration on our Shop page. If you are unsure, we recommend starting with a 2 ml or 5 ml decant of both a classic designer and an artisanal niche scent to compare.",
-  },
-  {
-    id: "faq-5",
-    question: "How can I contact you about an existing order?",
-    answer:
-      "You can use the contact form below and include your Order Number in the optional field. Our team reviews all enquiries and responds promptly.",
-  },
-];
-
 export default function Contact() {
   // Form State
   const [formData, setFormData] = useState({
@@ -73,8 +40,6 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // FAQ Accordion State (open single item ID)
-  const [openFaq, setOpenFaq] = useState("faq-1");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,9 +68,6 @@ export default function Contact() {
     setSubmitted(false);
   };
 
-  const toggleFaq = (id) => {
-    setOpenFaq((prev) => (prev === id ? null : id));
-  };
 
   return (
     <div className="min-h-screen bg-[#11110f] text-[#f4efe6] overflow-x-hidden">
@@ -250,6 +212,19 @@ export default function Contact() {
                 <p>
                   <span className="font-semibold uppercase tracking-wider text-[#f4efe6]">Confidentiality:</span>{" "}
                   Your information is used strictly to answer your direct enquiry.
+                </p>
+              </div>
+
+              <div className="mt-8 border-t border-white/10 pt-6">
+                <p className="text-xs text-[#8e8a82]">
+                  Looking for quick answers about decant sizes, authenticity, or shipping?{" "}
+                  <Link
+                    to="/faq"
+                    className="inline-flex items-center gap-1 font-medium text-[#c6a15b] underline underline-offset-4 transition-colors hover:text-[#f4efe6]"
+                  >
+                    <span>View our Frequently Asked Questions</span>
+                    <ArrowUpRight size={13} />
+                  </Link>
                 </p>
               </div>
             </div>
@@ -411,74 +386,6 @@ export default function Contact() {
               </div>
             </div>
 
-          </div>
-        </Container>
-      </section>
-
-      {/* ─────────────────────────────────────────────
-          SECTION 4 — ACCORDION FAQ
-      ────────────────────────────────────────────── */}
-      <section className="border-b border-white/10 py-20 sm:py-28 lg:py-36">
-        <Container>
-          <div className="mx-auto max-w-3xl">
-            <div className="text-center">
-              <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-[#c6a15b]">
-                FAQ
-              </p>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-[#f4efe6] sm:text-4xl lg:text-5xl">
-                A Few Things You May Be Wondering
-              </h2>
-              <p className="mt-4 text-xs sm:text-sm text-[#8e8a82]">
-                Common answers about our decanting process, sizes, and orders.
-              </p>
-            </div>
-
-            {/* Accordion List */}
-            <div className="mt-14 space-y-4">
-              {faqs.map((faq) => {
-                const isOpen = openFaq === faq.id;
-                return (
-                  <div
-                    key={faq.id}
-                    className="border border-white/10 bg-[#171715] transition-colors"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => toggleFaq(faq.id)}
-                      aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between p-6 text-left transition-colors hover:text-[#c6a15b]"
-                    >
-                      <span className="font-display text-lg sm:text-xl text-[#f4efe6]">
-                        {faq.question}
-                      </span>
-                      <ChevronDown
-                        size={18}
-                        className={`text-[#c6a15b] transition-transform duration-300 ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          key="content"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                          className="overflow-hidden"
-                        >
-                          <div className="border-t border-white/5 px-6 pb-6 pt-3 text-xs sm:text-sm leading-relaxed text-[#c5c1b9]">
-                            {faq.answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </Container>
       </section>

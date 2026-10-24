@@ -431,187 +431,307 @@ export default function ProductDetail() {
             </p>
           )}
 
-          {/* Purchase & Decant Sizing Card */}
-          <div className="mt-4 w-full max-w-md rounded-lg border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:w-[82%] sm:p-4.5">
-            {/* Price & Size */}
-            <div className="flex items-baseline justify-between gap-2 border-b border-white/10 pb-3">
-              <div>
-                <span className="mb-0.5 block text-[10px] uppercase tracking-wider text-[#8e8a82]">
-                  Price
-                </span>
+          {/* Two-Column Purchase Area: Purchase Card (Left) & Specifications (Right) */}
+          <div className="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-2 lg:gap-5">
+            {/* Left Column: Purchase & Decant Sizing Card */}
+            <div className="w-full rounded-lg border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
+              {/* Price & Size */}
+              <div className="flex items-baseline justify-between gap-2 border-b border-white/10 pb-3">
+                <div>
+                  <span className="mb-0.5 block text-[10px] uppercase tracking-wider text-[#8e8a82]">
+                    Price
+                  </span>
 
-                <span className="font-display text-2xl text-[#f4efe6] sm:text-3xl">
-                  ₹{currentPrice * quantity}
-                </span>
+                  <span className="font-display text-2xl text-[#f4efe6] sm:text-3xl">
+                    ₹{currentPrice * quantity}
+                  </span>
+                </div>
+
+                {selectedVariant && (
+                  <span className="rounded border border-[#c6a15b]/30 bg-[#c6a15b]/10 px-2 py-0.5 text-right text-[11px] font-medium text-[#c6a15b] sm:text-xs">
+                    {quantity > 1 ? `${quantity} × ` : ""}
+                    {selectedVariant.size_ml}ml Decant Atomizer
+                  </span>
+                )}
               </div>
 
-              {selectedVariant && (
-                <span className="rounded border border-[#c6a15b]/30 bg-[#c6a15b]/10 px-2 py-0.5 text-right text-[11px] font-medium text-[#c6a15b] sm:text-xs">
-                  {quantity > 1 ? `${quantity} × ` : ""}
-                  {selectedVariant.size_ml}ml Decant Atomizer
-                </span>
+              {/* Decant Size Selector */}
+              {product.variants && product.variants.length > 0 && (
+                <div className="mt-3">
+                  <div className="mb-1.5 flex items-center justify-between">
+                    <span className="text-[11px] font-medium uppercase tracking-wider text-[#f4efe6] sm:text-xs">
+                      Select Decant Size
+                    </span>
+
+                    {selectedVariant &&
+                      SPRAY_ESTIMATES[selectedVariant.size_ml] && (
+                        <span className="text-[11px] text-[#c6a15b]">
+                          {SPRAY_ESTIMATES[selectedVariant.size_ml]}
+                        </span>
+                      )}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {product.variants.map((variant) => {
+                      const isSelected =
+                        selectedVariant?.id === variant.id;
+
+                      const variantSoldOut =
+                        Number(variant.stock ?? 0) <= 0;
+
+                      return (
+                        <button
+                          key={variant.id}
+                          type="button"
+                          onClick={() => setSelectedVariant(variant)}
+                          className={`relative flex cursor-pointer flex-col items-center justify-center border px-2 py-1.5 transition sm:px-2.5 sm:py-2 ${
+                            isSelected
+                              ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_8px_rgba(198,161,91,0.2)]"
+                              : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
+                          }`}
+                        >
+                          <span className="text-xs font-semibold tracking-wider sm:text-[13px]">
+                            {variant.size_ml} ml
+                          </span>
+
+                          <span className="mt-0.5 text-[11px] sm:text-xs">
+                            {variantSoldOut ? (
+                              <span className="font-semibold tracking-tight text-red-400">
+                                Sold Out
+                              </span>
+                            ) : (
+                              <span className="text-[#c6a15b]">
+                                ₹{variant.price}
+                              </span>
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <p className="mt-1.5 text-[10px] text-[#8e8a82]">
+                    *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
+                  </p>
+                </div>
+              )}
+
+              {/* Quantity Selector & Action Buttons */}
+              {isSoldOut ? (
+                <div className="mt-3 space-y-2">
+                  <div className="flex items-center justify-between rounded border border-red-500/30 bg-red-950/30 p-2.5 text-xs">
+                    <div className="flex items-center gap-2 text-red-300">
+                      <XCircle size={14} className="shrink-0 text-red-400" />
+                      <span>
+                        This {selectedVariant?.size_ml}ml decant size is
+                        currently <strong>Sold Out</strong>.
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNotifySubmitted(false);
+                      setNotifyModalOpen(true);
+                    }}
+                    className="flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition hover:bg-[#d8c08a] sm:h-10 sm:text-xs"
+                  >
+                    <Bell size={14} />
+                    Notify Me When Available
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-3.5 space-y-2.5">
+                  <div className="flex items-center gap-2.5">
+                    {/* Quantity Stepper */}
+                    <div className="flex h-9.5 shrink-0 items-center border border-white/15 bg-[#171715] sm:h-10">
+                      <button
+                        type="button"
+                        aria-label="Decrease quantity"
+                        onClick={() =>
+                          setQuantity((q) => Math.max(1, q - 1))
+                        }
+                        className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
+                      >
+                        <Minus size={13} />
+                      </button>
+
+                      <span className="w-7 text-center text-xs font-semibold text-[#f4efe6] sm:text-[13px]">
+                        {quantity}
+                      </span>
+
+                      <button
+                        type="button"
+                        aria-label="Increase quantity"
+                        onClick={() => setQuantity((q) => q + 1)}
+                        className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
+                      >
+                        <Plus size={13} />
+                      </button>
+                    </div>
+
+                    {/* Add to Bag */}
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      className={`flex h-9.5 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 border text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:h-10 sm:gap-2 sm:text-xs sm:tracking-[0.18em] ${
+                        added
+                          ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
+                          : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+                      }`}
+                    >
+                      {added ? (
+                        <>
+                          <Check
+                            size={14}
+                            strokeWidth={2.5}
+                            className="shrink-0"
+                          />
+                          <span className="truncate">Added to Bag</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag
+                            size={14}
+                            strokeWidth={1.5}
+                            className="shrink-0"
+                          />
+                          <span className="truncate">Add to Bag</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Buy Now */}
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition-colors hover:bg-[#d8c08a] sm:h-10.5 sm:text-xs"
+                  >
+                    Buy It Now
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
               )}
             </div>
 
-            {/* Decant Size Selector */}
-            {product.variants && product.variants.length > 0 && (
-              <div className="mt-3">
-                <div className="mb-1.5 flex items-center justify-between">
-                  <span className="text-[11px] font-medium uppercase tracking-wider text-[#f4efe6] sm:text-xs">
-                    Select Decant Size
+            {/* Right Column: Fragrance Specifications & Performance Card */}
+            <div className="flex w-full flex-col justify-between rounded-lg border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
+              <div>
+                {/* Header */}
+                <div className="border-b border-white/10 pb-3">
+                  <span className="mb-0.5 block text-[10px] uppercase tracking-wider text-[#8e8a82]">
+                    Olfactory Profile
                   </span>
-
-                  {selectedVariant &&
-                    SPRAY_ESTIMATES[selectedVariant.size_ml] && (
-                      <span className="text-[11px] text-[#c6a15b]">
-                        {SPRAY_ESTIMATES[selectedVariant.size_ml]}
-                      </span>
-                    )}
+                  <h3 className="font-display text-base text-[#f4efe6] sm:text-lg">
+                    Specifications & Performance
+                  </h3>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                  {product.variants.map((variant) => {
-                    const isSelected =
-                      selectedVariant?.id === variant.id;
+                {/* Spec Tiles Grid */}
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+                  {/* Category */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <Crown size={13} className="shrink-0 text-[#c6a15b]" />
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Category</span>
+                    </div>
+                    <p className="truncate font-medium text-[#f4efe6]">
+                      {product.category || "Designer"}
+                    </p>
+                  </div>
 
-                    const variantSoldOut =
-                      Number(variant.stock ?? 0) <= 0;
+                  {/* Concentration */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <Flame size={13} className="shrink-0 text-[#c6a15b]" />
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Concentration</span>
+                    </div>
+                    <p className="truncate font-medium text-[#f4efe6]">
+                      {product.type || "Eau de Parfum"}
+                    </p>
+                  </div>
 
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        onClick={() => setSelectedVariant(variant)}
-                        className={`relative flex cursor-pointer flex-col items-center justify-center border px-2 py-1.5 transition sm:px-2.5 sm:py-2 ${
-                          isSelected
-                            ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_8px_rgba(198,161,91,0.2)]"
-                            : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
-                        }`}
+                  {/* Season */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <SeasonIcon size={13} className="shrink-0 text-[#c6a15b]" />
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Season</span>
+                    </div>
+                    <p className="truncate font-medium text-[#f4efe6]">
+                      {product.weather || "All-Season"}
+                    </p>
+                  </div>
+
+                  {/* Gender */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <svg
+                        className="h-3 w-3 shrink-0 text-[#c6a15b] sm:h-3.5 sm:w-3.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
                       >
-                        <span className="text-xs font-semibold tracking-wider sm:text-[13px]">
-                          {variant.size_ml} ml
-                        </span>
+                        <circle cx="9" cy="9" r="6" />
+                        <line x1="13.5" y1="4.5" x2="20" y2="4.5" />
+                        <line x1="20" y1="4.5" x2="20" y2="11" />
+                        <circle
+                          cx="15"
+                          cy="15"
+                          r="5"
+                          strokeDasharray="3 3"
+                          opacity="0.6"
+                        />
+                      </svg>
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Gender</span>
+                    </div>
+                    <p className="truncate font-medium text-[#f4efe6]">
+                      {genderLabel}
+                    </p>
+                  </div>
 
-                        <span className="mt-0.5 text-[11px] sm:text-xs">
-                          {variantSoldOut ? (
-                            <span className="font-semibold tracking-tight text-red-400">
-                              Sold Out
-                            </span>
-                          ) : (
-                            <span className="text-[#c6a15b]">
-                              ₹{variant.price}
-                            </span>
-                          )}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                  {/* Longevity */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <Droplets size={13} className="shrink-0 text-[#c6a15b]" />
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Longevity</span>
+                    </div>
+                    <p className="truncate font-medium text-[#f4efe6]">
+                      {profile.longevity || "8 – 10 Hours"}
+                    </p>
+                  </div>
 
-                <p className="mt-1.5 text-[10px] text-[#8e8a82]">
-                  *High-grade fine-mist atomizers deliver approx. 15 sprays per 1ml.
-                </p>
-              </div>
-            )}
-
-            {/* Quantity Selector & Action Buttons */}
-            {isSoldOut ? (
-              <div className="mt-3 space-y-2">
-                <div className="flex items-center justify-between rounded border border-red-500/30 bg-red-950/30 p-2.5 text-xs">
-                  <div className="flex items-center gap-2 text-red-300">
-                    <XCircle size={14} className="shrink-0 text-red-400" />
-                    <span>
-                      This {selectedVariant?.size_ml}ml decant size is
-                      currently <strong>Sold Out</strong>.
-                    </span>
+                  {/* Projection */}
+                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                    <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
+                      <Sparkles size={13} className="shrink-0 text-[#c6a15b]" />
+                      <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Projection</span>
+                    </div>
+                    <p className="truncate font-medium text-[#c6a15b]">
+                      {profile.projection || "Moderate"}
+                    </p>
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setNotifySubmitted(false);
-                    setNotifyModalOpen(true);
-                  }}
-                  className="flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition hover:bg-[#d8c08a] sm:h-10 sm:text-xs"
-                >
-                  <Bell size={14} />
-                  Notify Me When Available
-                </button>
-              </div>
-            ) : (
-              <div className="mt-3.5 space-y-2.5">
-                <div className="flex items-center gap-2.5">
-                  {/* Quantity Stepper */}
-                  <div className="flex h-9.5 shrink-0 items-center border border-white/15 bg-[#171715] sm:h-10">
-                    <button
-                      type="button"
-                      aria-label="Decrease quantity"
-                      onClick={() =>
-                        setQuantity((q) => Math.max(1, q - 1))
-                      }
-                      className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
-                    >
-                      <Minus size={13} />
-                    </button>
-
-                    <span className="w-7 text-center text-xs font-semibold text-[#f4efe6] sm:text-[13px]">
-                      {quantity}
+                {/* Scent Character if available */}
+                {profile.vibe && (
+                  <div className="mt-2.5 rounded border border-[#c6a15b]/20 bg-[#c6a15b]/5 px-2.5 py-1.5 text-[11px] text-[#c5c1b9]">
+                    <span className="mr-1 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b]">
+                      Character:
                     </span>
-
-                    <button
-                      type="button"
-                      aria-label="Increase quantity"
-                      onClick={() => setQuantity((q) => q + 1)}
-                      className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
-                    >
-                      <Plus size={13} />
-                    </button>
+                    <span className="italic">"{profile.vibe}"</span>
                   </div>
-
-                  {/* Add to Bag */}
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    className={`flex h-9.5 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 border text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:h-10 sm:gap-2 sm:text-xs sm:tracking-[0.18em] ${
-                      added
-                        ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
-                        : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
-                    }`}
-                  >
-                    {added ? (
-                      <>
-                        <Check
-                          size={14}
-                          strokeWidth={2.5}
-                          className="shrink-0"
-                        />
-                        <span className="truncate">Added to Bag</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag
-                          size={14}
-                          strokeWidth={1.5}
-                          className="shrink-0"
-                        />
-                        <span className="truncate">Add to Bag</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Buy Now */}
-                <button
-                  type="button"
-                  onClick={handleBuyNow}
-                  className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition-colors hover:bg-[#d8c08a] sm:h-10.5 sm:text-xs"
-                >
-                  Buy It Now
-                  <ArrowRight size={13} />
-                </button>
+                )}
               </div>
-            )}
+
+              {/* Authenticity Guarantee Note */}
+              <div className="mt-3 flex items-center gap-1.5 border-t border-white/10 pt-2.5 text-[10px] text-[#8e8a82]">
+                <ShieldCheck size={13} className="shrink-0 text-[#c6a15b]" />
+                <span>100% genuine juice, decanted fresh into sterile atomizers.</span>
+              </div>
+            </div>
           </div>
 
           {/* Main Accords */}
@@ -632,98 +752,6 @@ export default function ProductDetail() {
             whenToWear={profile.whenToWear}
             weather={product.weather}
           />
-
-          {/* Fragrance Specifications */}
-          <div className="mt-6 border-t border-white/10 pt-5">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-[#c6a15b]">
-              Fragrance Specifications & Performance
-            </h3>
-
-            <div className="grid grid-cols-2 gap-2.5 text-xs sm:grid-cols-3">
-              {/* Category */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <Crown size={13} className="text-[#c6a15b]" />
-                  <span className="text-[11px]">Category</span>
-                </div>
-                <p className="truncate font-medium text-[#f4efe6]">
-                  {product.category || "Designer"}
-                </p>
-              </div>
-
-              {/* Concentration */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <Flame size={13} className="text-[#c6a15b]" />
-                  <span className="text-[11px]">Concentration</span>
-                </div>
-                <p className="truncate font-medium text-[#f4efe6]">
-                  {product.type || "Eau de Parfum"}
-                </p>
-              </div>
-
-              {/* Season */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <SeasonIcon size={13} className="text-[#c6a15b]" />
-                  <span className="text-[11px]">Season</span>
-                </div>
-                <p className="truncate font-medium text-[#f4efe6]">
-                  {product.weather || "All-Season"}
-                </p>
-              </div>
-
-              {/* Gender */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <svg
-                    className="h-3.5 w-3.5 text-[#c6a15b]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="9" cy="9" r="6" />
-                    <line x1="13.5" y1="4.5" x2="20" y2="4.5" />
-                    <line x1="20" y1="4.5" x2="20" y2="11" />
-                    <circle
-                      cx="15"
-                      cy="15"
-                      r="5"
-                      strokeDasharray="3 3"
-                      opacity="0.6"
-                    />
-                  </svg>
-                  <span className="text-[11px]">Gender</span>
-                </div>
-                <p className="truncate font-medium text-[#f4efe6]">
-                  {genderLabel}
-                </p>
-              </div>
-
-              {/* Longevity */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <Droplets size={13} className="text-[#c6a15b]" />
-                  <span className="text-[11px]">Longevity</span>
-                </div>
-                <p className="truncate font-medium text-[#f4efe6]">
-                  {profile.longevity || "8 – 10 Hours"}
-                </p>
-              </div>
-
-              {/* Projection */}
-              <div className="border border-white/10 bg-[#171715] p-3">
-                <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                  <Sparkles size={13} className="text-[#c6a15b]" />
-                  <span className="text-[11px]">Projection</span>
-                </div>
-                <p className="truncate font-medium text-[#c6a15b]">
-                  {profile.projection || "Moderate"}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
