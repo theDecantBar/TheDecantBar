@@ -22,7 +22,7 @@ const sizes = [
   {
     size: "5 ml",
     name: "Travel Atomizer",
-    badge: "Most Popular",
+    badge: "SIGNATURE PICK",
     sprays: "~75 Fine-Mist Spritzes",
     duration: "3–4 Weeks of Daily Wear",
     purpose: "Special Occasions & Dates",
