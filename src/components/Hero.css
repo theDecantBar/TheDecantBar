@@ -13,128 +13,36 @@
   background: #080807;
 }
 
-.signature-hero__art {
+/* Background Cinematic Video Layer */
+.signature-hero__video-wrap {
   position: absolute;
   inset: 0;
   z-index: -3;
+  overflow: hidden;
+  background: #080807;
 }
 
-/* Coordinate system aligned to the 16:9 hero artwork */
-.signature-hero__products {
-  position: absolute;
-  width: min(120vw, 170svh, 1700px);
-  aspect-ratio: 16 / 9;
-  right: -1%;
-  bottom: -3%;
-}
-
-.signature-hero__background {
-  display: block;
+.signature-hero__video {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  mask-image: linear-gradient(to bottom, transparent, #000 25%),
-              linear-gradient(to right, transparent 2%, #000 35%, #000 94%, transparent);
-  mask-composite: intersect;
-}
-
-.signature-hero__decant-slot {
-  position: absolute;
-  left: 87%;
-  bottom: 35.8%;
-  width: 3.6%;
-  height: 40%;
-  overflow: clip;
-}
-
-.signature-hero__decant {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  transform-origin: bottom center;
-}
-
-.signature-hero__decant img {
+  object-fit: cover;
+  object-position: center center;
   display: block;
-  width: 100%;
-  height: auto;
 }
 
-.signature-hero__contact {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, #000f 10%, #000b 45%, transparent 75%);
-  filter: blur(2px);
-}
-
-.signature-hero__contact--decant {
-  left: 86%;
-  bottom: 35%;
-  width: 5.6%;
-  height: 1.8%;
-  opacity: 0.95;
-}
-
-.signature-hero__pump {
-  position: absolute;
-  top: 0;
-  left: 17%;
-  width: 62%;
-  height: 15%;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(90deg, #080808, #30302c 48%, #080808);
-}
-
-.signature-hero__aura {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 65% 65%, #bd973628, transparent 65%);
-}
-
-.signature-hero__smoke {
-  position: absolute;
-  inset: 0 -12% -12%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-.signature-hero__smoke-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  max-width: none;
-  transform-origin: 50% 75%;
-}
-
-.signature-hero__smoke-layer--near {
-  animation: smoke-flow-near 23s ease-in-out infinite alternate;
-  opacity: 0.7;
-}
-
-.signature-hero__smoke-layer--far {
-  animation: smoke-flow-far 31s ease-in-out infinite alternate;
-  opacity: 0.35;
-}
-
-@keyframes smoke-flow-near {
-  0% { transform: translate3d(-3%, 6%, 0) scale(1.04) rotate(-2deg); }
-  50% { transform: translate3d(2%, -1%, 0) scale(1.1) rotate(1deg); }
-  100% { transform: translate3d(5%, -6%, 0) scale(1.18) rotate(3deg); }
-}
-
-@keyframes smoke-flow-far {
-  0% { transform: translate3d(8%, 5%, 0) scaleX(-1) scale(1.1); }
-  100% { transform: translate3d(-6%, -9%, 0) scaleX(-1) scale(1.27); }
-}
-
-.signature-hero__shade {
+/* Cinematic Multi-layer Gradient Overlay for Text Readability */
+.signature-hero__overlay {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: linear-gradient(90deg, #08080766 0%, #08080744 40%, transparent 80%),
-              linear-gradient(0deg, #080807 0%, transparent 15%);
   pointer-events: none;
+  background:
+    /* Left-to-right gradient ensuring crisp text contrast on the left copy */
+    linear-gradient(90deg, rgba(8, 8, 7, 0.92) 0%, rgba(8, 8, 7, 0.75) 35%, rgba(8, 8, 7, 0.38) 65%, rgba(8, 8, 7, 0.25) 100%),
+    /* Top and bottom feathering blending with navbar and next section */
+    linear-gradient(180deg, rgba(8, 8, 7, 0.75) 0%, transparent 22%, transparent 75%, #080807 100%),
+    /* Subtle warm champagne gold accent */
+    radial-gradient(ellipse at 75% 45%, rgba(198, 161, 91, 0.12), transparent 70%);
 }
 
 .signature-hero__inner {
@@ -144,6 +52,8 @@
   display: flex;
   align-items: center;
   padding: 110px 5% 70px;
+  position: relative;
+  z-index: 1;
 }
 
 .signature-hero__copy {
@@ -172,6 +82,7 @@
   line-height: 1.05;
   letter-spacing: -0.05em;
   font-weight: 700;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
 }
 
 .signature-hero__title span {
@@ -195,6 +106,7 @@
   line-height: 1.25;
   letter-spacing: -0.03em;
   color: #fff8e6;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .signature-hero__description {
@@ -204,6 +116,7 @@
   line-height: 1.6;
   color: #ded3bf;
   text-wrap: pretty;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 .signature-hero__actions {
@@ -223,7 +136,7 @@
   border-radius: 999px;
   background: linear-gradient(120deg, #edd69d, #c6a15b);
   color: #21190c;
-  box-shadow: 0 5px 30px #d2ad5b30, inset 0 1px 0 #fff6;
+  box-shadow: 0 5px 30px rgba(210, 173, 91, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -233,66 +146,18 @@
 
 .signature-hero__cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 40px #d2ad5b55;
+  box-shadow: 0 10px 40px rgba(210, 173, 91, 0.45);
 }
 
-.signature-hero__cta:focus-visible,
-.signature-hero__scroll:focus-visible {
+.signature-hero__cta:focus-visible {
   outline: 2px solid #efd586;
   outline-offset: 6px;
 }
 
-.signature-hero__sizes {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #d4c8ae;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-}
-
-.signature-hero__sizes i {
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: #c9a65b;
-}
-
-.signature-hero__scroll {
-  position: absolute;
-  bottom: 28px;
-  left: 5%;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #c8bba4;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  transition: color 0.2s, transform 0.2s;
-  z-index: 2;
-}
-
-.signature-hero__scroll:hover {
-  color: #ebd7a3;
-  transform: translateY(2px);
-}
-
-.signature-hero__caption {
-  position: absolute;
-  right: 5%;
-  bottom: 25px;
-  margin: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 16px;
-  color: #c8bba4;
-  z-index: 2;
-}
-
+/* Tablet & Mobile Responsiveness */
 @media (max-width: 900px) {
   .signature-hero__copy {
-    width: 60%;
+    width: 65%;
   }
 }
 
@@ -301,69 +166,74 @@
     height: auto;
     min-height: clamp(520px, 86svh, 680px);
   }
+
+  .signature-hero__overlay {
+    /* Comprehensive vertical gradient on mobile to ensure crisp text contrast over full width */
+    background:
+      linear-gradient(180deg, rgba(8, 8, 7, 0.88) 0%, rgba(8, 8, 7, 0.7) 40%, rgba(8, 8, 7, 0.82) 80%, #080807 100%),
+      radial-gradient(circle at 50% 25%, rgba(198, 161, 91, 0.15), transparent 70%);
+  }
+
   .signature-hero__inner {
     padding: 100px max(16px, 5vw) 56px;
   }
+
   .signature-hero__copy {
-    width: 68%;
+    width: 92%;
   }
+
   .signature-hero__eyebrow {
     font-size: 9px;
     margin-bottom: 12px;
     letter-spacing: 0.25em;
   }
+
   .signature-hero__title {
     font-size: clamp(28px, 9vw, 44px);
     line-height: 1.08;
   }
+
+  .signature-hero__title span {
+    white-space: normal;
+  }
+
   .signature-hero__statement {
     font-size: clamp(16px, 5vw, 22px);
     margin-top: 12px;
   }
+
   .signature-hero__description {
     font-size: 13px;
     line-height: 1.5;
     margin-top: 12px;
   }
+
   .signature-hero__actions {
-    margin-top: 18px;
+    margin-top: 20px;
     gap: 10px;
   }
+
   .signature-hero__cta {
     min-height: 44px;
-    padding: 12px 18px;
+    padding: 12px 22px;
     font-size: 10px;
     letter-spacing: 0.12em;
     gap: 12px;
   }
+
   .signature-hero__cta svg {
     width: 15px;
     height: 15px;
   }
-  .signature-hero__sizes {
-    font-size: 8px;
-    letter-spacing: 0.1em;
-  }
-  .signature-hero__products {
-    width: 180vw;
-    right: -10vw;
-    bottom: 3svh;
-  }
-  .signature-hero__smoke {
-    inset: 0 -60% -8%;
-  }
-  .signature-hero__caption {
-    display: none;
-  }
-  .signature-hero__scroll {
-    bottom: max(16px, env(safe-area-inset-bottom));
-    font-size: 8px;
-  }
 }
 
 @media (max-width: 360px) {
+  .signature-hero__copy {
+    width: 100%;
+  }
+
   .signature-hero__cta {
-    padding: 11px 14px;
+    padding: 11px 16px;
     font-size: 9px;
     letter-spacing: 0.08em;
   }

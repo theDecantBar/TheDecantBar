@@ -154,36 +154,9 @@ export default function About() {
       </section>
 
 
+      
       {/* ─────────────────────────────────────────────
-          SECTION 3 — FRAGRANCE IMAGE MOMENT (FULL BANNER)
-      ────────────────────────────────────────────── */}
-      <section className="relative min-h-[60vh] sm:min-h-[70vh] border-b border-white/10 flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src="/images/about/about-moment.jpg"
-            alt="Cinematic fragrance mist with golden light"
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-          {/* Dark Overlay Gradient */}
-          <div className="absolute inset-0 bg-black/60 backdrop-brightness-75" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#11110f] via-transparent to-[#11110f]/80" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 mx-auto max-w-2xl px-6 py-20 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#d8c08a]">
-            Fragrance is Personal
-          </p>
-          <h2 className="mt-4 font-display text-3xl sm:text-5xl lg:text-6xl text-[#f4efe6] leading-tight">
-            “It changes with your skin, your surroundings, and your moments.”
-          </h2>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────
-          SECTION 4 — CARE & PRECISION (IMAGE + ROWS)
+          SECTION 3 — CARE & PRECISION (IMAGE + ROWS)
       ────────────────────────────────────────────── */}
       <section className="border-b border-white/10 bg-[#171715] py-20 sm:py-28 lg:py-36">
         <Container>
@@ -238,6 +211,34 @@ export default function About() {
           </div>
         </Container>
       </section>
+      {/* ─────────────────────────────────────────────
+          SECTION 3 — FRAGRANCE IMAGE MOMENT (FULL BANNER)
+      ────────────────────────────────────────────── */}
+      <section className="relative min-h-[60vh] sm:min-h-[70vh] border-b border-white/10 flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/about/about-moment.jpg"
+            alt="Cinematic fragrance mist with golden light"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          {/* Dark Overlay Gradient */}
+          <div className="absolute inset-0 bg-black/60 backdrop-brightness-75" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#11110f] via-transparent to-[#11110f]/80" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 mx-auto max-w-2xl px-6 py-20 text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#d8c08a]">
+            Fragrance is Personal
+          </p>
+          <h2 className="mt-4 font-display text-3xl sm:text-5xl lg:text-6xl text-[#f4efe6] leading-tight">
+            “It changes with your skin, your surroundings, and your moments.”
+          </h2>
+        </div>
+      </section>
+
 
       {/* ─────────────────────────────────────────────
           SECTION 5 — FINAL CTA (FRAMED EDITORIAL)

@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <div className="bg-[#11110f] text-[#f4efe6]">
       <Hero />
-      <div id="discover" className="scroll-mt-20"><FilterBar /></div>
-      <Reveal><FeaturedDecants /></Reveal>
+      
       <CategoryBanners />
+      <Reveal><FeaturedDecants /></Reveal>
       <Reveal><DecantGuide /></Reveal>
       <Reveal><Testimonials /></Reveal>
       
