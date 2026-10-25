@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { ArrowUpRight, Check, MessageSquare, Package, Compass, HelpCircle } from "lucide-react";
+import { ArrowUpRight, Check, MessageSquare, Package, Compass, HelpCircle, AlertCircle } from "lucide-react";
 import Container from "../components/ui/Container";
+import { sendContactEnquiryApi } from "../services/authApi";
 
 const contactOptions = [
   {
@@ -39,22 +40,31 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (error) setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     setSubmitting(true);
 
-    // Simulate clean frontend submission feedback
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await sendContactEnquiryApi(formData);
       setSubmitted(true);
-    }, 400);
+    } catch (err) {
+      setError(
+        err.message ||
+          "Unable to deliver your message at this time. Please try again or email us directly at thedecantbarofficial@gmail.com."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleResetForm = () => {
@@ -65,6 +75,7 @@ export default function Contact() {
       orderNumber: "",
       message: "",
     });
+    setError("");
     setSubmitted(false);
   };
 
@@ -266,6 +277,12 @@ export default function Contact() {
                 ) : (
                   /* Active Form */
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {error && (
+                      <div className="flex items-start gap-3 border border-red-500/40 bg-red-950/25 p-4 text-xs text-red-200 animate-in fade-in duration-200">
+                        <AlertCircle size={16} className="mt-0.5 shrink-0 text-red-400" />
+                        <div className="leading-relaxed">{error}</div>
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       {/* Name Field */}
                       <div>

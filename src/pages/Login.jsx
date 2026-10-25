@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import Container from "../components/ui/Container";
+import GoogleAuthButton from "../components/auth/GoogleAuthButton";
 import { useAuth } from "../context/AuthContext";
 import { sendForgotPasswordOtpApi, resetPasswordOtpApi } from "../services/authApi";
 
@@ -288,6 +289,13 @@ export default function Login() {
               <span>{isSubmitting ? "Authenticating..." : "Sign In"}</span>
               <ArrowRight size={14} />
             </button>
+
+            {/* Google Authentication */}
+            <GoogleAuthButton
+              mode="login"
+              from={from}
+              onError={(msg) => setError(msg)}
+            />
           </form>
 
           {/* Switch to Register */}

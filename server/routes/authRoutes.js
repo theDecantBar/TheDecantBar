@@ -2,6 +2,7 @@ import express from "express";
 import {
   register,
   login,
+  googleAuth,
   getProfile,
   updateProfile,
   changePassword,
@@ -18,6 +19,7 @@ const router = express.Router();
 // General Auth
 router.post("/register", authLimiter, register);
 router.post("/login", authLimiter, login);
+router.post("/google", authLimiter, googleAuth);
 
 // OTP Verification & Registration with Rate Limiting (60s cooldown, max 5 / 15m)
 router.post("/send-signup-otp", otpIpLimiter, checkEmailCooldown, sendSignupOtp);

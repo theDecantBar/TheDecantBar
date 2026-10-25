@@ -15,6 +15,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Container from "../components/ui/Container";
+import GoogleAuthButton from "../components/auth/GoogleAuthButton";
 import { useAuth } from "../context/AuthContext";
 import { sendSignupOtpApi, verifySignupOtpApi } from "../services/authApi";
 
@@ -293,6 +294,13 @@ export default function Register() {
                 <span>{isSubmitting ? "Sending Verification Code..." : "Send Verification Code"}</span>
                 <ArrowRight size={14} />
               </button>
+
+              {/* Google Authentication */}
+              <GoogleAuthButton
+                mode="register"
+                from={from}
+                onError={(msg) => setError(msg)}
+              />
             </form>
           ) : (
             /* Step 2: OTP Input Form */

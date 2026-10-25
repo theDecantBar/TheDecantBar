@@ -33,6 +33,16 @@ async function handleApiResponse(response, defaultErrorMsg = "Request failed.") 
   return data;
 }
 
+export async function googleAuthApi(payload) {
+  const response = await fetch(`${API_BASE_URL}/auth/google`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  return handleApiResponse(response, "Google authentication failed.");
+}
+
 export async function loginUser(credentials) {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
@@ -185,4 +195,13 @@ export async function resetPasswordOtpApi(payload) {
     body: JSON.stringify(payload),
   });
   return handleApiResponse(response, "Failed to reset password.");
+}
+export async function sendContactEnquiryApi(payload) {
+  const response = await fetch(`${API_BASE_URL}/contact`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  return handleApiResponse(response, "Failed to send contact enquiry.");
 }

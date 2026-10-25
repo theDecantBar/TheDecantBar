@@ -1,6 +1,7 @@
 import pool from "../config/db.js";
 import { getPrimaryAdminEmail } from "../config/adminConfig.js";
 import { invalidateProductCache } from "./productController.js";
+import { sendOrderConfirmationEmail } from "../services/orderEmailService.js";
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
 
@@ -420,104 +421,9 @@ export const verifyPaymentAndCreateOrder = async (req, res) => {
     invalidateProductCache();
 
     // Asynchronously dispatch Owner Alert & Customer Confirmation Emails
-    (async () => {
-      try {
-        if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
-          const { sendEmail } = await import("../services/emailService.js");
-          const ownerEmail = getPrimaryAdminEmail();
-
-          const itemsHtml = validatedItems
-            .map(
-              (item) => `
-              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
-                <td style="padding: 10px 8px; color: #f4efe6;">${item.name}</td>
-                <td style="padding: 10px 8px; color: #c6a15b; text-align: center;">${item.size_ml}ml</td>
-                <td style="padding: 10px 8px; color: #f4efe6; text-align: center;">${item.quantity}</td>
-                <td style="padding: 10px 8px; color: #f4efe6; text-align: right;">₹${item.price * item.quantity}</td>
-              </tr>
-            `
-            )
-            .join("");
-
-          // 1. Send Owner Alert Email
-          await sendEmail({
-            to: ownerEmail,
-            subject: `🛒 New Order: ${order.order_number} - ₹${order.total_amount} (${order.customer_name})`,
-            html: `
-              <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
-                <h2 style="color: #c6a15b; margin-top: 0;">The Decant Bar · New Order Received</h2>
-                <p>A new order has been paid and confirmed on your website:</p>
-                <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 14px 18px; margin: 16px 0;">
-                  <p style="margin: 4px 0;"><strong>Order Number:</strong> ${order.order_number}</p>
-                  <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_name}</p>
-                  <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
-                  <p style="margin: 4px 0;"><strong>Phone:</strong> ${order.customer_phone}</p>
-                  <p style="margin: 4px 0;"><strong>Shipping Address:</strong> ${order.shipping_address}, ${order.city}, ${order.state} - ${order.pincode}</p>
-                  <p style="margin: 4px 0;"><strong>Total Paid:</strong> <span style="color: #c6a15b; font-weight: bold;">₹${order.total_amount}</span> (via Razorpay)</p>
-                </div>
-                <h4 style="color: #c6a15b; margin-bottom: 8px;">Ordered Items:</h4>
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                  <thead>
-                    <tr style="border-bottom: 2px solid #c6a15b; color: #8e8a82; text-align: left;">
-                      <th style="padding: 6px 8px;">Fragrance</th>
-                      <th style="padding: 6px 8px; text-align: center;">Size</th>
-                      <th style="padding: 6px 8px; text-align: center;">Qty</th>
-                      <th style="padding: 6px 8px; text-align: right;">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>${itemsHtml}</tbody>
-                </table>
-              </div>
-            `,
-            text: `New order ${order.order_number} received from ${order.customer_name} for ₹${order.total_amount}. Shipping to: ${order.shipping_address}, ${order.city}, ${order.pincode}.`,
-          });
-          console.log(`📧 Owner alert email successfully dispatched to ${ownerEmail} for order ${order.order_number}`);
-
-          // 2. Send Customer Order Confirmation Receipt
-          try {
-            await sendEmail({
-              to: order.customer_email,
-              subject: `✨ Order Confirmed: ${order.order_number} - The Decant Bar`,
-              html: `
-                <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
-                  <h2 style="color: #c6a15b; margin-top: 0; text-align: center;">The Decant Bar</h2>
-                  <p style="text-align: center; color: #8e8a82; font-size: 13px;">Authentic Handcrafted Fragrance Decants</p>
-                  <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
-                  <p>Dear ${order.customer_name},</p>
-                  <p>Thank you for your order! We are preparing your authentic decants with precision glass atomizers.</p>
-                  <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 14px 18px; margin: 16px 0;">
-                    <p style="margin: 4px 0;"><strong>Order Number:</strong> ${order.order_number}</p>
-                    <p style="margin: 4px 0;"><strong>Estimated Delivery:</strong> 3–5 Business Days</p>
-                    <p style="margin: 4px 0;"><strong>Shipping To:</strong> ${order.shipping_address}, ${order.city}, ${order.state} - ${order.pincode}</p>
-                    <p style="margin: 4px 0;"><strong>Total Paid:</strong> <span style="color: #c6a15b; font-weight: bold;">₹${order.total_amount}</span></p>
-                  </div>
-                  <h4 style="color: #c6a15b; margin-bottom: 8px;">Order Summary:</h4>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead>
-                      <tr style="border-bottom: 2px solid #c6a15b; color: #8e8a82; text-align: left;">
-                        <th style="padding: 6px 8px;">Fragrance</th>
-                        <th style="padding: 6px 8px; text-align: center;">Size</th>
-                        <th style="padding: 6px 8px; text-align: center;">Qty</th>
-                        <th style="padding: 6px 8px; text-align: right;">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>${itemsHtml}</tbody>
-                  </table>
-                  <p style="margin-top: 24px; font-size: 12px; color: #8e8a82; text-align: center;">
-                    If you have questions regarding your order, reply directly to this email or reach us on Instagram @thedecantbar.
-                  </p>
-                </div>
-              `,
-              text: `Thank you for your order ${order.order_number} with The Decant Bar! Estimated delivery is 3-5 business days. Total paid: ₹${order.total_amount}.`,
-            });
-          } catch (custEmailErr) {
-            console.warn("Customer confirmation email skipped/failed:", custEmailErr.message);
-          }
-        }
-      } catch (err) {
-        console.warn("Order email notification background error:", err.message);
-      }
-    })();
+    sendOrderConfirmationEmail(order.id).catch((err) => {
+      console.warn("[OrderController] Async order confirmation email error for order " + order.id + ":", err.message);
+    });
 
     res.status(201).json({
       message: "Payment verified and order placed successfully.",
@@ -671,106 +577,9 @@ export const createCodOrder = async (req, res) => {
     invalidateProductCache();
 
     // Asynchronously dispatch Owner Alert & Customer Confirmation Emails for COD
-    (async () => {
-      try {
-        if (process.env.RESEND_API_KEY && process.env.EMAIL_FROM) {
-          const { sendEmail } = await import("../services/emailService.js");
-          const ownerEmail = getPrimaryAdminEmail();
-
-          const itemsHtml = validatedItems
-            .map(
-              (item) => `
-              <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
-                <td style="padding: 10px 8px; color: #f4efe6;">${item.name}</td>
-                <td style="padding: 10px 8px; color: #c6a15b; text-align: center;">${item.size_ml}ml</td>
-                <td style="padding: 10px 8px; color: #f4efe6; text-align: center;">${item.quantity}</td>
-                <td style="padding: 10px 8px; color: #f4efe6; text-align: right;">₹${item.price * item.quantity}</td>
-              </tr>
-            `
-            )
-            .join("");
-
-          // 1. Send Owner Alert Email
-          await sendEmail({
-            to: ownerEmail,
-            subject: `🛒 New COD Order: ${order.order_number} - ₹${order.total_amount} (${order.customer_name})`,
-            html: `
-              <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
-                <h2 style="color: #c6a15b; margin-top: 0;">The Decant Bar · New COD Order</h2>
-                <p>A new Cash on Delivery order has been placed on your website:</p>
-                <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 14px 18px; margin: 16px 0;">
-                  <p style="margin: 4px 0;"><strong>Order Number:</strong> ${order.order_number}</p>
-                  <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_name}</p>
-                  <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
-                  <p style="margin: 4px 0;"><strong>Phone:</strong> ${order.customer_phone}</p>
-                  <p style="margin: 4px 0;"><strong>Shipping Address:</strong> ${order.shipping_address}, ${order.city}, ${order.state} - ${order.pincode}</p>
-                  <p style="margin: 4px 0;"><strong>Payment Method:</strong> Cash on Delivery (Payment due on delivery)</p>
-                  <p style="margin: 4px 0;"><strong>Total Amount:</strong> <span style="color: #c6a15b; font-weight: bold;">₹${order.total_amount}</span></p>
-                </div>
-                <h4 style="color: #c6a15b; margin-bottom: 8px;">Ordered Items:</h4>
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                  <thead>
-                    <tr style="border-bottom: 2px solid #c6a15b; color: #8e8a82; text-align: left;">
-                      <th style="padding: 6px 8px;">Fragrance</th>
-                      <th style="padding: 6px 8px; text-align: center;">Size</th>
-                      <th style="padding: 6px 8px; text-align: center;">Qty</th>
-                      <th style="padding: 6px 8px; text-align: right;">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>${itemsHtml}</tbody>
-                </table>
-              </div>
-            `,
-            text: `New COD order ${order.order_number} received from ${order.customer_name} for ₹${order.total_amount}. Shipping to: ${order.shipping_address}, ${order.city}, ${order.pincode}.`,
-          });
-          console.log(`📧 Owner alert email successfully dispatched to ${ownerEmail} for COD order ${order.order_number}`);
-
-          // 2. Send Customer Order Confirmation Receipt
-          try {
-            await sendEmail({
-              to: order.customer_email,
-              subject: `✨ Order Confirmed: ${order.order_number} (COD) - The Decant Bar`,
-              html: `
-                <div style="font-family: Arial, sans-serif; background: #11110f; color: #f4efe6; padding: 24px; border-radius: 8px; border: 1px solid rgba(198,161,91,0.3);">
-                  <h2 style="color: #c6a15b; margin-top: 0; text-align: center;">The Decant Bar</h2>
-                  <p style="text-align: center; color: #8e8a82; font-size: 13px;">Authentic Handcrafted Fragrance Decants</p>
-                  <hr style="border: 0; border-top: 1px solid rgba(198,161,91,0.2); margin: 20px 0;" />
-                  <p>Dear ${order.customer_name},</p>
-                  <p>Thank you for your order! We are preparing your authentic decants with precision glass atomizers.</p>
-                  <div style="background: #171715; border-left: 4px solid #c6a15b; padding: 14px 18px; margin: 16px 0;">
-                    <p style="margin: 4px 0;"><strong>Order Number:</strong> ${order.order_number}</p>
-                    <p style="margin: 4px 0;"><strong>Payment Method:</strong> Cash on Delivery (COD)</p>
-                    <p style="margin: 4px 0;"><strong>Amount Due on Delivery:</strong> <span style="color: #c6a15b; font-weight: bold;">₹${order.total_amount}</span></p>
-                    <p style="margin: 4px 0;"><strong>Estimated Delivery:</strong> 3–5 Business Days</p>
-                    <p style="margin: 4px 0;"><strong>Shipping To:</strong> ${order.shipping_address}, ${order.city}, ${order.state} - ${order.pincode}</p>
-                  </div>
-                  <h4 style="color: #c6a15b; margin-bottom: 8px;">Order Summary:</h4>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead>
-                      <tr style="border-bottom: 2px solid #c6a15b; color: #8e8a82; text-align: left;">
-                        <th style="padding: 6px 8px;">Fragrance</th>
-                        <th style="padding: 6px 8px; text-align: center;">Size</th>
-                        <th style="padding: 6px 8px; text-align: center;">Qty</th>
-                        <th style="padding: 6px 8px; text-align: right;">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>${itemsHtml}</tbody>
-                  </table>
-                  <p style="margin-top: 24px; font-size: 12px; color: #8e8a82; text-align: center;">
-                    Please keep exact cash or UPI ready when our courier arrives. If you have questions regarding your order, reply directly to this email or reach us on Instagram @thedecantbar.
-                  </p>
-                </div>
-              `,
-              text: `Thank you for your order ${order.order_number} with The Decant Bar! Payment method: Cash on Delivery. Total due upon delivery: ₹${order.total_amount}. Estimated delivery: 3-5 business days.`,
-            });
-          } catch (custEmailErr) {
-            console.warn("Customer confirmation email skipped/failed:", custEmailErr.message);
-          }
-        }
-      } catch (err) {
-        console.warn("Order email notification background error:", err.message);
-      }
-    })();
+    sendOrderConfirmationEmail(order.id).catch((err) => {
+      console.warn("[OrderController] Async COD order confirmation email error for order " + order.id + ":", err.message);
+    });
 
     res.status(201).json({
       message: "Order placed successfully with Cash on Delivery.",
@@ -907,5 +716,31 @@ export const getOrderById = async (req, res) => {
   } catch (error) {
     console.error("Get order by ID error:", error);
     res.status(500).json({ message: "Failed to fetch order details." });
+  }
+};
+
+/**
+ * Resend order confirmation email (Admin only).
+ * Bypasses the duplicate prevention flag to allow manual customer email resend.
+ */
+export const resendOrderConfirmation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await sendOrderConfirmationEmail(id, { forceResend: true });
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.error || "Failed to resend confirmation email.",
+      });
+    }
+
+    res.json({
+      message: `Confirmation email successfully sent for order ${result.orderNumber}.`,
+      orderNumber: result.orderNumber,
+      messageId: result.messageId,
+    });
+  } catch (error) {
+    console.error("Resend confirmation email error:", error);
+    res.status(500).json({ message: "Server error resending confirmation email." });
   }
 };

@@ -13,6 +13,7 @@ import {
   bulkUpdateAllStock,
   uploadProductImage,
 } from "../controllers/adminController.js";
+import { resendOrderConfirmation } from "../controllers/orderController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -26,6 +27,7 @@ router.get("/stats", getAdminStats);
 // Orders management
 router.get("/orders", getAdminOrders);
 router.put("/orders/:id/status", updateOrderStatus);
+router.post("/orders/:id/resend-confirmation", resendOrderConfirmation);
 
 // Image Upload
 router.post("/upload-image", uploadProductImage);

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginUser, registerUser, getProfile } from "../services/authApi";
+import { loginUser, registerUser, getProfile, googleAuthApi } from "../services/authApi";
 
 const AuthContext = createContext(null);
 
@@ -69,6 +69,28 @@ export function AuthProvider({ children }) {
     verifySession();
   }, []);
 
+  const loginWithToken = (userData, userToken) => {
+    const userObj = {
+      ...userData,
+      isAdmin: Boolean(
+        userData.isAdmin ||
+        userData.is_admin ||
+        userData.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
+      ),
+    };
+    setUser(userObj);
+    setToken(userToken);
+    localStorage.setItem("tdb_token", userToken);
+    localStorage.setItem("tdb_user", JSON.stringify(userObj));
+    return userObj;
+  };
+
+  const loginWithGoogle = async (payload) => {
+    const authResult = await googleAuthApi(payload);
+    loginWithToken(authResult.user, authResult.token);
+    return authResult;
+  };
+
   const login = async (credentials) => {
     const data = await loginUser(credentials);
     const userObj = {
@@ -109,6 +131,8 @@ export function AuthProvider({ children }) {
         isAuthenticated: !!user && !!token,
         isLoading,
         login,
+        loginWithToken,
+        loginWithGoogle,
         register,
         logout,
         updateUser,

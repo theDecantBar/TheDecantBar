@@ -647,3 +647,181 @@ export const resetPasswordWithOtp = async (req, res) => {
     res.status(500).json({ message: "Failed to reset password. Please try again." });
   }
 };
+
+// @desc    Authenticate with Google OAuth
+// @route   POST /api/auth/google
+// @access  Public
+export const googleAuth = async (req, res) => {
+  try {
+    const { idToken, accessToken } = req.body;
+
+    if (!idToken && !accessToken) {
+      return res.status(400).json({ message: "Google authentication token is required." });
+    }
+
+    let googleProfile = null;
+    const configuredClientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
+
+    // 1. Verify idToken if provided
+    if (idToken) {
+      const verifyRes = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`
+      );
+      if (!verifyRes.ok) {
+        return res.status(401).json({ message: "Invalid or expired Google ID token." });
+      }
+      const data = await verifyRes.json();
+
+      if (configuredClientId && data.aud && data.aud !== configuredClientId) {
+        return res.status(401).json({ message: "Google token audience mismatch." });
+      }
+
+      if (data.email_verified !== "true" && data.email_verified !== true) {
+        return res.status(400).json({ message: "Google email address is not verified." });
+      }
+
+      googleProfile = {
+        sub: data.sub,
+        email: data.email,
+        name: data.name || data.email.split("@")[0],
+        picture: data.picture,
+      };
+    } 
+    // 2. Or verify accessToken if provided
+    else if (accessToken) {
+      const tokenInfoRes = await fetch(
+        `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${encodeURIComponent(accessToken)}`
+      );
+      if (!tokenInfoRes.ok) {
+        return res.status(401).json({ message: "Invalid or expired Google access token." });
+      }
+      const tokenInfo = await tokenInfoRes.json();
+
+      if (configuredClientId && tokenInfo.aud && tokenInfo.aud !== configuredClientId) {
+        if (tokenInfo.azp !== configuredClientId) {
+          return res.status(401).json({ message: "Google access token audience mismatch." });
+        }
+      }
+
+      const profileRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!profileRes.ok) {
+        return res.status(401).json({ message: "Failed to retrieve Google user profile." });
+      }
+      const profileData = await profileRes.json();
+
+      if (!profileData.email_verified) {
+        return res.status(400).json({ message: "Google email address is not verified." });
+      }
+
+      googleProfile = {
+        sub: profileData.sub,
+        email: profileData.email,
+        name: profileData.name || profileData.email.split("@")[0],
+        picture: profileData.picture,
+      };
+    }
+
+    if (!googleProfile || !googleProfile.email) {
+      return res.status(400).json({ message: "Could not retrieve valid Google profile information." });
+    }
+
+    const normalizedEmail = googleProfile.email.toLowerCase().trim();
+
+    // Check if user already exists
+    const existingResult = await pool.query(
+      "SELECT * FROM users WHERE LOWER(email) = $1",
+      [normalizedEmail]
+    );
+
+    let user;
+    let isNewUser = false;
+
+    if (existingResult.rows.length > 0) {
+      // Existing user: Link Google ID / Avatar if not set
+      user = existingResult.rows[0];
+
+      await pool.query(
+        `UPDATE users 
+         SET google_id = COALESCE(google_id, $1), 
+             avatar_url = COALESCE(avatar_url, $2),
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $3`,
+        [googleProfile.sub, googleProfile.picture || null, user.id]
+      );
+    } else {
+      // New user: Create account
+      isNewUser = true;
+
+      // Never grant admin solely based on Google Sign-in; only if email matches configured admin
+      const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
+
+      // Random unguessable fallback hash in case password_hash is not-null in schema
+      const placeholderHash = `!google_oauth_${crypto.randomBytes(32).toString("hex")}`;
+
+      let insertResult;
+      try {
+        insertResult = await pool.query(
+          `INSERT INTO users (full_name, email, password_hash, google_id, avatar_url, auth_provider, is_admin)
+           VALUES ($1, $2, $3, $4, $5, 'google', $6)
+           RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, avatar_url, created_at`,
+          [
+            googleProfile.name.trim(),
+            normalizedEmail,
+            placeholderHash,
+            googleProfile.sub,
+            googleProfile.picture || null,
+            isConfiguredAdmin,
+          ]
+        );
+      } catch (err) {
+        // Fallback if google_id / avatar_url columns haven't migrated yet
+        insertResult = await pool.query(
+          `INSERT INTO users (full_name, email, password_hash, is_admin)
+           VALUES ($1, $2, $3, $4)
+           RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, created_at`,
+          [
+            googleProfile.name.trim(),
+            normalizedEmail,
+            placeholderHash,
+            isConfiguredAdmin,
+          ]
+        );
+      }
+      user = insertResult.rows[0];
+    }
+
+    // Auto-promote if email is configured in .env ADMIN_EMAILS / ADMIN_EMAIL
+    let isAdmin = Boolean(user.is_admin);
+    if (!isAdmin && isConfiguredAdminEmail(normalizedEmail)) {
+      await pool.query("UPDATE users SET is_admin = true WHERE id = $1", [user.id]);
+      isAdmin = true;
+    }
+
+    const token = generateToken(user.id);
+
+    res.json({
+      message: isNewUser
+        ? "Account created with Google successfully."
+        : "Signed in with Google successfully.",
+      user: {
+        id: user.id,
+        fullName: user.full_name,
+        email: user.email,
+        phone: user.phone || null,
+        address: user.address || null,
+        city: user.city || null,
+        state: user.state || null,
+        pincode: user.pincode || null,
+        avatarUrl: user.avatar_url || googleProfile.picture || null,
+        isAdmin,
+      },
+      token,
+      isNewUser,
+    });
+  } catch (error) {
+    console.error("Google Auth error:", error);
+    res.status(500).json({ message: "Google authentication failed. Please try again later." });
+  }
+};

@@ -156,3 +156,15 @@ export async function bulkUpdateAllAdminStock(token, stock = 10) {
 }
 
 
+
+export async function resendAdminOrderConfirmation(token, orderId) {
+  const res = await fetch(`/api/admin/orders/${orderId}/resend-confirmation`, {
+    method: "POST",
+    headers: getHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to resend confirmation email");
+  }
+  return res.json();
+}

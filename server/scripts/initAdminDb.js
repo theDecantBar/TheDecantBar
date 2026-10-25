@@ -3,17 +3,32 @@ import { getAdminEmails } from "../config/adminConfig.js";
 
 export async function ensureAdminSchema() {
   try {
-    // 1. Ensure is_admin on users
+    // 1. Ensure is_admin and OAuth columns on users
     await pool.query(`
       ALTER TABLE users 
-      ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
+      ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false,
+      ADD COLUMN IF NOT EXISTS google_id VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS avatar_url TEXT,
+      ADD COLUMN IF NOT EXISTS auth_provider VARCHAR(50) DEFAULT 'email';
     `);
+
+    // Safely attempt to allow null passwords for OAuth users if constrained
+    try {
+      await pool.query(`ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;`);
+    } catch {
+      // Ignore if already nullable or permission restricted
+    }
 
     // 2. Ensure courier_name and tracking_number on orders
     await pool.query(`
       ALTER TABLE orders 
       ADD COLUMN IF NOT EXISTS courier_name VARCHAR(100),
       ADD COLUMN IF NOT EXISTS tracking_number VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'Pending',
+      ADD COLUMN IF NOT EXISTS razorpay_order_id VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS razorpay_payment_id VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS confirmation_email_sent BOOLEAN DEFAULT false,
+      ADD COLUMN IF NOT EXISTS confirmation_email_sent_at TIMESTAMP WITH TIME ZONE,
       ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
     `);
 

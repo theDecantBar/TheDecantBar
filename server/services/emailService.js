@@ -1,7 +1,6 @@
-
 import { Resend } from "resend";
 
-export async function sendEmail({ to, subject, html, text }) {
+export async function sendEmail({ to, subject, html, text, replyTo, reply_to }) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM;
 
@@ -15,13 +14,20 @@ export async function sendEmail({ to, subject, html, text }) {
 
   const resend = new Resend(apiKey);
 
-  const { data, error } = await resend.emails.send({
+  const payload = {
     from,
     to,
     subject,
     html,
     text,
-  });
+  };
+
+  const resolvedReplyTo = replyTo || reply_to;
+  if (resolvedReplyTo) {
+    payload.reply_to = resolvedReplyTo;
+  }
+
+  const { data, error } = await resend.emails.send(payload);
 
   if (error) {
     const err = new Error(error.message || "Resend could not send the email.");

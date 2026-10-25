@@ -10,7 +10,7 @@ import {
   Mail,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchAdminOrders, updateAdminOrderStatus } from "../../services/adminApi";
+import { fetchAdminOrders, updateAdminOrderStatus, resendAdminOrderConfirmation } from "../../services/adminApi";
 
 const STATUS_OPTIONS = [
   "All",
@@ -47,6 +47,24 @@ export default function AdminOrders() {
   // Form states for status/courier modal or inline updater
   const [updatingId, setUpdatingId] = useState(null);
   const [updateFeedback, setUpdateFeedback] = useState({});
+  const [resendingId, setResendingId] = useState(null);
+  const [resendFeedback, setResendFeedback] = useState({});
+
+  const handleResendEmail = async (orderId) => {
+    try {
+      setResendingId(orderId);
+      const res = await resendAdminOrderConfirmation(token, orderId);
+      setResendFeedback((prev) => ({ ...prev, [orderId]: res.message || "Email resent successfully!" }));
+      loadOrders();
+      setTimeout(() => {
+        setResendFeedback((prev) => ({ ...prev, [orderId]: "" }));
+      }, 5000);
+    } catch (err) {
+      alert("Failed to resend confirmation email: " + err.message);
+    } finally {
+      setResendingId(null);
+    }
+  };
 
   const loadOrders = useCallback(async () => {
     try {
