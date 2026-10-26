@@ -194,7 +194,7 @@ export default function FilterBar({ onApply }) {
                   setOpenDropdown(openDropdown === "classification" ? null : "classification")
                 }
                 aria-expanded={openDropdown === "classification"}
-                className={`group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
+                className={`rounded-2xl group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
                   selectedClassifications.length > 0
                     ? "border-[#c6a15b] bg-[#c6a15b]/10 text-[#f4efe6] hover:border-[#d8b368] hover:bg-[#c6a15b]/15 hover:text-white"
                     : "border-white/15 bg-[#171714] text-[#c5c1b9] hover:border-[#c6a15b]/60 hover:bg-[#c6a15b]/5 hover:text-[#f4efe6]"
@@ -221,7 +221,7 @@ export default function FilterBar({ onApply }) {
                     animate="animate"
                     exit="exit"
                     transition={dropdownTransition}
-                    className="absolute left-0 top-full z-40 mt-1.5 w-56 rounded border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
+                    className="absolute left-0 top-full z-40 mt-1.5 w-56 rounded-2xl border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
                   >
                     <p className="px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8e8a82]">
                       Fragrance Classification
@@ -242,7 +242,7 @@ export default function FilterBar({ onApply }) {
                                 opt.value
                               )
                             }
-                            className="group flex w-full items-center justify-between rounded px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
+                            className="group flex w-full items-center justify-between rounded-2xl px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
                           >
                             <span
                               className={`transition-colors duration-150 ease-out ${
@@ -277,7 +277,7 @@ export default function FilterBar({ onApply }) {
                 type="button"
                 onClick={() => setOpenDropdown(openDropdown === "season" ? null : "season")}
                 aria-expanded={openDropdown === "season"}
-                className={`group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
+                className={`rounded-2xl group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
                   selectedSeasons.length > 0
                     ? "border-[#c6a15b] bg-[#c6a15b]/10 text-[#f4efe6] hover:border-[#d8b368] hover:bg-[#c6a15b]/15 hover:text-white"
                     : "border-white/15 bg-[#171714] text-[#c5c1b9] hover:border-[#c6a15b]/60 hover:bg-[#c6a15b]/5 hover:text-[#f4efe6]"
@@ -304,7 +304,7 @@ export default function FilterBar({ onApply }) {
                     animate="animate"
                     exit="exit"
                     transition={dropdownTransition}
-                    className="absolute left-0 top-full z-40 mt-1.5 w-48 rounded border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
+                    className="absolute left-0 top-full z-40 mt-1.5 w-48 rounded-2xl border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
                   >
                     <p className="px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8e8a82]">
                       Season
@@ -321,7 +321,7 @@ export default function FilterBar({ onApply }) {
                             onClick={() =>
                               toggleOption(selectedSeasons, setSelectedSeasons, opt.value)
                             }
-                            className="group flex w-full items-center justify-between rounded px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
+                            className="group flex w-full items-center justify-between rounded-2xl px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
                           >
                             <span
                               className={`transition-colors duration-150 ease-out ${
@@ -356,7 +356,7 @@ export default function FilterBar({ onApply }) {
                 type="button"
                 onClick={() => setOpenDropdown(openDropdown === "gender" ? null : "gender")}
                 aria-expanded={openDropdown === "gender"}
-                className={`group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
+                className={`rounded-2xl group flex w-full items-center justify-between gap-3 border px-4 py-2.5 text-xs font-medium uppercase tracking-wider select-none transition-all duration-200 ease-out active:scale-[0.99] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b] ${
                   selectedGenders.length > 0
                     ? "border-[#c6a15b] bg-[#c6a15b]/10 text-[#f4efe6] hover:border-[#d8b368] hover:bg-[#c6a15b]/15 hover:text-white"
                     : "border-white/15 bg-[#171714] text-[#c5c1b9] hover:border-[#c6a15b]/60 hover:bg-[#c6a15b]/5 hover:text-[#f4efe6]"
@@ -383,7 +383,7 @@ export default function FilterBar({ onApply }) {
                     animate="animate"
                     exit="exit"
                     transition={dropdownTransition}
-                    className="absolute left-0 top-full z-40 mt-1.5 w-48 rounded border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
+                    className="absolute left-0 top-full z-40 mt-1.5 w-48 rounded-2xl border border-[#c6a15b]/30 bg-[#161613] p-2 shadow-2xl backdrop-blur-md"
                   >
                     <p className="px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8e8a82]">
                       Gender
@@ -400,7 +400,7 @@ export default function FilterBar({ onApply }) {
                             onClick={() =>
                               toggleOption(selectedGenders, setSelectedGenders, opt.value)
                             }
-                            className="group flex w-full items-center justify-between rounded px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
+                            className="group flex w-full items-center justify-between rounded-2xl px-2.5 py-2 text-xs text-[#f4efe6] transition-colors duration-150 ease-out hover:bg-white/[0.06] active:bg-white/[0.09]"
                           >
                             <span
                               className={`transition-colors duration-150 ease-out ${
@@ -435,7 +435,7 @@ export default function FilterBar({ onApply }) {
             <button
               type="button"
               onClick={handleApply}
-              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-[#c6a15b] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-sm transition-all duration-150 ease-out hover:bg-[#d8b368] hover:shadow-[0_0_15px_rgba(198,161,91,0.25)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
+              className="rounded-2xl flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-[#c6a15b] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-sm transition-all duration-150 ease-out hover:bg-[#d8b368] hover:shadow-[0_0_15px_rgba(198,161,91,0.25)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
             >
               Apply Filters
             </button>
@@ -445,7 +445,7 @@ export default function FilterBar({ onApply }) {
                 type="button"
                 onClick={handleClearAll}
                 title="Clear all filters"
-                className="inline-flex items-center gap-1.5 border border-white/10 px-3.5 py-2.5 text-xs font-medium uppercase tracking-[0.15em] text-[#8e8a82] transition-all duration-150 ease-out hover:border-[#c6a15b]/50 hover:text-[#f4efe6] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
+                className="rounded-2xl inline-flex items-center gap-1.5 border border-white/10 px-3.5 py-2.5 text-xs font-medium uppercase tracking-[0.15em] text-[#8e8a82] transition-all duration-150 ease-out hover:border-[#c6a15b]/50 hover:text-[#f4efe6] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
               >
                 <RotateCcw size={13} className="transition-transform duration-200 hover:-rotate-45" />
                 <span>Clear All</span>

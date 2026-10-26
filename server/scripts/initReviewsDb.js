@@ -18,8 +18,12 @@ async function initReviewsDb() {
         rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
         review_text TEXT NOT NULL,
         photo TEXT,
-        verified_buyer BOOLEAN DEFAULT true,
+        verified_buyer BOOLEAN DEFAULT false,
         is_edited BOOLEAN DEFAULT false,
+        deleted_at TIMESTAMPTZ,
+        deleted_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        edited_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        edited_by_admin BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );

@@ -223,7 +223,7 @@ export default function ProductDetail() {
 
           <Link
             to="/products"
-            className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition hover:bg-[#d8c08a]"
+            className="rounded-2xl inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition hover:bg-[#d8c08a]"
           >
             <ArrowLeft size={14} />
             Back to Collection
@@ -376,7 +376,7 @@ export default function ProductDetail() {
                 containerClassName="rounded-lg shadow-xl"
               >
                 {isSoldOut && (
-                  <div className="absolute right-4 top-4 z-10 border border-red-800/70 bg-red-950/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-red-300 shadow-lg backdrop-blur-md">
+                  <div className="rounded-2xl absolute right-4 top-4 z-10 border border-red-800/70 bg-red-950/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-red-300 shadow-lg backdrop-blur-md">
                     Sold Out
                   </div>
                 )}
@@ -385,7 +385,7 @@ export default function ProductDetail() {
 
             {/* Trust Highlights */}
             <div className="mt-4 grid max-w-[400px] grid-cols-2 gap-3 text-xs text-[#8e8a82] sm:max-w-[420px]">
-              <div className="flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
+              <div className="rounded-2xl flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
                 <ShieldCheck
                   size={16}
                   className="shrink-0 text-[#c6a15b]"
@@ -393,7 +393,7 @@ export default function ProductDetail() {
                 <span>100% Genuine Formula</span>
               </div>
 
-              <div className="flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
+              <div className="rounded-2xl flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
                 <Sparkles
                   size={16}
                   className="shrink-0 text-[#c6a15b]"
@@ -434,7 +434,7 @@ export default function ProductDetail() {
           {/* Two-Column Purchase Area: Purchase Card (Left) & Specifications (Right) */}
           <div className="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-2 lg:gap-5">
             {/* Left Column: Purchase & Decant Sizing Card */}
-            <div className="w-full rounded-lg border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
+            <div className="w-full rounded-2xl border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
               {/* Price & Size */}
               <div className="flex items-baseline justify-between gap-2 border-b border-white/10 pb-3">
                 <div>
@@ -484,7 +484,7 @@ export default function ProductDetail() {
                           key={variant.id}
                           type="button"
                           onClick={() => setSelectedVariant(variant)}
-                          className={`relative flex cursor-pointer flex-col items-center justify-center border px-2 py-1.5 transition sm:px-2.5 sm:py-2 ${
+                          className={`rounded-2xl relative flex cursor-pointer flex-col items-center justify-center border px-2 py-1.5 transition sm:px-2.5 sm:py-2 ${
                             isSelected
                               ? "border-[#c6a15b] bg-[#c6a15b]/15 text-[#f4efe6] shadow-[0_0_8px_rgba(198,161,91,0.2)]"
                               : "border-white/15 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/60"
@@ -519,7 +519,7 @@ export default function ProductDetail() {
               {/* Quantity Selector & Action Buttons */}
               {isSoldOut ? (
                 <div className="mt-3 space-y-2">
-                  <div className="flex items-center justify-between rounded border border-red-500/30 bg-red-950/30 p-2.5 text-xs">
+                  <div className="flex items-center justify-between rounded-2xl border border-red-500/30 bg-red-950/30 p-2.5 text-xs">
                     <div className="flex items-center gap-2 text-red-300">
                       <XCircle size={14} className="shrink-0 text-red-400" />
                       <span>
@@ -535,7 +535,7 @@ export default function ProductDetail() {
                       setNotifySubmitted(false);
                       setNotifyModalOpen(true);
                     }}
-                    className="flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition hover:bg-[#d8c08a] sm:h-10 sm:text-xs"
+                    className="flex h-9.5 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition hover:bg-[#d8c08a] sm:h-10 sm:text-xs"
                   >
                     <Bell size={14} />
                     Notify Me When Available
@@ -545,14 +545,14 @@ export default function ProductDetail() {
                 <div className="mt-3.5 space-y-2.5">
                   <div className="flex items-center gap-2.5">
                     {/* Quantity Stepper */}
-                    <div className="flex h-9.5 shrink-0 items-center border border-white/15 bg-[#171715] sm:h-10">
+                    <div className="rounded-2xl flex h-9.5 shrink-0 items-center border border-white/15 bg-[#171715] sm:h-10">
                       <button
                         type="button"
                         aria-label="Decrease quantity"
                         onClick={() =>
                           setQuantity((q) => Math.max(1, q - 1))
                         }
-                        className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
+                        className="rounded-2xl flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
                       >
                         <Minus size={13} />
                       </button>
@@ -565,7 +565,7 @@ export default function ProductDetail() {
                         type="button"
                         aria-label="Increase quantity"
                         onClick={() => setQuantity((q) => q + 1)}
-                        className="flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
+                        className="rounded-2xl flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
                       >
                         <Plus size={13} />
                       </button>
@@ -575,7 +575,7 @@ export default function ProductDetail() {
                     <button
                       type="button"
                       onClick={handleAddToCart}
-                      className={`flex h-9.5 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 border text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:h-10 sm:gap-2 sm:text-xs sm:tracking-[0.18em] ${
+                      className={`rounded-2xl flex h-9.5 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 border text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:h-10 sm:gap-2 sm:text-xs sm:tracking-[0.18em] ${
                         added
                           ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f]"
                           : "border-[#c6a15b] text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
@@ -607,7 +607,7 @@ export default function ProductDetail() {
                   <button
                     type="button"
                     onClick={handleBuyNow}
-                    className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition-colors hover:bg-[#d8c08a] sm:h-10.5 sm:text-xs"
+                    className="rounded-2xl flex h-10 w-full cursor-pointer items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#11110f] shadow-md transition-colors hover:bg-[#d8c08a] sm:h-10.5 sm:text-xs"
                   >
                     Buy It Now
                     <ArrowRight size={13} />
@@ -617,7 +617,7 @@ export default function ProductDetail() {
             </div>
 
             {/* Right Column: Fragrance Specifications & Performance Card */}
-            <div className="flex w-full flex-col justify-between rounded-lg border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
+            <div className="flex w-full flex-col justify-between rounded-2xl border border-[#c6a15b]/30 bg-[#151512] p-4 shadow-lg sm:p-4.5">
               <div>
                 {/* Header */}
                 <div className="border-b border-white/10 pb-3">
@@ -632,7 +632,7 @@ export default function ProductDetail() {
                 {/* Spec Tiles Grid */}
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
                   {/* Category */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <Crown size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Category</span>
@@ -643,7 +643,7 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Concentration */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <Flame size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Concentration</span>
@@ -654,7 +654,7 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Season */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <SeasonIcon size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Season</span>
@@ -665,7 +665,7 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Gender */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <svg
                         className="h-3 w-3 shrink-0 text-[#c6a15b] sm:h-3.5 sm:w-3.5"
@@ -693,7 +693,7 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Longevity */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <Droplets size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Longevity</span>
@@ -704,7 +704,7 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Projection */}
-                  <div className="border border-white/10 bg-[#171715] p-2.5">
+                  <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
                       <Sparkles size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Projection</span>
@@ -717,7 +717,7 @@ export default function ProductDetail() {
 
                 {/* Scent Character if available */}
                 {profile.vibe && (
-                  <div className="mt-2.5 rounded border border-[#c6a15b]/20 bg-[#c6a15b]/5 px-2.5 py-1.5 text-[11px] text-[#c5c1b9]">
+                  <div className="mt-2.5 rounded-2xl border border-[#c6a15b]/20 bg-[#c6a15b]/5 px-2.5 py-1.5 text-[11px] text-[#c5c1b9]">
                     <span className="mr-1 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b]">
                       Character:
                     </span>
@@ -758,12 +758,12 @@ export default function ProductDetail() {
       {/* Customer Restock Notification Modal */}
       {notifyModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-lg border border-[#c6a15b]/40 bg-[#151512] p-6 shadow-2xl">
+          <div className="relative w-full max-w-md rounded-2xl border border-[#c6a15b]/40 bg-[#151512] p-6 shadow-2xl">
             <button
               type="button"
               onClick={() => setNotifyModalOpen(false)}
               aria-label="Close notification dialog"
-              className="absolute right-4 top-4 cursor-pointer text-[#8e8a82] hover:text-[#f4efe6]"
+              className="rounded-2xl absolute right-4 top-4 cursor-pointer text-[#8e8a82] hover:text-[#f4efe6]"
             >
               ✕
             </button>
@@ -789,7 +789,7 @@ export default function ProductDetail() {
             </div>
 
             {notifySubmitted ? (
-              <div className="mt-5 space-y-2 rounded border border-emerald-500/30 bg-emerald-950/30 p-4 text-center text-xs text-emerald-300">
+              <div className="mt-5 space-y-2 rounded-2xl border border-emerald-500/30 bg-emerald-950/30 p-4 text-center text-xs text-emerald-300">
                 <Check
                   size={28}
                   className="mx-auto text-emerald-400"
@@ -807,7 +807,7 @@ export default function ProductDetail() {
                 <button
                   type="button"
                   onClick={() => setNotifyModalOpen(false)}
-                  className="mt-3 cursor-pointer rounded border border-emerald-500/40 px-5 py-2 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/10"
+                  className="mt-3 cursor-pointer rounded-2xl border border-emerald-500/40 px-5 py-2 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/10"
                 >
                   Close
                 </button>
@@ -828,7 +828,7 @@ export default function ProductDetail() {
                     value={notifyContact}
                     onChange={(e) => setNotifyContact(e.target.value)}
                     placeholder="e.g. yourname@gmail.com or +91 98765 43210"
-                    className="w-full rounded border border-white/20 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                    className="w-full rounded-2xl border border-white/20 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
                   />
                 </div>
 
@@ -836,7 +836,7 @@ export default function ProductDetail() {
                   <button
                     type="button"
                     onClick={() => setNotifyModalOpen(false)}
-                    className="cursor-pointer rounded border border-white/15 px-4 py-2 text-xs font-medium text-[#c5c1b9] transition hover:bg-white/5"
+                    className="cursor-pointer rounded-2xl border border-white/15 px-4 py-2 text-xs font-medium text-[#c5c1b9] transition hover:bg-white/5"
                   >
                     Cancel
                   </button>
@@ -844,7 +844,7 @@ export default function ProductDetail() {
                   <button
                     type="submit"
                     disabled={notifyLoading}
-                    className="flex cursor-pointer items-center gap-2 rounded bg-[#c6a15b] px-5 py-2 text-xs font-semibold text-[#11110f] transition hover:bg-[#d8c08a] disabled:opacity-50"
+                    className="flex cursor-pointer items-center gap-2 rounded-2xl bg-[#c6a15b] px-5 py-2 text-xs font-semibold text-[#11110f] transition hover:bg-[#d8c08a] disabled:opacity-50"
                   >
                     {notifyLoading
                       ? "Registering..."

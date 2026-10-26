@@ -196,7 +196,7 @@ export default function Login() {
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+          <div className="rounded-2xl mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
             <div className="flex items-start gap-3">
               <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
               <span>{error}</span>
@@ -215,7 +215,7 @@ export default function Login() {
         )}
 
         {/* Form Card */}
-        <div className="mt-8 border border-white/10 bg-[#171715] p-6 sm:p-8 shadow-2xl">
+        <div className="rounded-2xl mt-8 border border-white/10 bg-[#171715] p-6 sm:p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
@@ -231,7 +231,7 @@ export default function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="yourname@domain.com"
-                  className="w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                  className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                 />
                 <Mail size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
               </div>
@@ -252,7 +252,7 @@ export default function Login() {
                     setForgotSuccess("");
                     setForgotModalOpen(true);
                   }}
-                  className="text-[11px] text-[#c6a15b] hover:underline cursor-pointer"
+                  className="rounded-2xl text-[11px] text-[#c6a15b] hover:underline cursor-pointer"
                 >
                   Forgot password?
                 </button>
@@ -266,14 +266,14 @@ export default function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full border border-white/15 bg-[#11110f] pl-10 pr-10 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                  className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-10 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                 />
                 <Lock size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3.5 top-3 text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
+                  className="rounded-2xl absolute right-3.5 top-3 text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -284,7 +284,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-2"
+              className="rounded-2xl w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-2"
             >
               <span>{isSubmitting ? "Authenticating..." : "Sign In"}</span>
               <ArrowRight size={14} />
@@ -320,11 +320,11 @@ export default function Login() {
       {/* Forgot Password OTP Modal */}
       {forgotModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl p-6 sm:p-7 relative rounded-lg">
+          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl p-6 sm:p-7 relative rounded-2xl">
             <button
               type="button"
               onClick={() => setForgotModalOpen(false)}
-              className="absolute top-4 right-4 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
+              className="rounded-2xl absolute top-4 right-4 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -346,14 +346,14 @@ export default function Login() {
             </div>
 
             {forgotError && (
-              <div className="mb-4 border border-red-500/30 bg-red-950/20 p-3 text-xs text-red-200 flex items-center gap-2">
+              <div className="rounded-2xl mb-4 border border-red-500/30 bg-red-950/20 p-3 text-xs text-red-200 flex items-center gap-2">
                 <AlertCircle size={14} className="text-red-400 shrink-0" />
                 <span>{forgotError}</span>
               </div>
             )}
 
             {forgotSuccess && (
-              <div className="mb-4 border border-emerald-500/30 bg-emerald-950/20 p-3 text-xs text-emerald-200 flex items-center gap-2">
+              <div className="rounded-2xl mb-4 border border-emerald-500/30 bg-emerald-950/20 p-3 text-xs text-emerald-200 flex items-center gap-2">
                 <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                 <span>{forgotSuccess}</span>
               </div>
@@ -371,7 +371,7 @@ export default function Login() {
                     value={forgotEmail}
                     onChange={(e) => setForgotEmail(e.target.value)}
                     placeholder="yourname@domain.com"
-                    className="w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                   />
                 </div>
 
@@ -379,14 +379,14 @@ export default function Login() {
                   <button
                     type="button"
                     onClick={() => setForgotModalOpen(false)}
-                    className="px-4 py-2 border border-white/15 text-xs text-[#c5c1b9] hover:bg-white/5 cursor-pointer"
+                    className="rounded-2xl px-4 py-2 border border-white/15 text-xs text-[#c5c1b9] hover:bg-white/5 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={forgotSubmitting}
-                    className="flex items-center gap-2 px-5 py-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs font-semibold uppercase tracking-wider hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer"
+                    className="rounded-2xl flex items-center gap-2 px-5 py-2 border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] text-xs font-semibold uppercase tracking-wider hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer"
                   >
                     <span>{forgotSubmitting ? "Sending Code..." : "Send Reset Code"}</span>
                     <ArrowRight size={13} />
@@ -407,7 +407,7 @@ export default function Login() {
                     value={forgotOtp}
                     onChange={(e) => setForgotOtp(e.target.value.replace(/\D/g, ""))}
                     placeholder="123456"
-                    className="w-full border border-[#c6a15b] bg-[#11110f] py-2.5 text-center text-xl font-mono tracking-[0.4em] text-[#f4efe6] focus:outline-none"
+                    className="rounded-2xl w-full border border-[#c6a15b] bg-[#11110f] py-2.5 text-center text-xl font-mono tracking-[0.4em] text-[#f4efe6] focus:outline-none"
                   />
                 </div>
 
@@ -422,12 +422,12 @@ export default function Login() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Minimum 6 characters"
-                      className="w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 pr-10 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                      className="rounded-2xl w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 pr-10 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                     />
                     <button
                       type="button"
                       onClick={() => setShowNewPassword(!showNewPassword)}
-                      className="absolute right-3 top-2.5 text-[#8e8a82] hover:text-[#f4efe6]"
+                      className="rounded-2xl absolute right-3 top-2.5 text-[#8e8a82] hover:text-[#f4efe6]"
                     >
                       {showNewPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
@@ -444,7 +444,7 @@ export default function Login() {
                     value={confirmNewPassword}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                     placeholder="Repeat new password"
-                    className="w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                   />
                 </div>
 
@@ -452,7 +452,7 @@ export default function Login() {
                   <button
                     type="button"
                     onClick={() => setForgotStep(1)}
-                    className="text-[#8e8a82] hover:text-[#f4efe6]"
+                    className="rounded-2xl text-[#8e8a82] hover:text-[#f4efe6]"
                   >
                     &larr; Back
                   </button>
@@ -461,7 +461,7 @@ export default function Login() {
                     type="button"
                     disabled={forgotCooldown > 0 || forgotSubmitting}
                     onClick={handleResendForgotOtp}
-                    className="inline-flex items-center gap-1 text-[#c6a15b] hover:text-[#d8c08a] disabled:opacity-40"
+                    className="rounded-2xl inline-flex items-center gap-1 text-[#c6a15b] hover:text-[#d8c08a] disabled:opacity-40"
                   >
                     <RotateCcw size={12} />
                     {forgotCooldown > 0 ? `Resend in ${forgotCooldown}s` : "Resend Code"}
@@ -471,7 +471,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={forgotSubmitting || forgotOtp.length !== 6}
-                  className="w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-2"
+                  className="rounded-2xl w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-2"
                 >
                   <span>{forgotSubmitting ? "Updating..." : "Reset Password"}</span>
                   <CheckCircle2 size={14} />

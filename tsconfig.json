@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/components/ui/expanding-search-dock-shadcnui.tsx",
+    "src/components/ui/expanding-search-dock-demo.tsx",
+    "src/components/ui/bottom-nav-bar.tsx",
+    "src/components/ui/bottom-nav-bar-demo.tsx"
+  ]
+}

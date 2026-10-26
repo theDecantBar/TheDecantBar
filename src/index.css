@@ -90,3 +90,11 @@ textarea {
     transition-duration: 0.01ms !important;
   }
 }
+/* Semantic tokens for shadcn-compatible components, using the existing brand palette. */
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-card: var(--bg-surface);
+  --color-border: var(--border-medium);
+  --color-muted: var(--bg-elevated);
+  --color-muted-foreground: var(--text-muted);
+}

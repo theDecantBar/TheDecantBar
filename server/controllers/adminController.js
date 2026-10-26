@@ -595,29 +595,12 @@ export const deleteProduct = async (req, res) => {
 export const getAdminReviews = async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT * FROM reviews ORDER BY created_at DESC
+      SELECT * FROM reviews WHERE deleted_at IS NULL ORDER BY created_at DESC
     `);
     res.json(result.rows);
   } catch (error) {
     console.error("Admin reviews error:", error);
     res.status(500).json({ message: "Failed to retrieve reviews." });
-  }
-};
-
-// @desc    Delete a review
-// @route   DELETE /api/admin/reviews/:id
-// @access  Private / Admin
-export const deleteReview = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query("DELETE FROM reviews WHERE id = $1 RETURNING id", [id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Review not found." });
-    }
-    res.json({ message: "Review removed successfully." });
-  } catch (error) {
-    console.error("Delete review error:", error);
-    res.status(500).json({ message: "Failed to delete review." });
   }
 };
 

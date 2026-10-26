@@ -38,7 +38,7 @@ export default function ShopTransition({ onFinish }) {
         >
           <div className="h-7 w-5 rounded-t-sm border border-[#c6a15b]/80 bg-gradient-to-r from-[#765729] via-[#e0c58b] to-[#765729]" />
 
-          <div className="h-3 w-9 border border-[#c6a15b]/70 bg-[#c6a15b]/20" />
+          <div className="rounded-2xl h-3 w-9 border border-[#c6a15b]/70 bg-[#c6a15b]/20" />
 
           <div className="relative flex h-24 w-[68px] items-center justify-center overflow-hidden rounded-b-lg rounded-t-sm border border-[#c6a15b]/80 bg-gradient-to-r from-[#3b2c19] via-[#b79551]/30 to-[#3b2c19] shadow-[0_0_35px_rgba(198,161,91,0.15)]">
             <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-[#c6a15b]/15" />

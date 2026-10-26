@@ -120,7 +120,7 @@ export default function Contact() {
               <div className="pointer-events-none absolute -bottom-3 -right-3 h-full w-full border border-white/10 sm:-bottom-4 sm:-right-4" />
 
               {/* Main Visual Container */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden border border-[#c6a15b]/40 bg-[#171715] p-8 sm:p-10 flex flex-col justify-between shadow-2xl">
+              <div className="rounded-2xl relative aspect-[4/3] w-full overflow-hidden border border-[#c6a15b]/40 bg-[#171715] p-8 sm:p-10 flex flex-col justify-between shadow-2xl">
                 <div className="pointer-events-none absolute inset-3 border border-white/5" />
                 
                 <div className="relative z-10 flex items-center justify-between">
@@ -170,10 +170,10 @@ export default function Contact() {
               return (
                 <div
                   key={option.title}
-                  className="group relative flex flex-col justify-between border border-white/10 bg-[#11110f] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#c6a15b]/40"
+                  className="rounded-2xl group relative flex flex-col justify-between border border-white/10 bg-[#11110f] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#c6a15b]/40"
                 >
                   <div>
-                    <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#171715] text-[#c6a15b] transition-colors group-hover:border-[#c6a15b]">
+                    <div className="rounded-2xl flex h-10 w-10 items-center justify-center border border-white/10 bg-[#171715] text-[#c6a15b] transition-colors group-hover:border-[#c6a15b]">
                       <Icon size={18} strokeWidth={1.5} />
                     </div>
 
@@ -242,7 +242,7 @@ export default function Contact() {
 
             {/* Form Right Area */}
             <div className="lg:col-span-7">
-              <div className="border border-white/10 bg-[#171715] p-8 sm:p-12 shadow-xl">
+              <div className="rounded-2xl border border-white/10 bg-[#171715] p-8 sm:p-12 shadow-xl">
                 {submitted ? (
                   /* Polished Success Feedback State */
                   <motion.div
@@ -269,7 +269,7 @@ export default function Contact() {
                     <button
                       type="button"
                       onClick={handleResetForm}
-                      className="mt-8 inline-flex items-center gap-2 border border-white/20 px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:text-[#c6a15b]"
+                      className="rounded-2xl mt-8 inline-flex items-center gap-2 border border-white/20 px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:text-[#c6a15b]"
                     >
                       Send Another Message
                     </button>
@@ -278,7 +278,7 @@ export default function Contact() {
                   /* Active Form */
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
-                      <div className="flex items-start gap-3 border border-red-500/40 bg-red-950/25 p-4 text-xs text-red-200 animate-in fade-in duration-200">
+                      <div className="rounded-2xl flex items-start gap-3 border border-red-500/40 bg-red-950/25 p-4 text-xs text-red-200 animate-in fade-in duration-200">
                         <AlertCircle size={16} className="mt-0.5 shrink-0 text-red-400" />
                         <div className="leading-relaxed">{error}</div>
                       </div>
@@ -300,7 +300,7 @@ export default function Contact() {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="e.g. Eleanor Vance"
-                          className="mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
+                          className="rounded-2xl mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
                         />
                       </div>
 
@@ -320,7 +320,7 @@ export default function Contact() {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="e.g. eleanor@example.com"
-                          className="mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
+                          className="rounded-2xl mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -339,7 +339,7 @@ export default function Contact() {
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
-                          className="mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] transition-colors focus:border-[#c6a15b] focus:outline-none"
+                          className="rounded-2xl mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] transition-colors focus:border-[#c6a15b] focus:outline-none"
                         >
                           <option value="General Enquiry">General Enquiry</option>
                           <option value="Fragrance Guidance">Fragrance Guidance</option>
@@ -364,7 +364,7 @@ export default function Contact() {
                           value={formData.orderNumber}
                           onChange={handleChange}
                           placeholder="e.g. #TDB-1048"
-                          className="mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
+                          className="rounded-2xl mt-2 w-full border border-white/10 bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -385,7 +385,7 @@ export default function Contact() {
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="How can we assist you with your fragrance exploration?"
-                        className="mt-2 w-full resize-none border border-white/10 bg-[#11110f] px-4 py-3 text-xs leading-relaxed text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
+                        className="rounded-2xl mt-2 w-full resize-none border border-white/10 bg-[#11110f] px-4 py-3 text-xs leading-relaxed text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none"
                       />
                     </div>
 
@@ -393,7 +393,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="inline-flex w-full items-center justify-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all duration-200 hover:bg-[#c6a15b] disabled:opacity-50 sm:w-auto"
+                      className="rounded-2xl inline-flex w-full items-center justify-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all duration-200 hover:bg-[#c6a15b] disabled:opacity-50 sm:w-auto"
                     >
                       <span>{submitting ? "Sending..." : "Send Message"}</span>
                       <ArrowUpRight size={15} />
@@ -412,7 +412,7 @@ export default function Contact() {
       ────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32">
         <Container>
-          <div className="relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-20 shadow-2xl">
+          <div className="rounded-2xl relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-20 shadow-2xl">
             <div className="pointer-events-none absolute inset-3 sm:inset-4 border border-white/5" />
 
             <div className="relative z-10 mx-auto max-w-xl">
@@ -431,7 +431,7 @@ export default function Contact() {
               <div className="mt-8">
                 <Link
                   to="/shop"
-                  className="inline-flex items-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b]"
+                  className="rounded-2xl inline-flex items-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b]"
                 >
                   <span>Explore the Collection</span>
                   <ArrowUpRight size={15} />

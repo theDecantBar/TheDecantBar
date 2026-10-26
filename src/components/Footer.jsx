@@ -84,7 +84,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/reviews" className="transition-colors hover:text-[#c6a15b]">
-                  Verified Reviews
+                  Customer Reviews
                 </Link>
               </li>
               <li>

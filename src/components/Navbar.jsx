@@ -1,3 +1,5 @@
+import { BottomNavBar } from "@/components/ui/bottom-nav-bar";
+import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock-shadcnui";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -36,6 +38,15 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const isHome = location.pathname === "/";
+  const activeNavIndex = location.pathname === "/" ? 0
+    : location.pathname === "/products" || location.pathname === "/shop" || location.pathname.startsWith("/product/") ? 1
+    : location.pathname === "/about" ? 2
+    : location.pathname === "/contact" ? 3
+    : location.pathname === "/faq" || location.pathname === "/faqs" ? 4 : -1;
+  const handlePillNavigation = (item, event) => {
+    if (item.href === "/products" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) handleShopClick(event);
+  };
+
 
   const { cartCount } = useCart();
   const { user, isAuthenticated } = useAuth();
@@ -272,7 +283,7 @@ export default function Navbar() {
           animate={{ opacity: 1, y: 0 }}
           exit={shouldReduceMotion ? undefined : { opacity: 0, y: 5 }}
           transition={{ duration: shouldReduceMotion ? 0 : 0.18 }}
-          className="absolute left-0 right-0 top-full z-[100] mt-2 overflow-hidden rounded-md border border-[#c6a15b]/35 bg-[#11110f] shadow-[0_18px_55px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04]"
+          className="absolute left-0 right-0 top-full z-[100] mt-2 overflow-hidden rounded-2xl border border-[#c6a15b]/35 bg-[#11110f] shadow-[0_18px_55px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04]"
           role="listbox"
           aria-label="Perfume suggestions"
         >
@@ -313,7 +324,7 @@ export default function Navbar() {
                     onMouseDown={(event) => event.preventDefault()}
                     onMouseEnter={() => setActiveSuggestion(index)}
                     onClick={() => handleSuggestionSelect(product)}
-                    className={`group flex w-full items-center gap-3 border-b border-white/[0.055] px-3 py-3 text-left transition-colors duration-200 last:border-b-0 sm:px-4 ${
+                    className={`rounded-2xl group flex w-full items-center gap-3 border-b border-white/[0.055] px-3 py-3 text-left transition-colors duration-200 last:border-b-0 sm:px-4 ${
                       selected
                         ? "bg-[#c6a15b]/[0.10]"
                         : "hover:bg-white/[0.035]"
@@ -406,7 +417,7 @@ export default function Navbar() {
                 `/products?search=${encodeURIComponent(query)}`
               );
             }}
-            className="flex w-full items-center justify-between gap-3 border-t border-[#c6a15b]/20 bg-[#c6a15b]/[0.045] px-4 py-3.5 text-left transition-colors hover:bg-[#c6a15b]/[0.11]"
+            className="rounded-2xl flex w-full items-center justify-between gap-3 border-t border-[#c6a15b]/20 bg-[#c6a15b]/[0.045] px-4 py-3.5 text-left transition-colors hover:bg-[#c6a15b]/[0.11]"
           >
             <span className="min-w-0">
               <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d6b779]">
@@ -450,7 +461,7 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
               aria-expanded={mobileMenuOpen}
-              className="text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
+              className="rounded-2xl text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
             >
               <Menu size={22} strokeWidth={1.5} />
             </button>
@@ -469,28 +480,16 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop navigation */}
-          <div className="hidden shrink-0 items-center gap-5 xl:gap-8 lg:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                onClick={
-                  item.name === "Shop" ? handleShopClick : undefined
-                }
-                className="text-xs font-medium uppercase tracking-wider text-[#c5c1b9] transition-colors hover:text-[#c6a15b]"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+          {/* Rounded icon navigation with an expanding active label. */}
+          <div className="hidden shrink-0 lg:block"><BottomNavBar activeIndex={activeNavIndex} onNavigate={handlePillNavigation} /></div>
 
-          {/* Desktop search */}
+          {/* Other pages keep their existing navigation search. */}
+          {!isHome && (
           <form
             ref={desktopSearchRef}
             onSubmit={handleSearchSubmit}
             role="search"
-            className="relative hidden h-11 min-w-0 flex-1 items-center overflow-visible rounded-sm border border-white/15 bg-[#11110f] transition-all duration-300 focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)] md:flex md:max-w-56 lg:max-w-56 xl:max-w-72"
+            className="relative hidden h-11 min-w-0 flex-1 items-center overflow-visible rounded-2xl border border-white/15 bg-[#11110f] transition-all duration-300 focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)] md:flex md:max-w-56 lg:max-w-56 xl:max-w-72"
           >
             <Search
               size={16}
@@ -512,13 +511,13 @@ export default function Navbar() {
               aria-expanded={
                 showSearchSuggestions && Boolean(search.trim())
               }
-              className="min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
+              className="rounded-2xl min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
             />
 
             <button
               type="submit"
               aria-label="Submit search"
-              className="flex h-full w-10 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+              className="rounded-2xl flex h-full w-10 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
             >
               <ArrowUpRight size={17} strokeWidth={1.5} />
             </button>
@@ -526,21 +525,33 @@ export default function Navbar() {
             {renderSearchSuggestions()}
           </form>
 
+          )}
+
           {/* Action icons */}
-          <div className="flex shrink-0 items-center gap-3 sm:gap-5">
+          <div className={isHome ? "flex shrink-0 items-center gap-2 sm:gap-3" : "flex shrink-0 items-center gap-3 sm:gap-5"}>
             {isAuthenticated && user?.isAdmin && (
               <Link
                 to="/admin"
                 aria-label="Admin Portal"
                 title="Open Admin Control Hub"
-                className="hidden items-center gap-1.5 rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f] sm:inline-flex"
+                className="hidden items-center gap-1.5 rounded-2xl border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f] sm:inline-flex"
               >
                 <ShieldCheck size={14} />
                 <span>Admin</span>
               </Link>
             )}
 
-            {/* Search shortcut on small screens */}
+            {isHome && <div ref={desktopSearchRef} className="pointer-events-none relative hidden h-12 w-12 md:block">
+              <div className="absolute right-0 top-0 w-[min(320px,calc(100vw-32px))]">
+                <ExpandingSearchDock value={search} onQueryChange={setSearch} onKeyDown={handleSearchKeyDown} onSearch={() => handleSearchSubmit({ preventDefault() {} })} onClear={() => { setSearch(""); setShowSearchSuggestions(false); }} placeholder="Search fragrances..." />
+                <div className="pointer-events-auto">{renderSearchSuggestions()}</div>
+              </div>
+            </div>}
+
+            {isHome ? <div ref={mobileSearchRef} className="pointer-events-none relative h-12 w-12 md:hidden"><div className="absolute right-0 top-0 w-[min(320px,calc(100vw-32px))]">
+              <ExpandingSearchDock value={search} onQueryChange={setSearch} onKeyDown={handleSearchKeyDown} onSearch={() => handleSearchSubmit({ preventDefault() {} })} onClear={() => { setSearch(""); setShowSearchSuggestions(false); }} placeholder="Search fragrances..." />
+              <div className="pointer-events-auto">{renderSearchSuggestions()}</div>
+            </div></div> : (
             <button
               type="button"
               onClick={() => {
@@ -551,28 +562,32 @@ export default function Navbar() {
                 }
               }}
               aria-label="Open search"
-              className="text-[#f4efe6] transition-colors hover:text-[#c6a15b] md:hidden"
+              className="rounded-2xl text-[#f4efe6] transition-colors hover:text-[#c6a15b] md:hidden"
             >
               <Search size={20} strokeWidth={1.5} />
             </button>
+
+            )}
 
             {/* Account */}
             <Link
               to={isAuthenticated ? "/account" : "/login"}
               aria-label={isAuthenticated ? "My Account" : "Sign In"}
-              className="hidden items-center gap-2 text-[#f4efe6] transition-colors hover:text-[#c6a15b] sm:flex"
+              className={isHome
+                ? "flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
+                : "hidden items-center gap-2 text-[#f4efe6] transition-colors hover:text-[#c6a15b] sm:flex"}
             >
               <UserRound
                 size={20}
                 strokeWidth={1.5}
                 className={
-                  isAuthenticated
+                  isHome || isAuthenticated
                     ? "text-[#c6a15b]"
                     : "text-[#f4efe6]"
                 }
               />
 
-              {isAuthenticated && user?.fullName && (
+              {!isHome && isAuthenticated && user?.fullName && (
                 <span className="hidden text-xs font-medium uppercase tracking-wider text-[#c5c1b9] xl:inline">
                   {user.fullName.split(" ")[0]}
                 </span>
@@ -583,10 +598,10 @@ export default function Navbar() {
             <Link
               to="/cart"
               aria-label={`Shopping Cart, ${cartCount} items`}
-              className="relative text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
+              className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c6a15b] px-1 text-[9px] font-bold text-[#11110f]">
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c6a15b] px-1 text-[9px] font-bold text-[#11110f]">
                 {cartCount}
               </span>
             </Link>
@@ -639,7 +654,7 @@ export default function Navbar() {
                     type="button"
                     onClick={closeMobileMenu}
                     aria-label="Close menu"
-                    className="flex h-9 w-9 items-center justify-center rounded border border-white/10 text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/50 hover:bg-white/5 hover:text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                    className="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/50 hover:bg-white/5 hover:text-[#f4efe6] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
                   >
                     <X size={20} strokeWidth={1.5} />
                   </button>
@@ -652,7 +667,7 @@ export default function Navbar() {
                     ref={mobileSearchRef}
                     onSubmit={handleSearchSubmit}
                     role="search"
-                    className="relative mx-6 mt-5 flex h-12 shrink-0 overflow-visible rounded-sm border border-white/15 bg-[#11110f] transition-colors focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)]"
+                    className="relative mx-6 mt-5 flex h-12 shrink-0 overflow-visible rounded-2xl border border-white/15 bg-[#11110f] transition-colors focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)]"
                   >
                     <Search
                       size={16}
@@ -674,13 +689,13 @@ export default function Navbar() {
                       aria-expanded={
                         showSearchSuggestions && Boolean(search.trim())
                       }
-                      className="min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
+                      className="rounded-2xl min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
                     />
 
                     <button
                       type="submit"
                       aria-label="Submit search"
-                      className="flex w-11 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+                      className="rounded-2xl flex w-11 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
                     >
                       <ArrowUpRight size={17} strokeWidth={1.5} />
                     </button>
@@ -718,7 +733,7 @@ export default function Navbar() {
                             <Link
                               to="/admin"
                               onClick={closeMobileMenu}
-                              className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+                              className="flex items-center justify-between rounded-2xl border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
                             >
                               <div className="flex items-center gap-3">
                                 <ShieldCheck size={16} strokeWidth={1.5} />
@@ -733,7 +748,7 @@ export default function Navbar() {
                           <Link
                             to="/account"
                             onClick={closeMobileMenu}
-                            className="flex items-center justify-between rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                            className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
                           >
                             <div className="flex items-center gap-3">
                               <UserRound
@@ -752,7 +767,7 @@ export default function Navbar() {
                         <Link
                           to="/login"
                           onClick={closeMobileMenu}
-                          className="flex items-center gap-3 rounded border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
+                          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#171715] px-4 py-3 text-xs font-medium uppercase tracking-[0.18em] text-[#c5c1b9] transition-colors hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"
                         >
                           <LogIn
                             size={16}
@@ -766,7 +781,7 @@ export default function Navbar() {
                       <Link
                         to="/cart"
                         onClick={closeMobileMenu}
-                        className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:bg-[#c6a15b]/20"
+                        className="flex items-center justify-between rounded-2xl border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:bg-[#c6a15b]/20"
                       >
                         <div className="flex items-center gap-3">
                           <ShoppingBag

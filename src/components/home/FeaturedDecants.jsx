@@ -106,7 +106,7 @@ export default function FeaturedDecants() {
         <div className="mt-8 sm:mt-14 text-center">
           <Link
             to="/products"
-            className="inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
+            className="rounded-2xl inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
           >
             Explore all 90+ Perfumes
             <ArrowRight size={15} />

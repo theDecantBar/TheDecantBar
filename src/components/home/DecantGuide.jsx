@@ -78,7 +78,7 @@ export default function DecantGuide() {
           {sizes.map((item) => (
             <div
               key={item.size}
-              className="flex flex-col justify-between border border-white/10 bg-[#161613] p-5 sm:p-9 transition-colors duration-300 hover:border-[#c6a15b]/40"
+              className="rounded-2xl flex flex-col justify-between border border-white/10 bg-[#161613] p-5 sm:p-9 transition-colors duration-300 hover:border-[#c6a15b]/40"
             >
               <div>
                 {/* 1. Equal Header Badge & Spray Count */}
@@ -136,7 +136,7 @@ export default function DecantGuide() {
         <div className="mt-14 text-center">
           <Link
             to="/products"
-            className="inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
+            className="rounded-2xl inline-flex max-w-full items-center justify-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-5 sm:px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition shadow-lg"
           >
             <span>Explore All Fragrances (Choose Any Size)</span>
             <ArrowRight size={15} />

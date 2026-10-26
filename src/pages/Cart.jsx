@@ -30,7 +30,7 @@ export default function Cart() {
           <div className="mt-8">
             <Link
               to="/products"
-              className="inline-flex items-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] transition hover:bg-[#d8c08a]"
+              className="rounded-2xl inline-flex items-center gap-3 border border-[#c6a15b] bg-[#c6a15b] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] transition hover:bg-[#d8c08a]"
             >
               Explore Collection
               <ArrowRight size={15} />
@@ -55,7 +55,7 @@ export default function Cart() {
           <button
             type="button"
             onClick={clearCart}
-            className="text-xs uppercase tracking-wider text-[#8e8a82] hover:text-red-400 transition-colors self-start sm:self-auto cursor-pointer"
+            className="rounded-2xl text-xs uppercase tracking-wider text-[#8e8a82] hover:text-red-400 transition-colors self-start sm:self-auto cursor-pointer"
           >
             Clear All
           </button>
@@ -74,7 +74,7 @@ export default function Cart() {
               >
                 {/* Product Info */}
                 <div className="flex items-center gap-5">
-                  <div className="h-24 w-20 shrink-0 overflow-hidden border border-white/10 bg-[#1c1c18] flex items-center justify-center p-2">
+                  <div className="rounded-2xl h-24 w-20 shrink-0 overflow-hidden border border-white/10 bg-[#1c1c18] flex items-center justify-center p-2">
                     {item.image_url ? (
                       <img
                         src={item.image_url}
@@ -111,12 +111,12 @@ export default function Cart() {
                 {/* Quantity Controls & Line Total */}
                 <div className="flex items-center justify-between sm:gap-8">
                   {/* Quantity Stepper */}
-                  <div className="flex items-center border border-white/15 bg-[#171715]">
+                  <div className="rounded-2xl flex items-center border border-white/15 bg-[#171715]">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
                       onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                      className="flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="rounded-2xl flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
                       <Minus size={14} />
                     </button>
@@ -127,7 +127,7 @@ export default function Cart() {
                       type="button"
                       aria-label="Increase quantity"
                       onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                      className="flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="rounded-2xl flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
                     >
                       <Plus size={14} />
                     </button>
@@ -148,7 +148,7 @@ export default function Cart() {
                     type="button"
                     aria-label="Remove item"
                     onClick={() => removeFromCart(item.cartItemId)}
-                    className="text-[#8e8a82] hover:text-red-400 transition-colors p-2 cursor-pointer"
+                    className="rounded-2xl text-[#8e8a82] hover:text-red-400 transition-colors p-2 cursor-pointer"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -170,14 +170,14 @@ export default function Cart() {
 
         {/* Order Summary Sidebar */}
         <div className="lg:col-span-4">
-          <div className="sticky top-28 border border-white/10 bg-[#171715] p-6 sm:p-8">
+          <div className="rounded-2xl sticky top-28 border border-white/10 bg-[#171715] p-6 sm:p-8">
             <h2 className="font-display text-2xl text-[#f4efe6]">
               Order Summary
             </h2>
 
             {/* Free Shipping Alert / Incentive */}
             {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
-              <div className="mt-4 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+              <div className="rounded-2xl mt-4 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
                 <div className="flex items-center gap-2">
                   <Truck size={15} className="text-[#c6a15b] shrink-0" />
                   <span>
@@ -194,7 +194,7 @@ export default function Cart() {
                 </div>
               </div>
             ) : (
-              <div className="mt-4 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
+              <div className="rounded-2xl mt-4 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
                 <Sparkles size={15} className="text-emerald-400 shrink-0" />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
@@ -225,7 +225,7 @@ export default function Cart() {
             <div className="mt-8">
               <Link
                 to="/checkout"
-                className="flex w-full items-center justify-between gap-4 border border-[#c6a15b] bg-[#c6a15b] px-6 py-4 text-xs font-semibold uppercase tracking-widest text-[#11110f] transition hover:bg-[#d8c08a]"
+                className="rounded-2xl flex w-full items-center justify-between gap-4 border border-[#c6a15b] bg-[#c6a15b] px-6 py-4 text-xs font-semibold uppercase tracking-widest text-[#11110f] transition hover:bg-[#d8c08a]"
               >
                 <span className="whitespace-nowrap">Proceed to Checkout</span>
                 <ArrowRight size={16} />

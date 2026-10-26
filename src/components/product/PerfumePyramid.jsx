@@ -6,7 +6,7 @@ function NoteCard({ noteName }) {
   return (
     <div className="flex flex-col items-center group w-14 sm:w-16 text-center transition-transform duration-200 hover:-translate-y-0.5">
       {/* Real Fragrantica ingredient thumbnail */}
-      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg overflow-hidden border border-white/15 bg-[#171715] flex items-center justify-center p-0.5 shadow-sm group-hover:border-[#c6a15b] group-hover:shadow-[0_0_8px_rgba(198,161,91,0.25)] transition-all">
+      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl overflow-hidden border border-white/15 bg-[#171715] flex items-center justify-center p-0.5 shadow-sm group-hover:border-[#c6a15b] group-hover:shadow-[0_0_8px_rgba(198,161,91,0.25)] transition-all">
         {visual.imageUrl ? (
           <img
             src={visual.imageUrl}
@@ -62,7 +62,7 @@ export default function PerfumePyramid({
       </div>
 
       {/* Compact Stepped Pyramid Container */}
-      <div className="border border-white/10 bg-[#151512] rounded-lg p-3.5 sm:p-4 relative">
+      <div className="border border-white/10 bg-[#151512] rounded-2xl p-3.5 sm:p-4 relative">
         <div className="flex flex-col items-center gap-3.5 sm:gap-4">
           {/* TIER 1: TOP NOTES */}
           <div className="w-full flex flex-col items-center">

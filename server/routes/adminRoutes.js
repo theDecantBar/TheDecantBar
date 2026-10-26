@@ -8,11 +8,11 @@ import {
   updateProduct,
   deleteProduct,
   getAdminReviews,
-  deleteReview,
   updateVariantStock,
   bulkUpdateAllStock,
   uploadProductImage,
 } from "../controllers/adminController.js";
+import { updateReview, deleteReview } from "../controllers/reviewController.js";
 import { resendOrderConfirmation } from "../controllers/orderController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
@@ -44,6 +44,7 @@ router.post("/variants/bulk-stock", bulkUpdateAllStock);
 
 // Review Moderation
 router.get("/reviews", getAdminReviews);
+router.put("/reviews/:id", updateReview);
 router.delete("/reviews/:id", deleteReview);
 
 export default router;

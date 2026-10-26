@@ -169,7 +169,7 @@ export default function GoogleAuthButton({
         type="button"
         onClick={handleGoogleClick}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-3 border border-white/15 bg-[#11110f] hover:border-[#c6a15b]/60 hover:bg-[#181814] active:scale-[0.99] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-all duration-200 cursor-pointer shadow-md disabled:opacity-50"
+        className="rounded-2xl w-full flex items-center justify-center gap-3 border border-white/15 bg-[#11110f] hover:border-[#c6a15b]/60 hover:bg-[#181814] active:scale-[0.99] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-all duration-200 cursor-pointer shadow-md disabled:opacity-50"
       >
         <GoogleIcon />
         <span>

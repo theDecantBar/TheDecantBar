@@ -1,0 +1,18 @@
+.review-viewport { position: relative; overflow: hidden; width: 100%; }
+.review-track { display: flex; align-items: flex-start; gap: 16px; width: max-content; position: absolute; top: 8px; left: 0; animation-name: review-revolve; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform; }
+.review-slide { flex: 0 0 auto; width: min(310px, calc(100vw - 64px)); }
+@media (min-width: 640px) { .review-slide { width: 360px; } }
+@keyframes review-revolve { from { transform: translateX(var(--review-start)); } to { transform: translateX(var(--review-end)); } }
+.review-viewport.is-paused .review-track, .review-viewport:hover .review-track, .review-viewport:focus-within .review-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .review-viewport { display: flex; height: auto !important; gap: 16px; overflow-x: auto; align-items: flex-start; padding-bottom: 12px; }
+  .review-track { position: static; animation: none !important; transform: none; gap: 16px; }
+  .review-slide { flex: 0 0 auto; }
+}
+
+@media (min-width: 640px) {
+ .review-viewport::before, .review-viewport::after { content: ""; position: absolute; inset-block: 0; width: 80px; z-index: 2; pointer-events: none; }
+ .review-viewport::before { left: 0; background: linear-gradient(to right, #11110f, transparent); }
+ .review-viewport::after { right: 0; background: linear-gradient(to left, #11110f, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .review-viewport::before, .review-viewport::after { display: none; } }

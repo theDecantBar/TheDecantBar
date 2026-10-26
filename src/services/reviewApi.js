@@ -1,79 +1,15 @@
 const API_BASE_URL = "/api/reviews";
-
-/**
- * Fetch all public verified reviews from PostgreSQL database
- */
-export async function fetchAllReviews() {
-  try {
-    const res = await fetch(API_BASE_URL);
-    if (!res.ok) {
-      throw new Error("Failed to load reviews from server");
-    }
-    const data = await res.json();
-    return data.reviews || [];
-  } catch (err) {
-    console.error("Error fetching reviews:", err);
-    return [];
-  }
-}
-
-/**
- * Submit a new verified review to the database
- */
-export async function submitReview(reviewData, token) {
-  const res = await fetch(API_BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(reviewData),
+async function request(path = "", { token, method = "GET", body } = {}) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method, cache: "no-store", headers: { ...(body ? { "Content-Type": "application/json" } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    ...(body ? { body: JSON.stringify(body) } : {}),
   });
-
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message || "Failed to submit review");
-  }
-
-  return data.review;
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || "Unable to connect. Please try again.");
+  return data;
 }
-
-/**
- * Update an existing review (author only)
- */
-export async function editReview(id, reviewData, token) {
-  const res = await fetch(`${API_BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(reviewData),
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message || "Failed to update review");
-  }
-
-  return data.review;
-}
-
-/**
- * Delete a review (author only)
- */
-export async function removeReview(id, token) {
-  const res = await fetch(`${API_BASE_URL}/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message || "Failed to delete review");
-  }
-
-  return true;
-}
+export async function fetchAllReviews() { return (await request()).reviews || []; }
+export async function fetchManageableReviewIds(token) { return (await request("/manageable", { token })).ids || []; }
+export async function submitReview(body, token) { return (await request("", { token, method: "POST", body })).review; }
+export async function editReview(id, body, token) { return (await request(`/${id}`, { token, method: "PUT", body })).review; }
+export async function removeReview(id, token) { await request(`/${id}`, { token, method: "DELETE" }); return true; }

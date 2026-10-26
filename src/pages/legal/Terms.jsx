@@ -123,7 +123,7 @@ export default function Terms() {
                 <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
                   The following details represent operational information to be confirmed prior to public launch:
                 </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-lg border border-white/10">
+                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
                   <p>• Entity Name: [The Decant Bar / Registered Sole Proprietorship or LLP — Pending Owner Confirmation]</p>
                   <p>• Registered Operating Location: [City / State, India — Pending Owner Confirmation]</p>
                   <p>• Grievance & Legal Contact: thedecantbarofficial@gmail.com</p>

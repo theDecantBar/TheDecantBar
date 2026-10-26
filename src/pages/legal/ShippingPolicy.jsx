@@ -53,7 +53,7 @@ export default function ShippingPolicy() {
             <p>
               To preserve top-note vibrancy and prevent premature oxidation, our fragrances are not pre-poured in bulk; each bottle is freshly decanted and sealed following order confirmation.
             </p>
-            <div className="mt-4 p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 text-xs">
+            <div className="mt-4 p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2 text-xs">
               <div className="flex items-center gap-2 text-[#f4efe6]">
                 <Clock size={16} className="text-[#c6a15b]" />
                 <span className="font-semibold">Processing Window:</span>
@@ -73,11 +73,11 @@ export default function ShippingPolicy() {
               We ship across all serviceable postal PIN codes in India. Once your parcel is handed over to our courier partner, estimated transit times are as follows:
             </p>
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3.5 rounded-lg bg-black/30 border border-white/5">
+              <div className="p-3.5 rounded-2xl bg-black/30 border border-white/5">
                 <p className="font-semibold text-[#f4efe6]">Metro Cities (Delhi, Mumbai, Bengaluru, etc.):</p>
                 <p className="text-[#8e8a82] mt-1">2 – 4 Business Days [Courier Partner Dependent]</p>
               </div>
-              <div className="p-3.5 rounded-lg bg-black/30 border border-white/5">
+              <div className="p-3.5 rounded-2xl bg-black/30 border border-white/5">
                 <p className="font-semibold text-[#f4efe6]">Tier 2 & Tier 3 Cities / Rest of India:</p>
                 <p className="text-[#8e8a82] mt-1">4 – 7 Business Days [Courier Partner Dependent]</p>
               </div>
@@ -123,7 +123,7 @@ export default function ShippingPolicy() {
                 <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
                   The following details represent operational information to be confirmed prior to public launch:
                 </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-lg border border-white/10">
+                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
                   <p>• Partner Couriers: [e.g. Delhivery, Blue Dart, DTDC, XpressBees — Pending Owner Confirmation]</p>
                   <p>• Dispatch Hub: [City, State — Pending Owner Confirmation]</p>
                   <p>• Incomplete Addresses: Orders returned due to incorrect 10-digit phone or PIN code may incur re-shipping fees.</p>

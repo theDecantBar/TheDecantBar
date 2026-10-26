@@ -79,7 +79,7 @@ export default function About() {
               <div className="absolute -bottom-3 -right-3 h-full w-full border border-white/15 pointer-events-none sm:-bottom-4 sm:-right-4" />
               
               {/* Main Image Container */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden border border-[#c6a15b]/40 bg-[#171715] shadow-2xl">
+              <div className="rounded-2xl relative aspect-[3/4] w-full overflow-hidden border border-[#c6a15b]/40 bg-[#171715] shadow-2xl">
                 <img
                   src="/images/about/about-hero.jpg"
                   alt="Luxury perfume decants on natural stone"
@@ -88,7 +88,7 @@ export default function About() {
                 />
 
                 {/* Floating Subtle Label */}
-                <div className="absolute bottom-4 left-4 border border-white/10 bg-[#11110f]/80 px-3 py-1.5 backdrop-blur-md">
+                <div className="rounded-2xl absolute bottom-4 left-4 border border-white/10 bg-[#11110f]/80 px-3 py-1.5 backdrop-blur-md">
                   <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#d8c08a]">
                     The Art of Discovery
                   </p>
@@ -109,7 +109,7 @@ export default function About() {
             
             {/* Image Side */}
             <div className="relative order-2 lg:order-1 lg:col-span-6">
-              <div className="relative aspect-[4/3] w-full overflow-hidden border border-white/10 bg-[#171715]">
+              <div className="rounded-2xl relative aspect-[4/3] w-full overflow-hidden border border-white/10 bg-[#171715]">
                 <div className="pointer-events-none absolute inset-3 border border-white/5 z-10" />
                 <img
                   src="/images/about/about-story.jpg"
@@ -164,7 +164,7 @@ export default function About() {
             
             {/* Left Image Frame */}
             <div className="relative lg:col-span-5">
-              <div className="relative aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#11110f]">
+              <div className="rounded-2xl relative aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#11110f]">
                 <div className="pointer-events-none absolute inset-3 border border-white/5 z-10" />
                 <img
                   src="/images/about/about-hero.jpg"
@@ -245,7 +245,7 @@ export default function About() {
       ────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32 lg:py-40">
         <Container>
-          <div className="relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-24 shadow-2xl">
+          <div className="rounded-2xl relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-24 shadow-2xl">
             {/* Concentric Frame */}
             <div className="pointer-events-none absolute inset-3 sm:inset-4 border border-white/5" />
 
@@ -265,7 +265,7 @@ export default function About() {
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link
                   to="/shop"
-                  className="inline-flex items-center gap-2.5 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b] hover:shadow-lg"
+                  className="rounded-2xl inline-flex items-center gap-2.5 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b] hover:shadow-lg"
                 >
                   <span>Explore the Collection</span>
                   <ArrowUpRight size={15} />
@@ -273,7 +273,7 @@ export default function About() {
 
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 border border-white/25 bg-transparent px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:text-[#c6a15b]"
+                  className="rounded-2xl inline-flex items-center gap-2 border border-white/25 bg-transparent px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition-colors hover:border-[#c6a15b] hover:text-[#c6a15b]"
                 >
                   <span>Get in Touch</span>
                 </Link>

@@ -57,7 +57,7 @@ export default function RefundPolicy() {
             <p>
               If your package arrives with broken glass, noticeable liquid leakage, a defective non-spraying atomizer nozzle, or if an incorrect fragrance was delivered, you are eligible for an immediate <strong className="text-[#f4efe6]">free replacement</strong> or a <strong className="text-[#f4efe6]">full refund</strong>.
             </p>
-            <div className="mt-4 p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 text-xs">
+            <div className="mt-4 p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2 text-xs">
               <p className="font-semibold text-[#f4efe6]">To file a damage or leakage claim:</p>
               <ol className="list-decimal list-inside space-y-1.5 text-[#8e8a82]">
                 <li>Contact our support team within <strong className="text-[#f4efe6]">48 hours of delivery</strong> [Subject to Owner Confirmation].</li>
@@ -105,7 +105,7 @@ export default function RefundPolicy() {
                 <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
                   The following details represent operational parameters to be confirmed prior to public launch:
                 </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-lg border border-white/10">
+                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
                   <p>• Damage Reporting Window: [48 Hours from Courier Delivery Stamp — Pending Owner Confirmation]</p>
                   <p>• Unboxing Video: [Recommended / Mandatory for High-Value Claims — Pending Owner Confirmation]</p>
                   <p>• Refund Support Email: thedecantbarofficial@gmail.com</p>

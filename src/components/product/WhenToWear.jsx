@@ -67,7 +67,7 @@ export default function WhenToWear({
         </span>
       </div>
 
-      <div className="border border-white/10 bg-[#151512] rounded-lg p-3 sm:p-4">
+      <div className="border border-white/10 bg-[#151512] rounded-2xl p-3 sm:p-4">
         <div className="grid grid-cols-6 gap-2 sm:gap-3 text-center">
           {/* Seasons */}
           {seasons.map((item) => {

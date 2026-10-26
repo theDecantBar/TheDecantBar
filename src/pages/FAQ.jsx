@@ -84,13 +84,13 @@ export default function FAQ() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search questions or keywords (e.g., sizes, sprays, shipping)..."
-                className="w-full rounded border border-white/15 bg-[#171715] py-3.5 pl-11 pr-4 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                className="w-full rounded-2xl border border-white/15 bg-[#171715] py-3.5 pl-11 pr-4 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-[#8e8a82] hover:text-[#f4efe6]"
+                  className="rounded-2xl absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-[#8e8a82] hover:text-[#f4efe6]"
                 >
                   Clear
                 </button>
@@ -111,7 +111,7 @@ export default function FAQ() {
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
-                    className={`cursor-pointer rounded px-3 py-1.5 text-[11px] font-medium tracking-wider transition-all duration-200 ${
+                    className={`cursor-pointer rounded-2xl px-3 py-1.5 text-[11px] font-medium tracking-wider transition-all duration-200 ${
                       isSelected
                         ? "border border-[#c6a15b] bg-[#c6a15b] text-[#11110f] shadow-md"
                         : "border border-white/10 bg-[#171715] text-[#c5c1b9] hover:border-[#c6a15b]/40 hover:text-[#f4efe6]"
@@ -135,7 +135,7 @@ export default function FAQ() {
         <Container>
           <div className="mx-auto max-w-3xl">
             {filteredFaqs.length === 0 ? (
-              <div className="rounded border border-white/10 bg-[#171715] p-12 text-center">
+              <div className="rounded-2xl border border-white/10 bg-[#171715] p-12 text-center">
                 <HelpCircle size={32} className="mx-auto text-[#8e8a82]" />
                 <h3 className="mt-4 font-display text-xl text-[#f4efe6]">
                   No Matching Questions Found
@@ -149,7 +149,7 @@ export default function FAQ() {
                     setSearchQuery("");
                     setSelectedCategory("All");
                   }}
-                  className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded border border-[#c6a15b] bg-[#c6a15b]/10 px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
+                  className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-[#c6a15b] bg-[#c6a15b]/10 px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
                 >
                   Reset Filters
                 </button>
@@ -161,7 +161,7 @@ export default function FAQ() {
                   return (
                     <div
                       key={faq.id}
-                      className={`overflow-hidden rounded-md border transition-all duration-300 ${
+                      className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
                         isOpen
                           ? "border-[#c6a15b]/60 bg-[#171715] shadow-lg shadow-black/40"
                           : "border-white/10 bg-[#171715]/90 hover:border-white/20"
@@ -171,7 +171,7 @@ export default function FAQ() {
                         type="button"
                         onClick={() => toggleFaq(faq.id)}
                         aria-expanded={isOpen}
-                        className="flex w-full items-center justify-between gap-4 p-5 sm:p-6 text-left transition-colors cursor-pointer"
+                        className="rounded-2xl flex w-full items-center justify-between gap-4 p-5 sm:p-6 text-left transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                           <span
@@ -233,7 +233,7 @@ export default function FAQ() {
       ────────────────────────────────────────────── */}
       <section className="border-t border-white/10 bg-[#171715] py-16 sm:py-20">
         <Container>
-          <div className="mx-auto max-w-3xl rounded-lg border border-[#c6a15b]/30 bg-[#11110f] p-8 sm:p-12 shadow-2xl">
+          <div className="mx-auto max-w-3xl rounded-2xl border border-[#c6a15b]/30 bg-[#11110f] p-8 sm:p-12 shadow-2xl">
             <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
               <div>
                 <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#c6a15b]">
@@ -250,7 +250,7 @@ export default function FAQ() {
 
               <Link
                 to="/contact"
-                className="inline-flex shrink-0 items-center gap-2 rounded bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#11110f] shadow-md transition hover:bg-[#d8c08a]"
+                className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#11110f] shadow-md transition hover:bg-[#d8c08a]"
               >
                 <span>Contact Concierge</span>
                 <ArrowUpRight size={15} />
@@ -265,7 +265,7 @@ export default function FAQ() {
       ────────────────────────────────────────────── */}
       <section className="py-20 sm:py-28">
         <Container>
-          <div className="relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-20 shadow-2xl">
+          <div className="rounded-2xl relative overflow-hidden border border-white/15 bg-[#171715] p-10 text-center sm:p-16 lg:p-20 shadow-2xl">
             <div className="pointer-events-none absolute inset-3 sm:inset-4 border border-white/5" />
 
             <div className="relative z-10 mx-auto max-w-xl">
@@ -284,7 +284,7 @@ export default function FAQ() {
               <div className="mt-8">
                 <Link
                   to="/shop"
-                  className="inline-flex items-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b]"
+                  className="rounded-2xl inline-flex items-center gap-2 bg-[#d8c08a] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[#11110f] transition-all hover:bg-[#c6a15b]"
                 >
                   <span>Explore the Collection</span>
                   <ArrowUpRight size={15} />

@@ -161,7 +161,7 @@ export default function Register() {
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+          <div className="rounded-2xl mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
             <div className="flex items-start gap-3">
               <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
               <span>{error}</span>
@@ -180,7 +180,7 @@ export default function Register() {
         )}
 
         {/* Form Card */}
-        <div className="mt-8 border border-white/10 bg-[#171715] p-6 sm:p-8 shadow-2xl">
+        <div className="rounded-2xl mt-8 border border-white/10 bg-[#171715] p-6 sm:p-8 shadow-2xl">
           {step === 1 ? (
             <form onSubmit={handleRequestOtp} className="space-y-4">
               {/* Full Name */}
@@ -196,7 +196,7 @@ export default function Register() {
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Rahul Sharma"
-                    className="w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                   />
                   <User size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                 </div>
@@ -215,7 +215,7 @@ export default function Register() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="rahul@example.com"
-                    className="w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                   />
                   <Mail size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                 </div>
@@ -233,7 +233,7 @@ export default function Register() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+91 98765 43210"
-                    className="w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                   />
                   <Phone size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                 </div>
@@ -252,14 +252,14 @@ export default function Register() {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Minimum 6 characters"
-                    className="w-full border border-white/15 bg-[#11110f] pl-10 pr-10 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-10 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                   />
                   <Lock size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    className="absolute right-3.5 top-3 text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
+                    className="rounded-2xl absolute right-3.5 top-3 text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -279,7 +279,7 @@ export default function Register() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="Repeat your password"
-                    className="w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
+                    className="rounded-2xl w-full border border-white/15 bg-[#11110f] pl-10 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:border-[#c6a15b] focus:outline-none"
                   />
                   <Lock size={16} className="absolute left-3.5 top-3.5 text-[#8e8a82]" />
                 </div>
@@ -289,7 +289,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg !mt-6"
+                className="rounded-2xl w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg !mt-6"
               >
                 <span>{isSubmitting ? "Sending Verification Code..." : "Send Verification Code"}</span>
                 <ArrowRight size={14} />
@@ -305,7 +305,7 @@ export default function Register() {
           ) : (
             /* Step 2: OTP Input Form */
             <form onSubmit={handleVerifyOtp} className="space-y-5">
-              <div className="p-4 bg-[#11110f] border border-[#c6a15b]/30 rounded text-center">
+              <div className="p-4 bg-[#11110f] border border-[#c6a15b]/30 rounded-2xl text-center">
                 <p className="text-xs text-[#c5c1b9]">Verification Code Sent To</p>
                 <p className="text-sm font-semibold text-[#c6a15b] mt-1">{formData.email}</p>
               </div>
@@ -323,7 +323,7 @@ export default function Register() {
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
                     placeholder="123456"
-                    className="w-full border border-[#c6a15b] bg-[#11110f] py-3.5 text-center text-2xl font-mono tracking-[0.5em] text-[#f4efe6] placeholder-[#8e8a82]/40 transition focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
+                    className="rounded-2xl w-full border border-[#c6a15b] bg-[#11110f] py-3.5 text-center text-2xl font-mono tracking-[0.5em] text-[#f4efe6] placeholder-[#8e8a82]/40 transition focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
                   />
                   <KeyRound size={18} className="absolute left-4 top-4 text-[#c6a15b]" />
                 </div>
@@ -336,7 +336,7 @@ export default function Register() {
                     setStep(1);
                     setError("");
                   }}
-                  className="text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
+                  className="rounded-2xl text-[#8e8a82] hover:text-[#f4efe6] transition cursor-pointer"
                 >
                   &larr; Change Details
                 </button>
@@ -345,7 +345,7 @@ export default function Register() {
                   type="button"
                   disabled={cooldown > 0 || isSubmitting}
                   onClick={handleResendOtp}
-                  className="inline-flex items-center gap-1.5 text-[#c6a15b] hover:text-[#d8c08a] transition font-medium disabled:opacity-40 cursor-pointer"
+                  className="rounded-2xl inline-flex items-center gap-1.5 text-[#c6a15b] hover:text-[#d8c08a] transition font-medium disabled:opacity-40 cursor-pointer"
                 >
                   <RotateCcw size={13} />
                   {cooldown > 0 ? `Resend Code in ${cooldown}s` : "Resend Code"}
@@ -355,7 +355,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isSubmitting || otpCode.length !== 6}
-                className="w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-4"
+                className="rounded-2xl w-full flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-lg mt-4"
               >
                 <span>{isSubmitting ? "Verifying..." : "Verify & Activate Account"}</span>
                 <CheckCircle2 size={15} />

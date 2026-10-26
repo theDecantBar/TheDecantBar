@@ -201,31 +201,15 @@ function Products() {
 
       <div className="mx-auto max-w-7xl px-6 pb-16 pt-8">
         {/* Search Bar */}
-        <form
-          onSubmit={handleSearchSubmit}
-          className="mb-10 flex flex-col gap-3 sm:flex-row"
-        >
-          <input
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search fragrances by name..."
-            aria-label="Search fragrances"
-            className="w-full border border-white/15 bg-[#151512] px-5 py-3.5 text-sm text-[#f4efe6] placeholder:text-[#f4efe6]/40 transition focus:border-[#c6a15b] focus:outline-none sm:flex-1"
-          />
-
-          <button
-            type="submit"
-            className="border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
-          >
-            Search
-          </button>
+        <form onSubmit={handleSearchSubmit} className="mb-10 flex flex-col gap-3 sm:flex-row">
+          <input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search fragrances by name..." aria-label="Search fragrances" className="w-full rounded-[24px] border border-white/15 bg-[#151512] px-5 py-3.5 text-sm text-[#f4efe6] placeholder:text-[#f4efe6]/40 transition focus:border-[#c6a15b] focus:outline-none sm:flex-1" />
+          <button type="submit" className="rounded-[24px] border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]">Search</button>
 
           {(search || category || gender || weather) && (
             <button
               type="button"
               onClick={handleClearFilters}
-              className="border border-white/15 px-5 py-3.5 text-xs uppercase tracking-wider text-[#8e8a82] transition hover:border-[#c6a15b]/50 hover:text-[#f4efe6]"
+              className="rounded-[24px] border border-white/15 px-5 py-3.5 text-xs uppercase tracking-wider text-[#8e8a82] transition hover:border-[#c6a15b]/50 hover:text-[#f4efe6]"
             >
               Clear All
             </button>
@@ -248,7 +232,7 @@ function Products() {
                 onClick={() => {
                   setSearchParams(new URLSearchParams(searchParams));
                 }}
-                className="mt-4 text-sm text-[#c6a15b] underline"
+                className="rounded-2xl mt-4 text-sm text-[#c6a15b] underline"
               >
                 Retry
               </button>
@@ -297,7 +281,7 @@ function Products() {
                 </button>
                 {firstVisiblePage > 1 && <span aria-hidden="true" className="px-0.5 text-[#8e8a82]">…</span>}
                 {visiblePages.map((page) => (
-                  <button key={page} type="button" aria-label={`Go to page ${page}`} aria-current={page === currentPage ? "page" : undefined} onClick={() => goToPage(page)} className={`${paginationButtonClass} ${page === currentPage ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] hover:bg-[#c6a15b] hover:text-[#11110f]" : "text-[#f4efe6]"}`}>
+                  <button key={page} type="button" aria-label={`Go to page ${page}`} aria-current={page === currentPage ? "page" : undefined} onClick={() => goToPage(page)} className={`rounded-2xl ${paginationButtonClass} ${page === currentPage ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] hover:bg-[#c6a15b] hover:text-[#11110f]" : "text-[#f4efe6]"}`}>
                     {page}
                   </button>
                 ))}

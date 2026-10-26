@@ -3,7 +3,7 @@ import { TestimonialCard } from "@/components/ui/testimonial-card";
 
 export function TestimonialsSection({
   title = "Community Praise",
-  description = "Authentic feedback and experiences from verified fragrance enthusiasts.",
+  description = "Authentic feedback and experiences from our fragrance community.",
   testimonials = [],
   className,
   renderCard,
@@ -12,11 +12,9 @@ export function TestimonialsSection({
     return null;
   }
 
-  // Multiply items to ensure continuous infinite loop
+  // Keep one card per review.
   const displayItems =
-    testimonials.length >= 6
-      ? [...testimonials, ...testimonials]
-      : [...testimonials, ...testimonials, ...testimonials, ...testimonials];
+    testimonials;
 
   return (
     <section

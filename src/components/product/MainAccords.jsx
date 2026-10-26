@@ -31,7 +31,7 @@ export default function MainAccords({ accords = [], className = "" }) {
           return (
             <div
               key={name + idx}
-              className="h-6 rounded flex items-center px-3 border border-white/5 shadow-sm transition-all duration-300 hover:brightness-110"
+              className="h-6 rounded-2xl flex items-center px-3 border border-white/5 shadow-sm transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: color,
                 width: `${widthPercent}%`,

@@ -450,7 +450,7 @@ export default function Checkout() {
 
     return (
       <Container className="py-20 sm:py-28">
-        <div className="mx-auto max-w-2xl border border-white/10 bg-[#171715] p-8 sm:p-12 shadow-2xl">
+        <div className="rounded-2xl mx-auto max-w-2xl border border-white/10 bg-[#171715] p-8 sm:p-12 shadow-2xl">
           <div className="text-center">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b]">
               <CheckCircle2 size={40} strokeWidth={1.5} />
@@ -521,7 +521,7 @@ export default function Checkout() {
           </div>
 
           {/* Delivery Notice */}
-          <div className="mt-8 border border-white/10 bg-[#151512] p-4 text-xs text-[#8e8a82] leading-relaxed flex items-center gap-3">
+          <div className="rounded-2xl mt-8 border border-white/10 bg-[#151512] p-4 text-xs text-[#8e8a82] leading-relaxed flex items-center gap-3">
             <Truck size={20} className="text-[#c6a15b] shrink-0" />
             <span>
               {isCod ? (
@@ -544,7 +544,7 @@ export default function Checkout() {
             {isAuthenticated && (
               <Link
                 to="/account"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#11110f] hover:bg-[#d8c08a] transition"
+                className="rounded-2xl w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#11110f] hover:bg-[#d8c08a] transition"
               >
                 View in Order History
                 <ArrowRight size={14} />
@@ -552,7 +552,7 @@ export default function Checkout() {
             )}
             <Link
               to="/products"
-              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 border px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold transition ${
+              className={`rounded-2xl w-full sm:w-auto inline-flex items-center justify-center gap-2 border px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold transition ${
                 isAuthenticated
                   ? "border-white/20 bg-transparent text-[#f4efe6] hover:bg-white/5"
                   : "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] hover:bg-[#d8c08a]"
@@ -582,7 +582,7 @@ export default function Checkout() {
           <div className="mt-8">
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition"
+              className="rounded-2xl inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#11110f] hover:bg-[#d8c08a] transition"
             >
               Explore Collection
             </Link>
@@ -620,7 +620,7 @@ export default function Checkout() {
         <div className="lg:col-span-7">
           {/* Guest Login Notice Banner */}
           {!isAuthenticated && (
-            <div className="mb-8 border border-[#c6a15b]/30 bg-[#1a1915] p-5 sm:p-6 text-xs text-[#c5c1b9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+            <div className="rounded-2xl mb-8 border border-[#c6a15b]/30 bg-[#1a1915] p-5 sm:p-6 text-xs text-[#c5c1b9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
               <div className="flex items-start gap-3.5">
                 <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b]">
                   <Lock size={15} />
@@ -637,7 +637,7 @@ export default function Checkout() {
               <Link
                 to="/login?redirect=/checkout"
                 state={{ from: "/checkout" }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-5 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
+                className="rounded-2xl w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-5 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
               >
                 Log In
                 <ArrowRight size={14} />
@@ -646,7 +646,7 @@ export default function Checkout() {
           )}
 
           {errorMessage && (
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+            <div className="rounded-2xl mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
               <div className="flex items-center gap-3">
                 <AlertCircle size={16} className="text-red-400 shrink-0" />
                 <span>{errorMessage}</span>
@@ -655,7 +655,7 @@ export default function Checkout() {
                 <Link
                   to="/login?redirect=/checkout"
                   state={{ from: "/checkout" }}
-                  className="inline-flex items-center justify-center gap-1.5 border border-[#c6a15b] bg-[#c6a15b] px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
+                  className="rounded-2xl inline-flex items-center justify-center gap-1.5 border border-[#c6a15b] bg-[#c6a15b] px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-[#11110f] hover:bg-[#d8c08a] transition shrink-0"
                 >
                   <span>Log In to Place Order</span>
                   <ArrowRight size={12} />
@@ -666,7 +666,7 @@ export default function Checkout() {
 
           <form onSubmit={handleSubmit} noValidate className="space-y-10">
             {/* Section 1: Customer Contact */}
-            <div className="border border-white/10 bg-[#171715] p-6 sm:p-8">
+            <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 sm:p-8">
               <h2 className="font-display text-2xl text-[#f4efe6] mb-5">
                 1. Contact Information
               </h2>
@@ -684,7 +684,7 @@ export default function Checkout() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter your full name"
-                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                    className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.fullName && errors.fullName
                         ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                         : "border-white/15 focus:border-[#c6a15b]"
@@ -722,7 +722,7 @@ export default function Checkout() {
                         onBlur={handleBlur}
                         maxLength={10}
                         placeholder="Enter 10-digit mobile number"
-                        className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                        className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                           touched.phone && errors.phone
                             ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                             : "border-white/15 focus:border-[#c6a15b]"
@@ -749,7 +749,7 @@ export default function Checkout() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Enter your email address"
-                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.email && errors.email
                           ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                           : "border-white/15 focus:border-[#c6a15b]"
@@ -767,7 +767,7 @@ export default function Checkout() {
             </div>
 
             {/* Section 2: Delivery Address */}
-            <div className="border border-white/10 bg-[#171715] p-6 sm:p-8">
+            <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 sm:p-8">
               <h2 className="font-display text-2xl text-[#f4efe6] mb-5">
                 2. Shipping Address
               </h2>
@@ -785,7 +785,7 @@ export default function Checkout() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter flat, house no., building, or street address"
-                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                    className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.address && errors.address
                         ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                         : "border-white/15 focus:border-[#c6a15b]"
@@ -812,7 +812,7 @@ export default function Checkout() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Enter your city"
-                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.city && errors.city
                           ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                           : "border-white/15 focus:border-[#c6a15b]"
@@ -838,7 +838,7 @@ export default function Checkout() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Enter your state"
-                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.state && errors.state
                           ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                           : "border-white/15 focus:border-[#c6a15b]"
@@ -865,7 +865,7 @@ export default function Checkout() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Enter 6-digit PIN code"
-                      className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                      className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.pincode && errors.pincode
                           ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                           : "border-white/15 focus:border-[#c6a15b]"
@@ -893,7 +893,7 @@ export default function Checkout() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Special packaging or delivery instructions (optional)"
-                    className={`w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
+                    className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.orderNotes && errors.orderNotes
                         ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
                         : "border-white/15 focus:border-[#c6a15b]"
@@ -910,7 +910,7 @@ export default function Checkout() {
             </div>
 
             {/* Section 3: Payment Method (COD + Online Payment) */}
-            <div className="border border-white/10 bg-[#171715] p-6 sm:p-8">
+            <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 sm:p-8">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-display text-2xl text-[#f4efe6]">
                   3. Payment Method
@@ -1040,7 +1040,7 @@ export default function Checkout() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex items-center justify-between border border-[#c6a15b] bg-[#c6a15b] px-8 py-5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
+              className="rounded-2xl w-full flex items-center justify-between border border-[#c6a15b] bg-[#c6a15b] px-8 py-5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
             >
               <span className="flex items-center gap-2">
                 {isSubmitting && <Loader2 size={16} className="animate-spin text-[#11110f]" />}
@@ -1059,14 +1059,14 @@ export default function Checkout() {
 
         {/* Right Column: Order Review Sidebar */}
         <div className="lg:col-span-5">
-          <div className="sticky top-28 border border-white/10 bg-[#171715] p-6 sm:p-8">
+          <div className="rounded-2xl sticky top-28 border border-white/10 bg-[#171715] p-6 sm:p-8">
             <h2 className="font-display text-2xl text-[#f4efe6] mb-6">
               Order Summary ({cartCount} {cartCount === 1 ? "bottle" : "bottles"})
             </h2>
 
             {/* Free Shipping Alert / Status */}
             {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
-              <div className="mb-6 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+              <div className="rounded-2xl mb-6 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
                 <div className="flex items-center gap-2">
                   <Truck size={14} className="text-[#c6a15b] shrink-0" />
                   <span>
@@ -1075,7 +1075,7 @@ export default function Checkout() {
                 </div>
               </div>
             ) : (
-              <div className="mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
+              <div className="rounded-2xl mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
                 <Sparkles size={14} className="text-emerald-400 shrink-0" />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
@@ -1086,7 +1086,7 @@ export default function Checkout() {
               {cartItems.map((item) => (
                 <div key={item.cartItemId} className="py-3.5 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="h-14 w-12 shrink-0 border border-white/10 bg-[#1c1c18] flex items-center justify-center p-1">
+                    <div className="rounded-2xl h-14 w-12 shrink-0 border border-white/10 bg-[#1c1c18] flex items-center justify-center p-1">
                       {item.image_url ? (
                         <img
                           src={item.image_url}
