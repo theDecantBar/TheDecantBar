@@ -40,6 +40,23 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopTransitionOpen, setShopTransitionOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  // Submit search and navigate to the Products page.
+  const handleSearchSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      setMobileMenuOpen(false);
+
+      const query = search.trim();
+      navigate(
+        query
+          ? `/products?search=${encodeURIComponent(query)}`
+          : "/products"
+      );
+    },
+    [navigate, search]
+  );
 
   // Close the mobile menu.
   const closeMobileMenu = useCallback(() => {
@@ -47,14 +64,11 @@ export default function Navbar() {
   }, []);
 
   // Show the transition when Shop is clicked.
-  const handleShopClick = useCallback(
-    (event) => {
-      event.preventDefault();
-      setMobileMenuOpen(false);
-      setShopTransitionOpen(true);
-    },
-    []
-  );
+  const handleShopClick = useCallback((event) => {
+    event.preventDefault();
+    setMobileMenuOpen(false);
+    setShopTransitionOpen(true);
+  }, []);
 
   // Navigate after the Shop transition finishes.
   const finishShopTransition = useCallback(() => {
@@ -97,9 +111,9 @@ export default function Navbar() {
             : "storefront-navbar--page"
         }`}
       >
-        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-2 px-4 sm:px-8 lg:px-16">
+        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-8 lg:px-10 xl:px-16">
           {/* Mobile Hamburger */}
-          <div className="flex items-center lg:hidden">
+          <div className="flex shrink-0 items-center lg:hidden">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
@@ -125,7 +139,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden shrink-0 items-center gap-5 xl:gap-8 lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -140,29 +154,60 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* Desktop Search Bar */}
+          <form
+            onSubmit={handleSearchSubmit}
+            role="search"
+            className="hidden h-10 min-w-0 flex-1 items-center overflow-hidden rounded-sm border border-[#c6a15b]/50 bg-[#11110f] transition-colors focus-within:border-[#c6a15b] md:flex md:max-w-48 lg:max-w-52 xl:max-w-64"
+          >
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search perfumes..."
+              aria-label="Search perfumes"
+              className="min-w-0 flex-1 bg-transparent px-3 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
+            />
+
+            <button
+              type="submit"
+              aria-label="Submit search"
+              className="flex h-full w-10 shrink-0 items-center justify-center border-l border-[#c6a15b]/30 text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+            >
+              <Search size={18} strokeWidth={1.7} />
+            </button>
+          </form>
+
           {/* Action Icons */}
-          <div className="flex items-center gap-3 sm:gap-6">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-5">
             {/* Admin Link */}
             {isAuthenticated && user?.isAdmin && (
               <Link
                 to="/admin"
                 aria-label="Admin Portal"
                 title="Open Admin Control Hub"
-                className="hidden sm:inline-flex items-center gap-1.5 rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f]"
+                className="hidden items-center gap-1.5 rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f] sm:inline-flex"
               >
                 <ShieldCheck size={14} />
-                <span className="hidden sm:inline">Admin</span>
+                <span>Admin</span>
               </Link>
             )}
 
-            {/* Search */}
-            <Link
-              to="/shop"
-              aria-label="Search"
-              className="text-[#f4efe6] transition-colors hover:text-[#c6a15b]"
+            {/* Search shortcut for small screens */}
+            <button
+              type="button"
+              onClick={() => {
+                if (window.matchMedia("(max-width: 767px)").matches) {
+                  setMobileMenuOpen(true);
+                } else {
+                  navigate("/products");
+                }
+              }}
+              aria-label="Open search"
+              className="text-[#f4efe6] transition-colors hover:text-[#c6a15b] md:hidden"
             >
               <Search size={20} strokeWidth={1.5} />
-            </Link>
+            </button>
 
             {/* Account */}
             <Link
@@ -257,6 +302,29 @@ export default function Navbar() {
 
                 {/* Scrollable Drawer Content */}
                 <div className="flex flex-1 flex-col justify-between overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {/* Mobile Search */}
+                  <form
+                    onSubmit={handleSearchSubmit}
+                    role="search"
+                    className="mx-6 mt-5 flex h-11 shrink-0 overflow-hidden rounded-sm border border-[#c6a15b]/50 bg-[#11110f] focus-within:border-[#c6a15b]"
+                  >
+                    <input
+                      type="search"
+                      value={search}
+                      onChange={(event) => setSearch(event.target.value)}
+                      placeholder="Search perfumes..."
+                      aria-label="Search perfumes"
+                      className="min-w-0 flex-1 bg-transparent px-3 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
+                    />
+                    <button
+                      type="submit"
+                      aria-label="Submit search"
+                      className="flex w-11 shrink-0 items-center justify-center border-l border-[#c6a15b]/30 text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
+                    >
+                      <Search size={18} />
+                    </button>
+                  </form>
+
                   {/* Mobile Navigation Links */}
                   <nav className="flex flex-col space-y-1 px-6 pb-2 pt-5">
                     {navItems.map((item) => (
@@ -290,10 +358,7 @@ export default function Navbar() {
                               className="flex items-center justify-between rounded border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
                             >
                               <div className="flex items-center gap-3">
-                                <ShieldCheck
-                                  size={16}
-                                  strokeWidth={1.5}
-                                />
+                                <ShieldCheck size={16} strokeWidth={1.5} />
                                 <span>Admin Control Hub</span>
                               </div>
                               <span className="text-[10px] font-bold uppercase">
