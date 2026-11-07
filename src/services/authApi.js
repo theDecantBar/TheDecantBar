@@ -114,6 +114,13 @@ export async function createRazorpayOrderApi(payload, token = null) {
   return handleApiResponse(response, "Failed to initiate online payment.");
 }
 
+export async function retrySavedPayment(id, token) {
+  const response = await fetch(`${API_BASE_URL}/orders/${id}/retry-payment`, {
+    method: "POST", headers: { Authorization: `Bearer ${token}` },
+  });
+  return handleApiResponse(response, "Unable to check payment.");
+}
+
 export async function verifyPaymentAndPlaceOrder(orderData, token = null) {
   const headers = { "Content-Type": "application/json" };
   if (token) {

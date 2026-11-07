@@ -3,6 +3,7 @@ import {
   createRazorpayOrder,
   verifyPaymentAndCreateOrder,
   createCodOrder,
+  retrySavedPayment,
   handlePlaceOrder,
   getMyOrders,
   getOrderById,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.post("/create-razorpay-order", protect, createRazorpayOrder);
 router.post("/verify-payment", protect, verifyPaymentAndCreateOrder);
+router.post("/:id/retry-payment", protect, retrySavedPayment);
 router.post("/cod", protect, createCodOrder);
 router.post("/", protect, handlePlaceOrder);
 router.get("/my-orders", protect, getMyOrders);

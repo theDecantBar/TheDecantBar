@@ -13,6 +13,7 @@ import { protect, adminOnly } from "./middleware/authMiddleware.js";
 import { getPrimaryAdminEmail } from "./config/adminConfig.js";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import { receiveRazorpayWebhook } from "./controllers/orderController.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -55,6 +56,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.post("/api/orders/razorpay-webhook", express.raw({ type: "application/json", limit: "256kb" }), receiveRazorpayWebhook);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static(path.resolve(__dirname, "../public")));

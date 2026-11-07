@@ -192,7 +192,8 @@ export default function AdminOrders() {
             />
             <input
               type="search"
-              placeholder="Search by order #, customer name, phone, city..."
+              aria-label="Search orders by order number, customer details, or Razorpay reference"
+              placeholder="Search order number, customer, or Razorpay reference"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
@@ -229,6 +230,10 @@ export default function AdminOrders() {
         <div className="space-y-5">
           {orders.map((order) => {
             const isExpanded = !!expandedOrders[order.id];
+            const isCod = ["cod", "cash on delivery"].includes(order.payment_method?.trim().toLowerCase());
+            const paymentStatus = isCod && order.payment_status === "Pending"
+              ? "Pending collection (COD)"
+              : order.payment_status || "Not recorded";
             return (
               <div
                 key={order.id}
@@ -257,7 +262,7 @@ export default function AdminOrders() {
                         {order.order_status}
                       </span>
                       <span className="text-xs uppercase tracking-wider text-[#8e8a82]">
-                        {order.payment_method === "cod" ? "Cash on Delivery" : (order.payment_method || "Online (Razorpay)")}
+                        {isCod ? "Cash on Delivery" : (order.payment_method || "Method not recorded")}
                       </span>
                     </div>
 
@@ -289,6 +294,7 @@ export default function AdminOrders() {
 
                     <button
                       type="button"
+                      aria-expanded={isExpanded}
                       onClick={() => toggleExpand(order.id)}
                       className="inline-flex items-center gap-1.5 border border-white/15 bg-white/5 px-3 py-2 text-xs uppercase tracking-wider text-[#f4efe6] hover:bg-white/10 transition cursor-pointer"
                     >
@@ -298,12 +304,36 @@ export default function AdminOrders() {
                         </>
                       ) : (
                         <>
-                          View {order.items?.length || 0} Items <ChevronDown size={14} />
+                          View details <ChevronDown size={14} />
                         </>
                       )}
                     </button>
                   </div>
                 </div>
+
+                <dl className="grid gap-3 border-t border-white/5 px-5 py-4 text-xs sm:grid-cols-3 lg:px-6">
+                  <div>
+                    <dt className="text-[#8e8a82]">Payment status</dt>
+                    <dd className="mt-1 font-semibold text-[#f4efe6]">{paymentStatus}</dd>
+                  </div>
+                  {isCod ? (
+                    <div className="sm:col-span-2">
+                      <dt className="text-[#8e8a82]">Razorpay reference</dt>
+                      <dd className="mt-1 text-[#c5c1b9]">Not applicable for cash on delivery</dd>
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        <dt className="text-[#8e8a82]">Razorpay order ID</dt>
+                        <dd className="mt-1 select-all break-all font-mono text-[#f4efe6]">{order.razorpay_order_id || "Not recorded"}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-[#8e8a82]">Razorpay payment ID</dt>
+                        <dd className="mt-1 select-all break-all font-mono text-[#f4efe6]">{order.razorpay_payment_id || "Not recorded"}</dd>
+                      </div>
+                    </>
+                  )}
+                </dl>
 
                 {/* Expanded Details: Items & Fulfillment Action */}
                 {isExpanded && (
