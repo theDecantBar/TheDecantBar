@@ -10,10 +10,12 @@ import {
   Mail,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchAdminOrders, updateAdminOrderStatus, resendAdminOrderConfirmation } from "../../services/adminApi";
+import { checkAdminPayment, fetchAdminOrders, updateAdminOrderStatus, resendAdminOrderConfirmation } from "../../services/adminApi";
 
 const STATUS_OPTIONS = [
   "All",
+  "Awaiting payment",
+  "Stock review",
   "Confirmed",
   "In Packaging",
   "Shipped",
@@ -40,6 +42,21 @@ export default function AdminOrders() {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [checkingPayment, setCheckingPayment] = useState(null);
+  const [paymentFeedback, setPaymentFeedback] = useState({});
+  async function checkPayment(orderId) {
+    setCheckingPayment(orderId);
+    try {
+      const result = await checkAdminPayment(token, orderId);
+      setPaymentFeedback(prev => ({ ...prev, [orderId]: result.message }));
+      await loadOrders();
+    } catch (error) {
+      setPaymentFeedback(prev => ({ ...prev, [orderId]: error.message }));
+    } finally {
+      setCheckingPayment(null);
+    }
+  }
 
   // Expandable item details per order
   const [expandedOrders, setExpandedOrders] = useState({});
@@ -315,6 +332,7 @@ export default function AdminOrders() {
                   <div>
                     <dt className="text-[#8e8a82]">Payment status</dt>
                     <dd className="mt-1 font-semibold text-[#f4efe6]">{paymentStatus}</dd>
+                    {!isCod && <dd className="mt-1 text-[#c6a15b]">{order.payment_mode === "test" ? "Test payment" : order.payment_mode === "live" ? "Live payment" : "Payment environment not verified"}</dd>}
                   </div>
                   {isCod ? (
                     <div className="sm:col-span-2">
@@ -335,6 +353,16 @@ export default function AdminOrders() {
                   )}
                 </dl>
 
+                {order.razorpay_order_id && <div className="px-5 pb-4 text-xs">
+                  <button type="button" onClick={() => checkPayment(order.id)} disabled={checkingPayment !== null}
+                    className="text-[#c6a15b] underline disabled:opacity-50">
+                    {checkingPayment === order.id ? "Checking payment..." : "Check with Razorpay"}
+                  </button>
+                  {Number(order.refunded_amount) > 0 && <p className="mt-2">Refunded amount INR {Number(order.refunded_amount).toFixed(2)}</p>}
+                  <p className="mt-2 text-[#8e8a82]">For a refund, use the Razorpay dashboard, then check here to update the payment record. Cancelling a shipment does not issue a refund.</p>
+                  {order.payment_check_error && <p role="status" className="mt-2 text-amber-300">{order.payment_check_error}</p>}
+                  {paymentFeedback[order.id] && <p role="status" className="mt-2">{paymentFeedback[order.id]}</p>}
+                </div>}
                 {/* Expanded Details: Items & Fulfillment Action */}
                 {isExpanded && (
                   <div className="p-6 bg-[#141412] border-t border-white/5 space-y-6">
@@ -417,12 +445,18 @@ export default function AdminOrders() {
                     </div>
 
                     {/* Order Fulfillment Control Card */}
-                    <OrderFulfillmentForm
+                    {["Awaiting payment", "Stock review"].includes(order.order_status) ? (
+                      <p className="text-sm text-amber-300">
+                        {order.order_status === "Stock review"
+                          ? "Payment received, but stock could not be allocated. Contact the customer and resolve stock or refund in Razorpay before dispatch."
+                          : "Waiting for payment confirmation before dispatch."}
+                      </p>
+                    ) : <OrderFulfillmentForm
                       order={order}
                       isUpdating={updatingId === order.id}
                       feedback={updateFeedback[order.id]}
                       onSave={handleUpdateSubmit}
-                    />
+                    />}
                   </div>
                 )}
               </div>

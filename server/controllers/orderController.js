@@ -80,11 +80,10 @@ async function validateAndCalculateCart(client, items) {
     if (validatedItems.some(line => line.variantId === variantRow.id)) {
       throw new Error("Please combine duplicate sizes in your cart.");
     }
-    if (await availableStock(client, variantRow.id) < qty) {
-      throw new Error(`Insufficient available stock for ${variantRow.product_name} (${variantRow.size_ml}ml).`);
-    }
-
     const unitPrice = Number(variantRow.price);
+    if (!Number.isFinite(unitPrice) || unitPrice <= 0 || !Number.isSafeInteger(Math.round(unitPrice * 100) * qty)) {
+      throw new Error("This product has an invalid price. Please contact support.");
+    }
     const lineTotal = unitPrice * qty;
     subtotal += lineTotal;
 
@@ -100,9 +99,26 @@ async function validateAndCalculateCart(client, items) {
     });
   }
 
+  // Every checkout locks shared variants in the same order to prevent deadlocks.
+  subtotal = 0;
+  for (const item of [...validatedItems].sort((a, b) => a.variantId - b.variantId)) {
+    if (await availableStock(client, item.variantId) < item.quantity) {
+      throw new Error(`Insufficient available stock for ${item.name} (${item.size_ml}ml).`);
+    }
+    const current = await client.query("SELECT price, active FROM product_variants WHERE id = $1", [item.variantId]);
+    if (!current.rows[0] || current.rows[0].active === false) throw new Error("This size is no longer available.");
+    const price = Number(current.rows[0].price);
+    if (!Number.isFinite(price) || price <= 0 || !Number.isSafeInteger(Math.round(price * 100) * item.quantity)) {
+      throw new Error("This product has an invalid price. Please contact support.");
+    }
+    item.price = price;
+    item.lineTotal = Math.round(price * 100) * item.quantity / 100;
+    subtotal += item.lineTotal;
+  }
+
   // Shipping calculation:
-  // - Subtotal below ₹500: ₹80 shipping fee
-  // - Subtotal ₹500 or above: FREE shipping (₹0)
+  // - Subtotal below â‚¹500: â‚¹80 shipping fee
+  // - Subtotal â‚¹500 or above: FREE shipping (â‚¹0)
   const shippingFee = subtotal >= 500 ? 0 : (subtotal > 0 ? 80 : 0);
   const total = subtotal + shippingFee;
 
@@ -188,6 +204,7 @@ export function validateCustomerAndShippingDetails({
 // @access  Public (Guest or Authenticated)
 export const createRazorpayOrder = async (req, res) => {
   const client = await pool.connect();
+  let released = false;
   try {
     const validation = validateCustomerAndShippingDetails(req.body);
     if (validation.error) return res.status(400).json({ message: validation.error });
@@ -207,20 +224,27 @@ export const createRazorpayOrder = async (req, res) => {
       });
     }
 
-    const razorpay = new Razorpay({ key_id, key_secret });
+    const razorpay = paymentGateway();
+    const paymentMode = key_id.startsWith("rzp_live_") ? "live" : "test";
 
     const fingerprint = crypto.createHash("sha256").update(JSON.stringify([
       customer, items.map(i => [i.variantId, i.productId || i.id, i.size_ml, Number(i.quantity)])
     ])).digest("hex");
 
     await client.query("BEGIN");
-    await client.query("SELECT id FROM users WHERE id = $1 FOR UPDATE", [req.user.id]);
+    await client.query("SELECT pg_advisory_xact_lock(7301, $1)", [req.user.id]);
     const existing = await client.query(
-      `SELECT * FROM orders WHERE user_id = $1 AND checkout_key = $2
+      `SELECT * FROM orders WHERE user_id = $1 AND checkout_key = $2 AND payment_mode = $3
        AND order_status = 'Awaiting payment' AND payment_hold_until > clock_timestamp()
-       ORDER BY id DESC LIMIT 1 FOR UPDATE`, [req.user.id, fingerprint]
+       ORDER BY id DESC LIMIT 1 FOR UPDATE`, [req.user.id, fingerprint, paymentMode]
     );
     let order = existing.rows[0];
+    if (order) {
+      await client.query("COMMIT");
+      client.release();
+      released = true;
+      return retrySavedPayment({ ...req, params: { id: order.id } }, res);
+    }
     if (!order) {
       let cart;
       try {
@@ -233,12 +257,12 @@ export const createRazorpayOrder = async (req, res) => {
       const saved = await client.query(
         `INSERT INTO orders (order_number, user_id, customer_name, customer_email, customer_phone,
            shipping_address, city, state, pincode, order_notes, subtotal, shipping_fee, total_amount,
-           payment_method, order_status, payment_status, checkout_key, payment_hold_until)
+           payment_method, order_status, payment_status, checkout_key, payment_hold_until, payment_mode)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'Online (Razorpay)',
-           'Awaiting payment','Pending',$14,clock_timestamp() + interval '15 minutes') RETURNING *`,
+           'Awaiting payment','Pending',$14,clock_timestamp() + interval '15 minutes',$15) RETURNING *`,
         [reference, req.user.id, customer.fullName, customer.email, customer.phone, customer.address,
          customer.city, customer.state, customer.pincode, customer.orderNotes, cart.subtotal,
-         cart.shippingFee, cart.total, fingerprint]
+         cart.shippingFee, cart.total, fingerprint, paymentMode]
       );
       order = saved.rows[0];
       for (const item of cart.validatedItems) {
@@ -265,7 +289,7 @@ export const createRazorpayOrder = async (req, res) => {
     console.error("Could not start online checkout:", error.message);
     res.status(502).json({ message: "Unable to start payment. Please try again." });
   } finally {
-    client.release();
+    if (!released) client.release();
   }
 };
 
@@ -276,7 +300,9 @@ function validSignature(body, secret, signature) {
 }
 
 function paymentGateway() {
-  return new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET });
+  const gateway = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET });
+  if (gateway.api.rq.defaults) gateway.api.rq.defaults.timeout = 8000;
+  return gateway;
 }
 
 export async function verifyPaymentAndCreateOrder(req, res) {
@@ -342,15 +368,15 @@ async function confirmCapturedPayment(payment, userId, res) {
       [order.id]
     );
     const validatedItems = lines.rows;
-    const alreadyPaid = order.payment_status === "Paid";
+    const alreadyPaid = Boolean(order.razorpay_payment_id) && ["Paid", "Refunded", "Partially refunded"].includes(order.payment_status);
     if (alreadyPaid && order.razorpay_payment_id !== razorpay_payment_id) {
       await client.query("ROLLBACK");
       return res.status(409).json({ message: "This order already has a different payment. Contact support." });
     }
     if (!alreadyPaid) {
-      let stockAvailable = true;
+      let stockAvailable = order.order_status === "Awaiting payment" && validatedItems.length > 0;
       for (const item of validatedItems) {
-        if (await availableStock(client, item.variantId, order.id) < item.quantity) stockAvailable = false;
+        if (!item.variantId || await availableStock(client, item.variantId, order.id) < item.quantity) stockAvailable = false;
       }
       order.order_status = stockAvailable ? "Confirmed" : "Stock review";
       order.payment_status = "Paid";
@@ -367,8 +393,8 @@ async function confirmCapturedPayment(payment, userId, res) {
       }
       await client.query(
         `UPDATE orders SET order_status = $1, payment_status = 'Paid', razorpay_payment_id = $2,
-         payment_hold_until = NULL, payment_method = $4, updated_at = NOW() WHERE id = $3`,
-        [order.order_status, razorpay_payment_id, order.id, order.payment_method]
+         payment_hold_until = NULL, payment_method = $4, payment_mode = COALESCE(payment_mode, $5), updated_at = NOW() WHERE id = $3`,
+        [order.order_status, razorpay_payment_id, order.id, order.payment_method, process.env.RAZORPAY_KEY_ID?.startsWith("rzp_live_") ? "live" : "test"]
       );
       await client.query(
         `UPDATE users SET address = COALESCE(address,$1), city = COALESCE(city,$2),
@@ -382,10 +408,9 @@ async function confirmCapturedPayment(payment, userId, res) {
       if (userId === null) return res.sendStatus(204);
       return res.status(409).json({ message: `Payment received for ${order.order_number}. Stock needs staff review. Please contact support and do not pay again.` });
     }
-    if (!alreadyPaid) {
-      invalidateProductCache();
-      sendOrderConfirmationEmail(order.id).catch(err => console.warn("Confirmation email:", err.message));
-    }
+    invalidateProductCache();
+    // Await delivery while the request is active; replays can retry a failed email.
+    await sendOrderConfirmationEmail(order.id, { client });
 
     if (userId === null) return res.sendStatus(204);
     res.status(201).json({
@@ -433,7 +458,16 @@ export async function retrySavedPayment(req, res) {
       await client.query("ROLLBACK");
       return res.status(409).json({ message: "Check the latest order status before paying again." });
     }
+    const configuredMode = process.env.RAZORPAY_KEY_ID?.startsWith("rzp_live_") ? "live" : "test";
+    if (order.payment_mode && order.payment_mode !== configuredMode) {
+      await client.query("ROLLBACK");
+      return res.status(409).json({ message: "This order belongs to a different or unverified payment environment. Contact support." });
+    }
     const { items } = await paymentGateway().orders.fetchPayments(order.razorpay_order_id);
+    // A successful lookup with these credentials establishes the environment for older orders.
+    if (!order.payment_mode) {
+      await client.query("UPDATE orders SET payment_mode = $1 WHERE id = $2", [configuredMode, order.id]);
+    }
     const captured = items.find(payment => payment.status === "captured");
     if (captured) {
       await client.query("ROLLBACK");
@@ -463,6 +497,50 @@ export async function retrySavedPayment(req, res) {
     return res.status(503).json({ message: "Unable to check your payment. Please try checking later." });
   } finally {
     if (!released) client.release();
+  }
+}
+
+// Read-only gateway lookup; it never initiates a charge or refund.
+export async function checkAdminPayment(req, res, { background = false } = {}) {
+  try {
+    const saved = await pool.query("SELECT * FROM orders WHERE id = $1", [req.params.id]);
+    const order = saved.rows[0];
+    if (!order?.razorpay_order_id) return res.status(404).json({ message: "No Razorpay order is recorded." });
+    const mode = process.env.RAZORPAY_KEY_ID?.startsWith("rzp_live_") ? "live" : "test";
+    if (order.payment_mode && order.payment_mode !== mode) {
+      return res.status(409).json({ message: "Use the matching Test or Live environment to check this order." });
+    }
+    const { items } = await paymentGateway().orders.fetchPayments(order.razorpay_order_id);
+    const payment = items.find(item => ["captured", "refunded"].includes(item.status));
+    await pool.query("UPDATE orders SET payment_mode = $1 WHERE id = $2", [mode, order.id]);
+    if (!payment) {
+      if (items.length && items.every(item => item.status === "failed")) {
+        await pool.query(
+          "UPDATE orders SET payment_status = 'Failed' WHERE id = $1 AND order_status = 'Awaiting payment'",
+          [order.id]
+        );
+      }
+      return res.json({ message: "Checked with Razorpay. No captured payment was found." });
+    }
+    if (payment.order_id !== order.razorpay_order_id || payment.currency !== "INR" ||
+        Number(payment.amount) !== Math.round(Number(order.total_amount) * 100)) {
+      return res.status(409).json({ message: "Payment details do not match. Contact Razorpay support." });
+    }
+    if (Number(payment.amount_refunded) > 0) {
+      // A refund does not establish that shipped goods were returned. Stock is reviewed separately.
+      await pool.query(
+        `UPDATE orders SET payment_status = $1, refunded_amount = $2, razorpay_payment_id = $3,
+         payment_hold_until = NULL,
+         order_status = CASE WHEN order_status = 'Awaiting payment' THEN 'Stock review' ELSE order_status END,
+           updated_at = NOW() WHERE id = $4 AND COALESCE(refunded_amount, 0) <= $2`,
+        [Number(payment.amount_refunded) === Number(payment.amount) ? "Refunded" : "Partially refunded",
+         Number(payment.amount_refunded) / 100, payment.id, order.id]
+      );
+      return res.json({ message: "Refund status updated from Razorpay. Review fulfillment and returned stock separately." });
+    }
+      return confirmCapturedPayment(payment, background ? null : order.user_id, res);
+  } catch {
+    return res.status(503).json({ message: "Could not check Razorpay. Please try again later." });
   }
 }
 

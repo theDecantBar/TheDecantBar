@@ -15,6 +15,7 @@ test("checkout saves the server-priced basket before returning payment details, 
   let committed = false;
   let gatewayCalls = 0;
   t.mock.method(axios, "create", () => ({
+    get: async () => ({ data: { items: [] } }),
     post: async () => {
       assert.ok(savedItem);
       gatewayCalls++;
@@ -29,14 +30,17 @@ test("checkout saves the server-priced basket before returning payment details, 
       if (sql.startsWith("SELECT * FROM orders")) return rows(order ? [order] : []);
       if (sql.includes("SELECT pv.id")) return rows([{ id: 3, product_id: 9, size_ml: 5, price: "600", product_name: "Test scent" }]);
       if (sql.startsWith("SELECT stock")) return rows([{ stock: 1 }]);
-      if (sql.includes("SUM(i.quantity)")) return rows([{ units: savedItem ? 1 : 0 }]);
+      if (sql.startsWith("SELECT price, active")) return rows([{ price: "600", active: true }]);
       if (sql.includes("INSERT INTO orders")) {
         assert.equal(values[5], "12 Test Road");
         assert.equal(values[12], 600);
         assert.match(sql, /Awaiting payment/);
-        order = { id: 1, order_number: values[0], subtotal: 600, shipping_fee: 0, total_amount: 600 };
+        order = { id: 1, order_status: "Awaiting payment", payment_mode: "test", order_number: values[0], subtotal: 600, shipping_fee: 0, total_amount: 600 };
         return rows([order]);
       }
+      if (sql.startsWith("SELECT variant_id, quantity")) return rows([{ variant_id: 3, quantity: 1 }]);
+      if (sql.startsWith("SELECT active")) return rows([{ active: true }]);
+      if (sql.includes("SUM(i.quantity)")) return rows([{ units: values[1] === 1 ? 0 : savedItem ? 1 : 0 }]);
       if (sql.includes("INSERT INTO order_items")) savedItem = values;
       return rows([]);
     }
@@ -66,15 +70,16 @@ test(`retry on the same order and confirm once when ${confirmationPath}`, async 
   process.env.RAZORPAY_WEBHOOK_SECRET = "isolated-test-secret";
   process.env.RAZORPAY_KEY_ID = "isolated-key";
   process.env.RAZORPAY_KEY_SECRET = "isolated-secret";
-  const order = { id: 11, user_id: 2, order_number: "TDB-test", order_status: "Awaiting payment",
+  const order = { id: 11, user_id: 2, order_number: "TDB-test", payment_mode: "test", order_status: "Awaiting payment",
     payment_status: "Pending", razorpay_order_id: "order_test", total_amount: "600" };
   const payment = { id: "pay_test", order_id: "order_test", currency: "INR", amount: 60000, method: "upi" };
   let deductions = 0;
+  let remainingStock = 1;
   const rows = rows => ({ rows });
   const client = { release() {}, async query(sql, args) {
     if (sql.startsWith("SELECT * FROM orders")) return rows([{ ...order }]);
     if (sql.includes("FROM order_items WHERE order_id")) return rows([{ variantId: 3, variant_id: 3, quantity: 1 }]);
-    if (sql.includes("SELECT stock")) return rows([{ stock: 1 }]);
+    if (sql.includes("SELECT stock")) return rows([{ stock: remainingStock }]);
     if (sql.includes("SUM(i.quantity)")) return rows([{ units: 0 }]);
     if (sql.includes("SELECT active")) return rows([{ active: true }]);
     if (sql.includes("UPDATE product_variants")) deductions++;
@@ -134,5 +139,46 @@ test(`retry on the same order and confirm once when ${confirmationPath}`, async 
   assert.equal(order.payment_method, "Online (Razorpay) - UPI");
   assert.equal(order.order_status, "Confirmed");
   assert.equal(deductions, 1);
+  // A captured payment arriving after the hold expires must not invent stock.
+  Object.assign(order, { order_status: "Awaiting payment", payment_status: "Pending", razorpay_payment_id: null });
+  remainingStock = 0;
+  deductions = 0;
+  assert.equal(await notify("captured"), 204);
+  assert.equal(await notify("captured"), 204);
+  assert.equal(order.order_status, "Stock review");
+  assert.equal(order.payment_status, "Paid");
+  assert.equal(deductions, 0);
 });
 }
+import { checkAdminPayment } from "../server/controllers/orderController.js";
+
+test("admin reconciliation checks payment mode and records a confirmed refund without restocking", async t => {
+  process.env.RAZORPAY_KEY_ID = "rzp_test_fixture";
+  process.env.RAZORPAY_KEY_SECRET = "test-secret";
+  const order = { id: 7, user_id: 2, payment_mode: "live", razorpay_order_id: "order_refund", total_amount: "600" };
+  const writes = [];
+  t.mock.method(pool, "query", async (sql, args) => {
+    if (sql.startsWith("SELECT")) return { rows: [{ ...order }] };
+    writes.push({ sql, args });
+    return { rows: [] };
+  });
+  const require = createRequire(import.meta.url);
+  const axios = createRequire(require.resolve("razorpay"))("axios").default;
+  let lookups = 0;
+  t.mock.method(axios, "create", () => ({ get: async () => {
+    lookups++;
+    return { data: { items: [{ id: "pay_refund", order_id: "order_refund", currency: "INR",
+      amount: 60000, amount_refunded: 60000, status: "refunded" }] } };
+  } }));
+  const res = { code: 200, status(code) { this.code = code; return this; }, json(data) { this.data = data; } };
+  await checkAdminPayment({ params: { id: 7 } }, res);
+  assert.equal(res.code, 409);
+  assert.equal(lookups, 0);
+  order.payment_mode = null; // Older records get their mode from a successful gateway lookup.
+  await checkAdminPayment({ params: { id: 7 } }, res);
+  assert.equal(lookups, 1);
+  const refund = writes.find(write => write.sql.includes("refunded_amount"));
+  assert.deepEqual(refund.args, ["Refunded", 600, "pay_refund", 7]);
+  assert.equal(writes.some(write => write.sql.includes("product_variants")), false);
+  assert.match(res.data.message, /Refund status updated/);
+});

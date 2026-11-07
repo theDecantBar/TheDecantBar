@@ -16,7 +16,9 @@ export const getAdminStats = async (req, res) => {
     // 1. Total revenue & orders count
     const revenueRes = await pool.query(`
       SELECT 
-        COALESCE(SUM(total_amount), 0) AS total_revenue,
+        COALESCE(SUM(total_amount - COALESCE(refunded_amount, 0)) FILTER (
+          WHERE payment_status IN ('Paid', 'Partially refunded') AND payment_mode = 'live'
+        ), 0) AS total_revenue,
         COUNT(*) AS total_orders,
         COUNT(*) FILTER (WHERE order_status = 'Confirmed') AS confirmed_orders,
         COUNT(*) FILTER (WHERE order_status = 'In Packaging') AS packaging_orders,
@@ -163,7 +165,8 @@ export const updateOrderStatus = async (req, res) => {
          courier_name = COALESCE($2, courier_name),
          tracking_number = COALESCE($3, tracking_number),
          updated_at = CURRENT_TIMESTAMP
-       WHERE id = $4 AND order_status <> 'Awaiting payment'
+       WHERE id = $4 AND order_status NOT IN ('Awaiting payment', 'Stock review')
+         AND (payment_status NOT IN ('Refunded', 'Partially refunded') OR $1 = 'Cancelled')
        RETURNING *`,
       [orderStatus || null, courierName || null, trackingNumber || null, id]
     );

@@ -543,7 +543,7 @@ export async function sendOrderConfirmationEmail(orderId, options = {}) {
       );
 
       // Update database flag
-      await pool.query(
+      await db.query(
         `UPDATE orders 
          SET confirmation_email_sent = true, 
              confirmation_email_sent_at = CURRENT_TIMESTAMP 

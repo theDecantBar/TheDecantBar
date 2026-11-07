@@ -26,6 +26,11 @@ export async function ensureAdminSchema() {
       ADD COLUMN IF NOT EXISTS tracking_number VARCHAR(100),
       ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'Pending',
       ADD COLUMN IF NOT EXISTS checkout_key TEXT,
+      ADD COLUMN IF NOT EXISTS payment_mode VARCHAR(10),
+      ADD COLUMN IF NOT EXISTS payment_checked_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS payment_check_after TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS payment_check_error TEXT,
+      ADD COLUMN IF NOT EXISTS refunded_amount NUMERIC(10,2) DEFAULT 0,
       ADD COLUMN IF NOT EXISTS payment_hold_until TIMESTAMPTZ,
       ADD COLUMN IF NOT EXISTS razorpay_order_id VARCHAR(100),
       ADD COLUMN IF NOT EXISTS razorpay_payment_id VARCHAR(100),
@@ -60,7 +65,8 @@ export async function ensureAdminSchema() {
 
     console.log("Admin schema columns verified successfully.");
   } catch (err) {
-    console.error("Warning ensuring admin schema columns:", err.message);
+    console.error("Unable to prepare database columns:", err.message);
+    throw err;
   }
 }
 

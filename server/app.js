@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 import express from "express";
+import { paymentRecoveryJob } from "./services/paymentRecovery.js";
 import cors from "cors";
 
 import { sendEmail } from "./services/emailService.js";
@@ -23,7 +24,13 @@ import { ensureAdminSchema } from "./scripts/initAdminDb.js";
 const app = express();
 
 // Verify and initialize necessary admin schema columns
-ensureAdminSchema();
+const schemaReady = ensureAdminSchema();
+schemaReady.catch(() => {});
+app.locals.schemaReady = schemaReady;
+app.use(async (_req, res, next) => {
+  try { await schemaReady; next(); }
+  catch { res.status(503).json({ message: "The store is temporarily unavailable. Please try again shortly." }); }
+});
 
 // Production-ready CORS policy
 const allowedOrigins = [
@@ -56,6 +63,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.get("/api/jobs/payment-recovery", paymentRecoveryJob);
 app.post("/api/orders/razorpay-webhook", express.raw({ type: "application/json", limit: "256kb" }), receiveRazorpayWebhook);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
