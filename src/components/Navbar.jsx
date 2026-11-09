@@ -1,5 +1,5 @@
 import { BottomNavBar } from "@/components/ui/bottom-nav-bar";
-import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock-shadcnui";
+import SearchModal from "./common/SearchModal";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -51,187 +51,33 @@ export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [catalogProducts, setCatalogProducts] = useState([]);
-  const [searchSuggestions, setSearchSuggestions] = useState([]);
-  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
-  const [activeSuggestion, setActiveSuggestion] = useState(-1);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
 
-  const desktopSearchRef = useRef(null);
-  const mobileSearchRef = useRef(null);
-
-  // Load the product catalogue once for autocomplete.
+  // Global Ctrl+K / Cmd+K listener to open search modal
   useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadCatalog() {
-      try {
-        const response = await fetch("/api/products", {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to load perfume catalogue");
-        }
-
-        const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setCatalogProducts(data);
-        } else {
-          console.error("Unexpected product catalogue response:", data);
-        }
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          console.error("Could not load search suggestions:", error);
-        }
+    const handleKeyDown = (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchModalOpen((prev) => !prev);
       }
-    }
-
-    loadCatalog();
-
-    return () => controller.abort();
-  }, []);
-
-  // Match product name, brand, or category.
-  useEffect(() => {
-    const query = search.trim().toLowerCase();
-    setActiveSuggestion(-1);
-
-    if (!query) {
-      setSearchSuggestions([]);
-      setShowSearchSuggestions(false);
-      return;
-    }
-
-    const matches = catalogProducts
-      .filter((product) => {
-        const name = String(product.name || "").toLowerCase();
-        const brand = String(product.brand || "").toLowerCase();
-        const category = String(product.category || "").toLowerCase();
-
-        return (
-          name.includes(query) ||
-          brand.includes(query) ||
-          category.includes(query)
-        );
-      })
-      .slice(0, 8);
-
-    setSearchSuggestions(matches);
-    setShowSearchSuggestions(true);
-  }, [search, catalogProducts]);
-
-  // Close suggestions when clicking outside both search forms.
-  useEffect(() => {
-    function handleOutsideClick(event) {
-      const insideDesktop =
-        desktopSearchRef.current?.contains(event.target);
-      const insideMobile =
-        mobileSearchRef.current?.contains(event.target);
-
-      if (!insideDesktop && !insideMobile) {
-        setShowSearchSuggestions(false);
-        setActiveSuggestion(-1);
-      }
-    }
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    document.addEventListener("touchstart", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("touchstart", handleOutsideClick);
     };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  // Submit search or open the highlighted product.
-  const handleSearchSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-
-      const selectedProduct =
-        activeSuggestion >= 0
-          ? searchSuggestions[activeSuggestion]
-          : null;
-
-      if (selectedProduct?.id) {
-        setShowSearchSuggestions(false);
-        setMobileMenuOpen(false);
-        navigate(`/product/${selectedProduct.id}`);
-        return;
-      }
-
-      setMobileMenuOpen(false);
-      setShowSearchSuggestions(false);
-      setActiveSuggestion(-1);
-
-      const query = search.trim();
-
-      navigate(
-        query
-          ? `/products?search=${encodeURIComponent(query)}`
-          : "/products"
-      );
-    },
-    [activeSuggestion, navigate, search, searchSuggestions]
-  );
-
-  const handleSuggestionSelect = useCallback(
-    (product) => {
-      if (!product?.id) return;
-
-      setSearch(product.name || "");
-      setShowSearchSuggestions(false);
-      setActiveSuggestion(-1);
-      setMobileMenuOpen(false);
-      navigate(`/product/${product.id}`);
-    },
-    [navigate]
-  );
-
-  const handleSearchKeyDown = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        setShowSearchSuggestions(false);
-        setActiveSuggestion(-1);
-        return;
-      }
-
-      if (!showSearchSuggestions || searchSuggestions.length === 0) {
-        return;
-      }
-
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        setActiveSuggestion((current) =>
-          current >= searchSuggestions.length - 1 ? 0 : current + 1
-        );
-      } else if (event.key === "ArrowUp") {
-        event.preventDefault();
-        setActiveSuggestion((current) =>
-          current <= 0 ? searchSuggestions.length - 1 : current - 1
-        );
-      }
-    },
-    [searchSuggestions, showSearchSuggestions]
-  );
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
-    setShowSearchSuggestions(false);
-    setActiveSuggestion(-1);
   }, []);
 
-  // Navigate to Shop directly without delay.
+  // Navigate to Shop directly without delay
   const handleShopClick = useCallback((event) => {
     event?.preventDefault();
     setMobileMenuOpen(false);
-    setShowSearchSuggestions(false);
     navigate("/products");
   }, [navigate]);
 
-  // Prevent background scrolling while the mobile drawer is open.
+  // Prevent background scrolling while the mobile drawer is open
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
@@ -241,7 +87,6 @@ export default function Navbar() {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setMobileMenuOpen(false);
-        setShowSearchSuggestions(false);
       }
     };
 
@@ -252,185 +97,6 @@ export default function Navbar() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [mobileMenuOpen]);
-
-  // Read common image fields without assuming every product has an image.
-  const getProductImage = (product) =>
-    product.image_url ||
-    product.imageUrl ||
-    product.image ||
-    product.thumbnail_url ||
-    product.thumbnail ||
-    "";
-
-  // Luxury autocomplete shared by desktop and mobile.
-  const renderSearchSuggestions = () => {
-    if (!showSearchSuggestions || !search.trim()) return null;
-
-    const query = search.trim();
-
-    return (
-      <AnimatePresence>
-        <motion.div
-          key="search-suggestions"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 7 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={shouldReduceMotion ? undefined : { opacity: 0, y: 5 }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.18 }}
-          className="absolute left-0 right-0 top-full z-[100] mt-2 overflow-hidden rounded-2xl border border-[#c6a15b]/35 bg-[#11110f] shadow-[0_18px_55px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04]"
-          role="listbox"
-          aria-label="Perfume suggestions"
-        >
-          {/* Dropdown heading */}
-          <div className="flex items-center justify-between border-b border-white/[0.07] px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Sparkles
-                size={13}
-                strokeWidth={1.5}
-                className="text-[#c6a15b]"
-              />
-              <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#c6a15b]">
-                Discover fragrances
-              </span>
-            </div>
-
-            {searchSuggestions.length > 0 && (
-              <span className="text-[10px] tabular-nums text-[#817b70]">
-                {searchSuggestions.length}{" "}
-                {searchSuggestions.length === 1 ? "match" : "matches"}
-              </span>
-            )}
-          </div>
-
-          {/* Matching products */}
-          {searchSuggestions.length > 0 ? (
-            <div className="max-h-[min(390px,55vh)] overflow-y-auto overscroll-contain">
-              {searchSuggestions.map((product, index) => {
-                const image = getProductImage(product);
-                const selected = activeSuggestion === index;
-
-                return (
-                  <button
-                    key={product.id}
-                    type="button"
-                    role="option"
-                    aria-selected={selected}
-                    onMouseDown={(event) => event.preventDefault()}
-                    onMouseEnter={() => setActiveSuggestion(index)}
-                    onClick={() => handleSuggestionSelect(product)}
-                    className={`rounded-2xl group flex w-full items-center gap-3 border-b border-white/[0.055] px-3 py-3 text-left transition-colors duration-200 last:border-b-0 sm:px-4 ${
-                      selected
-                        ? "bg-[#c6a15b]/[0.10]"
-                        : "hover:bg-white/[0.035]"
-                    }`}
-                  >
-                    {/* Thumbnail with a fallback icon */}
-                    <span className="relative flex h-[62px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-sm border border-[#c6a15b]/15 bg-[#1b1a16] sm:h-[70px] sm:w-[58px]">
-                      <span className="absolute inset-0 flex items-center justify-center">
-                        <ShoppingBag
-                          size={18}
-                          strokeWidth={1}
-                          className="text-[#c6a15b]/50"
-                        />
-                      </span>
-
-                      {image && (
-                        <img
-                          src={image}
-                          alt=""
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
-                          }}
-                          className="relative z-[1] h-full w-full object-contain p-1.5 transition-transform duration-300 group-hover:scale-105"
-                        />
-                      )}
-                    </span>
-
-                    {/* Perfume details */}
-                    <span className="min-w-0 flex-1 self-center">
-                      <span className="block truncate text-[13px] font-medium tracking-wide text-[#f4efe6] transition-colors group-hover:text-[#e1c58d]">
-                        {product.name || "Untitled fragrance"}
-                      </span>
-
-                      <span className="mt-1 block truncate text-[9px] font-medium uppercase tracking-[0.17em] text-[#a6a096]">
-                        {product.brand || product.category || "Fragrance"}
-                      </span>
-
-                      {(product.price != null ||
-                        product.variants?.length > 0) && (
-                        <span className="mt-1.5 block truncate text-[10px] text-[#c6a15b]">
-                          {product.price != null
-                            ? `₹${product.price}`
-                            : "Explore available sizes"}
-                        </span>
-                      )}
-                    </span>
-
-                    <ArrowUpRight
-                      size={15}
-                      strokeWidth={1.4}
-                      className={`mr-1 shrink-0 transition-all duration-200 ${
-                        selected
-                          ? "translate-x-0 opacity-100 text-[#c6a15b]"
-                          : "-translate-x-1 opacity-0 text-[#c6a15b] group-hover:translate-x-0 group-hover:opacity-100"
-                      }`}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="px-5 py-7 text-center">
-              <Search
-                size={23}
-                strokeWidth={1.2}
-                className="mx-auto mb-3 text-[#c6a15b]/70"
-              />
-
-              <p className="text-sm text-[#f4efe6]">
-                No fragrances found
-              </p>
-
-              <p className="mx-auto mt-1.5 max-w-[230px] text-xs leading-5 text-[#938d82]">
-                Try a different perfume name or brand, or browse the full
-                collection.
-              </p>
-            </div>
-          )}
-
-          {/* Search all results */}
-          <button
-            type="button"
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={() => {
-              setShowSearchSuggestions(false);
-              setActiveSuggestion(-1);
-              setMobileMenuOpen(false);
-              navigate(
-                `/products?search=${encodeURIComponent(query)}`
-              );
-            }}
-            className="rounded-2xl flex w-full items-center justify-between gap-3 border-t border-[#c6a15b]/20 bg-[#c6a15b]/[0.045] px-4 py-3.5 text-left transition-colors hover:bg-[#c6a15b]/[0.11]"
-          >
-            <span className="min-w-0">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d6b779]">
-                Search the collection
-              </span>
-              <span className="mt-1 block truncate text-xs text-[#a6a096]">
-                View results for “{query}”
-              </span>
-            </span>
-
-            <ArrowUpRight
-              size={16}
-              strokeWidth={1.5}
-              className="shrink-0 text-[#c6a15b]"
-            />
-          </button>
-        </motion.div>
-      </AnimatePresence>
-    );
-  };
 
   return (
     <>
@@ -476,52 +142,28 @@ export default function Navbar() {
           {/* Rounded icon navigation with an expanding active label. */}
           <div className="hidden shrink-0 lg:block"><BottomNavBar activeIndex={activeNavIndex} onNavigate={handlePillNavigation} /></div>
 
-          {/* Other pages keep their existing navigation search. */}
-          {!isHome && (
-          <form
-            ref={desktopSearchRef}
-            onSubmit={handleSearchSubmit}
-            role="search"
-            className="relative hidden h-11 min-w-0 flex-1 items-center overflow-visible rounded-2xl border border-white/15 bg-[#11110f] transition-all duration-300 focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)] md:flex md:max-w-56 lg:max-w-56 xl:max-w-72"
+          {/* Desktop Search Trigger Bar (Universal across all pages) */}
+          <button
+            type="button"
+            onClick={() => setSearchModalOpen(true)}
+            aria-label="Search fragrances (Ctrl+K)"
+            className="group relative hidden h-11 min-w-0 flex-1 items-center overflow-hidden rounded-full border border-white/15 bg-[#141412] px-4 transition-all duration-300 hover:border-[#c6a15b]/60 hover:bg-[#181815] md:flex md:max-w-56 lg:max-w-64 xl:max-w-80 cursor-pointer shadow-sm"
           >
             <Search
-              size={16}
+              size={15}
               strokeWidth={1.5}
-              className="ml-3 shrink-0 text-[#c6a15b]"
+              className="mr-2.5 shrink-0 text-[#c6a15b] transition-transform duration-300 group-hover:scale-110"
             />
-
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              onFocus={() => {
-                if (search.trim()) setShowSearchSuggestions(true);
-              }}
-              onKeyDown={handleSearchKeyDown}
-              placeholder="Search fragrances..."
-              aria-label="Search perfumes"
-              aria-autocomplete="list"
-              aria-expanded={
-                showSearchSuggestions && Boolean(search.trim())
-              }
-              className="rounded-2xl min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
-            />
-
-            <button
-              type="submit"
-              aria-label="Submit search"
-              className="rounded-2xl flex h-full w-10 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
-            >
-              <ArrowUpRight size={17} strokeWidth={1.5} />
-            </button>
-
-            {renderSearchSuggestions()}
-          </form>
-
-          )}
+            <span className="min-w-0 flex-1 truncate text-left text-xs text-[#8e8a82] group-hover:text-[#c5c1b9] transition-colors">
+              Search 99+ fragrances...
+            </span>
+            <kbd className="hidden shrink-0 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono text-[#8e8a82] xl:inline-block">
+              ⌘K
+            </kbd>
+          </button>
 
           {/* Action icons */}
-          <div className={isHome ? "flex shrink-0 items-center gap-2 sm:gap-3" : "flex shrink-0 items-center gap-3 sm:gap-5"}>
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {isAuthenticated && user?.isAdmin && (
               <Link
                 to="/admin"
@@ -534,41 +176,21 @@ export default function Navbar() {
               </Link>
             )}
 
-            {isHome && <div ref={desktopSearchRef} className="pointer-events-none relative hidden h-12 w-12 md:block">
-              <div className="absolute right-0 top-0 w-[min(320px,calc(100vw-32px))]">
-                <ExpandingSearchDock value={search} onQueryChange={setSearch} onKeyDown={handleSearchKeyDown} onSearch={() => handleSearchSubmit({ preventDefault() {} })} onClear={() => { setSearch(""); setShowSearchSuggestions(false); }} placeholder="Search fragrances..." />
-                <div className="pointer-events-auto">{renderSearchSuggestions()}</div>
-              </div>
-            </div>}
-
-            {isHome ? <div ref={mobileSearchRef} className="pointer-events-none relative h-12 w-12 md:hidden"><div className="absolute right-0 top-0 w-[min(320px,calc(100vw-32px))]">
-              <ExpandingSearchDock value={search} onQueryChange={setSearch} onKeyDown={handleSearchKeyDown} onSearch={() => handleSearchSubmit({ preventDefault() {} })} onClear={() => { setSearch(""); setShowSearchSuggestions(false); }} placeholder="Search fragrances..." />
-              <div className="pointer-events-auto">{renderSearchSuggestions()}</div>
-            </div></div> : (
+            {/* Mobile Search Button (Universal across all pages) */}
             <button
               type="button"
-              onClick={() => {
-                if (window.matchMedia("(max-width: 767px)").matches) {
-                  setMobileMenuOpen(true);
-                } else {
-                  navigate("/products");
-                }
-              }}
-              aria-label="Open search"
-              className="rounded-2xl text-[#f4efe6] transition-colors hover:text-[#c6a15b] md:hidden"
+              onClick={() => setSearchModalOpen(true)}
+              aria-label="Search fragrances"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted md:hidden cursor-pointer"
             >
               <Search size={20} strokeWidth={1.5} />
             </button>
-
-            )}
 
             {/* Account */}
             <Link
               to={isAuthenticated ? "/account" : "/login"}
               aria-label={isAuthenticated ? "My Account" : "Sign In"}
-              className={isHome
-                ? "flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
-                : "hidden items-center gap-2 text-[#f4efe6] transition-colors hover:text-[#c6a15b] sm:flex"}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
             >
               <UserRound
                 size={20}
@@ -581,7 +203,7 @@ export default function Navbar() {
               />
 
               {!isHome && isAuthenticated && user?.fullName && (
-                <span className="hidden text-xs font-medium uppercase tracking-wider text-[#c5c1b9] xl:inline">
+                <span className="hidden text-xs font-medium uppercase tracking-wider text-[#c5c1b9] xl:inline pl-1">
                   {user.fullName.split(" ")[0]}
                 </span>
               )}
@@ -655,46 +277,22 @@ export default function Navbar() {
 
                 {/* Scrollable drawer content */}
                 <div className="flex flex-1 flex-col justify-between overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {/* Mobile search */}
-                  <form
-                    ref={mobileSearchRef}
-                    onSubmit={handleSearchSubmit}
-                    role="search"
-                    className="relative mx-6 mt-5 flex h-12 shrink-0 overflow-visible rounded-2xl border border-white/15 bg-[#11110f] transition-colors focus-within:border-[#c6a15b]/80 focus-within:shadow-[0_0_0_1px_rgba(198,161,91,0.08)]"
+                  {/* Mobile Drawer Search Trigger */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeMobileMenu();
+                      setSearchModalOpen(true);
+                    }}
+                    className="mx-6 mt-5 flex h-12 shrink-0 items-center gap-3 rounded-2xl border border-white/15 bg-[#11110f] px-4 text-xs text-[#8e8a82] hover:border-[#c6a15b]/80 hover:text-[#f4efe6] transition cursor-pointer"
                   >
                     <Search
                       size={16}
                       strokeWidth={1.5}
-                      className="ml-3 shrink-0 self-center text-[#c6a15b]"
+                      className="shrink-0 text-[#c6a15b]"
                     />
-
-                    <input
-                      type="search"
-                      value={search}
-                      onChange={(event) => setSearch(event.target.value)}
-                      onFocus={() => {
-                        if (search.trim()) setShowSearchSuggestions(true);
-                      }}
-                      onKeyDown={handleSearchKeyDown}
-                      placeholder="Search fragrances..."
-                      aria-label="Search perfumes"
-                      aria-autocomplete="list"
-                      aria-expanded={
-                        showSearchSuggestions && Boolean(search.trim())
-                      }
-                      className="rounded-2xl min-w-0 flex-1 bg-transparent px-2.5 text-sm text-[#f4efe6] outline-none placeholder:text-[#8e8a82]"
-                    />
-
-                    <button
-                      type="submit"
-                      aria-label="Submit search"
-                      className="rounded-2xl flex w-11 shrink-0 items-center justify-center border-l border-white/[0.08] text-[#c6a15b] transition-colors hover:bg-[#c6a15b] hover:text-[#11110f]"
-                    >
-                      <ArrowUpRight size={17} strokeWidth={1.5} />
-                    </button>
-
-                    {renderSearchSuggestions()}
-                  </form>
+                    <span className="flex-1 text-left">Search 99+ fragrances...</span>
+                  </button>
 
                   {/* Mobile navigation links */}
                   <nav className="flex flex-col space-y-1 px-6 pb-2 pt-5">
@@ -800,6 +398,12 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </motion.header>
+
+      {/* Universal Luxury Live Search Modal */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+      />
     </>
   );
 }
