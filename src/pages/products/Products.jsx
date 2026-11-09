@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
 import FilterBar from "../../components/FilterBar";
 
-const PRODUCTS_PER_PAGE = 4;
+const PRODUCTS_PER_PAGE = 32;
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -262,7 +262,7 @@ function Products() {
                 </p>
               </div>
 
-              {/* Four Product Cards Per Page */}
+              {/* Product Cards Grid */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleProducts.map((product) => (
                   <ProductCard
