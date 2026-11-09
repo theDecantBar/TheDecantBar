@@ -10,10 +10,12 @@ import {
   Mail,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchAdminOrders, updateAdminOrderStatus, resendAdminOrderConfirmation } from "../../services/adminApi";
+import { checkAdminPayment, fetchAdminOrders, updateAdminOrderStatus, resendAdminOrderConfirmation } from "../../services/adminApi";
 
 const STATUS_OPTIONS = [
   "All",
+  "Awaiting payment",
+  "Stock review",
   "Confirmed",
   "In Packaging",
   "Shipped",
@@ -40,6 +42,21 @@ export default function AdminOrders() {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [checkingPayment, setCheckingPayment] = useState(null);
+  const [paymentFeedback, setPaymentFeedback] = useState({});
+  async function checkPayment(orderId) {
+    setCheckingPayment(orderId);
+    try {
+      const result = await checkAdminPayment(token, orderId);
+      setPaymentFeedback(prev => ({ ...prev, [orderId]: result.message }));
+      await loadOrders();
+    } catch (error) {
+      setPaymentFeedback(prev => ({ ...prev, [orderId]: error.message }));
+    } finally {
+      setCheckingPayment(null);
+    }
+  }
 
   // Expandable item details per order
   const [expandedOrders, setExpandedOrders] = useState({});
@@ -192,7 +209,8 @@ export default function AdminOrders() {
             />
             <input
               type="search"
-              placeholder="Search by order #, customer name, phone, city..."
+              aria-label="Search orders by order number, customer details, or Razorpay reference"
+              placeholder="Search order number, customer, or Razorpay reference"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
@@ -229,6 +247,10 @@ export default function AdminOrders() {
         <div className="space-y-5">
           {orders.map((order) => {
             const isExpanded = !!expandedOrders[order.id];
+            const isCod = ["cod", "cash on delivery"].includes(order.payment_method?.trim().toLowerCase());
+            const paymentStatus = isCod && order.payment_status === "Pending"
+              ? "Pending collection (COD)"
+              : order.payment_status || "Not recorded";
             return (
               <div
                 key={order.id}
@@ -257,7 +279,7 @@ export default function AdminOrders() {
                         {order.order_status}
                       </span>
                       <span className="text-xs uppercase tracking-wider text-[#8e8a82]">
-                        {order.payment_method === "cod" ? "Cash on Delivery" : (order.payment_method || "Online (Razorpay)")}
+                        {isCod ? "Cash on Delivery" : (order.payment_method || "Method not recorded")}
                       </span>
                     </div>
 
@@ -289,6 +311,7 @@ export default function AdminOrders() {
 
                     <button
                       type="button"
+                      aria-expanded={isExpanded}
                       onClick={() => toggleExpand(order.id)}
                       className="inline-flex items-center gap-1.5 border border-white/15 bg-white/5 px-3 py-2 text-xs uppercase tracking-wider text-[#f4efe6] hover:bg-white/10 transition cursor-pointer"
                     >
@@ -298,13 +321,48 @@ export default function AdminOrders() {
                         </>
                       ) : (
                         <>
-                          View {order.items?.length || 0} Items <ChevronDown size={14} />
+                          View details <ChevronDown size={14} />
                         </>
                       )}
                     </button>
                   </div>
                 </div>
 
+                <dl className="grid gap-3 border-t border-white/5 px-5 py-4 text-xs sm:grid-cols-3 lg:px-6">
+                  <div>
+                    <dt className="text-[#8e8a82]">Payment status</dt>
+                    <dd className="mt-1 font-semibold text-[#f4efe6]">{paymentStatus}</dd>
+                    {!isCod && <dd className="mt-1 text-[#c6a15b]">{order.payment_mode === "test" ? "Test payment" : order.payment_mode === "live" ? "Live payment" : "Payment environment not verified"}</dd>}
+                  </div>
+                  {isCod ? (
+                    <div className="sm:col-span-2">
+                      <dt className="text-[#8e8a82]">Razorpay reference</dt>
+                      <dd className="mt-1 text-[#c5c1b9]">Not applicable for cash on delivery</dd>
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        <dt className="text-[#8e8a82]">Razorpay order ID</dt>
+                        <dd className="mt-1 select-all break-all font-mono text-[#f4efe6]">{order.razorpay_order_id || "Not recorded"}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-[#8e8a82]">Razorpay payment ID</dt>
+                        <dd className="mt-1 select-all break-all font-mono text-[#f4efe6]">{order.razorpay_payment_id || "Not recorded"}</dd>
+                      </div>
+                    </>
+                  )}
+                </dl>
+
+                {order.razorpay_order_id && <div className="px-5 pb-4 text-xs">
+                  <button type="button" onClick={() => checkPayment(order.id)} disabled={checkingPayment !== null}
+                    className="text-[#c6a15b] underline disabled:opacity-50">
+                    {checkingPayment === order.id ? "Checking payment..." : "Check with Razorpay"}
+                  </button>
+                  {Number(order.refunded_amount) > 0 && <p className="mt-2">Refunded amount INR {Number(order.refunded_amount).toFixed(2)}</p>}
+                  <p className="mt-2 text-[#8e8a82]">For a refund, use the Razorpay dashboard, then check here to update the payment record. Cancelling a shipment does not issue a refund.</p>
+                  {order.payment_check_error && <p role="status" className="mt-2 text-amber-300">{order.payment_check_error}</p>}
+                  {paymentFeedback[order.id] && <p role="status" className="mt-2">{paymentFeedback[order.id]}</p>}
+                </div>}
                 {/* Expanded Details: Items & Fulfillment Action */}
                 {isExpanded && (
                   <div className="p-6 bg-[#141412] border-t border-white/5 space-y-6">
@@ -387,12 +445,18 @@ export default function AdminOrders() {
                     </div>
 
                     {/* Order Fulfillment Control Card */}
-                    <OrderFulfillmentForm
+                    {["Awaiting payment", "Stock review"].includes(order.order_status) ? (
+                      <p className="text-sm text-amber-300">
+                        {order.order_status === "Stock review"
+                          ? "Payment received, but stock could not be allocated. Contact the customer and resolve stock or refund in Razorpay before dispatch."
+                          : "Waiting for payment confirmation before dispatch."}
+                      </p>
+                    ) : <OrderFulfillmentForm
                       order={order}
                       isUpdating={updatingId === order.id}
                       feedback={updateFeedback[order.id]}
                       onSave={handleUpdateSubmit}
-                    />
+                    />}
                   </div>
                 )}
               </div>

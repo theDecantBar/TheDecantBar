@@ -16,70 +16,13 @@ const generateToken = (id) => {
   );
 };
 
-// @desc    Register a new user
+// @desc    Register a new user (DEPRECATED - All signups must use OTP verification)
 // @route   POST /api/auth/register
 // @access  Public
 export const register = async (req, res) => {
-  try {
-    const { fullName, email, password, phone } = req.body;
-
-    if (!fullName || !email || !password) {
-      return res.status(400).json({ message: "Please provide all required fields." });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long." });
-    }
-
-    const normalizedEmail = email.toLowerCase().trim();
-
-    // Check if user already exists
-    const existing = await pool.query(
-      "SELECT id FROM users WHERE LOWER(email) = $1",
-      [normalizedEmail]
-    );
-
-    if (existing.rows.length > 0) {
-      return res.status(400).json({ message: "An account already exists with this email address. Please log in." });
-    }
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    // Check if this registered email is configured as an Administrator in .env
-    const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
-
-    // Insert user
-    const result = await pool.query(
-      `INSERT INTO users (full_name, email, phone, password_hash, is_admin)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, created_at`,
-      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash, isConfiguredAdmin]
-    );
-
-    const user = result.rows[0];
-    const token = generateToken(user.id);
-
-    res.status(201).json({
-      message: "Account created successfully.",
-      user: {
-        id: user.id,
-        fullName: user.full_name,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-        city: user.city,
-        state: user.state,
-        pincode: user.pincode,
-        isAdmin: Boolean(user.is_admin),
-      },
-      token,
-    });
-  } catch (error) {
-    console.error("Register error:", error);
-    res.status(500).json({ message: "Registration failed. Please try again later." });
-  }
+  return res.status(410).json({
+    message: "Direct registration without email verification has been disabled. Please use our OTP signup verification flow.",
+  });
 };
 
 // @desc    Authenticate user & get token
@@ -431,13 +374,13 @@ export const verifySignupOtpAndRegister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
-
+    // Public customer registrations are NEVER assigned admin privileges directly.
+    // Administrator accounts must be explicitly provisioned through backend migrations or initAdminDb.js.
     const result = await pool.query(
       `INSERT INTO users (full_name, email, phone, password_hash, is_admin)
-       VALUES ($1, $2, $3, $4, $5)
+       VALUES ($1, $2, $3, $4, false)
        RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, created_at`,
-      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash, isConfiguredAdmin]
+      [fullName.trim(), normalizedEmail, phone ? phone.trim() : null, passwordHash]
     );
 
     const user = result.rows[0];
@@ -661,6 +604,9 @@ export const googleAuth = async (req, res) => {
 
     let googleProfile = null;
     const configuredClientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
+    if (!configuredClientId) {
+      return res.status(500).json({ message: "Google authentication is not configured on this server." });
+    }
 
     // 1. Verify idToken if provided
     if (idToken) {
@@ -672,7 +618,7 @@ export const googleAuth = async (req, res) => {
       }
       const data = await verifyRes.json();
 
-      if (configuredClientId && data.aud && data.aud !== configuredClientId) {
+      if (!data.aud || data.aud !== configuredClientId) {
         return res.status(401).json({ message: "Google token audience mismatch." });
       }
 
@@ -697,10 +643,8 @@ export const googleAuth = async (req, res) => {
       }
       const tokenInfo = await tokenInfoRes.json();
 
-      if (configuredClientId && tokenInfo.aud && tokenInfo.aud !== configuredClientId) {
-        if (tokenInfo.azp !== configuredClientId) {
-          return res.status(401).json({ message: "Google access token audience mismatch." });
-        }
+      if (tokenInfo.aud !== configuredClientId && tokenInfo.azp !== configuredClientId) {
+        return res.status(401).json({ message: "Google access token audience mismatch." });
       }
 
       const profileRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
@@ -751,11 +695,8 @@ export const googleAuth = async (req, res) => {
         [googleProfile.sub, googleProfile.picture || null, user.id]
       );
     } else {
-      // New user: Create account
+      // New user: Create account (Always as regular customer; never auto-grant admin via public OAuth)
       isNewUser = true;
-
-      // Never grant admin solely based on Google Sign-in; only if email matches configured admin
-      const isConfiguredAdmin = isConfiguredAdminEmail(normalizedEmail);
 
       // Random unguessable fallback hash in case password_hash is not-null in schema
       const placeholderHash = `!google_oauth_${crypto.randomBytes(32).toString("hex")}`;
@@ -764,7 +705,7 @@ export const googleAuth = async (req, res) => {
       try {
         insertResult = await pool.query(
           `INSERT INTO users (full_name, email, password_hash, google_id, avatar_url, auth_provider, is_admin)
-           VALUES ($1, $2, $3, $4, $5, 'google', $6)
+           VALUES ($1, $2, $3, $4, $5, 'google', false)
            RETURNING id, full_name, email, phone, address, city, state, pincode, is_admin, avatar_url, created_at`,
           [
             googleProfile.name.trim(),
@@ -772,7 +713,6 @@ export const googleAuth = async (req, res) => {
             placeholderHash,
             googleProfile.sub,
             googleProfile.picture || null,
-            isConfiguredAdmin,
           ]
         );
       } catch (err) {

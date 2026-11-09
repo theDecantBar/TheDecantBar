@@ -13,7 +13,7 @@ import {
   uploadProductImage,
 } from "../controllers/adminController.js";
 import { updateReview, deleteReview } from "../controllers/reviewController.js";
-import { resendOrderConfirmation } from "../controllers/orderController.js";
+import { resendOrderConfirmation, checkAdminPayment } from "../controllers/orderController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -26,6 +26,7 @@ router.get("/stats", getAdminStats);
 
 // Orders management
 router.get("/orders", getAdminOrders);
+router.post("/orders/:id/check-payment", checkAdminPayment);
 router.put("/orders/:id/status", updateOrderStatus);
 router.post("/orders/:id/resend-confirmation", resendOrderConfirmation);
 

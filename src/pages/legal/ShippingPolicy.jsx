@@ -59,7 +59,7 @@ export default function ShippingPolicy() {
                 <span className="font-semibold">Processing Window:</span>
               </div>
               <p className="text-[#8e8a82]">
-                Orders placed Monday through Saturday are typically dispatched within <strong className="text-[#f4efe6]">24 to 48 hours</strong> [Subject to Owner Confirmation]. Orders placed on Sundays or national holidays are processed on the subsequent working day.
+                Orders placed Monday through Saturday are typically dispatched within <strong className="text-[#f4efe6]">24 to 48 hours</strong>. Orders placed on Sundays or national holidays are processed on the subsequent working day.
               </p>
             </div>
           </section>
@@ -75,11 +75,11 @@ export default function ShippingPolicy() {
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="p-3.5 rounded-2xl bg-black/30 border border-white/5">
                 <p className="font-semibold text-[#f4efe6]">Metro Cities (Delhi, Mumbai, Bengaluru, etc.):</p>
-                <p className="text-[#8e8a82] mt-1">2 – 4 Business Days [Courier Partner Dependent]</p>
+                <p className="text-[#8e8a82] mt-1">2 – 4 Business Days</p>
               </div>
               <div className="p-3.5 rounded-2xl bg-black/30 border border-white/5">
                 <p className="font-semibold text-[#f4efe6]">Tier 2 & Tier 3 Cities / Rest of India:</p>
-                <p className="text-[#8e8a82] mt-1">4 – 7 Business Days [Courier Partner Dependent]</p>
+                <p className="text-[#8e8a82] mt-1">4 – 7 Business Days</p>
               </div>
             </div>
             <p className="mt-3 text-[11px] text-[#8e8a82]">
@@ -112,24 +112,14 @@ export default function ShippingPolicy() {
             </p>
           </section>
 
-          {/* Owner Confirmation Section */}
-          <section className="p-6 rounded-2xl border border-amber-500/30 bg-amber-950/10">
-            <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-300">
-                  Courier Partners & Shipping Disclaimers (For Owner Review)
-                </h3>
-                <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
-                  The following details represent operational information to be confirmed prior to public launch:
-                </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
-                  <p>• Partner Couriers: [e.g. Delhivery, Blue Dart, DTDC, XpressBees — Pending Owner Confirmation]</p>
-                  <p>• Dispatch Hub: [City, State — Pending Owner Confirmation]</p>
-                  <p>• Incomplete Addresses: Orders returned due to incorrect 10-digit phone or PIN code may incur re-shipping fees.</p>
-                </div>
-              </div>
-            </div>
+          {/* Dispatch Notice & Address Accuracy */}
+          <section className="p-6 rounded-2xl border border-[#c6a15b]/20 bg-[#171715]">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#c6a15b]">
+              Delivery Accuracy & Courier Serviceability
+            </h3>
+            <p className="mt-2 text-xs text-[#8e8a82] leading-relaxed">
+              We partner with trusted express carriers to ensure reliable delivery across India. Please ensure your 10-digit mobile phone number and 6-digit postal PIN code are entered accurately during checkout so our courier partners can deliver without delay.
+            </p>
           </section>
         </div>
 

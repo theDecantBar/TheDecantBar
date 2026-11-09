@@ -482,6 +482,9 @@ export async function sendOrderConfirmationEmail(orderId, options = {}) {
     }
 
     const order = orderRes.rows[0];
+    if (["Awaiting payment", "Stock review"].includes(order.order_status)) {
+      return { success: false, error: "This order is not ready for confirmation." };
+    }
 
     // 2. Duplicate prevention check
     if (order.confirmation_email_sent && !forceResend) {
@@ -540,7 +543,7 @@ export async function sendOrderConfirmationEmail(orderId, options = {}) {
       );
 
       // Update database flag
-      await pool.query(
+      await db.query(
         `UPDATE orders 
          SET confirmation_email_sent = true, 
              confirmation_email_sent_at = CURRENT_TIMESTAMP 

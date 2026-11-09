@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { useAuth } from "./context/AuthContext";
 import LuxuryLoader from "./components/common/LuxuryLoader";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
@@ -17,6 +18,7 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Reviews from "./pages/Reviews";
 import FAQ from "./pages/FAQ";
+import NotFound from "./pages/NotFound";
 
 // Legal & Customer Policies
 import Terms from "./pages/legal/Terms";
@@ -67,6 +69,7 @@ export default function App() {
       <LuxuryLoader show={showInitialLoader} />
 
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public Storefront Layout */}
           <Route path="/" element={<Layout />}>
@@ -94,6 +97,9 @@ export default function App() {
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="refund-policy" element={<RefundPolicy />} />
             <Route path="refunds" element={<RefundPolicy />} />
+
+            {/* 404 Catch-All Route */}
+            <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* Protected Administrator Hub */}

@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useAuth } from "../context/AuthContext";
-import { fetchMyOrders, updateProfile, changePassword } from "../services/authApi";
+import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayCheckout";
+import { retrySavedPayment, verifyPaymentAndPlaceOrder, fetchMyOrders, updateProfile, changePassword } from "../services/authApi";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -25,6 +26,48 @@ export default function Account() {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [ordersError, setOrdersError] = useState("");
+
+  const [checkingOrder, setCheckingOrder] = useState(null);
+  const [paymentNote, setPaymentNote] = useState(null);
+
+  async function checkOrRetry(order) {
+    setCheckingOrder(order.id);
+    const note = text => setPaymentNote({ id: order.id, text });
+    const refresh = async () => setOrders(await fetchMyOrders(token));
+    try {
+      const saved = await retrySavedPayment(order.id, token);
+      if (saved.order) {
+        await refresh();
+        note("Payment confirmed.");
+        setCheckingOrder(null);
+        return;
+      }
+      if (!await loadRazorpayScript()) throw new Error("Could not open Razorpay. Try again when connected.");
+      const checkout = new window.Razorpay({
+        key: saved.keyId, order_id: saved.orderId, amount: saved.amount, currency: saved.currency,
+        name: "The Decant Bar", description: `Order ${saved.orderNumber}`,
+        prefill: { name: order.customer_name, email: order.customer_email, contact: order.customer_phone },
+        handler: async response => {
+          try {
+            await verifyPaymentAndPlaceOrder(response, token);
+            await refresh();
+            note("Payment confirmed.");
+          } catch {
+            note("Checking your payment. Refresh My orders before paying again.");
+          } finally {
+            setCheckingOrder(null);
+          }
+        },
+        modal: { ondismiss: () => { note("Your order is saved. You can check its payment here."); setCheckingOrder(null); } },
+      });
+      checkout.on("payment.failed", () => note("Payment failed. You can retry this order."));
+      checkout.open();
+    } catch (error) {
+      note(error.message);
+      setCheckingOrder(null);
+      refresh().catch(() => {});
+    }
+  }
 
   // Profile Form State initialized directly from user
   const [profileForm, setProfileForm] = useState(() => ({
@@ -362,6 +405,16 @@ export default function Account() {
                           </div>
                         </div>
 
+                        {onlinePaymentsEnabled && order.order_status === "Awaiting payment" && (
+                          <div className="mt-4 text-sm">
+                            {order.payment_status === "Failed" && <p>Payment failed. Your order is saved.</p>}
+                            <button type="button" disabled={checkingOrder !== null} onClick={() => checkOrRetry(order)}
+                              className="mt-2 text-[#c6a15b] underline disabled:opacity-50">
+                              {checkingOrder === order.id ? "Checking payment..." : "Check payment or retry"}
+                            </button>
+                          </div>
+                        )}
+                        {paymentNote?.id === order.id && <p role="status" className="mt-2 text-sm">{paymentNote.text}</p>}
                         {/* Items list */}
                         <div className="py-4 divide-y divide-white/5 space-y-3">
                           {Array.isArray(order.items) &&

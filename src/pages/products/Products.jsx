@@ -15,6 +15,7 @@ function Products() {
     searchParams.get("weather") || searchParams.get("season") || "";
 
   const [products, setProducts] = useState([]);
+  const [sortBy, setSortBy] = useState("featured");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState(searchParam);
@@ -111,8 +112,29 @@ function Products() {
     setSearchParams({});
   };
 
+  // Sort products according to active selection
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortBy === "price-asc") {
+      const minA = a.variants?.length ? Math.min(...a.variants.map((v) => Number(v.price) || 0)) : 0;
+      const minB = b.variants?.length ? Math.min(...b.variants.map((v) => Number(v.price) || 0)) : 0;
+      return minA - minB;
+    }
+    if (sortBy === "price-desc") {
+      const maxA = a.variants?.length ? Math.max(...a.variants.map((v) => Number(v.price) || 0)) : 0;
+      const maxB = b.variants?.length ? Math.max(...b.variants.map((v) => Number(v.price) || 0)) : 0;
+      return maxB - maxA;
+    }
+    if (sortBy === "name-asc") {
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    }
+    if (sortBy === "name-desc") {
+      return String(b.name || "").localeCompare(String(a.name || ""));
+    }
+    return 0; // featured / default
+  });
+
   // Calculate pagination.
-  const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+  const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);
   const firstVisiblePage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
   const visiblePages = Array.from(
     { length: Math.min(5, totalPages) },
@@ -121,7 +143,7 @@ function Products() {
   const paginationButtonClass = "flex h-10 min-w-8 items-center justify-center rounded-sm border border-white/15 px-1.5 text-xs font-medium transition-colors hover:border-[#c6a15b]/70 hover:bg-[#c6a15b]/10 hover:text-[#c6a15b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] disabled:pointer-events-none disabled:opacity-30 sm:h-11 sm:min-w-11 sm:px-3 sm:text-sm";
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
-  const visibleProducts = products.slice(
+  const visibleProducts = sortedProducts.slice(
     startIndex,
     startIndex + PRODUCTS_PER_PAGE
   );
@@ -243,23 +265,35 @@ function Products() {
             </p>
           ) : (
             <>
-              {/* Product Count */}
-              <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-[#f4efe6]/60">
-                  Showing {startIndex + 1}–
-                  {Math.min(
-                    startIndex + PRODUCTS_PER_PAGE,
-                    products.length
-                  )}{" "}
-                  of {products.length} fragrances
+              {/* Product Count & Sort Selector */}
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-4">
+                <p className="text-sm text-[#f4efe6]/70">
+                  Showing <strong className="text-[#f4efe6]">{startIndex + 1}–{Math.min(startIndex + PRODUCTS_PER_PAGE, sortedProducts.length)}</strong> of <strong className="text-[#c6a15b]">{sortedProducts.length}</strong> fragrances
                   {category ? " in " + category : ""}
                   {gender ? " for " + gender : ""}
                   {weather ? " (" + weather + ")" : ""}
                 </p>
 
-                <p className="text-xs uppercase tracking-wider text-[#c6a15b]">
-                  Page {currentPage} of {totalPages}
-                </p>
+                <div className="flex items-center gap-3">
+                  <label htmlFor="sort-select" className="text-xs uppercase tracking-wider text-[#8e8a82]">
+                    Sort By:
+                  </label>
+                  <select
+                    id="sort-select"
+                    value={sortBy}
+                    onChange={(e) => {
+                      setSortBy(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="rounded-lg border border-white/15 bg-[#171715] px-3 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
+                  >
+                    <option value="featured">Featured Curations</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="name-asc">Name: A to Z</option>
+                    <option value="name-desc">Name: Z to A</option>
+                  </select>
+                </div>
               </div>
 
               {/* Product Cards Grid */}

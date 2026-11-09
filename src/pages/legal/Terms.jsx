@@ -112,24 +112,14 @@ export default function Terms() {
             </p>
           </section>
 
-          {/* Section 6: Business Owner Confirmation Placeholders */}
-          <section className="p-6 rounded-2xl border border-amber-500/30 bg-amber-950/10">
-            <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-300">
-                  Business Entity Details (For Owner Review)
-                </h3>
-                <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
-                  The following details represent operational information to be confirmed prior to public launch:
-                </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
-                  <p>• Entity Name: [The Decant Bar / Registered Sole Proprietorship or LLP — Pending Owner Confirmation]</p>
-                  <p>• Registered Operating Location: [City / State, India — Pending Owner Confirmation]</p>
-                  <p>• Grievance & Legal Contact: thedecantbarofficial@gmail.com</p>
-                </div>
-              </div>
-            </div>
+          {/* Section 6: Customer Inquiries & Communications */}
+          <section className="p-6 rounded-2xl border border-[#c6a15b]/20 bg-[#171715]">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#c6a15b]">
+              Customer Inquiries & Formal Notices
+            </h3>
+            <p className="mt-2 text-xs text-[#8e8a82] leading-relaxed">
+              For any questions regarding these Terms & Conditions or order agreements, please reach out through our official <Link to="/contact" className="text-[#c6a15b] underline">Contact Desk</Link>.
+            </p>
           </section>
         </div>
 

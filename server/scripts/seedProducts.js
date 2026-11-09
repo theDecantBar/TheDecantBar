@@ -1312,11 +1312,12 @@ try {
   for (const product of products) {
     const productResult = await client.query(
       `INSERT INTO products
-       (name, category, weather, type, gender, full_bottle_price)
-       VALUES ($1, $2, $3, $4, $5, $6)
+       (name, brand, category, weather, type, gender, full_bottle_price)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id`,
       [
         product.name,
+        product.brand ?? null,
         product.category ?? null,
         product.weather ?? null,
         product.type ?? null,

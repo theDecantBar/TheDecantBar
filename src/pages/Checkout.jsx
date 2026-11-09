@@ -28,20 +28,7 @@ import {
   FREE_SHIPPING_THRESHOLD,
 } from "../utils/shipping";
 
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    if (window.Razorpay) {
-      resolve(true);
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
+import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayCheckout";
 
 export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
@@ -64,6 +51,7 @@ export default function Checkout() {
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [savedReference, setSavedReference] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
 
   const fullNameRef = useRef(null);
@@ -322,12 +310,7 @@ export default function Checkout() {
       // 2. Request backend to create Razorpay Order (prices verified server-side)
       const rzpOrderData = await createRazorpayOrderApi(
         {
-          total: finalTotal,
-          subtotal: cartSubtotal,
-          shippingFee: shippingFee,
-          fullName: cleanPayload.fullName,
-          email: cleanPayload.email,
-          phone: cleanPayload.phone,
+          ...cleanPayload,
           items: itemPayload,
         },
         token
@@ -337,13 +320,14 @@ export default function Checkout() {
         throw new Error("Unable to initialize secure payment. Please try again.");
       }
 
+      setSavedReference(rzpOrderData.orderNumber);
       // 3. Launch Razorpay Checkout Modal
       const options = {
         key: rzpOrderData.keyId,
         amount: rzpOrderData.amount,
         currency: rzpOrderData.currency || "INR",
         name: "The Decant Bar",
-        description: "Authentic Luxury Fragrance Decants",
+        description: `Order ${rzpOrderData.orderNumber}`,
         image: "/images/brand/decant-bar-monogram.png",
         order_id: rzpOrderData.orderId,
         handler: async function (response) {
@@ -355,18 +339,6 @@ export default function Checkout() {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              fullName: cleanPayload.fullName,
-              email: cleanPayload.email,
-              phone: cleanPayload.phone,
-              address: cleanPayload.address,
-              city: cleanPayload.city,
-              state: cleanPayload.state,
-              pincode: cleanPayload.pincode,
-              orderNotes: cleanPayload.orderNotes,
-              items: itemPayload,
-              subtotal: cartSubtotal,
-              shippingFee: shippingFee,
-              total: finalTotal,
             };
 
             const res = await verifyPaymentAndPlaceOrder(verifyPayload, token);
@@ -396,9 +368,7 @@ export default function Checkout() {
           } catch (verificationErr) {
             console.error("Payment confirmation error:", verificationErr);
             setErrorMessage(
-              verificationErr.message ||
-                "Payment was received by Razorpay, but verification failed. Please contact support with payment ID: " +
-                  response.razorpay_payment_id
+              `Check My orders for ${rzpOrderData.orderNumber} before paying again. Payment reference: ${response.razorpay_payment_id}.`
             );
           } finally {
             setIsSubmitting(false);
@@ -420,7 +390,7 @@ export default function Checkout() {
           ondismiss: function () {
             setIsSubmitting(false);
             setErrorMessage(
-              "Payment was not completed. You can retry placing your order when ready."
+              "Your order is saved. Open My orders to check its payment or retry."
             );
           },
         },
@@ -645,11 +615,12 @@ export default function Checkout() {
             </div>
           )}
 
+          {savedReference && <p className="mb-4 text-sm">Saved order {savedReference}. <Link className="underline" to="/account">Check payment or retry in My orders</Link></p>}
           {errorMessage && (
             <div className="rounded-2xl mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
               <div className="flex items-center gap-3">
                 <AlertCircle size={16} className="text-red-400 shrink-0" />
-                <span>{errorMessage}</span>
+                <span>{errorMessage} {savedReference && <Link to="/account" className="underline">Open My orders</Link>}</span>
               </div>
               {!isAuthenticated && (
                 <Link
@@ -966,7 +937,7 @@ export default function Checkout() {
                 </label>
 
                 {/* Option 2: Pay Online (Razorpay) */}
-                <label
+                {onlinePaymentsEnabled && <label
                   className={`block cursor-pointer border p-5 transition-all ${
                     formData.paymentMethod === "online"
                       ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
@@ -1022,7 +993,8 @@ export default function Checkout() {
                       <ShieldCheck size={20} />
                     </div>
                   </div>
-                </label>
+                </label>}
+                {!onlinePaymentsEnabled && <p className="text-sm text-[#c5c1b9]">Cash on Delivery is currently available. Pay when your order arrives.</p>}
               </div>
 
               <div className="mt-5 border-t border-white/10 pt-3.5 flex items-center justify-between text-[11px] text-[#8e8a82]">
@@ -1039,7 +1011,7 @@ export default function Checkout() {
             {/* Submit Place Order Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || Boolean(savedReference)}
               className="rounded-2xl w-full flex items-center justify-between border border-[#c6a15b] bg-[#c6a15b] px-8 py-5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
             >
               <span className="flex items-center gap-2">

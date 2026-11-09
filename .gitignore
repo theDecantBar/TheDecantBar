@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Database backups & dumps
+*.sql
+*.dump
+*.bak

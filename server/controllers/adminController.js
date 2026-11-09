@@ -16,14 +16,16 @@ export const getAdminStats = async (req, res) => {
     // 1. Total revenue & orders count
     const revenueRes = await pool.query(`
       SELECT 
-        COALESCE(SUM(total_amount), 0) AS total_revenue,
+        COALESCE(SUM(total_amount - COALESCE(refunded_amount, 0)) FILTER (
+          WHERE payment_status IN ('Paid', 'Partially refunded') AND payment_mode = 'live'
+        ), 0) AS total_revenue,
         COUNT(*) AS total_orders,
         COUNT(*) FILTER (WHERE order_status = 'Confirmed') AS confirmed_orders,
         COUNT(*) FILTER (WHERE order_status = 'In Packaging') AS packaging_orders,
         COUNT(*) FILTER (WHERE order_status = 'Shipped') AS shipped_orders,
         COUNT(*) FILTER (WHERE order_status = 'Delivered') AS delivered_orders,
         COUNT(*) FILTER (WHERE order_status = 'Cancelled') AS cancelled_orders
-      FROM orders
+      FROM orders WHERE order_status <> 'Awaiting payment'
     `);
 
     // 2. Product & variant metrics
@@ -114,6 +116,8 @@ export const getAdminOrders = async (req, res) => {
       params.push(`%${search.trim().toLowerCase()}%`);
       query += ` AND (
         LOWER(o.order_number) LIKE $${params.length}
+        OR LOWER(o.razorpay_order_id) LIKE $${params.length}
+        OR LOWER(o.razorpay_payment_id) LIKE $${params.length}
         OR LOWER(o.customer_name) LIKE $${params.length}
         OR LOWER(o.customer_email) LIKE $${params.length}
         OR LOWER(o.customer_phone) LIKE $${params.length}
@@ -161,7 +165,8 @@ export const updateOrderStatus = async (req, res) => {
          courier_name = COALESCE($2, courier_name),
          tracking_number = COALESCE($3, tracking_number),
          updated_at = CURRENT_TIMESTAMP
-       WHERE id = $4
+       WHERE id = $4 AND order_status NOT IN ('Awaiting payment', 'Stock review')
+         AND (payment_status NOT IN ('Refunded', 'Partially refunded') OR $1 = 'Cancelled')
        RETURNING *`,
       [orderStatus || null, courierName || null, trackingNumber || null, id]
     );

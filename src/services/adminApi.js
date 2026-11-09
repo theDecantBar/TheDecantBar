@@ -168,3 +168,13 @@ export async function resendAdminOrderConfirmation(token, orderId) {
   }
   return res.json();
 }
+
+
+export async function checkAdminPayment(token, orderId) {
+  const res = await fetch(`/api/admin/orders/${orderId}/check-payment`, {
+    method: "POST", headers: getHeaders(token),
+  });
+  const result = await res.json();
+  if (!res.ok) throw new Error(result.message || "Could not check payment.");
+  return result;
+}

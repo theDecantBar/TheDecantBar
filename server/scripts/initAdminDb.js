@@ -25,11 +25,22 @@ export async function ensureAdminSchema() {
       ADD COLUMN IF NOT EXISTS courier_name VARCHAR(100),
       ADD COLUMN IF NOT EXISTS tracking_number VARCHAR(100),
       ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'Pending',
+      ADD COLUMN IF NOT EXISTS checkout_key TEXT,
+      ADD COLUMN IF NOT EXISTS payment_mode VARCHAR(10),
+      ADD COLUMN IF NOT EXISTS payment_checked_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS payment_check_after TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS payment_check_error TEXT,
+      ADD COLUMN IF NOT EXISTS refunded_amount NUMERIC(10,2) DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS payment_hold_until TIMESTAMPTZ,
       ADD COLUMN IF NOT EXISTS razorpay_order_id VARCHAR(100),
       ADD COLUMN IF NOT EXISTS razorpay_payment_id VARCHAR(100),
       ADD COLUMN IF NOT EXISTS confirmation_email_sent BOOLEAN DEFAULT false,
       ADD COLUMN IF NOT EXISTS confirmation_email_sent_at TIMESTAMP WITH TIME ZONE,
       ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
+    `);
+
+    await pool.query(`ALTER TABLE order_items ADD COLUMN IF NOT EXISTS variant_id INTEGER;
+      CREATE INDEX IF NOT EXISTS idx_order_items_holds ON order_items(variant_id) WHERE variant_id IS NOT NULL;
     `);
 
     // 3. Ensure stock on product_variants
@@ -54,7 +65,8 @@ export async function ensureAdminSchema() {
 
     console.log("Admin schema columns verified successfully.");
   } catch (err) {
-    console.error("Warning ensuring admin schema columns:", err.message);
+    console.error("Unable to prepare database columns:", err.message);
+    throw err;
   }
 }
 

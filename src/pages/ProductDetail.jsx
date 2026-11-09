@@ -202,14 +202,61 @@ export default function ProductDetail() {
     }
   };
 
-  // Keep the screen blank while the product loads.
-  // The loading message and spinner have been removed.
+  // Luxury Skeleton Loading State (prevents pitch-black blank screen)
   if (loading) {
     return (
-      <div
-        className="min-h-screen bg-[#11110f]"
-        aria-label="Loading product"
-      />
+      <Container className="py-6 sm:py-10 animate-pulse">
+        {/* Breadcrumb Skeleton */}
+        <div className="mb-5 flex items-center gap-2">
+          <div className="h-3 w-12 rounded bg-white/10" />
+          <span className="text-white/20">/</span>
+          <div className="h-3 w-16 rounded bg-white/10" />
+          <span className="text-white/20">/</span>
+          <div className="h-3 w-28 rounded bg-white/10" />
+        </div>
+
+        {/* Main Showcase Skeleton */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[420px_1fr] lg:gap-10">
+          {/* Left Column Image Skeleton */}
+          <div className="w-full">
+            <div className="aspect-[4/5] w-full max-w-[400px] sm:max-w-[420px] rounded-lg border border-white/10 bg-[#171715] flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full border-2 border-[#c6a15b]/40 border-t-[#c6a15b] animate-spin" />
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-3 max-w-[400px]">
+              <div className="h-11 rounded-2xl border border-white/5 bg-[#171715]" />
+              <div className="h-11 rounded-2xl border border-white/5 bg-[#171715]" />
+            </div>
+          </div>
+
+          {/* Right Column Information Skeleton */}
+          <div className="flex flex-col space-y-4">
+            <div className="h-4 w-32 rounded bg-[#c6a15b]/20" />
+            <div className="h-8 w-3/4 rounded bg-white/10 sm:h-10" />
+            <div className="h-14 w-full rounded border-l-2 border-[#c6a15b]/40 bg-white/5" />
+
+            {/* Price & Sizing Cards Skeleton */}
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mt-2">
+              <div className="rounded-2xl border border-white/10 bg-[#151512] p-5 space-y-4">
+                <div className="h-6 w-24 rounded bg-white/10" />
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="h-12 rounded-xl bg-white/5" />
+                  <div className="h-12 rounded-xl bg-white/5" />
+                  <div className="h-12 rounded-xl bg-white/5" />
+                </div>
+                <div className="h-10 w-full rounded-2xl bg-[#c6a15b]/20" />
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-[#151512] p-5 space-y-3">
+                <div className="h-5 w-36 rounded bg-white/10" />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="h-10 rounded-xl bg-white/5" />
+                  <div className="h-10 rounded-xl bg-white/5" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
     );
   }
 
@@ -406,11 +453,20 @@ export default function ProductDetail() {
 
         {/* Right Column: Product Information */}
         <div className="flex min-w-0 flex-col">
-          {/* Category & Gender */}
-          <div className="flex items-center gap-2.5">
+          {/* Brand, Category & Gender */}
+          <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
-              {product.category || "Designer"}
+              {product.brand || profile.brand || "FRAGRANCE"}
             </span>
+
+            {product.category && (
+              <>
+                <span className="h-1 w-1 rounded-full bg-white/20" />
+                <span className="text-[11px] uppercase tracking-wider text-[#8e8a82]">
+                  {product.category}
+                </span>
+              </>
+            )}
 
             <span className="h-1 w-1 rounded-full bg-white/20" />
 

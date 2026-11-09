@@ -36,10 +36,10 @@ export const getProducts = async (req, res) => {
     // Storefront only displays perfumes with valid image URLs
     conditions.push("p.image_url IS NOT NULL AND TRIM(p.image_url) != ''");
 
-    // Search query by product name
+    // Search query by product name or brand
     if (search && search.trim() !== "") {
       values.push(`%${search.trim()}%`);
-      conditions.push(`p.name ILIKE $${values.length}`);
+      conditions.push(`(p.name ILIKE $${values.length} OR p.brand ILIKE $${values.length})`);
     }
 
     // Fragrance Classification / Category (supports single or multiple values)
