@@ -579,6 +579,36 @@ export const createCodOrder = async (req, res) => {
     // 2. Begin transaction
     await client.query("BEGIN");
 
+    // Check for duplicate submission using idempotency checkoutKey within the last 15 minutes
+    const checkoutKey = req.body.checkoutKey ? String(req.body.checkoutKey).trim() : null;
+    if (checkoutKey) {
+      const existingKeyOrder = await client.query(
+        `SELECT * FROM orders 
+         WHERE checkout_key = $1 AND created_at > NOW() - INTERVAL '15 minutes'
+         ORDER BY id DESC LIMIT 1`,
+        [checkoutKey]
+      );
+      if (existingKeyOrder.rows.length > 0) {
+        await client.query("ROLLBACK");
+        const existing = existingKeyOrder.rows[0];
+        return res.status(200).json({
+          message: "Order placed successfully with Cash on Delivery.",
+          order: {
+            id: existing.id,
+            orderNumber: existing.order_number,
+            customerName: existing.customer_name,
+            customerEmail: existing.customer_email,
+            total: Number(existing.total_amount),
+            subtotal: Number(existing.subtotal),
+            shippingFee: Number(existing.shipping_fee),
+            orderStatus: existing.order_status,
+            paymentMethod: existing.payment_method,
+            paymentStatus: existing.payment_status,
+          },
+        });
+      }
+    }
+
     // 3. Server-side validation of cart items & price calculation directly from DB
     let calculation;
     try {
@@ -591,15 +621,17 @@ export const createCodOrder = async (req, res) => {
     const { validatedItems, subtotal, shippingFee, total } = calculation;
 
     const userId = req.user.id;
-    const orderNumber = `TDB-${Math.floor(100000 + Math.random() * 900000)}`;
+    const dateStr = new Date().toISOString().slice(2, 10).replace(/-/g, "");
+    const randPart = Math.floor(1000 + Math.random() * 9000);
+    const orderNumber = `TDB-${dateStr}-${randPart}`;
 
     const orderResult = await client.query(
       `INSERT INTO orders
         (order_number, user_id, customer_name, customer_email, customer_phone,
          shipping_address, city, state, pincode, payment_method, order_notes,
          subtotal, shipping_fee, total_amount, order_status, razorpay_order_id,
-         razorpay_payment_id, payment_status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+         razorpay_payment_id, payment_status, checkout_key)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
        RETURNING *`,
       [
         orderNumber,
@@ -620,17 +652,18 @@ export const createCodOrder = async (req, res) => {
         null,
         null,
         "Pending",
+        checkoutKey || null,
       ]
     );
 
     const order = orderResult.rows[0];
 
-    // Insert verified order items & update inventory
+    // Insert verified order items & update inventory atomically
     for (const item of validatedItems) {
       await client.query(
         `INSERT INTO order_items
-          (order_id, product_id, product_name, size_ml, price, quantity, image_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          (order_id, product_id, product_name, size_ml, price, quantity, image_url, variant_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [
           order.id,
           item.productId,
@@ -639,14 +672,24 @@ export const createCodOrder = async (req, res) => {
           item.price,
           item.quantity,
           item.image_url,
+          item.variantId || null,
         ]
       );
 
       if (item.variantId) {
-        await client.query(
-          `UPDATE product_variants SET stock = GREATEST(0, stock - $1) WHERE id = $2`,
+        const stockUpdate = await client.query(
+          `UPDATE product_variants 
+           SET stock = stock - $1 
+           WHERE id = $2 AND stock >= $1 
+           RETURNING stock`,
           [item.quantity, item.variantId]
         );
+        if (stockUpdate.rowCount === 0) {
+          await client.query("ROLLBACK");
+          return res.status(409).json({
+            message: `Insufficient inventory for ${item.name} (${item.size_ml}ml). Please adjust your cart.`,
+          });
+        }
       }
     }
 
