@@ -453,11 +453,20 @@ export default function ProductDetail() {
 
         {/* Right Column: Product Information */}
         <div className="flex min-w-0 flex-col">
-          {/* Category & Gender */}
-          <div className="flex items-center gap-2.5">
+          {/* Brand, Category & Gender */}
+          <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
-              {product.category || "Designer"}
+              {product.brand || profile.brand || "FRAGRANCE"}
             </span>
+
+            {product.category && (
+              <>
+                <span className="h-1 w-1 rounded-full bg-white/20" />
+                <span className="text-[11px] uppercase tracking-wider text-[#8e8a82]">
+                  {product.category}
+                </span>
+              </>
+            )}
 
             <span className="h-1 w-1 rounded-full bg-white/20" />
 

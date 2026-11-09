@@ -6,6 +6,63 @@
 
 
 export const KNOWN_PERFUMES = [
+{
+  "matches": [
+    "stronger with you intensely",
+    "stronger with you",
+    "emporio armani stronger with you intensely",
+    "armani stronger with you"
+  ],
+  "brand": "Giorgio Armani",
+  "name": "Emporio Armani Stronger With You Intensely",
+  "description": "Emporio Armani Stronger With You Intensely is an amber fougère fragrance for men with audacious spicy accords. It opens with sweet violet and fiery pink pepper, unfolds into a delicious heart of warm toffee, cinnamon, and aromatic lavender, and settles into an addictive base of creamy vanilla, golden amber, tonka bean, and rich suede.",
+  "vibe": "Warm Toffee, Spiced Cinnamon, Creamy Vanilla & Amber",
+  "longevity": "9 – 12 Hours",
+  "projection": "Strong & Addictive",
+  "accords": [
+    { "name": "vanilla", "color": "#f3e5ab", "percentage": 95 },
+    { "name": "sweet", "color": "#e75480", "percentage": 90 },
+    { "name": "amber", "color": "#d9822b", "percentage": 82 },
+    { "name": "cinnamon", "color": "#b85428", "percentage": 76 },
+    { "name": "warm spicy", "color": "#c04000", "percentage": 70 },
+    { "name": "caramel", "color": "#c68e17", "percentage": 64 },
+    { "name": "aromatic", "color": "#3a4a3c", "percentage": 56 },
+    { "name": "powdery", "color": "#d8bfd8", "percentage": 48 },
+    { "name": "fruity", "color": "#ff69b4", "percentage": 40 },
+    { "name": "balsamic", "color": "#7b3f2b", "percentage": 32 }
+  ],
+  "whenToWear": {
+    "winter": 4800,
+    "spring": 1800,
+    "summer": 600,
+    "fall": 4500,
+    "day": 1900,
+    "night": 4900
+  },
+  "topNotes": [
+    "Pink Pepper",
+    "Juniper",
+    "Violet"
+  ],
+  "middleNotes": [
+    "Toffee",
+    "Cinnamon",
+    "Lavender",
+    "Sage"
+  ],
+  "heartNotes": [
+    "Toffee",
+    "Cinnamon",
+    "Lavender",
+    "Sage"
+  ],
+  "baseNotes": [
+    "Vanilla",
+    "Amber",
+    "Tonka Bean",
+    "Suede"
+  ]
+},
   {
     matches: ["mexican tobacco"],
     brand: "Bespoke Collection",
@@ -178,7 +235,7 @@ export const KNOWN_PERFUMES = [
 
   
 {
-  matches: ["tom ford ebene fume", "ebene fume", "ébène fumé"],
+  matches: ["tom ford ebene fume", "ebene fume", "ébène fumé", "tomford ebume fume", "ebume fume"],
   brand: "Tom Ford",
   name: "Tom Ford Ébène Fumé",
   topNotes: ["Incense", "Palo Santo", "Black Pepper", "Violet Leaf"],
@@ -369,8 +426,8 @@ export const KNOWN_PERFUMES = [
     "most wanted",
     "azzaro"
   ],
-  "brand": "Designer",
-  "name": "Azzaro most wanted night",
+  "brand": "Azzaro",
+  "name": "Azzaro Wanted by Night",
   "description": "Azzaro most wanted night is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Red Ginger, Cardamom, transitioning into a captivating heart of Toffee Caramel and Woody Notes, rested on a lingering base of Bourbon Vanilla, Amberwood.",
   "vibe": "Sweet Toffee Caramel, Spiced Cardamom & Bourbon Vanilla",
   "longevity": "10 – 12 Hours",
@@ -430,8 +487,8 @@ export const KNOWN_PERFUMES = [
     "born in roma",
     "uomo"
   ],
-  "brand": "Designer",
-  "name": "Valentino born in roma green stravaganza",
+  "brand": "Valentino",
+  "name": "Valentino Born in Roma Green Stravaganza",
   "description": "Valentino born in roma green stravaganza is a distinctive EDT Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
   "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
   "longevity": "8 – 10 Hours",
@@ -491,8 +548,8 @@ export const KNOWN_PERFUMES = [
     "born in roma",
     "uomo"
   ],
-  "brand": "Designer",
-  "name": "Valentino men Uomo",
+  "brand": "Valentino",
+  "name": "Valentino Uomo",
   "description": "Valentino men Uomo is a distinctive EDT Designer fragrance crafted for summeer/winter wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
   "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
   "longevity": "8 – 10 Hours",
@@ -573,8 +630,8 @@ export const KNOWN_PERFUMES = [
     "born in roma",
     "uomo"
   ],
-  "brand": "Designer",
-  "name": "Valentino coral",
+  "brand": "Valentino",
+  "name": "Valentino Born in Roma Coral Fantasy",
   "description": "Valentino coral is a distinctive EDT Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
   "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
   "longevity": "8 – 10 Hours",
@@ -649,8 +706,8 @@ export const KNOWN_PERFUMES = [
     "born in roma",
     "uomo"
   ],
-  "brand": "Designer",
-  "name": "Valentino men born in roma",
+  "brand": "Valentino",
+  "name": "Valentino Uomo Born in Roma",
   "description": "Valentino men born in roma is a distinctive EDT Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
   "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
   "longevity": "8 – 10 Hours",
@@ -723,8 +780,8 @@ export const KNOWN_PERFUMES = [
     "baccarat rouge 540",
     "baccarat rouge"
   ],
-  "brand": "Niche",
-  "name": "Baccarat rouge 540",
+  "brand": "Maison Francis Kurkdjian",
+  "name": "Maison Francis Kurkdjian Baccarat Rouge 540",
   "description": "Baccarat rouge 540 is a distinctive EDP Niche fragrance crafted for Winter wear. Opens with vibrant top notes of Bitter Almond, Saffron, transitioning into a captivating heart of Egyptian Jasmine and Cedar, rested on a lingering base of Ambergris, Woody Musk, Fir Resin.",
   "vibe": "Airy Crystal Amber, Sweet Saffron & Cedar",
   "longevity": "12+ Hours",
@@ -799,8 +856,8 @@ export const KNOWN_PERFUMES = [
     "l homme",
     "myself"
   ],
-  "brand": "Designer",
-  "name": "YSL L Homme",
+  "brand": "Yves Saint Laurent",
+  "name": "YSL L'Homme",
   "description": "YSL L Homme is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
   "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
   "longevity": "7 – 9 Hours",
@@ -879,8 +936,8 @@ export const KNOWN_PERFUMES = [
     "l homme",
     "myself"
   ],
-  "brand": "Designer",
-  "name": "YSL L Homme Le Parfum",
+  "brand": "Yves Saint Laurent",
+  "name": "YSL L'Homme Le Parfum",
   "description": "YSL L Homme Le Parfum is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
   "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
   "longevity": "7 – 9 Hours",
@@ -960,8 +1017,8 @@ export const KNOWN_PERFUMES = [
     "l homme",
     "myself"
   ],
-  "brand": "Designer",
-  "name": "YSL Homme cologne blue",
+  "brand": "Yves Saint Laurent",
+  "name": "YSL L'Homme Cologne Bleue",
   "description": "YSL Homme cologne blue is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
   "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
   "longevity": "7 – 9 Hours",
@@ -1012,8 +1069,8 @@ export const KNOWN_PERFUMES = [
     "l homme",
     "myself"
   ],
-  "brand": "Designer",
-  "name": "YSL Y",
+  "brand": "Yves Saint Laurent",
+  "name": "YSL Y Eau de Parfum",
   "description": "YSL Y is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
   "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
   "longevity": "7 – 9 Hours",
@@ -1067,8 +1124,8 @@ export const KNOWN_PERFUMES = [
     "l homme",
     "myself"
   ],
-  "brand": "Designer",
-  "name": "YSL myself L'abslou parfum",
+  "brand": "Yves Saint Laurent",
+  "name": "YSL MYSLF Le Parfum",
   "description": "YSL myself L'abslou parfum is a distinctive PARFUM Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
   "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
   "longevity": "7 – 9 Hours",
@@ -1272,8 +1329,8 @@ export const KNOWN_PERFUMES = [
     "kilian blue moon",
     "blue moon"
   ],
-  "brand": "Niche",
-  "name": "Kilian blue moon",
+  "brand": "Kilian",
+  "name": "Kilian Blue Moon Ginger Dash",
   "description": "Kilian blue moon is a distinctive EDP Niche fragrance crafted for Summer wear. Opens with vibrant top notes of Lemon, Calone (Sea Breeze Accord), transitioning into a captivating heart of Vodka Accord and Ginger, rested on a lingering base of Ambroxan, White Musk.",
   "vibe": "Fresh Vodka, Calone, Ginger & Lemon",
   "longevity": "7 – 8 Hours",
@@ -1326,8 +1383,8 @@ export const KNOWN_PERFUMES = [
     "angels share",
     "angels' share"
   ],
-  "brand": "Niche",
-  "name": "Kilian angle share",
+  "brand": "Kilian",
+  "name": "Kilian Angels' Share",
   "description": "Kilian angle share is a distinctive EDP Niche fragrance crafted for Winter wear. Opens with vibrant top notes of Cognac Oil, transitioning into a captivating heart of Cinnamon and Tonka Bean, rested on a lingering base of Praline, Vanilla, Sandalwood.",
   "vibe": "Warm Cognac, Cinnamon, Praline & Vanilla Oak",
   "longevity": "10 – 12 Hours",
@@ -1359,8 +1416,8 @@ export const KNOWN_PERFUMES = [
     "kilian roses on ice",
     "roses on ice"
   ],
-  "brand": "Niche",
-  "name": "kilian roses on ice",
+  "brand": "Kilian",
+  "name": "Kilian Roses on Ice",
   "description": "kilian roses on ice is a distinctive EDP Niche fragrance crafted for Summer wear. Opens with vibrant top notes of Cucumber, Juniper Berries, Lime, transitioning into a captivating heart of Rose, rested on a lingering base of Musk, Sandalwood.",
   "vibe": "Chilled Cucumber, Rose Petals & Gin",
   "longevity": "6 – 8 Hours",
@@ -1399,8 +1456,8 @@ export const KNOWN_PERFUMES = [
     "givenchy",
     "gentlemen givenchy"
   ],
-  "brand": "Designer",
-  "name": "Gentlemen givenchy boise",
+  "brand": "Givenchy",
+  "name": "Givenchy Gentleman Boisée",
   "description": "Gentlemen givenchy boise is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Bergamot, Black Pepper, Coriander, transitioning into a captivating heart of Iris and Cocoa, rested on a lingering base of Burning Woods, Sandalwood, Patchouli.",
   "vibe": "Warm Iris, Spiced Cocoa, Whiskey Accords & Burning Woods",
   "longevity": "9 – 11 Hours",
@@ -1433,8 +1490,8 @@ export const KNOWN_PERFUMES = [
     "givenchy",
     "gentlemen givenchy"
   ],
-  "brand": "Designer",
-  "name": "Gentlemen givenchy paris",
+  "brand": "Givenchy",
+  "name": "Givenchy Gentleman Reserve Privée",
   "description": "Gentlemen givenchy paris is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Bergamot, Black Pepper, Coriander, transitioning into a captivating heart of Iris and Cocoa, rested on a lingering base of Burning Woods, Sandalwood, Patchouli.",
   "vibe": "Warm Iris, Spiced Cocoa, Whiskey Accords & Burning Woods",
   "longevity": "9 – 11 Hours",
@@ -1463,8 +1520,8 @@ export const KNOWN_PERFUMES = [
 },
 {
   "matches": ["1 million"],
-  "brand": "Designer",
-  "name": "1 Million",
+  "brand": "Paco Rabanne",
+  "name": "Paco Rabanne 1 Million",
   "description": "1 Million is a distinctive EDT Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Blood Mandarin, Grapefruit, Mint, transitioning into a captivating heart of Cinnamon and Spicy Notes, rested on a lingering base of Amber, Leather, Woody Notes.",
   "vibe": "Sweet Blood Mandarin, Spiced Cinnamon & Blond Leather",
   "longevity": "8 – 10 Hours",
@@ -1635,7 +1692,7 @@ export const KNOWN_PERFUMES = [
     "dior sauvage"
   ],
   "brand": "Dior",
-  "name": "Dior sauvage elixer",
+  "name": "Dior Sauvage Elixir",
   "description": "Sauvage by Dior is a radically fresh composition dictated by a name that has the ring of a manifesto. Radiant top notes burst with juicy Calabrian bergamot, while Ambroxan unleashes a powerfully woody trail.",
   "vibe": "Crisp Radiant Bergamot, Szechuan Pepper & Ambroxan",
   "longevity": "8 – 11 Hours",
@@ -1828,7 +1885,7 @@ export const KNOWN_PERFUMES = [
 {
   "matches": ["roberto canvalli splendid vanilla", "splendid vanilla"],
   "brand": "Roberto Cavalli",
-  "name": "Roberto canvalli splendid vanilla",
+  "name": "Roberto Cavalli Splendid Vanilla",
   "description": "Splendid Vanilla by Roberto Cavalli is an Amber Floral fragrance launched in 2019. An intoxicating tribute to royal vanilla enriched with black pepper, delicate florals, and woody patchouli.",
   "vibe": "Opulent Madagascar Vanilla, Spices & Cedar",
   "longevity": "8 – 11 Hours",
@@ -1898,7 +1955,7 @@ export const KNOWN_PERFUMES = [
 {
   "matches": ["mont blac explorar", "mont blac", "mont blanc", "explorar", "explorer"],
   "brand": "Montblanc",
-  "name": "Mont blac explorar",
+  "name": "Montblanc Explorer",
   "description": "Mont blac explorar is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Bergamot, Pink Pepper, Clary Sage, transitioning into a captivating heart of Haitian Vetiver and Leather, rested on a lingering base of Ambroxan, Akigalawood, Patchouli.",
   "vibe": "Italian Bergamot, Rich Leather, Haitian Vetiver & Ambroxan",
   "longevity": "8 – 10 Hours",
@@ -1988,7 +2045,7 @@ export const KNOWN_PERFUMES = [
 {
   "matches": ["armani code"],
   "brand": "Giorgio Armani",
-  "name": "Armani code",
+  "name": "Armani Code Eau de Parfum",
   "description": "Armani code is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Lemon, Bergamot, transitioning into a captivating heart of Star Anise and Olive Blossom, rested on a lingering base of Leather, Tonka Bean, Tobacco.",
   "vibe": "Olive Flower, Star Anise, Lemon Zest & Tonka Bean",
   "longevity": "7 – 9 Hours",
@@ -2403,8 +2460,8 @@ export const KNOWN_PERFUMES = [
     "jean lowe ombre",
     "omb d'or"
   ],
-  "brand": "Tom Ford",
-  "name": "Armaf omb d'or",
+  "brand": "Armaf",
+  "name": "Armaf Ombre D'Or",
   "description": "Ombré Leather is a deeply tactile floral leather fragrance driven by rich spices, cardamom, and sensual jasmine sambac over warm amber and patchouli.",
   "vibe": "Warm, Rich Leather & Floral Smoke",
   "longevity": "9 – 12 Hours",
@@ -2898,8 +2955,8 @@ export const KNOWN_PERFUMES = [
     "ombré leather",
     "omb d'or"
   ],
-  "brand": "Tom Ford",
-  "name": "Jean Lowe ombre",
+  "brand": "Maison Alhambra",
+  "name": "Maison Alhambra Jean Lowe Ombre",
   "description": "Ombré Leather is a deeply tactile floral leather fragrance driven by rich spices, cardamom, and sensual jasmine sambac over warm amber and patchouli.",
   "vibe": "Warm, Rich Leather & Floral Smoke",
   "longevity": "9 – 12 Hours",
@@ -3188,8 +3245,8 @@ export const KNOWN_PERFUMES = [
   "matches": [
     "liquid brun"
   ],
-  "brand": "Middle eastern",
-  "name": "Liquid Brun",
+  "brand": "French Avenue",
+  "name": "French Avenue Liquid Brun",
   "description": "Liquid Brun is a distinctive EDP Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Cinnamon, Cardamom, Orange Blossom, transitioning into a captivating heart of Bourbon Vanilla and Elemi, rested on a lingering base of Praline, Musk, Ambroxan.",
   "vibe": "Bourbon Vanilla, Candied Orange Blossom & Spiced Cardamom",
   "longevity": "10 – 12 Hours",
@@ -3665,22 +3722,48 @@ export const KNOWN_PERFUMES = [
  * Retrieve the most accurate profile for any perfume in the catalog
  */
 export function getPerfumeProfile(name = "") {
-  const cleanName = name.toLowerCase().trim();
+  const cleanName = String(name || "").toLowerCase().trim();
+  if (!cleanName) return KNOWN_PERFUMES[0];
 
-  // Try direct match from curated authentic database
+  // 1. Exact match on perfume name or exact match array element
   for (const entry of KNOWN_PERFUMES) {
-    if (entry.matches.some(m => cleanName.includes(m) || m.includes(cleanName))) {
+    if (entry.name && entry.name.toLowerCase().trim() === cleanName) {
+      return entry;
+    }
+    if (entry.matches && entry.matches.some((m) => m.toLowerCase().trim() === cleanName)) {
       return entry;
     }
   }
 
-  // Fallback to first matching brand or category if exact name differs
+  // 2. Specific multi-word match (longest match wins to prevent "sauvage" taking "sauvage elixir")
+  let bestMatch = null;
+  let bestLength = 0;
   for (const entry of KNOWN_PERFUMES) {
-    if (cleanName.includes(entry.brand.toLowerCase())) {
-      return entry;
+    if (!Array.isArray(entry.matches)) continue;
+    for (const m of entry.matches) {
+      const matchLower = m.toLowerCase().trim();
+      if (matchLower.length < 3) continue;
+      if (cleanName.includes(matchLower) || matchLower.includes(cleanName)) {
+        if (matchLower.length > bestLength) {
+          bestLength = matchLower.length;
+          bestMatch = entry;
+        }
+      }
     }
   }
 
-  // Default to first profile if not found
+  if (bestMatch) {
+    return bestMatch;
+  }
+
+  // 3. Fallback to brand match only if brand is a real house
+  for (const entry of KNOWN_PERFUMES) {
+    if (entry.brand && !["Designer", "Niche", "Middle eastern"].includes(entry.brand)) {
+      if (cleanName.includes(entry.brand.toLowerCase())) {
+        return entry;
+      }
+    }
+  }
+
   return KNOWN_PERFUMES[0];
 }

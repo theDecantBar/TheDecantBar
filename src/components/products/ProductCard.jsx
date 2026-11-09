@@ -94,9 +94,9 @@ function ProductCard({ product }) {
     ? selectedVariant.price
     : product.variants?.[0]?.price ?? product.price ?? 0;
 
-  const categoryLabel = (
-    product.category ||
+  const brandLabel = (
     product.brand ||
+    product.category ||
     "Fragrance"
   ).toUpperCase();
 
@@ -151,9 +151,9 @@ function ProductCard({ product }) {
 
         {/* Product Information */}
         <div className="flex flex-1 flex-col pt-3.5">
-          {/* Brand / Category */}
+          {/* Brand */}
           <p className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[#c6a15b]">
-            {categoryLabel}
+            {brandLabel}
           </p>
 
           {/* Product Name in Elegant Serif Typography (Semantic Accessibility Link) */}
