@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Search,
   X,
-  Sparkles,
+  Droplets,
   ShoppingBag,
   ArrowUpRight,
   TrendingUp,
@@ -452,7 +452,7 @@ export default function SearchModal({ isOpen, onClose }) {
             {/* 2. Loading State */}
             {query.trim() && loading && (
               <div className="py-12 text-center text-xs text-[#8e8a82]">
-                <Sparkles size={20} className="mx-auto mb-2 text-[#c6a15b] animate-spin" />
+                <Droplets size={20} className="mx-auto mb-2 text-[#c6a15b] animate-spin" />
                 <span>Searching catalog...</span>
               </div>
             )}

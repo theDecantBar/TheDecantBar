@@ -9,7 +9,8 @@ import {
   ArrowRight,
   ShoppingBag,
   ArrowLeft,
-  Sparkles,
+  Droplets,
+  Check,
   Lock,
   AlertCircle,
   Loader2,
@@ -682,7 +683,7 @@ export default function Checkout() {
                     </label>
                     <div className="flex">
                       <span
-                        className={`inline-flex items-center px-3 border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
+                        className={`inline-flex items-center px-3 rounded-l-xl border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
                           touched.phone && errors.phone
                             ? "border-red-500/80"
                             : "border-white/15"
@@ -892,7 +893,7 @@ export default function Checkout() {
                 <h2 className="font-display text-2xl text-[#f4efe6]">
                   3. Payment Method
                 </h2>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b] bg-[#c6a15b]/10 border border-[#c6a15b]/30">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b] bg-[#c6a15b]/10 border border-[#c6a15b]/30">
                   <Lock size={11} /> 100% Secure
                 </span>
               </div>
@@ -900,7 +901,7 @@ export default function Checkout() {
               <div className="space-y-4">
                 {/* Option 1: Cash on Delivery (COD) */}
                 <label
-                  className={`block cursor-pointer border p-5 transition-all ${
+                  className={`block cursor-pointer rounded-2xl border p-5 transition-all ${
                     formData.paymentMethod === "cod"
                       ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
                       : "border-white/10 bg-[#11110f]/70 hover:border-white/20"
@@ -926,7 +927,7 @@ export default function Checkout() {
                           <span className="text-xs font-semibold uppercase tracking-wider text-[#f4efe6]">
                             Cash on Delivery (COD)
                           </span>
-                          <span className="rounded border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-300 uppercase tracking-wider">
+                          <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-medium text-amber-300 uppercase tracking-wider">
                             Pay at Doorstep
                           </span>
                         </div>
@@ -944,7 +945,7 @@ export default function Checkout() {
 
                 {/* Option 2: Pay Online (Razorpay) */}
                 {onlinePaymentsEnabled && <label
-                  className={`block cursor-pointer border p-5 transition-all ${
+                  className={`block cursor-pointer rounded-2xl border p-5 transition-all ${
                     formData.paymentMethod === "online"
                       ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
                       : "border-white/10 bg-[#11110f]/70 hover:border-white/20"
@@ -970,7 +971,7 @@ export default function Checkout() {
                           <span className="text-xs font-semibold uppercase tracking-wider text-[#f4efe6]">
                             Pay Online (Razorpay)
                           </span>
-                          <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-300 uppercase tracking-wider">
+                          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-medium text-emerald-300 uppercase tracking-wider">
                             Instant Confirmation
                           </span>
                         </div>
@@ -979,16 +980,16 @@ export default function Checkout() {
                         </p>
 
                         <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             UPI / QR
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             Cards (Visa / Master / RuPay)
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             NetBanking
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             Wallets
                           </span>
                         </div>
@@ -1054,7 +1055,7 @@ export default function Checkout() {
               </div>
             ) : (
               <div className="rounded-2xl mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
-                <Sparkles size={14} className="text-emerald-400 shrink-0" />
+                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
             )}
@@ -1122,7 +1123,7 @@ export default function Checkout() {
                 <span>Leak-proof bubble wrapped secure dispatch</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Sparkles size={16} className="text-[#c6a15b] shrink-0" />
+                <Droplets size={16} className="text-[#c6a15b] shrink-0" />
                 <span>Fine-mist glass spray atomizers</span>
               </div>
             </div>

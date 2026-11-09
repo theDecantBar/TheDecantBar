@@ -7,7 +7,7 @@ import {
   ArrowRight,
   TrendingUp,
   Clock,
-  Sparkles,
+  Droplets,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchAdminStats } from "../../services/adminApi";
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
   if (error) {
     return (
-      <div className="border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+      <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
         <p>{error}</p>
       </div>
     );
@@ -115,13 +115,13 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-3">
           <Link
             to="/admin/products"
-            className="inline-flex items-center gap-2 border border-white/15 bg-[#171715] px-4 py-2.5 text-xs uppercase tracking-wider font-medium text-[#f4efe6] hover:bg-white/5 transition rounded-md"
+            className="inline-flex items-center gap-2 border border-white/15 bg-[#171715] px-4 py-2.5 text-xs uppercase tracking-wider font-medium text-[#f4efe6] hover:bg-white/5 transition rounded-xl"
           >
-            <Sparkles size={14} className="text-[#c6a15b]" /> Manage Perfumes
+            <Droplets size={14} className="text-[#c6a15b]" /> Manage Perfumes
           </Link>
           <Link
             to="/admin/orders"
-            className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-4 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition rounded-md shadow-md"
+            className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-4 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition rounded-xl shadow-md"
           >
             <Package size={14} /> Full Orders Queue
           </Link>
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
           return (
             <div
               key={idx}
-              className="p-6 rounded-xl border border-white/10 bg-[#171715] shadow-sm hover:border-[#c6a15b]/40 transition-all flex flex-col justify-between"
+              className="p-6 rounded-2xl border border-white/10 bg-[#171715] shadow-sm hover:border-[#c6a15b]/40 transition-all flex flex-col justify-between"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`p-2.5 rounded-lg ${card.iconBg}`}>
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Recent Orders Activity Feed */}
         <div className="lg:col-span-2">
-          <div className="rounded-xl border border-white/10 bg-[#171715] p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
               <div>
                 <h3 className="text-lg font-semibold text-[#f4efe6]">Recent Order Activity</h3>
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
                 {stats?.recentOrders?.map((ord) => (
                   <div
                     key={ord.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border border-white/5 bg-[#141412] hover:border-white/15 transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-white/5 bg-[#141412] hover:border-white/15 transition-colors"
                   >
                     <div className="flex items-center space-x-3.5">
                       <div className="p-2.5 rounded-lg bg-[#c6a15b]/10 text-[#c6a15b] shrink-0">
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
                         ₹{ord.total_amount}
                       </span>
                       <span
-                        className={`inline-block px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded ${ord.order_status === "Confirmed"
+                        className={`inline-block px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${ord.order_status === "Confirmed"
                             ? "bg-amber-400/10 text-amber-300 border border-amber-400/20"
                             : ord.order_status === "In Packaging"
                               ? "bg-blue-400/10 text-blue-300 border border-blue-400/20"
@@ -230,7 +230,7 @@ export default function AdminDashboard() {
 
         {/* Right Column: Fulfillment Quick Stats & Breakdown */}
         <div className="space-y-6">
-          <div className="rounded-xl border border-white/10 bg-[#171715] p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 shadow-sm">
             <h3 className="text-base font-semibold text-[#f4efe6] mb-4">
               Fulfillment Pipeline
             </h3>
@@ -297,18 +297,18 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-[#171715] p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 shadow-sm">
             <h3 className="text-base font-semibold text-[#f4efe6] mb-3">
               Inventory Health
             </h3>
             <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded bg-white/5">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5">
                 <span className="text-[#c5c1b9]">Low Stock Variants</span>
                 <span className={`font-semibold ${stats?.lowStockCount > 0 ? "text-rose-400" : "text-emerald-400"}`}>
                   {stats?.lowStockCount || 0} decants
                 </span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded bg-white/5">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5">
                 <span className="text-[#c5c1b9]">Out of Stock</span>
                 <span className="font-semibold text-rose-400">
                   {stats?.outOfStockCount || 0} variants
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
               </div>
               <Link
                 to="/admin/inventory"
-                className="mt-2 block text-center py-2 px-3 border border-[#c6a15b]/40 text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f] transition rounded text-xs uppercase tracking-wider font-medium"
+                className="mt-2 block text-center py-2 px-3 border border-[#c6a15b]/40 text-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f] transition rounded-xl text-xs uppercase tracking-wider font-medium"
               >
                 Open Inventory & Alert Hub →
               </Link>

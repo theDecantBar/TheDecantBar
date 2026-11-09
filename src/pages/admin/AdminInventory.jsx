@@ -360,7 +360,7 @@ export default function AdminInventory() {
                 targetStock: 10,
               })
             }
-            className="flex items-center gap-2 px-3.5 py-2 border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-500/20 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition cursor-pointer rounded-sm"
+            className="flex items-center gap-2 px-3.5 py-2 border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-500/20 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition cursor-pointer rounded-xl"
           >
             <Boxes size={14} />
             Restock All to 10
@@ -369,16 +369,16 @@ export default function AdminInventory() {
             type="button"
             onClick={refreshInventory}
             disabled={loading}
-            className="flex items-center gap-2 px-3.5 py-2 border border-white/15 bg-[#171715] hover:border-[#c6a15b] text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition cursor-pointer rounded-sm"
+            className="flex items-center gap-2 px-3.5 py-2 border border-white/15 bg-[#171715] hover:border-[#c6a15b] text-xs font-semibold uppercase tracking-wider text-[#f4efe6] transition cursor-pointer rounded-xl"
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
           <Link
             to="/admin/products"
-            className="flex items-center gap-2 px-3.5 py-2 border border-[#c6a15b] bg-[#c6a15b]/10 hover:bg-[#c6a15b] hover:text-[#11110f] text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition cursor-pointer rounded-sm"
+            className="flex items-center gap-2 px-3.5 py-2 border border-[#c6a15b] bg-[#c6a15b]/10 hover:bg-[#c6a15b] hover:text-[#11110f] text-xs font-semibold uppercase tracking-wider text-[#c6a15b] transition cursor-pointer rounded-xl"
           >
-            <Sparkles size={14} />
+            <Package size={14} />
             Full Catalog
           </Link>
         </div>
@@ -387,7 +387,7 @@ export default function AdminInventory() {
       {/* Global Feedback Banner */}
       {feedback && (
         <div
-          className={`p-4 text-xs flex items-center justify-between border rounded-sm transition-all ${
+          className={`p-4 text-xs flex items-center justify-between border rounded-2xl transition-all ${
             feedback.type === "success"
               ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
               : "bg-red-950/40 border-red-500/40 text-red-300"
@@ -407,10 +407,10 @@ export default function AdminInventory() {
       {/* Key Stock Performance Indicators (KPI Cards - 6 Core Metrics) */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
         {/* 1. Total Fragrances in Catalog */}
-        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-2xl">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
             <span className="uppercase tracking-wider text-[10px]">Total Perfumes</span>
-            <Sparkles size={15} className="text-[#c6a15b]" />
+            <Droplets size={15} className="text-[#c6a15b]" />
           </div>
           <p className="text-xl font-bold font-display text-[#f4efe6] mt-2">
             {products.length}
@@ -419,7 +419,7 @@ export default function AdminInventory() {
         </div>
 
         {/* 2. Total Decant Bottle Sizes */}
-        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-2xl">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
             <span className="uppercase tracking-wider text-[10px]">Decant Sizes</span>
             <Boxes size={15} className="text-[#c6a15b]" />
@@ -431,7 +431,7 @@ export default function AdminInventory() {
         </div>
 
         {/* 3. Total Stock */}
-        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-2xl">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
             <span className="uppercase tracking-wider text-[10px]">Total Stock</span>
             <Package size={15} className="text-[#c6a15b]" />
@@ -445,7 +445,7 @@ export default function AdminInventory() {
         {/* 4. Low Stock Alerts */}
         <div
           onClick={() => setActiveTab("low")}
-          className={`bg-[#171715] border p-4 rounded-sm transition cursor-pointer ${
+          className={`bg-[#171715] border p-4 rounded-2xl transition cursor-pointer ${
             activeTab === "low" ? "border-amber-500 bg-amber-950/20" : "border-amber-500/30 hover:border-amber-500/60"
           }`}
         >
@@ -462,7 +462,7 @@ export default function AdminInventory() {
         {/* 5. Out of Stock */}
         <div
           onClick={() => setActiveTab("out")}
-          className={`bg-[#171715] border p-4 rounded-sm transition cursor-pointer ${
+          className={`bg-[#171715] border p-4 rounded-2xl transition cursor-pointer ${
             activeTab === "out" ? "border-red-500 bg-red-950/20" : "border-red-500/30 hover:border-red-500/60"
           }`}
         >
@@ -477,7 +477,7 @@ export default function AdminInventory() {
         </div>
 
         {/* 6. Inventory Value */}
-        <div className="bg-[#171715] border border-white/10 p-4 rounded-sm">
+        <div className="bg-[#171715] border border-white/10 p-4 rounded-2xl">
           <div className="flex items-center justify-between text-xs text-[#c5c1b9]">
             <span className="uppercase tracking-wider text-[10px]">Stock Value</span>
             <DollarSign size={15} className="text-[#c6a15b]" />
@@ -492,7 +492,7 @@ export default function AdminInventory() {
       {/* Main Section: Quick Deductor + Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Quick Offline Sale Deductor (2 Cols) */}
-        <div className="lg:col-span-2 bg-[#171715] border border-[#c6a15b]/30 p-6 rounded-sm relative overflow-hidden">
+        <div className="lg:col-span-2 bg-[#171715] border border-[#c6a15b]/30 p-6 rounded-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 h-28 w-28 bg-[#c6a15b]/5 rounded-bl-full pointer-events-none" />
 
           <div className="flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] text-[#c6a15b] font-medium">
@@ -517,7 +517,7 @@ export default function AdminInventory() {
                     const p = products.find((prod) => String(prod.id) === e.target.value);
                     setSelectedVariantId(p?.variants?.[0]?.id ? String(p.variants[0].id) : "");
                   }}
-                  className="w-full h-11 px-3 bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
+                  className="w-full h-11 px-3 rounded-xl bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
                   required
                 >
                   <option value="">-- Choose Fragrance --</option>
@@ -538,7 +538,7 @@ export default function AdminInventory() {
                   value={selectedVariantId}
                   onChange={(e) => setSelectedVariantId(e.target.value)}
                   disabled={!activeProduct}
-                  className="w-full h-11 px-3 bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer disabled:opacity-40"
+                  className="w-full h-11 px-3 rounded-xl bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer disabled:opacity-40"
                   required
                 >
                   <option value="">-- Choose Size --</option>
@@ -553,7 +553,7 @@ export default function AdminInventory() {
 
             {/* Current Stock Preview Info Box */}
             {activeVariant && (
-              <div className="p-3 bg-[#11110f] border border-white/10 rounded flex items-center justify-between text-xs">
+              <div className="p-3 bg-[#11110f] border border-white/10 rounded-xl flex items-center justify-between text-xs">
                 <div>
                   <span className="text-[#8e8a82]">Current Stock for {activeProduct?.name} ({activeVariant.size_ml}ml):</span>{" "}
                   <strong className="text-[#f4efe6] font-semibold">{activeVariant.stock} bottles</strong>
@@ -576,7 +576,7 @@ export default function AdminInventory() {
                 <label className="block text-xs uppercase tracking-wider text-[#8e8a82] mb-1.5 font-medium">
                   Quantity Sold
                 </label>
-                <div className="flex h-11 items-center border border-white/15 bg-[#11110f]">
+                <div className="flex h-11 items-center border border-white/15 bg-[#11110f] rounded-xl overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setDeductQty((q) => Math.max(1, q - 1))}
@@ -610,7 +610,7 @@ export default function AdminInventory() {
                 <select
                   value={channel}
                   onChange={(e) => setChannel(e.target.value)}
-                  className="w-full h-11 px-3 bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
+                  className="w-full h-11 px-3 rounded-xl bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
                 >
                   <option value="WhatsApp">WhatsApp Order</option>
                   <option value="Instagram">Instagram DM</option>
@@ -630,7 +630,7 @@ export default function AdminInventory() {
                   placeholder="e.g. Aman, Delhi"
                   value={customerNote}
                   onChange={(e) => setCustomerNote(e.target.value)}
-                  className="w-full h-11 px-3 bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] placeholder-[#8e8a82]/50 focus:border-[#c6a15b] focus:outline-none"
+                  className="w-full h-11 px-3 rounded-xl bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] placeholder-[#8e8a82]/50 focus:border-[#c6a15b] focus:outline-none"
                 />
               </div>
             </div>
@@ -639,7 +639,7 @@ export default function AdminInventory() {
               <button
                 type="submit"
                 disabled={deducting || !activeVariant}
-                className="w-full sm:w-auto px-6 h-11 bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 h-11 rounded-xl bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs uppercase tracking-[0.2em] font-semibold transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {deducting ? (
                   <>
@@ -658,7 +658,7 @@ export default function AdminInventory() {
         </div>
 
         {/* Activity Feed: Recent Manual Deductions (1 Col) */}
-        <div className="bg-[#171715] border border-white/10 p-5 rounded-sm flex flex-col">
+        <div className="bg-[#171715] border border-white/10 p-5 rounded-2xl flex flex-col">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#c6a15b] font-medium">
               <History size={15} />
@@ -691,7 +691,7 @@ export default function AdminInventory() {
               recentDeductions.map((item) => (
                 <div
                   key={item.id}
-                  className="p-2.5 bg-[#11110f] border border-white/5 rounded text-left space-y-1"
+                  className="p-2.5 bg-[#11110f] border border-white/5 rounded-xl text-left space-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-[#f4efe6] truncate max-w-[170px]">
@@ -718,7 +718,7 @@ export default function AdminInventory() {
       </div>
 
       {/* Interactive Inventory Master Table */}
-      <div className="bg-[#171715] border border-white/10 rounded-sm">
+      <div className="bg-[#171715] border border-white/10 rounded-2xl overflow-hidden">
         {/* Table Controls & Tabs */}
         <div className="p-4 sm:p-5 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Tabs */}
@@ -726,7 +726,7 @@ export default function AdminInventory() {
             <button
               type="button"
               onClick={() => setActiveTab("all")}
-              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded transition cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer ${
                 activeTab === "all"
                   ? "bg-[#c6a15b] text-[#11110f]"
                   : "bg-white/5 text-[#c5c1b9] hover:bg-white/10"
@@ -738,7 +738,7 @@ export default function AdminInventory() {
             <button
               type="button"
               onClick={() => setActiveTab("low")}
-              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded transition cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "low"
                   ? "bg-amber-500 text-black"
                   : "bg-amber-500/10 text-amber-400 hover:bg-amber-500/20"
@@ -751,7 +751,7 @@ export default function AdminInventory() {
             <button
               type="button"
               onClick={() => setActiveTab("out")}
-              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded transition cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "out"
                   ? "bg-red-500 text-white"
                   : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
@@ -764,7 +764,7 @@ export default function AdminInventory() {
             <button
               type="button"
               onClick={() => setActiveTab("healthy")}
-              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded transition cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "healthy"
                   ? "bg-emerald-500 text-black"
                   : "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
@@ -786,7 +786,7 @@ export default function AdminInventory() {
               placeholder="Search perfume or size..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-9 pr-3 bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
+              className="w-full h-10 pl-9 pr-3 rounded-xl bg-[#11110f] border border-white/15 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
             />
           </div>
         </div>
@@ -834,7 +834,7 @@ export default function AdminInventory() {
                       {/* Fragrance Info */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 shrink-0 bg-[#11110f] border border-white/10 rounded flex items-center justify-center overflow-hidden">
+                          <div className="h-10 w-10 shrink-0 bg-[#11110f] border border-white/10 rounded-xl flex items-center justify-center overflow-hidden">
                             {row.imageUrl ? (
                               <img
                                 src={row.imageUrl}
@@ -858,7 +858,7 @@ export default function AdminInventory() {
 
                       {/* Decant Size */}
                       <td className="py-3.5 px-4">
-                        <span className="font-mono font-medium text-[#f4efe6] bg-white/5 px-2 py-1 rounded">
+                        <span className="font-mono font-medium text-[#f4efe6] bg-white/5 px-2 py-1 rounded-lg">
                           {row.sizeMl} ml
                         </span>
                       </td>
@@ -891,7 +891,7 @@ export default function AdminInventory() {
                       {/* Direct Editable Stepper with Safe Live Sync */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center justify-center gap-1.5">
-                          <div className="flex h-9 items-center border border-white/20 bg-[#11110f] rounded">
+                          <div className="flex h-9 items-center border border-white/20 bg-[#11110f] rounded-xl overflow-hidden">
                             <button
                               type="button"
                               title="Deduct 1 bottle (requires confirmation)"
@@ -952,7 +952,7 @@ export default function AdminInventory() {
                             title="Add 5 to stock (requires confirmation)"
                             disabled={isUpdating}
                             onClick={() => requestStockChange(row, 5)}
-                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded text-[11px] font-mono font-semibold transition cursor-pointer"
+                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +5
                           </button>
@@ -961,7 +961,7 @@ export default function AdminInventory() {
                             title="Add 10 to stock (requires confirmation)"
                             disabled={isUpdating}
                             onClick={() => requestStockChange(row, 10)}
-                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded text-[11px] font-mono font-semibold transition cursor-pointer"
+                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +10
                           </button>
@@ -988,7 +988,7 @@ export default function AdminInventory() {
       {/* Confirmation Modal for Stock Changes (+, -, +5, +10, Bulk All) */}
       {confirmModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl rounded-lg p-6 relative">
+          <div className="w-full max-w-md border border-[#c6a15b]/40 bg-[#151512] shadow-2xl rounded-2xl p-6 relative">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-full bg-[#c6a15b]/10 text-[#c6a15b] border border-[#c6a15b]/30 shrink-0">
                 <Boxes size={24} />
@@ -1004,7 +1004,7 @@ export default function AdminInventory() {
             </div>
 
             {!confirmModal.isBulkAll && (
-              <div className="mt-4 p-3.5 border border-white/10 bg-[#11110f] rounded space-y-2 text-xs">
+              <div className="mt-4 p-3.5 border border-white/10 bg-[#11110f] rounded-xl space-y-2 text-xs">
                 <div className="flex justify-between text-[#8e8a82]">
                   <span>Perfume:</span>
                   <span className="font-semibold text-[#f4efe6] text-right truncate max-w-[200px]">
@@ -1040,7 +1040,7 @@ export default function AdminInventory() {
             )}
 
             {confirmModal.isBulkAll && (
-              <div className="mt-4 p-3.5 border border-amber-500/20 bg-amber-950/20 rounded text-xs text-amber-200/90 space-y-1.5">
+              <div className="mt-4 p-3.5 border border-amber-500/20 bg-amber-950/20 rounded-xl text-xs text-amber-200/90 space-y-1.5">
                 <p className="font-semibold text-amber-300">Catalog-Wide Synchronization</p>
                 <p>
                   This will safely set the stock of <strong>all 323 bottle variants</strong> across all 99 perfumes to <strong>10 units</strong> directly in the database.
@@ -1056,7 +1056,7 @@ export default function AdminInventory() {
                 type="button"
                 disabled={modalLoading}
                 onClick={() => setConfirmModal({ isOpen: false })}
-                className="px-4 py-2 border border-white/15 hover:bg-white/5 text-xs text-[#c5c1b9] rounded font-medium transition cursor-pointer disabled:opacity-50"
+                className="px-4 py-2 border border-white/15 hover:bg-white/5 text-xs text-[#c5c1b9] rounded-xl font-medium transition cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1064,7 +1064,7 @@ export default function AdminInventory() {
                 type="button"
                 disabled={modalLoading}
                 onClick={handleConfirmRestock}
-                className="flex items-center gap-2 px-5 py-2 bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs font-semibold rounded transition cursor-pointer disabled:opacity-50 shadow-md"
+                className="flex items-center gap-2 px-5 py-2 bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] text-xs font-semibold rounded-xl transition cursor-pointer disabled:opacity-50 shadow-md"
               >
                 {modalLoading ? (
                   <>
@@ -1087,7 +1087,7 @@ export default function AdminInventory() {
       {feedback && (
         <div className="fixed bottom-6 right-6 z-50 max-w-sm animate-in slide-in-from-bottom-5 duration-300">
           <div
-            className={`p-4 border rounded shadow-2xl flex items-start gap-3 ${
+            className={`p-4 border rounded-2xl shadow-2xl flex items-start gap-3 ${
               feedback.type === "success"
                 ? "bg-[#171715] border-emerald-500/60 text-emerald-300"
                 : "bg-[#171715] border-red-500/60 text-red-300"

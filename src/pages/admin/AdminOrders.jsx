@@ -189,7 +189,7 @@ export default function AdminOrders() {
               key={status}
               type="button"
               onClick={() => setSelectedStatus(status)}
-              className={`px-4 py-2 text-xs uppercase tracking-wider font-medium transition cursor-pointer border ${
+              className={`rounded-xl px-4 py-2 text-xs uppercase tracking-wider font-medium transition cursor-pointer border ${
                 selectedStatus === status
                   ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
                   : "border-white/10 bg-[#171715] text-[#c5c1b9] hover:border-white/20"
@@ -213,12 +213,12 @@ export default function AdminOrders() {
               placeholder="Search order number, customer, or Razorpay reference"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
+              className="w-full rounded-2xl bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="border border-[#c6a15b] bg-[#c6a15b] px-5 py-3 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition cursor-pointer"
+            className="rounded-2xl border border-[#c6a15b] bg-[#c6a15b] px-5 py-3 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition cursor-pointer"
           >
             Search
           </button>
@@ -234,11 +234,11 @@ export default function AdminOrders() {
           </p>
         </div>
       ) : error ? (
-        <div className="border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
           <p>{error}</p>
         </div>
       ) : orders.length === 0 ? (
-        <div className="border border-white/10 bg-[#171715] p-12 text-center text-[#8e8a82]">
+        <div className="rounded-2xl border border-white/10 bg-[#171715] p-12 text-center text-[#8e8a82]">
           <Package size={36} strokeWidth={1.2} className="mx-auto text-[#c6a15b] mb-3" />
           <p className="text-sm text-[#f4efe6]">No orders found for this filter.</p>
           <p className="text-xs mt-1">Try switching tabs or resetting your search term.</p>
@@ -254,7 +254,7 @@ export default function AdminOrders() {
             return (
               <div
                 key={order.id}
-                className="border border-white/10 bg-[#171715] transition-all hover:border-white/20"
+                className="rounded-2xl overflow-hidden border border-white/10 bg-[#171715] transition-all hover:border-white/20"
               >
                 {/* Order Summary Bar */}
                 <div className="p-5 lg:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/5">
@@ -264,7 +264,7 @@ export default function AdminOrders() {
                         #{order.order_number}
                       </span>
                       <span
-                        className={`px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded ${
+                        className={`px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full ${
                           order.order_status === "Confirmed"
                             ? "bg-amber-400/10 text-amber-300 border border-amber-400/20"
                             : order.order_status === "In Packaging"
@@ -313,7 +313,7 @@ export default function AdminOrders() {
                       type="button"
                       aria-expanded={isExpanded}
                       onClick={() => toggleExpand(order.id)}
-                      className="inline-flex items-center gap-1.5 border border-white/15 bg-white/5 px-3 py-2 text-xs uppercase tracking-wider text-[#f4efe6] hover:bg-white/10 transition cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs uppercase tracking-wider text-[#f4efe6] hover:bg-white/10 transition cursor-pointer"
                     >
                       {isExpanded ? (
                         <>
@@ -368,7 +368,7 @@ export default function AdminOrders() {
                   <div className="p-6 bg-[#141412] border-t border-white/5 space-y-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {/* Customer Address Details */}
-                      <div className="border border-white/5 bg-[#171715] p-4 text-xs space-y-2">
+                      <div className="rounded-xl border border-white/5 bg-[#171715] p-4 text-xs space-y-2">
                         <p className="uppercase tracking-wider text-[11px] font-semibold text-[#c6a15b] flex items-center gap-1.5">
                           <MapPin size={14} /> Shipping Destination
                         </p>
@@ -395,7 +395,7 @@ export default function AdminOrders() {
                       </div>
 
                       {/* Items Ordered List */}
-                      <div className="lg:col-span-2 border border-white/5 bg-[#171715] p-4 text-xs space-y-3">
+                      <div className="lg:col-span-2 rounded-xl border border-white/5 bg-[#171715] p-4 text-xs space-y-3">
                         <p className="uppercase tracking-wider text-[11px] font-semibold text-[#c6a15b] flex items-center gap-1.5">
                           <Package size={14} /> Decants In Package ({order.items?.length || 0})
                         </p>
@@ -408,10 +408,10 @@ export default function AdminOrders() {
                                   <img
                                     src={item.image_url}
                                     alt={item.name}
-                                    className="h-10 w-10 object-contain bg-[#11110f] p-1 border border-white/10"
+                                    className="h-10 w-10 rounded-lg object-contain bg-[#11110f] p-1 border border-white/10"
                                   />
                                 ) : (
-                                  <div className="h-10 w-10 bg-[#11110f] border border-white/10 flex items-center justify-center text-[10px] text-[#8e8a82]">
+                                  <div className="h-10 w-10 rounded-lg bg-[#11110f] border border-white/10 flex items-center justify-center text-[10px] text-[#8e8a82]">
                                     {item.size_ml}ml
                                   </div>
                                 )}
@@ -482,7 +482,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border border-[#c6a15b]/30 bg-[#171715] p-5 text-xs space-y-4"
+      className="rounded-xl border border-[#c6a15b]/30 bg-[#171715] p-5 text-xs space-y-4"
     >
       <div className="flex items-center justify-between">
         <p className="uppercase tracking-wider font-semibold text-[#f4efe6] flex items-center gap-2">
@@ -504,7 +504,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+            className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
           >
             <option value="Confirmed">Confirmed</option>
             <option value="In Packaging">In Packaging</option>
@@ -526,7 +526,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
             value={courier}
             onChange={(e) => setCourier(e.target.value)}
             placeholder="e.g. Delhivery / Blue Dart"
-            className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+            className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
           />
           <datalist id={`couriers-${order.id}`}>
             {COURIER_PRESETS.map((c) => (
@@ -545,7 +545,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
             value={tracking}
             onChange={(e) => setTracking(e.target.value)}
             placeholder="e.g. 1423859201"
-            className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+            className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
           />
         </div>
       </div>
@@ -554,7 +554,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
         <button
           type="submit"
           disabled={isUpdating}
-          className="border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-md"
+          className="rounded-xl border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer shadow-md"
         >
           {isUpdating ? "Saving Changes..." : "Update Shipment Details"}
         </button>

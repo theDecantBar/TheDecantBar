@@ -8,13 +8,13 @@ import {
   Minus,
   ArrowLeft,
   ShieldCheck,
-  Sparkles,
   Droplets,
   Crown,
   Snowflake,
   Sun,
   Leaf,
   Flame,
+  Wind,
   ArrowRight,
   Bell,
   XCircle,
@@ -378,7 +378,7 @@ export default function ProductDetail() {
   const weatherLower = (product.weather || "").toLowerCase();
 
   const SeasonIcon = weatherLower.includes("all")
-    ? Sparkles
+    ? Droplets
     : weatherLower.includes("winter")
     ? Snowflake
     : weatherLower.includes("summer")
@@ -420,7 +420,7 @@ export default function ProductDetail() {
                 alt={product.name}
                 aspectRatio="aspect-[4/5]"
                 paddingClassName="p-[15px]"
-                containerClassName="rounded-lg shadow-xl"
+                containerClassName="rounded-2xl shadow-xl"
               >
                 {isSoldOut && (
                   <div className="rounded-2xl absolute right-4 top-4 z-10 border border-red-800/70 bg-red-950/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-red-300 shadow-lg backdrop-blur-md">
@@ -441,7 +441,7 @@ export default function ProductDetail() {
               </div>
 
               <div className="rounded-2xl flex items-center gap-2 border border-white/10 bg-[#151512] p-3">
-                <Sparkles
+                <Droplets
                   size={16}
                   className="shrink-0 text-[#c6a15b]"
                 />
@@ -504,7 +504,7 @@ export default function ProductDetail() {
                 </div>
 
                 {selectedVariant && (
-                  <span className="rounded border border-[#c6a15b]/30 bg-[#c6a15b]/10 px-2 py-0.5 text-right text-[11px] font-medium text-[#c6a15b] sm:text-xs">
+                  <span className="rounded-full border border-[#c6a15b]/30 bg-[#c6a15b]/10 px-2.5 py-0.5 text-right text-[11px] font-medium text-[#c6a15b] sm:text-xs">
                     {quantity > 1 ? `${quantity} × ` : ""}
                     {selectedVariant.size_ml}ml Decant Atomizer
                   </span>
@@ -779,7 +779,7 @@ export default function ProductDetail() {
                   {/* Projection */}
                   <div className="rounded-2xl border border-white/10 bg-[#171715] p-2.5">
                     <div className="mb-1 flex items-center gap-1.5 text-[#8e8a82]">
-                      <Sparkles size={13} className="shrink-0 text-[#c6a15b]" />
+                      <Wind size={13} className="shrink-0 text-[#c6a15b]" />
                       <span className="text-[10px] uppercase tracking-wider sm:text-[11px]">Projection</span>
                     </div>
                     <p className="truncate font-medium text-[#c6a15b]">

@@ -161,7 +161,7 @@ function ProductCard({ product }) {
             to={`/product/${product.id}`}
             onClick={handleProductClick}
             aria-label={`View ${product.name} details`}
-            className="mt-1 block rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
+            className="mt-1 block rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c6a15b]"
           >
             <h2 className="font-display text-[18px] sm:text-[20px] font-normal leading-[1.25] text-[#f4efe6] line-clamp-2 min-h-[46px] sm:min-h-[50px] transition-colors group-hover:text-[#c6a15b]">
               {product.name}

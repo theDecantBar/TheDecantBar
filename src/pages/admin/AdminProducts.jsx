@@ -10,7 +10,7 @@ import {
 } from "../../services/adminApi";
 import { getPerfumeProfile, KNOWN_PERFUMES } from "../../data/perfumeNotes";
 
-const CATEGORIES = ["Designer", "Niche", "Middle Eastern", "Fresh", "Woody", "Oriental", "Gourmand"];
+const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
 const GENDERS = ["Men", "Women", "Unisex"];
 const CONCENTRATIONS = ["EDP", "EDT", "Extrait de Parfum", "Parfum", "Elixir", "EDC", "Eau Fraiche"];
 const SEASON_CHIPS = ["Winter", "Summer", "All-Season"];
@@ -268,9 +268,9 @@ function TagInput({ label, tags, onChange, placeholder }) {
   return (
     <div>
       <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">{label}</label>
-      <div className="min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border border-white/15 px-2.5 py-2 focus-within:border-[#c6a15b] transition-colors">
+      <div className="min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border border-white/15 px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors">
         {tags.map((tag) => (
-          <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded">
+          <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
             {tag}
             <button type="button" onClick={() => removeTag(tag)} className="text-[#c6a15b] hover:text-red-400 cursor-pointer"><X size={10} /></button>
           </span>
@@ -340,7 +340,7 @@ function BrandAutocompleteInput({ value, onChange, existingBrands = [] }) {
           onChange={handleInputChange}
           onFocus={() => setIsOpen(true)}
           placeholder="e.g. Creed / Dior / Tom Ford (or type custom)"
-          className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-16"
+          className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-16"
         />
         <div className="absolute right-2 flex items-center gap-1">
           {query && (
@@ -369,7 +369,7 @@ function BrandAutocompleteInput({ value, onChange, existingBrands = [] }) {
       </div>
 
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-60 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded py-1 text-xs divide-y divide-white/5">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-60 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded-xl py-1 text-xs divide-y divide-white/5">
           <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-[#8e8a82] bg-black/40 flex items-center justify-between">
             <span>Popular Brands ({filteredBrands.length})</span>
             {query && <span className="text-[#c6a15b] lowercase">matches "{query}"</span>}
@@ -452,10 +452,10 @@ function FragranceNameInput({ value, onChange, onSelectCatalogPerfume }) {
         }}
         onFocus={() => setIsOpen(true)}
         placeholder="e.g. Aventus / Sauvage / 1 Million"
-        className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+        className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
       />
       {isOpen && suggestions.length > 0 && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-56 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded py-1 text-xs divide-y divide-white/5">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-40 max-h-56 overflow-y-auto bg-[#171715] border border-white/20 shadow-2xl rounded-xl py-1 text-xs divide-y divide-white/5">
           <div className="px-3 py-1 text-[10px] uppercase tracking-wider text-[#8e8a82] bg-black/40">
             Catalog Matches (Click to auto-fill)
           </div>
@@ -474,7 +474,7 @@ function FragranceNameInput({ value, onChange, onSelectCatalogPerfume }) {
                 {p.brand && <span className="text-[10px] text-[#8e8a82] ml-2">({p.brand})</span>}
               </div>
               <span className="text-[10px] text-[#c6a15b] flex items-center gap-1 font-medium">
-                <Sparkles size={11} /> Auto-fill
+                <Check size={11} /> Auto-fill
               </span>
             </button>
           ))}
@@ -491,12 +491,12 @@ function AccordRow({ accord, index, onChange, onRemove }) {
     : { name: String(accord || ""), percentage: 60, color: "#c6a15b" };
 
   return (
-    <div className="flex items-center gap-2.5 bg-[#171715] border border-white/5 p-2.5 rounded transition-all duration-200">
+    <div className="flex items-center gap-2.5 bg-[#171715] border border-white/5 p-2.5 rounded-xl transition-all duration-200">
       <input
         type="color"
         value={safeAccord.color || "#c6a15b"}
         onChange={(e) => onChange(index, "color", e.target.value)}
-        className="w-7 h-7 rounded cursor-pointer border-0 bg-transparent p-0 shrink-0"
+        className="w-7 h-7 rounded-lg cursor-pointer border-0 bg-transparent p-0 shrink-0"
         title="Accord bar colour"
       />
       <input
@@ -504,7 +504,7 @@ function AccordRow({ accord, index, onChange, onRemove }) {
         value={safeAccord.name || ""}
         onChange={(e) => onChange(index, "name", e.target.value)}
         placeholder="e.g. Tobacco / Amber"
-        className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded min-w-[80px]"
+        className="flex-1 bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded-lg min-w-[80px]"
       />
       <div className="flex items-center gap-2 shrink-0">
         <input
@@ -522,7 +522,7 @@ function AccordRow({ accord, index, onChange, onRemove }) {
         <button
           type="button"
           onClick={() => onRemove(index)}
-          className="text-red-400 hover:text-red-300 p-1.5 hover:bg-red-500/15 rounded transition cursor-pointer shrink-0 ml-1"
+          className="text-red-400 hover:text-red-300 p-1.5 hover:bg-red-500/15 rounded-lg transition cursor-pointer shrink-0 ml-1"
           title="Remove accord"
         >
           <Trash2 size={14} />
@@ -589,7 +589,7 @@ function WhenToWearSliders({ values, onChange }) {
               key={p.label}
               type="button"
               onClick={() => applyPreset(p.data)}
-              className="px-2.5 py-2 text-left bg-white/5 hover:bg-[#c6a15b]/15 border border-white/10 hover:border-[#c6a15b]/40 rounded transition cursor-pointer group"
+              className="px-2.5 py-2 text-left bg-white/5 hover:bg-[#c6a15b]/15 border border-white/10 hover:border-[#c6a15b]/40 rounded-xl transition cursor-pointer group"
             >
               <div className="text-[11px] font-medium text-[#f4efe6] group-hover:text-[#c6a15b]">
                 {p.label}
@@ -608,7 +608,7 @@ function WhenToWearSliders({ values, onChange }) {
           return (
             <div
               key={key}
-              className={`p-2.5 rounded border transition-colors ${isHigh
+              className={`p-2.5 rounded-xl border transition-colors ${isHigh
                   ? "bg-[#c6a15b]/10 border-[#c6a15b]/40"
                   : "bg-[#11110f] border-white/10"
                 }`}
@@ -622,7 +622,7 @@ function WhenToWearSliders({ values, onChange }) {
                 >
                   <span>{label}</span>
                   <span
-                    className={`text-[9px] px-1 py-0.2 rounded font-semibold ${isHigh
+                    className={`text-[9px] px-1.5 py-0.5 rounded-full font-semibold ${isHigh
                         ? "bg-[#c6a15b] text-[#11110f]"
                         : "bg-white/10 text-[#8e8a82]"
                       }`}
@@ -663,7 +663,7 @@ function CollapsibleSection({ title, subtitle, children, defaultOpen = false, ba
   };
 
   return (
-    <div className="border border-white/10 rounded overflow-hidden">
+    <div className="border border-white/10 rounded-2xl overflow-hidden">
       <button
         type="button"
         onClick={toggle}
@@ -671,7 +671,7 @@ function CollapsibleSection({ title, subtitle, children, defaultOpen = false, ba
       >
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b]">{title}</span>
-          {badge && <span className="text-[10px] px-1.5 py-0.5 bg-[#c6a15b]/20 text-[#c6a15b] rounded font-medium">{badge}</span>}
+          {badge && <span className="text-[10px] px-2 py-0.5 bg-[#c6a15b]/20 text-[#c6a15b] rounded-full font-medium">{badge}</span>}
           {subtitle && <span className="text-[10px] text-[#8e8a82] hidden sm:inline">{subtitle}</span>}
         </div>
         {open ? <ChevronUp size={14} className="text-[#8e8a82] shrink-0" /> : <ChevronDown size={14} className="text-[#8e8a82] shrink-0" />}
@@ -793,7 +793,7 @@ export default function AdminProducts() {
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-5 py-3 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition cursor-pointer shadow-md"
+          className="rounded-2xl inline-flex items-center gap-2 border border-[#c6a15b] bg-[#c6a15b] px-6 py-3 text-xs uppercase tracking-wider font-semibold text-[#11110f] hover:bg-[#d8c08a] transition cursor-pointer shadow-md"
         >
           <Plus size={16} /> Add Fragrance
         </button>
@@ -811,18 +811,18 @@ export default function AdminProducts() {
             placeholder="Search by perfume name or brand..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none"
+            className="w-full rounded-2xl bg-[#171715] border border-white/10 pl-11 pr-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] focus:border-[#c6a15b] focus:outline-none transition"
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {["All", ...CATEGORIES].map((cat) => (
             <button
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition cursor-pointer border ${selectedCategory === cat
-                ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold"
+              className={`rounded-xl px-4 py-2.5 text-xs uppercase tracking-wider font-medium transition cursor-pointer border ${selectedCategory === cat
+                ? "border-[#c6a15b] bg-[#c6a15b] text-[#11110f] font-semibold shadow-sm"
                 : "border-white/10 bg-[#171715] text-[#c5c1b9] hover:border-white/20"
                 }`}
             >
@@ -841,16 +841,16 @@ export default function AdminProducts() {
           </p>
         </div>
       ) : error ? (
-        <div className="border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
           <p>{error}</p>
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div className="border border-white/10 bg-[#171715] p-12 text-center text-[#8e8a82]">
-          <Sparkles size={36} strokeWidth={1.2} className="mx-auto text-[#c6a15b] mb-3" />
+        <div className="rounded-2xl border border-white/10 bg-[#171715] p-12 text-center text-[#8e8a82]">
+          <Package size={36} strokeWidth={1.2} className="mx-auto text-[#c6a15b] mb-3" />
           <p className="text-sm text-[#f4efe6]">No perfumes found.</p>
         </div>
       ) : (
-        <div className="border border-white/10 bg-[#171715] overflow-x-auto">
+        <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#171715] overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-white/10 text-[11px] uppercase tracking-wider text-[#8e8a82]">
@@ -870,7 +870,7 @@ export default function AdminProducts() {
                   <tr key={p.id} className="hover:bg-white/[0.02] transition">
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-3">
-                        {p.image_url && <img src={p.image_url} alt={p.name} className="w-9 h-9 object-contain rounded border border-white/10 bg-black/30" />}
+                        {p.image_url && <img src={p.image_url} alt={p.name} className="w-9 h-9 object-contain rounded-lg border border-white/10 bg-black/30" />}
                         <div>
                           <p className="font-semibold text-[#f4efe6]">{p.name}</p>
                           {p.vibe && <p className="text-[10px] text-[#8e8a82] italic mt-0.5 max-w-[180px] truncate">{p.vibe}</p>}
@@ -889,7 +889,7 @@ export default function AdminProducts() {
                       {topNotes.length > 0 ? (
                         <div className="flex flex-wrap gap-1">
                           {topNotes.slice(0, 3).map((n) => (
-                            <span key={n} className="text-[10px] px-1.5 py-0.5 bg-[#c6a15b]/10 border border-[#c6a15b]/20 text-[#c6a15b] rounded">{n}</span>
+                            <span key={n} className="text-[10px] px-2 py-0.5 bg-[#c6a15b]/10 border border-[#c6a15b]/20 text-[#c6a15b] rounded-full">{n}</span>
                           ))}
                           {topNotes.length > 3 && <span className="text-[10px] text-[#8e8a82]">+{topNotes.length - 3}</span>}
                         </div>
@@ -1214,7 +1214,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/85 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-3xl bg-[#171715] border border-white/15 p-6 lg:p-8 text-xs my-4">
+      <div className="relative w-full max-w-3xl bg-[#171715] border border-white/15 p-6 lg:p-8 text-xs my-4 rounded-2xl">
         {/* Pinned Top-Right Close Button */}
         <button
           type="button"
@@ -1234,17 +1234,17 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             <button
               type="button"
               onClick={handleToggleAll}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-[#c5c1b9] hover:text-[#f4efe6] bg-white/5 hover:bg-white/10 border border-white/15 rounded transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-[#c5c1b9] hover:text-[#f4efe6] bg-white/5 hover:bg-white/10 border border-white/15 rounded-xl transition cursor-pointer"
             >
               <span>{allExpanded ? "Collapse Sections" : "Expand All Sections"}</span>
             </button>
             <button
               type="button"
               onClick={handleAutoFillFromCatalog}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded-xl transition cursor-pointer"
               title="Auto-fill fragrance notes, accords, and performance from standard database"
             >
-              <Sparkles size={13} />
+              <Droplets size={13} />
               <span>Auto-Fill Standard Notes</span>
             </button>
           </div>
@@ -1308,7 +1308,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                         setFormData((prev) => ({ ...prev, category: e.target.value }));
                       }
                     }}
-                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c} className="bg-[#171715]">{c}</option>
@@ -1321,14 +1321,14 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                     value={formData.category}
                     onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
                     placeholder="e.g. Gourmand / Aquatic"
-                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                     autoFocus
                   />
                 )}
               </div>
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Target Gender</label>
-                <select value={formData.gender} onChange={(e) => setFormData({ ...formData, gender: e.target.value })} className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
+                <select value={formData.gender} onChange={(e) => setFormData({ ...formData, gender: e.target.value })} className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
                   {GENDERS.map((g) => <option key={g} value={g} className="bg-[#171715]">{g}</option>)}
                 </select>
               </div>
@@ -1362,7 +1362,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                         setFormData((prev) => ({ ...prev, type: e.target.value }));
                       }
                     }}
-                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                   >
                     {CONCENTRATIONS.map((c) => (
                       <option key={c} value={c} className="bg-[#171715]">{c}</option>
@@ -1375,7 +1375,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                     value={formData.type}
                     onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value }))}
                     placeholder="e.g. Absolu / Cologne Intense"
-                    className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
+                    className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none"
                     autoFocus
                   />
                 )}
@@ -1384,32 +1384,32 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Weather / Season</label>
-                <input type="text" value={formData.weather} onChange={(e) => setFormData({ ...formData, weather: e.target.value })} placeholder="e.g. Winter / Summer" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                <input type="text" value={formData.weather} onChange={(e) => setFormData({ ...formData, weather: e.target.value })} placeholder="e.g. Winter / Summer" className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {SEASON_CHIPS.map((chip) => {
                     const active = isSeasonActive(formData.weather, chip);
-                    return <button key={chip} type="button" onClick={() => setFormData((prev) => ({ ...prev, weather: toggleSeasonInString(prev.weather, chip) }))} className={`text-[10px] px-2 py-1 rounded border transition-colors cursor-pointer ${active ? "bg-[#c6a15b]/20 border-[#c6a15b] text-[#f4efe6] font-medium" : "bg-white/5 border-white/10 text-[#8e8a82] hover:border-white/20"}`}>{active ? `✓ ${chip}` : `+ ${chip}`}</button>;
+                    return <button key={chip} type="button" onClick={() => setFormData((prev) => ({ ...prev, weather: toggleSeasonInString(prev.weather, chip) }))} className={`text-[10px] px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${active ? "bg-[#c6a15b]/20 border-[#c6a15b] text-[#f4efe6] font-medium" : "bg-white/5 border-white/10 text-[#8e8a82] hover:border-white/20"}`}>{active ? `✓ ${chip}` : `+ ${chip}`}</button>;
                   })}
                 </div>
               </div>
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Full Bottle Reference Price (₹)</label>
-                <input type="number" value={formData.fullBottlePrice} onChange={(e) => setFormData({ ...formData, fullBottlePrice: e.target.value })} placeholder="e.g. 28000" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                <input type="number" value={formData.fullBottlePrice} onChange={(e) => setFormData({ ...formData, fullBottlePrice: e.target.value })} placeholder="e.g. 28000" className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
                 <p className="text-[10px] text-[#8e8a82] mt-1.5">Original retail price for savings comparison.</p>
               </div>
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] font-medium">Bottle Image</label>
-                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingImage} className="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer disabled:opacity-50">
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingImage} className="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/10 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded-xl transition cursor-pointer disabled:opacity-50">
                   {uploadingImage ? <><Loader2 size={12} className="animate-spin" /><span>Uploading...</span></> : <><Upload size={12} /><span>Browse File</span></>}
                 </button>
               </div>
               <input type="file" ref={fileInputRef} onChange={handleFileSelect} accept="image/*" className="hidden" />
               <div className="flex items-center gap-3">
-                {formData.imageUrl && <div className="w-11 h-11 shrink-0 border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center rounded"><img src={formData.imageUrl} alt="Preview" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = "none"; }} /></div>}
+                {formData.imageUrl && <div className="w-11 h-11 shrink-0 border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center rounded-xl"><img src={formData.imageUrl} alt="Preview" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = "none"; }} /></div>}
                 <div className="relative flex-1">
-                  <input type="text" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} placeholder="/images/perfumes/aventus.png or paste URL" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-8" />
+                  <input type="text" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} placeholder="/images/perfumes/aventus.png or paste URL" className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-8" />
                   {formData.imageUrl && <button type="button" onClick={() => setFormData({ ...formData, imageUrl: "" })} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"><X size={14} /></button>}
                 </div>
               </div>
@@ -1417,7 +1417,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             </div>
             <div>
               <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">Description / Scent Profile</label>
-              <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Describe the fragrance character, opening, heart, and dry-down..." className="w-full bg-[#11110f] border border-white/15 p-3 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+              <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Describe the fragrance character, opening, heart, and dry-down..." className="w-full rounded-xl bg-[#11110f] border border-white/15 p-3 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
             </div>
           </CollapsibleSection>
 
@@ -1434,10 +1434,10 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
               <button
                 type="button"
                 onClick={handleAutoFillFromCatalog}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/15 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded transition cursor-pointer self-start sm:self-auto shrink-0"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-[#c6a15b] hover:text-[#11110f] bg-[#c6a15b]/15 hover:bg-[#c6a15b] border border-[#c6a15b]/30 rounded-xl transition cursor-pointer self-start sm:self-auto shrink-0"
                 title="Fill notes and accords automatically from standard perfume database"
               >
-                <Sparkles size={12} />
+                <Droplets size={12} />
                 <span>Auto-Fill Notes for "{formData.name || product?.name || 'Perfume'}"</span>
               </button>
             </div>
@@ -1459,13 +1459,13 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             </p>
 
             {/* Quick Add Preset Accords */}
-            <div className="p-3.5 bg-white/5 rounded border border-white/10 space-y-3">
+            <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
                     Quick Add / Toggle Accords:
                   </span>
-                  <span className="text-[10px] bg-[#c6a15b]/20 text-[#c6a15b] px-2 py-0.5 rounded font-mono font-medium">
+                  <span className="text-[10px] bg-[#c6a15b]/20 text-[#c6a15b] px-2 py-0.5 rounded-full font-mono font-medium">
                     {accords.length} selected
                   </span>
                 </div>
@@ -1477,7 +1477,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                     value={accordSearch}
                     onChange={(e) => setAccordSearch(e.target.value)}
                     placeholder="Filter accords (e.g. tobacco, fresh)..."
-                    className="w-full bg-[#11110f] border border-white/15 px-2.5 py-1 text-[11px] text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none rounded pr-6"
+                    className="w-full rounded-xl bg-[#11110f] border border-white/15 px-2.5 py-1 text-[11px] text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none pr-6"
                   />
                   {accordSearch && (
                     <button
@@ -1503,7 +1503,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                         setAccordCategory(cat.id);
                         setAccordSearch("");
                       }}
-                      className={`text-[10px] px-2.5 py-1 rounded transition cursor-pointer font-medium ${isActive
+                      className={`text-[10px] px-2.5 py-1 rounded-xl transition cursor-pointer font-medium ${isActive
                           ? "bg-[#c6a15b] text-[#11110f] font-semibold shadow-sm"
                           : "bg-white/5 hover:bg-white/10 text-[#8e8a82] hover:text-[#f4efe6]"
                         }`}
@@ -1541,7 +1541,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                             ]);
                           }
                         }}
-                        className={`text-[11px] px-2.5 py-1 rounded transition cursor-pointer flex items-center gap-1.5 border font-medium ${isSelected
+                        className={`text-[11px] px-2.5 py-1 rounded-xl transition cursor-pointer flex items-center gap-1.5 border font-medium ${isSelected
                             ? "bg-[#c6a15b] text-[#11110f] border-[#c6a15b] shadow-sm font-semibold"
                             : "bg-[#171715] hover:bg-[#c6a15b]/20 text-[#c5c1b9] hover:text-[#c6a15b] border-white/10 hover:border-[#c6a15b]/40"
                           }`}
@@ -1566,7 +1566,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
 
             {/* Live Bar Chart Preview (Auto-arranged Highest % on Top) */}
             {accords.length > 0 && (
-              <div className="p-3 bg-black/40 rounded border border-white/10 space-y-2">
+              <div className="p-3 bg-black/40 rounded-2xl border border-white/10 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] text-[#c6a15b] font-semibold uppercase tracking-wider flex items-center gap-1.5">
                     <span>📊 Live Bar Chart Preview (Highest % on top)</span>
@@ -1581,7 +1581,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                       return (
                         <div
                           key={(a.name || "") + idx}
-                          className="h-6 rounded flex items-center justify-between px-2.5 border border-white/5 shadow-sm transition-all duration-300"
+                          className="h-6 rounded-lg flex items-center justify-between px-2.5 border border-white/5 shadow-sm transition-all duration-300"
                           style={{
                             backgroundColor: a.color || "#c6a15b",
                             width: `${widthPercent}%`,
@@ -1654,20 +1654,20 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
           >
             <div>
               <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Scent Vibe / Character</label>
-              <input type="text" value={vibe} onChange={(e) => setVibe(e.target.value)} placeholder="e.g. Aged Pipe Tobacco, Warm Spices & Rich Resins" className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+              <input type="text" value={vibe} onChange={(e) => setVibe(e.target.value)} placeholder="e.g. Aged Pipe Tobacco, Warm Spices & Rich Resins" className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
               <p className="text-[10px] text-[#8e8a82] mt-1">Short evocative phrase shown next to the Perfume Pyramid header.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Longevity</label>
-                <select value={longevity} onChange={(e) => setLongevity(e.target.value)} className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
+                <select value={longevity} onChange={(e) => setLongevity(e.target.value)} className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
                   <option value="" className="bg-[#171715] text-[#8e8a82]">— Select longevity —</option>
                   {LONGEVITY_OPTIONS.map((l) => <option key={l} value={l} className="bg-[#171715]">{l}</option>)}
                 </select>
               </div>
               <div>
                 <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">Projection / Sillage</label>
-                <select value={projection} onChange={(e) => setProjection(e.target.value)} className="w-full bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
+                <select value={projection} onChange={(e) => setProjection(e.target.value)} className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none">
                   <option value="" className="bg-[#171715] text-[#8e8a82]">— Select projection —</option>
                   {PROJECTION_OPTIONS.map((p) => <option key={p} value={p} className="bg-[#171715]">{p}</option>)}
                 </select>
@@ -1696,18 +1696,18 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
           >
             <div className="space-y-2">
               {variants.map((v, idx) => (
-                <div key={idx} className="flex items-center gap-3 bg-[#171715] p-2.5 border border-white/5 rounded">
+                <div key={idx} className="flex items-center gap-3 bg-[#171715] p-2.5 border border-white/5 rounded-xl">
                   <div className="w-20">
                     <label className="block text-[10px] text-[#8e8a82]">Size (ml)</label>
-                    <input type="number" required value={v.size_ml} onChange={(e) => handleVariantChange(idx, "size_ml", e.target.value)} className="w-full bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                    <input type="number" required value={v.size_ml} onChange={(e) => handleVariantChange(idx, "size_ml", e.target.value)} className="w-full rounded-lg bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
                   </div>
                   <div className="w-24">
                     <label className="block text-[10px] text-[#8e8a82]">Price (₹)</label>
-                    <input type="number" required value={v.price} onChange={(e) => handleVariantChange(idx, "price", e.target.value)} className="w-full bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#c6a15b] font-semibold focus:border-[#c6a15b] focus:outline-none" />
+                    <input type="number" required value={v.price} onChange={(e) => handleVariantChange(idx, "price", e.target.value)} className="w-full rounded-lg bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#c6a15b] font-semibold focus:border-[#c6a15b] focus:outline-none" />
                   </div>
                   <div className="w-24">
                     <label className="block text-[10px] text-[#8e8a82]">Stock</label>
-                    <input type="number" value={v.stock ?? 0} onChange={(e) => handleVariantChange(idx, "stock", e.target.value)} className="w-full bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
+                    <input type="number" value={v.stock ?? 0} onChange={(e) => handleVariantChange(idx, "stock", e.target.value)} className="w-full rounded-lg bg-[#11110f] border border-white/15 px-2.5 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none" />
                   </div>
                   <div className="flex items-center gap-1.5 mt-3">
                     <input type="checkbox" id={`active-${idx}`} checked={v.active} onChange={(e) => handleVariantChange(idx, "active", e.target.checked)} className="accent-[#c6a15b] cursor-pointer" />
@@ -1722,8 +1722,8 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
 
           {/* Form Actions */}
           <div className="flex justify-end gap-3 pt-3 border-t border-white/10">
-            <button type="button" onClick={onClose} className="border border-white/15 px-5 py-2.5 uppercase tracking-wider text-xs text-[#c5c1b9] hover:bg-white/5 transition cursor-pointer">Cancel</button>
-            <button type="submit" disabled={saving} className="border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 uppercase tracking-wider text-xs font-semibold text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer">{saving ? "Saving..." : product ? "Update Fragrance" : "Publish Fragrance"}</button>
+            <button type="button" onClick={onClose} className="rounded-xl border border-white/15 px-5 py-2.5 uppercase tracking-wider text-xs text-[#c5c1b9] hover:bg-white/5 transition cursor-pointer">Cancel</button>
+            <button type="submit" disabled={saving} className="rounded-xl border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 uppercase tracking-wider text-xs font-semibold text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer">{saving ? "Saving..." : product ? "Update Fragrance" : "Publish Fragrance"}</button>
           </div>
         </form>
       </div>

@@ -47,7 +47,7 @@ export default function ReviewForm({ review, user, isAuthenticated, onSave, onCl
     finally { savingRef.current = false; setSaving(false); }
   }
   const name = review?.name || user?.fullName || "Customer";
-  const inputClass = "w-full rounded-lg border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:outline-none focus:ring-2 focus:ring-[#c6a15b]";
+  const inputClass = "w-full rounded-xl border border-white/15 bg-[#11110f] px-3.5 py-2.5 text-xs text-[#f4efe6] focus:outline-none focus:ring-2 focus:ring-[#c6a15b]";
   return <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4" onMouseDown={e => { if (e.target === e.currentTarget && !saving) onClose(); }}>
     <div ref={dialog} role="dialog" aria-modal="true" aria-labelledby={`${prefix}-title`} tabIndex={-1} className="relative max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#171715] p-6 text-[#f4efe6] shadow-2xl sm:p-8">
       <button type="button" aria-label="Close review form" disabled={saving} onClick={onClose} className="absolute right-4 top-4 rounded-2xl p-2 hover:bg-white/10"><X size={20} /></button>

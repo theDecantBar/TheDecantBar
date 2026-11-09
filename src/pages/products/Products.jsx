@@ -160,7 +160,7 @@ function Products() {
     { length: Math.min(5, totalPages) },
     (_, index) => firstVisiblePage + index
   );
-  const paginationButtonClass = "flex h-10 min-w-8 items-center justify-center rounded-sm border border-white/15 px-1.5 text-xs font-medium transition-colors hover:border-[#c6a15b]/70 hover:bg-[#c6a15b]/10 hover:text-[#c6a15b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] disabled:pointer-events-none disabled:opacity-30 sm:h-11 sm:min-w-11 sm:px-3 sm:text-sm";
+  const paginationButtonClass = "flex h-10 min-w-8 items-center justify-center rounded-xl border border-white/15 px-1.5 text-xs font-medium transition-colors hover:border-[#c6a15b]/70 hover:bg-[#c6a15b]/10 hover:text-[#c6a15b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] disabled:pointer-events-none disabled:opacity-30 sm:h-11 sm:min-w-11 sm:px-3 sm:text-sm";
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
   const visibleProducts = sortedProducts.slice(
@@ -305,7 +305,7 @@ function Products() {
                       setSortBy(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="rounded-lg border border-white/15 bg-[#171715] px-3 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
+                    className="rounded-xl border border-white/15 bg-[#171715] px-3 py-1.5 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none cursor-pointer"
                   >
                     <option value="featured">Featured Curations</option>
                     <option value="price-asc">Price: Low to High</option>

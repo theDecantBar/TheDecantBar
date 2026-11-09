@@ -1,4 +1,3 @@
-import { Compass } from "lucide-react";
 import Container from "../ui/Container";
 import CategoryCard from "./CategoryCard";
 
@@ -55,12 +54,9 @@ export default function CategoryBanners() {
       <Container>
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-16">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <Compass size={14} className="text-[#c6a15b]" />
-            <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium">
-              Curated Fragrance Worlds
-            </p>
-          </div>
+          <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium mb-3">
+            Curated Fragrance Worlds
+          </p>
           <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
             Shop by Collection
           </h2>

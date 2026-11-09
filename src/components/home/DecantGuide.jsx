@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Container from "../ui/Container";
 
 const sizes = [
@@ -59,12 +59,9 @@ export default function DecantGuide() {
       <Container>
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-16">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <Sparkles size={14} className="text-[#c6a15b]" />
-            <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium">
-              The Decant Philosophy
-            </p>
-          </div>
+          <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b] font-medium mb-3">
+            The Decant Philosophy
+          </p>
           <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
             Why Buy Decants?
           </h2>
@@ -83,7 +80,7 @@ export default function DecantGuide() {
               <div>
                 {/* 1. Equal Header Badge & Spray Count */}
                 <div className="flex items-center justify-between pb-6 border-b border-white/10">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] px-3 py-1 border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b]">
+                  <span className="rounded-full text-[10px] font-semibold uppercase tracking-[0.2em] px-3 py-1 border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b]">
                     {item.badge}
                   </span>
                   <span className="text-xs text-[#8e8a82] font-mono">
