@@ -4,7 +4,6 @@ import {
   ShieldCheck,
   Truck,
   CreditCard,
-  Banknote,
   CheckCircle2,
   ArrowRight,
   ShoppingBag,
@@ -20,7 +19,6 @@ import { useAuth } from "../context/AuthContext";
 import {
   createRazorpayOrderApi,
   verifyPaymentAndPlaceOrder,
-  placeCodOrder,
 } from "../services/authApi";
 import {
   calculateShippingFee,
@@ -43,7 +41,7 @@ export default function Checkout() {
     city: "",
     state: "",
     pincode: "",
-    paymentMethod: "cod",
+    paymentMethod: "online",
     orderNotes: "",
   });
 
@@ -252,57 +250,11 @@ export default function Checkout() {
       state: formData.state.trim(),
       pincode: formData.pincode.trim().replace(/\D/g, ""),
       orderNotes: formData.orderNotes.trim().slice(0, 300),
-      paymentMethod: formData.paymentMethod,
+      paymentMethod: "online",
     };
 
     // -------------------------------------------------------------
-    // Branch 1: Cash on Delivery (COD) Flow
-    // -------------------------------------------------------------
-    if (formData.paymentMethod === "cod") {
-      try {
-        const codPayload = {
-          ...cleanPayload,
-          paymentMethod: "cod",
-          items: itemPayload,
-        };
-
-        const res = await placeCodOrder(codPayload, token);
-
-        const orderSummary = {
-          orderNumber: res.order?.orderNumber || "CONFIRMED",
-          items: res.order?.items || [...cartItems],
-          total: res.order?.total ? Number(res.order.total) : finalTotal,
-          subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
-          shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
-          customer: {
-            ...cleanPayload,
-            paymentMethod: "Cash on Delivery",
-            paymentStatus: res.order?.paymentStatus || "Pending",
-          },
-          paymentId: null,
-          date: new Date().toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }),
-        };
-
-        setCompletedOrder(orderSummary);
-        clearCart();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } catch (codErr) {
-        console.error("COD order placement error:", codErr);
-        setErrorMessage(
-          codErr.message || "Failed to place Cash on Delivery order. Please try again."
-        );
-      } finally {
-        setIsSubmitting(false);
-      }
-      return;
-    }
-
-    // -------------------------------------------------------------
-    // Branch 2: Online Payment via Razorpay Flow
+    // Online Payment via Razorpay Flow
     // -------------------------------------------------------------
     try {
       // 1. Ensure Razorpay Checkout script is loaded
@@ -585,10 +537,7 @@ export default function Checkout() {
           </h1>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs text-[#8e8a82]">
-          <Lock size={14} className="text-[#c6a15b]" />
-          <span>256-Bit SSL Encrypted</span>
-        </div>
+        
       </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
@@ -886,7 +835,7 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* Section 3: Payment Method (COD + Online Payment) */}
+            {/* Section 3: Payment Method */}
             <div className="rounded-2xl border border-white/10 bg-[#171715] p-6 sm:p-8">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-display text-2xl text-[#f4efe6]">
@@ -898,70 +847,10 @@ export default function Checkout() {
               </div>
 
               <div className="space-y-4">
-                {/* Option 1: Cash on Delivery (COD) */}
-                <label
-                  className={`block cursor-pointer border p-5 transition-all ${
-                    formData.paymentMethod === "cod"
-                      ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
-                      : "border-white/10 bg-[#11110f]/70 hover:border-white/20"
-                  }`}
-                >
+                {/* Pay Online (Razorpay) */}
+                <div className="border border-[#c6a15b] bg-[#1a1915] p-5 shadow-lg shadow-[#c6a15b]/5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3.5">
-                      <div className="pt-0.5">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="cod"
-                          checked={formData.paymentMethod === "cod"}
-                          onChange={handleChange}
-                          className="h-4 w-4 accent-[#c6a15b] cursor-pointer"
-                        />
-                      </div>
-                      <div className="mt-[-2px] flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b]">
-                        <Banknote size={18} />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold uppercase tracking-wider text-[#f4efe6]">
-                            Cash on Delivery (COD)
-                          </span>
-                          <span className="rounded border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-300 uppercase tracking-wider">
-                            Pay at Doorstep
-                          </span>
-                        </div>
-                        <p className="mt-1.5 text-xs text-[#8e8a82] leading-relaxed">
-                          Pay with cash or UPI directly to the courier when your authentic decants arrive at your doorstep.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="hidden sm:flex items-center gap-1.5 shrink-0 text-[#c6a15b]">
-                      <Truck size={20} />
-                    </div>
-                  </div>
-                </label>
-
-                {/* Option 2: Pay Online (Razorpay) */}
-                {onlinePaymentsEnabled && <label
-                  className={`block cursor-pointer border p-5 transition-all ${
-                    formData.paymentMethod === "online"
-                      ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
-                      : "border-white/10 bg-[#11110f]/70 hover:border-white/20"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-3.5">
-                      <div className="pt-0.5">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="online"
-                          checked={formData.paymentMethod === "online"}
-                          onChange={handleChange}
-                          className="h-4 w-4 accent-[#c6a15b] cursor-pointer"
-                        />
-                      </div>
                       <div className="mt-[-2px] flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b]">
                         <CreditCard size={18} />
                       </div>
@@ -999,19 +888,10 @@ export default function Checkout() {
                       <ShieldCheck size={20} />
                     </div>
                   </div>
-                </label>}
-                {!onlinePaymentsEnabled && <p className="text-sm text-[#c5c1b9]">Cash on Delivery is currently available. Pay when your order arrives.</p>}
+                </div>
               </div>
 
-              <div className="mt-5 border-t border-white/10 pt-3.5 flex items-center justify-between text-[11px] text-[#8e8a82]">
-                <span className="flex items-center gap-1.5">
-                  <Lock size={12} className="text-[#c6a15b]" />
-                  256-Bit SSL Encrypted & Verified
-                </span>
-                <span className="text-[10px] text-[#8e8a82] hidden md:inline">
-                  Zero card details stored on servers
-                </span>
-              </div>
+              
             </div>
 
             {/* Submit Place Order Button */}
@@ -1023,11 +903,7 @@ export default function Checkout() {
               <span className="flex items-center gap-2">
                 {isSubmitting && <Loader2 size={16} className="animate-spin text-[#11110f]" />}
                 {isSubmitting
-                  ? formData.paymentMethod === "cod"
-                    ? "Placing Order..."
-                    : "Opening Secure Checkout..."
-                  : formData.paymentMethod === "cod"
-                  ? `Place Order (Cash on Delivery) · ₹${finalTotal}`
+                  ? "Opening Secure Checkout..."
                   : `Pay Online & Place Order · ₹${finalTotal}`}
               </span>
               {!isSubmitting && <ArrowRight size={16} />}
