@@ -1,11 +1,54 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Sparkles, Truck } from "lucide-react";
+import {
+  Trash2,
+  Plus,
+  Minus,
+  ArrowRight,
+  ShoppingBag,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  XCircle,
+} from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
 import { calculateShippingFee, calculateOrderTotal, FREE_SHIPPING_THRESHOLD } from "../utils/shipping";
 
 export default function Cart() {
-  const { cartItems, cartCount, cartSubtotal, updateQuantity, removeFromCart, clearCart } = useCart();
+  const {
+    cartItems,
+    cartCount,
+    cartSubtotal,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    validateCartInventory,
+  } = useCart();
+
+  // Cross-check items in bag against live database inventory on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function syncInventory() {
+      try {
+        const res = await fetch("/api/products");
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && Array.isArray(data)) {
+            validateCartInventory(data);
+          }
+        }
+      } catch (err) {
+        console.error("Cart inventory sync error:", err);
+      }
+    }
+    syncInventory();
+    return () => {
+      isMounted = false;
+    };
+  }, [validateCartInventory]);
+
+  const hasSoldOutItems = cartItems.some((item) => item.isSoldOut);
 
   if (cartItems.length === 0) {
     return (
@@ -102,6 +145,25 @@ export default function Cart() {
                     <p className="mt-1 text-xs text-[#8e8a82]">
                       Size: <span className="text-[#f4efe6] font-medium">{item.size_ml}ml Decant</span>
                     </p>
+
+                    {/* Low Stock Urgency Alert */}
+                    {Number(item.maxStock ?? 99) > 0 &&
+                      Number(item.maxStock ?? 99) <= 3 &&
+                      !item.isSoldOut && (
+                        <p className="mt-1.5 text-[11px] font-semibold text-amber-400/90 flex items-center gap-1.5">
+                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                          Only {item.maxStock} left in stock
+                        </p>
+                      )}
+
+                    {/* Sold Out Notice */}
+                    {item.isSoldOut && (
+                      <div className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-950/40 px-2.5 py-1 text-[11px] font-semibold text-red-300">
+                        <XCircle size={13} className="text-red-400 shrink-0" />
+                        <span>Sold out — please remove to checkout</span>
+                      </div>
+                    )}
+
                     <p className="mt-2 text-sm text-[#f4efe6] sm:hidden">
                       ₹{item.price} each
                     </p>
@@ -126,8 +188,12 @@ export default function Cart() {
                     <button
                       type="button"
                       aria-label="Increase quantity"
+                      disabled={
+                        item.quantity >= Number(item.maxStock ?? 99) ||
+                        item.isSoldOut
+                      }
                       onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                      className="rounded-2xl flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer"
+                      className="rounded-2xl flex h-9 w-9 items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <Plus size={14} />
                     </button>
@@ -223,13 +289,29 @@ export default function Cart() {
 
             {/* Checkout Action Button */}
             <div className="mt-8">
-              <Link
-                to="/checkout"
-                className="rounded-2xl flex w-full items-center justify-between gap-4 border border-[#c6a15b] bg-[#c6a15b] px-6 py-4 text-xs font-semibold uppercase tracking-widest text-[#11110f] transition hover:bg-[#d8c08a]"
-              >
-                <span className="whitespace-nowrap">Proceed to Checkout</span>
-                <ArrowRight size={16} />
-              </Link>
+              {hasSoldOutItems ? (
+                <div className="space-y-2">
+                  <button
+                    type="button"
+                    disabled
+                    className="rounded-2xl flex w-full items-center justify-center gap-2 border border-red-500/40 bg-red-950/40 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-red-300 cursor-not-allowed"
+                  >
+                    <XCircle size={15} />
+                    <span>Remove Sold Out Items to Proceed</span>
+                  </button>
+                  <p className="text-[11px] text-center text-[#8e8a82]">
+                    Some items in your bag are no longer in stock. Please remove them to continue.
+                  </p>
+                </div>
+              ) : (
+                <Link
+                  to="/checkout"
+                  className="rounded-2xl flex w-full items-center justify-between gap-4 border border-[#c6a15b] bg-[#c6a15b] px-6 py-4 text-xs font-semibold uppercase tracking-widest text-[#11110f] transition hover:bg-[#d8c08a]"
+                >
+                  <span className="whitespace-nowrap">Proceed to Checkout</span>
+                  <ArrowRight size={16} />
+                </Link>
+              )}
             </div>
 
             {/* Trust Badges */}

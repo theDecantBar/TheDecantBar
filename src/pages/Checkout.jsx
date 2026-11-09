@@ -202,6 +202,12 @@ export default function Checkout() {
       return;
     }
 
+    if (cartItems.some((item) => item.isSoldOut)) {
+      setErrorMessage("Some items in your cart are currently sold out. Please return to your shopping bag and remove them.");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     if (!isAuthenticated || !token) {
       setErrorMessage("Please log in to place your order.");
       window.scrollTo({ top: 0, behavior: "smooth" });
