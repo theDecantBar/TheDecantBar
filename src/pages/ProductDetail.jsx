@@ -101,7 +101,7 @@ function getShortDescription(rawDesc, profile, product) {
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, showToast } = useCart();
 
   const [product, setProduct] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -196,7 +196,7 @@ export default function ProductDetail() {
       setNotifyContact("");
     } catch (err) {
       console.error("Notify error:", err);
-      alert("Could not register notification request. Please try again.");
+      showToast("Could not register notification request. Please try again.", "error");
     } finally {
       setNotifyLoading(false);
     }
@@ -281,7 +281,7 @@ export default function ProductDetail() {
   }
 
   const isSoldOut = selectedVariant
-    ? Number(selectedVariant.stock ?? 10) <= 0
+    ? Number(selectedVariant.stock ?? 0) <= 0
     : false;
 
   const currentPrice = selectedVariant
@@ -620,8 +620,15 @@ export default function ProductDetail() {
                       <button
                         type="button"
                         aria-label="Increase quantity"
-                        onClick={() => setQuantity((q) => q + 1)}
-                        className="rounded-2xl flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] sm:w-9"
+                        onClick={() =>
+                          setQuantity((q) =>
+                            Math.min(q + 1, Number(selectedVariant?.stock ?? 99))
+                          )
+                        }
+                        disabled={
+                          quantity >= Number(selectedVariant?.stock ?? 0)
+                        }
+                        className="rounded-2xl flex h-full w-8 cursor-pointer items-center justify-center text-[#c5c1b9] transition-colors hover:text-[#c6a15b] disabled:opacity-30 disabled:cursor-not-allowed sm:w-9"
                       >
                         <Plus size={13} />
                       </button>
@@ -658,6 +665,16 @@ export default function ProductDetail() {
                       )}
                     </button>
                   </div>
+
+                  {/* Low Stock Urgency Alert */}
+                  {Number(selectedVariant?.stock ?? 0) > 0 &&
+                    Number(selectedVariant?.stock ?? 0) <= 3 && (
+                      <p className="text-[11px] font-medium text-amber-400/90 flex items-center gap-1.5 pt-0.5">
+                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                        Only {selectedVariant.stock} bottle
+                        {Number(selectedVariant.stock) === 1 ? "" : "s"} left in stock — order soon
+                      </p>
+                    )}
 
                   {/* Buy Now */}
                   <button

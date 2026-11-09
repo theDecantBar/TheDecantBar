@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import LuxuryToast from "../components/common/LuxuryToast";
 
 const CartContext = createContext();
 
@@ -14,6 +15,25 @@ export function CartProvider({ children }) {
       return [];
     }
   });
+
+  const [toasts, setToasts] = useState([]);
+
+  const dismissToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  const showToast = useCallback((message, type = "info") => {
+    if (!message) return;
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+    const newToast = { id, message, type };
+
+    setToasts((prev) => [...prev.slice(-3), newToast]); // keep max 4 toasts
+
+    // Auto-dismiss after 3.8 seconds
+    setTimeout(() => {
+      dismissToast(id);
+    }, 3800);
+  }, [dismissToast]);
 
   // Save to localStorage whenever cart changes
   useEffect(() => {
@@ -31,9 +51,13 @@ export function CartProvider({ children }) {
   const addToCart = (product, selectedVariant, quantity = 1) => {
     if (!product || !selectedVariant) return false;
 
-    const availableStock = Number(selectedVariant.stock ?? 10);
+    // Issue #4: Default missing stock strictly to 0, never 10
+    const availableStock = Number(selectedVariant.stock ?? 0);
     if (availableStock <= 0) {
-      alert("This size is currently sold out! Please click 'Notify Me' on the product page to be alerted on restock.");
+      showToast(
+        `"${product.name} (${selectedVariant.size_ml}ml)" is currently sold out. Click 'Notify Me' on the product page to be alerted on restock.`,
+        "warning"
+      );
       return false;
     }
 
@@ -43,17 +67,25 @@ export function CartProvider({ children }) {
       const existingIndex = prevItems.findIndex((item) => item.cartItemId === cartItemId);
 
       if (existingIndex > -1) {
-        // Item exists, update quantity
         const updated = [...prevItems];
-        const newQty = updated[existingIndex].quantity + quantity;
+        const currentQty = updated[existingIndex].quantity;
+        const newQty = currentQty + quantity;
+
         if (newQty > availableStock) {
-          alert(`Only ${availableStock} bottle(s) currently available in stock.`);
+          showToast(
+            `Only ${availableStock} bottle(s) of ${product.name} (${selectedVariant.size_ml}ml) available in stock.`,
+            "warning"
+          );
           updated[existingIndex] = {
             ...updated[existingIndex],
             quantity: availableStock,
             maxStock: availableStock,
           };
         } else {
+          showToast(
+            `Added ${quantity}x ${product.name} (${selectedVariant.size_ml}ml) to your bag.`,
+            "success"
+          );
           updated[existingIndex] = {
             ...updated[existingIndex],
             quantity: newQty,
@@ -64,6 +96,12 @@ export function CartProvider({ children }) {
       }
 
       // New item
+      const initialQty = Math.min(quantity, availableStock);
+      showToast(
+        `Added ${initialQty}x ${product.name} (${selectedVariant.size_ml}ml) to your bag.`,
+        "success"
+      );
+
       const newItem = {
         cartItemId,
         productId: product.id,
@@ -73,17 +111,18 @@ export function CartProvider({ children }) {
         image_url: product.image_url || "",
         size_ml: selectedVariant.size_ml,
         price: Number(selectedVariant.price),
-        quantity: Math.min(quantity, availableStock),
+        quantity: initialQty,
         maxStock: availableStock,
       };
 
       return [...prevItems, newItem];
     });
+
     return true;
   };
 
   /**
-   * Update quantity of a specific cart item
+   * Update quantity of a specific cart item, capping at available maxStock
    */
   const updateQuantity = (cartItemId, newQuantity) => {
     if (newQuantity <= 0) {
@@ -92,11 +131,80 @@ export function CartProvider({ children }) {
     }
 
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.cartItemId === cartItemId ? { ...item, quantity: newQuantity } : item
-      )
+      prevItems.map((item) => {
+        if (item.cartItemId !== cartItemId) return item;
+
+        const max = Number(item.maxStock ?? 99);
+        if (newQuantity > max) {
+          showToast(
+            `Maximum available stock reached (${max} bottle${max === 1 ? "" : "s"}).`,
+            "warning"
+          );
+          return { ...item, quantity: max };
+        }
+
+        return { ...item, quantity: newQuantity };
+      })
     );
   };
+
+  /**
+   * Validate and sync cart items against live catalog products
+   */
+  const validateCartInventory = useCallback((catalogProducts) => {
+    if (!Array.isArray(catalogProducts) || catalogProducts.length === 0) return;
+
+    setCartItems((prevItems) => {
+      let changed = false;
+      let adjustedCount = 0;
+
+      const updated = prevItems.map((item) => {
+        const product = catalogProducts.find((p) => p.id === item.productId);
+        if (!product) return item;
+
+        const variant = product.variants?.find((v) => v.id === item.variantId);
+        if (!variant) return item;
+
+        const liveStock = Number(variant.stock ?? 0);
+        const livePrice = Number(variant.price);
+        const isSoldOut = liveStock <= 0;
+
+        let newQty = item.quantity;
+        if (isSoldOut) {
+          newQty = 0;
+        } else if (newQty > liveStock) {
+          newQty = liveStock;
+          adjustedCount++;
+        }
+
+        if (
+          item.maxStock !== liveStock ||
+          item.isSoldOut !== isSoldOut ||
+          item.quantity !== newQty ||
+          item.price !== livePrice
+        ) {
+          changed = true;
+          return {
+            ...item,
+            price: livePrice,
+            maxStock: liveStock,
+            isSoldOut,
+            quantity: newQty,
+          };
+        }
+        return item;
+      });
+
+      if (adjustedCount > 0) {
+        showToast(
+          "Some item quantities in your bag were adjusted to match current available stock.",
+          "warning"
+        );
+      }
+
+      return changed ? updated : prevItems;
+    });
+  }, [showToast]);
 
   /**
    * Remove an item from the cart
@@ -112,12 +220,15 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
-  // Total quantity of all items in cart
-  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  // Total quantity of all items in cart (excluding any marked sold out)
+  const cartCount = cartItems.reduce(
+    (total, item) => total + (item.isSoldOut ? 0 : item.quantity),
+    0
+  );
 
-  // Total price in INR
+  // Total price in INR (excluding sold out items)
   const cartSubtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + (item.isSoldOut ? 0 : item.price * item.quantity),
     0
   );
 
@@ -131,9 +242,12 @@ export function CartProvider({ children }) {
         updateQuantity,
         removeFromCart,
         clearCart,
+        showToast,
+        validateCartInventory,
       }}
     >
       {children}
+      <LuxuryToast toasts={toasts} onDismiss={dismissToast} />
     </CartContext.Provider>
   );
 }

@@ -21,12 +21,12 @@ function ProductCard({ product }) {
     null;
 
   const isSoldOut = selectedVariant
-    ? Number(selectedVariant.stock ?? 10) <= 0
+    ? Number(selectedVariant.stock ?? 0) <= 0
     : false;
 
   const allSoldOut =
     product.variants?.length > 0 &&
-    product.variants.every((v) => Number(v.stock ?? 10) <= 0);
+    product.variants.every((v) => Number(v.stock ?? 0) <= 0);
 
   const cartItemId = selectedVariant
     ? `${product.id}-${selectedVariant.id}`
@@ -181,13 +181,22 @@ function ProductCard({ product }) {
           <div className="my-3 w-full border-t border-white/[0.07]" />
 
           {/* Selected Size Label & Price */}
-          <div className="mb-3">
-            <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400">
-              {sizeHeading}
-            </p>
-            <p className="mt-0.5 text-xl sm:text-2xl font-bold tracking-tight text-[#f4efe6]">
-              ₹{currentPrice}
-            </p>
+          <div className="mb-3 flex items-baseline justify-between">
+            <div>
+              <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400">
+                {sizeHeading}
+              </p>
+              <p className="mt-0.5 text-xl sm:text-2xl font-bold tracking-tight text-[#f4efe6]">
+                ₹{currentPrice}
+              </p>
+            </div>
+            {selectedVariant &&
+              Number(selectedVariant.stock ?? 0) > 0 &&
+              Number(selectedVariant.stock ?? 0) <= 3 && (
+                <span className="text-[10px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/25 px-2 py-0.5 rounded-full">
+                  Only {selectedVariant.stock} left
+                </span>
+              )}
           </div>
 
           {/* Size Selectors & Add Button Row (Interactive Area - Never triggers Card Navigation) */}
@@ -204,7 +213,7 @@ function ProductCard({ product }) {
             >
               {product.variants?.map((variant) => {
                 const isSelected = selectedVariant?.id === variant.id;
-                const variantSoldOut = Number(variant.stock ?? 10) <= 0;
+                const variantSoldOut = Number(variant.stock ?? 0) <= 0;
 
                 return (
                   <button
@@ -258,7 +267,10 @@ function ProductCard({ product }) {
                     type="button"
                     aria-label="Increase quantity"
                     onClick={handleIncreaseQuantity}
-                    className="flex h-7 w-7 sm:h-8 sm:w-8 cursor-pointer items-center justify-center rounded-full bg-[#d8b570] text-[#14120c] transition hover:bg-[#e4c480]"
+                    disabled={
+                      itemQuantity >= Number(selectedVariant?.stock ?? 0)
+                    }
+                    className="flex h-7 w-7 sm:h-8 sm:w-8 cursor-pointer items-center justify-center rounded-full bg-[#d8b570] text-[#14120c] transition hover:bg-[#e4c480] disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <Plus size={13} strokeWidth={2.2} />
                   </button>
