@@ -135,7 +135,7 @@ export default function Navbar() {
             <img
               src="/images/brand/decant-bar-logo.png"
               alt="The Decant Bar"
-              className="h-9 w-auto object-contain sm:h-11 lg:h-12"
+              className="h-9 w-auto object-contain sm:h-10 lg:h-11"
             />
           </Link>
 
@@ -169,7 +169,7 @@ export default function Navbar() {
                 to="/admin"
                 aria-label="Admin Portal"
                 title="Open Admin Control Hub"
-                className="hidden items-center gap-1.5 rounded-2xl border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f] sm:inline-flex"
+                className="hidden h-11 items-center gap-1.5 rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 px-3.5 text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b] transition hover:bg-[#c6a15b] hover:text-[#11110f] sm:inline-flex"
               >
                 <ShieldCheck size={14} />
                 <span>Admin</span>
@@ -181,19 +181,23 @@ export default function Navbar() {
               type="button"
               onClick={() => setSearchModalOpen(true)}
               aria-label="Search fragrances"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted md:hidden cursor-pointer"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted md:hidden cursor-pointer"
             >
-              <Search size={20} strokeWidth={1.5} />
+              <Search size={18} strokeWidth={1.5} />
             </button>
 
             {/* Account */}
             <Link
               to={isAuthenticated ? "/account" : "/login"}
               aria-label={isAuthenticated ? "My Account" : "Sign In"}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
+              className={`flex h-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] ${
+                !isHome && isAuthenticated && user?.fullName
+                  ? "min-w-11 w-auto px-3.5"
+                  : "w-11"
+              }`}
             >
               <UserRound
-                size={20}
+                size={18}
                 strokeWidth={1.5}
                 className={
                   isHome || isAuthenticated
@@ -203,7 +207,7 @@ export default function Navbar() {
               />
 
               {!isHome && isAuthenticated && user?.fullName && (
-                <span className="hidden text-xs font-medium uppercase tracking-wider text-[#c5c1b9] xl:inline pl-1">
+                <span className="hidden text-xs font-medium uppercase tracking-wider text-[#c5c1b9] xl:inline pl-1.5">
                   {user.fullName.split(" ")[0]}
                 </span>
               )}
@@ -213,9 +217,9 @@ export default function Navbar() {
             <Link
               to="/cart"
               aria-label={`Shopping Cart, ${cartCount} items`}
-              className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
+              className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
             >
-              <ShoppingBag size={20} strokeWidth={1.5} />
+              <ShoppingBag size={18} strokeWidth={1.5} />
               <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c6a15b] px-1 text-[9px] font-bold text-[#11110f]">
                 {cartCount}
               </span>
