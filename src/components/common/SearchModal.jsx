@@ -10,6 +10,7 @@ import {
   Clock,
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import HighlightMatch from "./HighlightMatch";
 
 // Curated luxury perfume houses stocked in the catalog
 const LUXURY_HOUSES_POOL = [
@@ -219,21 +220,23 @@ export default function SearchModal({ isOpen, onClose }) {
     };
   }, [isOpen]);
 
-  // Filter products based on query (checks name, brand, category, weather)
+  // Filter products based on query (supports multi-word tokens and prefix ranking)
   const trimmed = query.trim().toLowerCase();
-  const filteredProducts = trimmed
+  const searchWords = trimmed.split(/\s+/).filter(Boolean);
+  const filteredProducts = searchWords.length > 0
     ? products
         .filter((p) => {
-          const name = String(p.name || "").toLowerCase();
-          const brand = String(p.brand || "").toLowerCase();
-          const cat = String(p.category || "").toLowerCase();
-          const weather = String(p.weather || "").toLowerCase();
-          return (
-            name.includes(trimmed) ||
-            brand.includes(trimmed) ||
-            cat.includes(trimmed) ||
-            weather.includes(trimmed)
-          );
+          const haystack = `${p.brand || ""} ${p.name || ""} ${p.category || ""} ${p.weather || ""}`.toLowerCase();
+          return searchWords.every((word) => haystack.includes(word));
+        })
+        .sort((a, b) => {
+          const aName = String(a.name || "").toLowerCase();
+          const bName = String(b.name || "").toLowerCase();
+          const aStarts = aName.startsWith(trimmed);
+          const bStarts = bName.startsWith(trimmed);
+          if (aStarts && !bStarts) return -1;
+          if (!aStarts && bStarts) return 1;
+          return 0;
         })
         .slice(0, 8)
     : [];
@@ -506,7 +509,7 @@ export default function SearchModal({ isOpen, onClose }) {
                               {product.brand || product.category || "FRAGRANCE"}
                             </p>
                             <p className="text-sm font-display text-[#f4efe6] group-hover:text-[#c6a15b] transition truncate">
-                              {product.name}
+                              <HighlightMatch text={product.name} query={query} />
                             </p>
                             <p className="text-[11px] text-[#8e8a82] mt-0.5">
                               {product.variants?.map((v) => `${v.size_ml}ml`).join(" · ") || "Decant"}

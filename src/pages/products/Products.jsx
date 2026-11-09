@@ -26,6 +26,26 @@ function Products() {
     setSearch(searchParam);
   }, [searchParam]);
 
+  // Live debounced search synchronization as user types
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const trimmed = search.trim();
+      const currentParam = searchParams.get("search") || "";
+      if (trimmed !== currentParam) {
+        const newParams = new URLSearchParams(searchParams);
+        if (trimmed) {
+          newParams.set("search", trimmed);
+        } else {
+          newParams.delete("search");
+        }
+        setCurrentPage(1);
+        setSearchParams(newParams);
+      }
+    }, 280);
+
+    return () => clearTimeout(timer);
+  }, [search, searchParams, setSearchParams]);
+
   // Fetch products using the current search and filters.
   useEffect(() => {
     const controller = new AbortController();

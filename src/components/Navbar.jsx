@@ -1,5 +1,6 @@
 import { BottomNavBar } from "@/components/ui/bottom-nav-bar";
 import SearchModal from "./common/SearchModal";
+import LiveSearch from "./common/LiveSearch";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -142,25 +143,10 @@ export default function Navbar() {
           {/* Rounded icon navigation with an expanding active label. */}
           <div className="hidden shrink-0 lg:block"><BottomNavBar activeIndex={activeNavIndex} onNavigate={handlePillNavigation} /></div>
 
-          {/* Desktop Search Trigger Bar (Universal across all pages) */}
-          <button
-            type="button"
-            onClick={() => setSearchModalOpen(true)}
-            aria-label="Search fragrances (Ctrl+K)"
-            className="group relative hidden h-11 min-w-0 flex-1 items-center overflow-hidden rounded-full border border-white/15 bg-[#141412] px-4 transition-all duration-300 hover:border-[#c6a15b]/60 hover:bg-[#181815] md:flex md:max-w-56 lg:max-w-64 xl:max-w-80 cursor-pointer shadow-sm"
-          >
-            <Search
-              size={15}
-              strokeWidth={1.5}
-              className="mr-2.5 shrink-0 text-[#c6a15b] transition-transform duration-300 group-hover:scale-110"
-            />
-            <span className="min-w-0 flex-1 truncate text-left text-xs text-[#8e8a82] group-hover:text-[#c5c1b9] transition-colors">
-              Search 99+ fragrances...
-            </span>
-            <kbd className="hidden shrink-0 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono text-[#8e8a82] xl:inline-block">
-              ⌘K
-            </kbd>
-          </button>
+          {/* Desktop Live Autocomplete Search Bar */}
+          <div className="hidden min-w-0 flex-1 md:flex md:max-w-56 lg:max-w-64 xl:max-w-80">
+            <LiveSearch />
+          </div>
 
           {/* Action icons */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">

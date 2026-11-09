@@ -23,9 +23,9 @@ const parseMultiParam = (param) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const { search, category, gender, weather, type } = req.query;
+    const { search, category, gender, weather, type, limit } = req.query;
 
-    const isDefaultCatalog = !search && !category && !gender && !weather && !type;
+    const isDefaultCatalog = !search && !category && !gender && !weather && !type && !limit;
     if (isDefaultCatalog && allProductsCache && (Date.now() - allProductsCacheTime < CACHE_LIFETIME_MS)) {
       return res.json(allProductsCache);
     }
@@ -36,10 +36,39 @@ export const getProducts = async (req, res) => {
     // Storefront only displays perfumes with valid image URLs
     conditions.push("p.image_url IS NOT NULL AND TRIM(p.image_url) != ''");
 
-    // Search query by product name or brand
+    // Search query by product name, brand, or category (supports multi-word and partial terms)
+    let orderByClause = "ORDER BY p.created_at DESC";
     if (search && search.trim() !== "") {
-      values.push(`%${search.trim()}%`);
-      conditions.push(`(p.name ILIKE $${values.length} OR p.brand ILIKE $${values.length})`);
+      const searchTrimmed = search.trim();
+      const words = searchTrimmed.split(/\s+/).filter(Boolean);
+
+      // Multi-word support: every search word must match somewhere in name, brand, or category
+      words.forEach((word) => {
+        values.push(`%${word}%`);
+        const idx = values.length;
+        conditions.push(`(
+          p.name ILIKE $${idx}
+          OR p.brand ILIKE $${idx}
+          OR p.category ILIKE $${idx}
+          OR CONCAT(COALESCE(p.brand, ''), ' ', COALESCE(p.name, '')) ILIKE $${idx}
+        )`);
+      });
+
+      // Rank products: products starting with search term or name prefix match appear first
+      values.push(`${searchTrimmed}%`);
+      const prefixIdx = values.length;
+      values.push(`%${searchTrimmed}%`);
+      const fullIdx = values.length;
+      orderByClause = `ORDER BY
+        CASE
+          WHEN p.name ILIKE $${prefixIdx} THEN 1
+          WHEN p.brand ILIKE $${prefixIdx} THEN 2
+          WHEN CONCAT(COALESCE(p.brand, ''), ' ', COALESCE(p.name, '')) ILIKE $${prefixIdx} THEN 3
+          WHEN p.name ILIKE $${fullIdx} THEN 4
+          WHEN p.brand ILIKE $${fullIdx} THEN 5
+          ELSE 6
+        END,
+        p.name ASC`;
     }
 
     // Fragrance Classification / Category (supports single or multiple values)
@@ -104,6 +133,13 @@ export const getProducts = async (req, res) => {
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
+    let limitClause = "";
+    const parsedLimit = parseInt(limit, 10);
+    if (!isNaN(parsedLimit) && parsedLimit > 0) {
+      values.push(parsedLimit);
+      limitClause = `LIMIT $${values.length}`;
+    }
+
     const query = `
       SELECT
         p.*,
@@ -125,7 +161,8 @@ export const getProducts = async (req, res) => {
         ON p.id = pv.product_id
       ${whereClause}
       GROUP BY p.id
-      ORDER BY p.created_at DESC
+      ${orderByClause}
+      ${limitClause}
     `;
 
     const result = await pool.query(query, values);
