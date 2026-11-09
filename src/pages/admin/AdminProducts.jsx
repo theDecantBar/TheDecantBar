@@ -485,7 +485,7 @@ function FragranceNameInput({ value, onChange, onSelectCatalogPerfume }) {
 }
 
 // ─── Accord Row ─────────────────────────────────────────────────────────────────
-function AccordRow({ accord, index, onChange, onRemove, onSortRequest }) {
+function AccordRow({ accord, index, onChange, onRemove }) {
   const safeAccord = typeof accord === "object" && accord !== null
     ? accord
     : { name: String(accord || ""), percentage: 60, color: "#c6a15b" };
@@ -514,8 +514,6 @@ function AccordRow({ accord, index, onChange, onRemove, onSortRequest }) {
           step={1}
           value={safeAccord.percentage ?? 50}
           onChange={(e) => onChange(index, "percentage", Math.max(1, Math.min(100, Number(e.target.value))))}
-          onMouseUp={onSortRequest}
-          onTouchEnd={onSortRequest}
           className="w-20 sm:w-28 accent-[#c6a15b] cursor-pointer"
         />
         <span className="text-[11px] text-[#c6a15b] font-mono font-bold w-10 text-right tabular-nums select-none">
@@ -1164,14 +1162,6 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
     finally { setUploadingImage(false); if (fileInputRef.current) fileInputRef.current.value = ""; }
   };
 
-  const sortTimeoutRef = useRef(null);
-
-  const handleSortAccords = () => {
-    setAccords((prev) =>
-      [...prev].sort((a, b) => (b.percentage ?? 0) - (a.percentage ?? 0))
-    );
-  };
-
   const handleAccordChange = (index, field, value) => {
     setAccords((prev) => {
       const copy = [...prev];
@@ -1182,22 +1172,14 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
       copy[index] = cur;
       return copy;
     });
-
-    if (field === "percentage") {
-      if (sortTimeoutRef.current) clearTimeout(sortTimeoutRef.current);
-      sortTimeoutRef.current = setTimeout(() => {
-        handleSortAccords();
-      }, 700);
-    }
   };
 
   const handleAddAccord = () => {
     const nextColor = ACCORD_COLORS[accords.length % ACCORD_COLORS.length];
-    setAccords((prev) =>
-      [...prev, { name: "", percentage: 50, color: nextColor }].sort(
-        (a, b) => (b.percentage ?? 0) - (a.percentage ?? 0)
-      )
-    );
+    setAccords((prev) => [
+      ...prev,
+      { name: "", percentage: 50, color: nextColor },
+    ]);
   };
 
   const handleRemoveAccord = (index) => {
@@ -1589,14 +1571,6 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                   <span className="text-[10px] text-[#c6a15b] font-semibold uppercase tracking-wider flex items-center gap-1.5">
                     <span>📊 Live Bar Chart Preview (Highest % on top)</span>
                   </span>
-                  <button
-                    type="button"
-                    onClick={handleSortAccords}
-                    className="text-[10px] text-[#c6a15b] hover:text-[#e4cf9b] underline cursor-pointer flex items-center gap-1"
-                    title="Sort slider rows below from highest to lowest"
-                  >
-                    <span>⇅ Sort Slider Rows</span>
-                  </button>
                 </div>
                 <div className="space-y-1.5 max-w-lg">
                   {[...accords]
@@ -1630,17 +1604,8 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             <div className="space-y-2">
               <div className="flex items-center justify-between px-0.5">
                 <span className="text-[10px] text-[#8e8a82] font-semibold uppercase tracking-wider">
-                  Accord Sliders (Auto-Sorted by %):
+                  Accord Sliders:
                 </span>
-                {accords.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={handleSortAccords}
-                    className="text-[10px] text-[#c6a15b] hover:text-[#e4cf9b] cursor-pointer"
-                  >
-                    ⇅ Sort Highest First
-                  </button>
-                )}
               </div>
               {accords.map((accord, i) => (
                 <AccordRow
@@ -1649,7 +1614,6 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                   index={i}
                   onChange={handleAccordChange}
                   onRemove={handleRemoveAccord}
-                  onSortRequest={handleSortAccords}
                 />
               ))}
             </div>

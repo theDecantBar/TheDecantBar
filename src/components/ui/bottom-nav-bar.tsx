@@ -60,7 +60,7 @@ export function BottomNavBar({
       transition={{ type: "spring", stiffness: 300, damping: 26 }}
       aria-label="Main navigation"
       className={cn(
-        "flex w-fit max-w-[calc(100vw-24px)] items-center justify-around gap-1 rounded-full border border-border bg-card/95 p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.65)] backdrop-blur-md sm:gap-1.5 sm:max-w-full",
+        "flex h-11 w-fit max-w-[calc(100vw-24px)] items-center justify-around gap-0.5 sm:gap-1 rounded-full border border-border bg-card/95 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.45)] backdrop-blur-md sm:max-w-full",
         stickyBottom &&
           "fixed inset-x-0 bottom-[max(16px,env(safe-area-inset-bottom))] z-40 mx-auto",
         className
@@ -83,16 +83,16 @@ export function BottomNavBar({
               onNavigate?.(item, event);
             }}
             className={cn(
-              "group relative flex min-w-[56px] sm:min-w-[62px] flex-col items-center justify-center rounded-full px-2 py-1.5 text-center transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c6a15b]",
+              "group relative flex h-9 min-w-[48px] sm:min-w-[52px] lg:min-w-[54px] flex-col items-center justify-center rounded-full px-2 sm:px-2.5 py-0.5 text-center transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c6a15b]",
               active
-                ? "bg-[#c6a15b]/15 text-[#d8c08a] shadow-[inset_0_0_12px_rgba(198,161,91,0.12)]"
+                ? "bg-[#c6a15b]/15 text-[#d8c08a] shadow-[inset_0_0_8px_rgba(198,161,91,0.12)]"
                 : "text-muted-foreground hover:bg-muted/70 hover:text-[#f4efe6]"
             )}
           >
             {/* Icon */}
-            <span className="flex h-5 w-5 items-center justify-center">
+            <span className="flex h-4 w-4 items-center justify-center">
               <Icon
-                size={18}
+                size={15}
                 strokeWidth={active ? 2 : 1.7}
                 aria-hidden="true"
                 className={cn(
@@ -107,7 +107,7 @@ export function BottomNavBar({
             {/* Label below Icon */}
             <span
               className={cn(
-                "mt-0.5 select-none whitespace-nowrap text-[10px] tracking-tight transition-colors duration-300 sm:text-[11px]",
+                "mt-0.5 select-none whitespace-nowrap text-[9px] sm:text-[9.5px] leading-tight tracking-tight transition-colors duration-300",
                 active
                   ? "font-semibold text-[#d8c08a]"
                   : "font-normal text-[#8e8a82] group-hover:text-[#f4efe6]"
