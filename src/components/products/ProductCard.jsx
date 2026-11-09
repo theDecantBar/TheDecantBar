@@ -4,7 +4,6 @@ import { Plus, Minus, Bell } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
 import ProductImage from "../common/ProductImage";
-import ShopTransition from "../ShopTransition";
 
 function ProductCard({ product }) {
   const shouldReduceMotion = useReducedMotion();
@@ -15,8 +14,6 @@ function ProductCard({ product }) {
   const [selectedVariantId, setSelectedVariantId] = useState(
     () => product.variants?.[0]?.id ?? null
   );
-
-  const [showProductTransition, setShowProductTransition] = useState(false);
 
   const selectedVariant =
     product.variants?.find((v) => v.id === selectedVariantId) ??
@@ -50,15 +47,10 @@ function ProductCard({ product }) {
       if (event?.preventDefault) {
         event.preventDefault();
       }
-      setShowProductTransition(true);
+      navigate(`/product/${product.id}`);
     },
-    []
+    [navigate, product.id]
   );
-
-  const finishProductTransition = useCallback(() => {
-    setShowProductTransition(false);
-    navigate(`/product/${product.id}`);
-  }, [navigate, product.id]);
 
   // Card-level click handler: navigates when clicking non-interactive card regions
   const handleCardClick = (event) => {
@@ -287,13 +279,6 @@ function ProductCard({ product }) {
           </div>
         </div>
       </motion.div>
-
-      {/* Black-and-Gold Product Transition */}
-      <AnimatePresence>
-        {showProductTransition && (
-          <ShopTransition onFinish={finishProductTransition} />
-        )}
-      </AnimatePresence>
     </>
   );
 }

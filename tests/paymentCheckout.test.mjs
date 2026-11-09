@@ -5,6 +5,7 @@ import pool from "../server/config/db.js";
 import { createRazorpayOrder, createCodOrder } from "../server/controllers/orderController.js";
 
 test("checkout saves the server-priced basket before returning payment details, reuses it and protects the last unit", async t => {
+  process.env.ONLINE_PAYMENTS_ENABLED = "true";
   process.env.RAZORPAY_KEY_ID = "test-only";
   process.env.RAZORPAY_KEY_SECRET = "test-only";
   const require = createRequire(import.meta.url);
@@ -67,6 +68,7 @@ import { receiveRazorpayWebhook, retrySavedPayment, verifyPaymentAndCreateOrder 
 
 for (const confirmationPath of ["customer returns", "customer closes checkout"]) {
 test(`retry on the same order and confirm once when ${confirmationPath}`, async t => {
+  process.env.ONLINE_PAYMENTS_ENABLED = "true";
   process.env.RAZORPAY_WEBHOOK_SECRET = "isolated-test-secret";
   process.env.RAZORPAY_KEY_ID = "isolated-key";
   process.env.RAZORPAY_KEY_SECRET = "isolated-secret";

@@ -60,7 +60,7 @@ export default function RefundPolicy() {
             <div className="mt-4 p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2 text-xs">
               <p className="font-semibold text-[#f4efe6]">To file a damage or leakage claim:</p>
               <ol className="list-decimal list-inside space-y-1.5 text-[#8e8a82]">
-                <li>Contact our support team within <strong className="text-[#f4efe6]">48 hours of delivery</strong> [Subject to Owner Confirmation].</li>
+                <li>Contact our support team within <strong className="text-[#f4efe6]">48 hours of delivery</strong>.</li>
                 <li>Provide clear photographs or a short video showing the outer shipping box with the visible courier shipping label.</li>
                 <li>Include a clear photograph showing the damaged vial, leakage mark, or defective atomizer.</li>
               </ol>
@@ -88,30 +88,20 @@ export default function RefundPolicy() {
               Upon verification and approval of a claim:
             </p>
             <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
-              <li><strong className="text-[#f4efe6]">Online Payments (Razorpay):</strong> Refunds are initiated directly through Razorpay back to your original payment method (Credit/Debit Card, Net Banking, or UPI account). Funds typically credit within <strong className="text-[#f4efe6]">5 to 7 business days</strong> depending on your bank's processing cycle.</li>
+              <li><strong className="text-[#f4efe6]">Online Payments:</strong> Refunds are initiated back to your original payment method (Credit/Debit Card, Net Banking, or UPI account). Funds typically credit within <strong className="text-[#f4efe6]">5 to 7 business days</strong> depending on your bank's processing cycle.</li>
               <li><strong className="text-[#f4efe6]">Cash on Delivery (COD) Refunds:</strong> For approved COD damage claims where replacement is not desired, refunds are issued via direct UPI or bank transfer upon receipt of customer bank account details.</li>
               <li><strong className="text-[#f4efe6]">Replacement Option:</strong> Customers may choose to have a fresh replacement bottle dispatched immediately at zero additional shipping cost.</li>
             </ul>
           </section>
 
-          {/* Owner Confirmation Section */}
-          <section className="p-6 rounded-2xl border border-amber-500/30 bg-amber-950/10">
-            <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-300">
-                  Claim Window & Support Contact (For Owner Review)
-                </h3>
-                <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
-                  The following details represent operational parameters to be confirmed prior to public launch:
-                </p>
-                <div className="mt-3 space-y-1 text-xs text-[#f4efe6]/90 font-mono bg-black/40 p-3 rounded-2xl border border-white/10">
-                  <p>• Damage Reporting Window: [48 Hours from Courier Delivery Stamp — Pending Owner Confirmation]</p>
-                  <p>• Unboxing Video: [Recommended / Mandatory for High-Value Claims — Pending Owner Confirmation]</p>
-                  <p>• Refund Support Email: thedecantbarofficial@gmail.com</p>
-                </div>
-              </div>
-            </div>
+          {/* Support & Claims Contact */}
+          <section className="p-6 rounded-2xl border border-[#c6a15b]/20 bg-[#171715]">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#c6a15b]">
+              Filing a Claim or Replacement Request
+            </h3>
+            <p className="mt-2 text-xs text-[#8e8a82] leading-relaxed">
+              To request a replacement or report damaged transit items, please message our concierge support team via our <Link to="/contact" className="text-[#c6a15b] underline">Contact Form</Link> within 48 hours of delivery. Please include your order number and clear photos of the affected parcel.
+            </p>
           </section>
         </div>
 

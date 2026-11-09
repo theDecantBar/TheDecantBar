@@ -4,6 +4,7 @@ import { invalidateProductCache } from "./productController.js";
 import { sendOrderConfirmationEmail } from "../services/orderEmailService.js";
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
+import { blockDisabledOnlinePayments } from "../config/paymentAvailability.js";
 
 // Lock the variant before reading holds so competing online and COD checkouts serialize.
 async function availableStock(client, variantId, excludedOrderId = null) {
@@ -203,6 +204,7 @@ export function validateCustomerAndShippingDetails({
 // @route   POST /api/orders/create-razorpay-order
 // @access  Public (Guest or Authenticated)
 export const createRazorpayOrder = async (req, res) => {
+  if (blockDisabledOnlinePayments(res)) return;
   const client = await pool.connect();
   let released = false;
   try {
@@ -446,6 +448,7 @@ async function confirmCapturedPayment(payment, userId, res) {
 
 // Reopen the original gateway order, including after the initial stock hold has expired.
 export async function retrySavedPayment(req, res) {
+  if (blockDisabledOnlinePayments(res)) return;
   const client = await pool.connect();
   let released = false;
   try {

@@ -22,7 +22,6 @@ import {
 
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import ShopTransition from "./ShopTransition";
 import "./Navbar.css";
 
 const navItems = [
@@ -52,7 +51,6 @@ export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [shopTransitionOpen, setShopTransitionOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [catalogProducts, setCatalogProducts] = useState([]);
   const [searchSuggestions, setSearchSuggestions] = useState([]);
@@ -225,16 +223,11 @@ export default function Navbar() {
     setActiveSuggestion(-1);
   }, []);
 
-  // Show the Shop transition.
+  // Navigate to Shop directly without delay.
   const handleShopClick = useCallback((event) => {
-    event.preventDefault();
+    event?.preventDefault();
     setMobileMenuOpen(false);
     setShowSearchSuggestions(false);
-    setShopTransitionOpen(true);
-  }, []);
-
-  const finishShopTransition = useCallback(() => {
-    setShopTransitionOpen(false);
     navigate("/products");
   }, [navigate]);
 
@@ -807,13 +800,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </motion.header>
-
-      {/* Shop transition */}
-      <AnimatePresence>
-        {shopTransitionOpen && (
-          <ShopTransition onFinish={finishShopTransition} />
-        )}
-      </AnimatePresence>
     </>
   );
 }

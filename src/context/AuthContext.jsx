@@ -10,11 +10,7 @@ export function AuthProvider({ children }) {
       if (!savedUser) return null;
       const parsed = JSON.parse(savedUser);
       if (parsed) {
-        parsed.isAdmin = Boolean(
-          parsed.isAdmin ||
-          parsed.is_admin ||
-          parsed.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
-        );
+        parsed.isAdmin = Boolean(parsed.isAdmin || parsed.is_admin);
       }
       return parsed;
     } catch {
@@ -49,11 +45,7 @@ export function AuthProvider({ children }) {
           if (res?.user) {
             const userObj = {
               ...res.user,
-              isAdmin: Boolean(
-                res.user.isAdmin ||
-                res.user.is_admin ||
-                res.user.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
-              ),
+              isAdmin: Boolean(res.user.isAdmin || res.user.is_admin),
             };
             setUser(userObj);
             localStorage.setItem("tdb_user", JSON.stringify(userObj));
@@ -72,11 +64,7 @@ export function AuthProvider({ children }) {
   const loginWithToken = (userData, userToken) => {
     const userObj = {
       ...userData,
-      isAdmin: Boolean(
-        userData.isAdmin ||
-        userData.is_admin ||
-        userData.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
-      ),
+      isAdmin: Boolean(userData.isAdmin || userData.is_admin),
     };
     setUser(userObj);
     setToken(userToken);
@@ -95,11 +83,7 @@ export function AuthProvider({ children }) {
     const data = await loginUser(credentials);
     const userObj = {
       ...data.user,
-      isAdmin: Boolean(
-        data.user.isAdmin ||
-        data.user.is_admin ||
-        data.user.email?.toLowerCase() === "thedecantbarofficial@gmail.com"
-      ),
+      isAdmin: Boolean(data.user.isAdmin || data.user.is_admin),
     };
     setUser(userObj);
     setToken(data.token);

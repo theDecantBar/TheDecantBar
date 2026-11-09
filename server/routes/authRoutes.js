@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  register,
   login,
   googleAuth,
   getProfile,
@@ -17,7 +16,12 @@ import { otpIpLimiter, authLimiter, checkEmailCooldown } from "../middleware/rat
 const router = express.Router();
 
 // General Auth
-router.post("/register", authLimiter, register);
+// Legacy unverified registration is permanently disabled to prevent account takeover.
+router.post("/register", (_req, res) => {
+  return res.status(410).json({
+    message: "Direct registration without verification has been disabled. Please verify your email using our signup verification flow.",
+  });
+});
 router.post("/login", authLimiter, login);
 router.post("/google", authLimiter, googleAuth);
 

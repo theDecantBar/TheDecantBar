@@ -28,7 +28,7 @@ import {
   FREE_SHIPPING_THRESHOLD,
 } from "../utils/shipping";
 
-import { loadRazorpayScript } from "../services/razorpayCheckout";
+import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayCheckout";
 
 export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
@@ -937,7 +937,7 @@ export default function Checkout() {
                 </label>
 
                 {/* Option 2: Pay Online (Razorpay) */}
-                <label
+                {onlinePaymentsEnabled && <label
                   className={`block cursor-pointer border p-5 transition-all ${
                     formData.paymentMethod === "online"
                       ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
@@ -993,7 +993,8 @@ export default function Checkout() {
                       <ShieldCheck size={20} />
                     </div>
                   </div>
-                </label>
+                </label>}
+                {!onlinePaymentsEnabled && <p className="text-sm text-[#c5c1b9]">Cash on Delivery is currently available. Pay when your order arrives.</p>}
               </div>
 
               <div className="mt-5 border-t border-white/10 pt-3.5 flex items-center justify-between text-[11px] text-[#8e8a82]">

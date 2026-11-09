@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useAuth } from "../context/AuthContext";
-import { loadRazorpayScript } from "../services/razorpayCheckout";
+import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayCheckout";
 import { retrySavedPayment, verifyPaymentAndPlaceOrder, fetchMyOrders, updateProfile, changePassword } from "../services/authApi";
 
 export default function Account() {
@@ -405,7 +405,7 @@ export default function Account() {
                           </div>
                         </div>
 
-                        {order.order_status === "Awaiting payment" && (
+                        {onlinePaymentsEnabled && order.order_status === "Awaiting payment" && (
                           <div className="mt-4 text-sm">
                             {order.payment_status === "Failed" && <p>Payment failed. Your order is saved.</p>}
                             <button type="button" disabled={checkingOrder !== null} onClick={() => checkOrRetry(order)}
