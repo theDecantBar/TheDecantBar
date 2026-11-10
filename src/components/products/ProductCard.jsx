@@ -1,6 +1,7 @@
+
 import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Plus, Minus, Bell } from "lucide-react";
+import { Plus, Minus, Bell, Star } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useCart } from "../../context/CartContext";
 import ProductImage from "../common/ProductImage";
@@ -40,21 +41,24 @@ function ProductCard({ product }) {
 
   const handleProductClick = useCallback(
     (event) => {
-      // If user opened with meta/ctrl key, allow default Link behavior (open in new tab)
-      if (event?.metaKey || event?.ctrlKey || event?.shiftKey) {
+      if (
+        event?.metaKey ||
+        event?.ctrlKey ||
+        event?.shiftKey
+      ) {
         return;
       }
+
       if (event?.preventDefault) {
         event.preventDefault();
       }
+
       navigate(`/product/${product.id}`);
     },
     [navigate, product.id]
   );
 
-  // Card-level click handler: navigates when clicking non-interactive card regions
   const handleCardClick = (event) => {
-    // If the click originated from an interactive element (buttons, controls), ignore
     if (
       event.target.closest(
         "button, a, input, select, textarea, [data-interactive='true']"
@@ -62,31 +66,39 @@ function ProductCard({ product }) {
     ) {
       return;
     }
+
     if (event.metaKey || event.ctrlKey || event.shiftKey) {
       window.open(`/product/${product.id}`, "_blank");
       return;
     }
+
     handleProductClick(event);
   };
 
   const handleAddToCart = (event) => {
     event?.preventDefault();
     event?.stopPropagation();
+
     if (!selectedVariant || isSoldOut) return;
+
     addToCart(product, selectedVariant, 1);
   };
 
   const handleIncreaseQuantity = (event) => {
     event?.preventDefault();
     event?.stopPropagation();
+
     if (!selectedVariant || isSoldOut) return;
+
     addToCart(product, selectedVariant, 1);
   };
 
   const handleDecreaseQuantity = (event) => {
     event?.preventDefault();
     event?.stopPropagation();
+
     if (!cartItemId || itemQuantity <= 0) return;
+
     updateQuantity(cartItemId, itemQuantity - 1);
   };
 
@@ -115,6 +127,10 @@ function ProductCard({ product }) {
   const sizeHeading = selectedVariant
     ? `${selectedVariant.size_ml}ML DECANT`
     : "DECANT";
+
+  // Product-specific rating information
+  const reviewCount = Number(product.review_count ?? 0);
+  const averageRating = Number(product.average_rating ?? 0);
 
   return (
     <>
@@ -156,7 +172,7 @@ function ProductCard({ product }) {
             {brandLabel}
           </p>
 
-          {/* Product Name in Elegant Serif Typography (Semantic Accessibility Link) */}
+          {/* Product Name */}
           <Link
             to={`/product/${product.id}`}
             onClick={handleProductClick}
@@ -168,13 +184,55 @@ function ProductCard({ product }) {
             </h2>
           </Link>
 
-          {/* Metadata Row: Gender · Season/Weather · Type */}
+          {/* Metadata Row */}
           <div className="mt-1 flex items-center gap-1.5 text-xs text-neutral-400">
             <span>{genderLabel}</span>
             <span className="text-neutral-600">·</span>
             <span>{weatherLabel}</span>
             <span className="text-neutral-600">·</span>
             <span>{typeLabel}</span>
+          </div>
+
+          {/* Product Rating */}
+          <div
+            className="mt-2 flex min-h-[18px] items-center gap-1.5"
+            aria-label={
+              reviewCount > 0
+                ? `${averageRating.toFixed(1)} out of 5, based on ${reviewCount} reviews`
+                : "No reviews yet"
+            }
+          >
+            {reviewCount > 0 ? (
+              <>
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={12}
+                      strokeWidth={1.5}
+                      className={
+                        star <= Math.round(averageRating)
+                          ? "fill-[#d8b570] text-[#d8b570]"
+                          : "text-neutral-600"
+                      }
+                    />
+                  ))}
+                </div>
+
+                <span className="text-xs font-semibold text-[#f4efe6]">
+                  {averageRating.toFixed(1)}
+                </span>
+
+                <span className="text-[11px] text-neutral-500">
+                  ({reviewCount}{" "}
+                  {reviewCount === 1 ? "review" : "reviews"})
+                </span>
+              </>
+            ) : (
+              <span className="text-[11px] text-neutral-500">
+                Be the first to review
+              </span>
+            )}
           </div>
 
           {/* Subtle Divider */}
@@ -186,10 +244,12 @@ function ProductCard({ product }) {
               <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400">
                 {sizeHeading}
               </p>
+
               <p className="mt-0.5 text-xl sm:text-2xl font-bold tracking-tight text-[#f4efe6]">
                 ₹{currentPrice}
               </p>
             </div>
+
             {selectedVariant &&
               Number(selectedVariant.stock ?? 0) > 0 &&
               Number(selectedVariant.stock ?? 0) <= 3 && (
@@ -199,7 +259,7 @@ function ProductCard({ product }) {
               )}
           </div>
 
-          {/* Size Selectors & Add Button Row (Interactive Area - Never triggers Card Navigation) */}
+          {/* Size Selectors & Add Button Row */}
           <div
             className="mt-auto flex items-center justify-between gap-2 pt-1"
             data-interactive="true"
@@ -212,8 +272,11 @@ function ProductCard({ product }) {
               aria-label="Select decant size"
             >
               {product.variants?.map((variant) => {
-                const isSelected = selectedVariant?.id === variant.id;
-                const variantSoldOut = Number(variant.stock ?? 0) <= 0;
+                const isSelected =
+                  selectedVariant?.id === variant.id;
+
+                const variantSoldOut =
+                  Number(variant.stock ?? 0) <= 0;
 
                 return (
                   <button
@@ -238,7 +301,7 @@ function ProductCard({ product }) {
               })}
             </div>
 
-            {/* Circular Gold Add to Bag or Quantity Control */}
+            {/* Add to Bag / Quantity Control */}
             <div className="shrink-0">
               {isSoldOut ? (
                 <button
@@ -260,9 +323,11 @@ function ProductCard({ product }) {
                   >
                     <Minus size={13} strokeWidth={2.2} />
                   </button>
+
                   <span className="min-w-5 text-center text-xs font-semibold text-[#f4efe6]">
                     {itemQuantity}
                   </span>
+
                   <button
                     type="button"
                     aria-label="Increase quantity"

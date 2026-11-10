@@ -1,4 +1,3 @@
-
 console.log("PRODUCT CONTROLLER FILE LOADED");
 
 import pool from "../config/db.js";
@@ -15,18 +14,33 @@ export const invalidateProductCache = () => {
 
 const parseMultiParam = (param) => {
   if (!param) return [];
+
   if (Array.isArray(param)) {
-    return param.flatMap((p) => String(p).split(",")).map((s) => s.trim()).filter(Boolean);
+    return param
+      .flatMap((p) => String(p).split(","))
+      .map((s) => s.trim())
+      .filter(Boolean);
   }
-  return String(param).split(",").map((s) => s.trim()).filter(Boolean);
+
+  return String(param)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 };
 
+// GET ALL PRODUCTS
 export const getProducts = async (req, res) => {
   try {
     const { search, category, gender, weather, type, limit } = req.query;
 
-    const isDefaultCatalog = !search && !category && !gender && !weather && !type && !limit;
-    if (isDefaultCatalog && allProductsCache && (Date.now() - allProductsCacheTime < CACHE_LIFETIME_MS)) {
+    const isDefaultCatalog =
+      !search && !category && !gender && !weather && !type && !limit;
+
+    if (
+      isDefaultCatalog &&
+      allProductsCache &&
+      Date.now() - allProductsCacheTime < CACHE_LIFETIME_MS
+    ) {
       return res.json(allProductsCache);
     }
 
@@ -36,16 +50,17 @@ export const getProducts = async (req, res) => {
     // Storefront only displays perfumes with valid image URLs
     conditions.push("p.image_url IS NOT NULL AND TRIM(p.image_url) != ''");
 
-    // Search query by product name, brand, or category (supports multi-word and partial terms)
+    // Search query by product name, brand, or category
     let orderByClause = "ORDER BY p.created_at DESC";
+
     if (search && search.trim() !== "") {
       const searchTrimmed = search.trim();
       const words = searchTrimmed.split(/\s+/).filter(Boolean);
 
-      // Multi-word support: every search word must match somewhere in name, brand, or category
       words.forEach((word) => {
         values.push(`%${word}%`);
         const idx = values.length;
+
         conditions.push(`(
           p.name ILIKE $${idx}
           OR p.brand ILIKE $${idx}
@@ -54,11 +69,12 @@ export const getProducts = async (req, res) => {
         )`);
       });
 
-      // Rank products: products starting with search term or name prefix match appear first
       values.push(`${searchTrimmed}%`);
       const prefixIdx = values.length;
+
       values.push(`%${searchTrimmed}%`);
       const fullIdx = values.length;
+
       orderByClause = `ORDER BY
         CASE
           WHEN p.name ILIKE $${prefixIdx} THEN 1
@@ -71,55 +87,68 @@ export const getProducts = async (req, res) => {
         p.name ASC`;
     }
 
-    // Fragrance Classification / Category (supports single or multiple values)
+    // Fragrance Classification / Category
     const categories = parseMultiParam(category);
+
     if (categories.length > 0) {
       const catClauses = [];
+
       categories.forEach((cat) => {
         values.push(`%${cat}%`);
         catClauses.push(`p.category ILIKE $${values.length}`);
       });
+
       conditions.push(`(${catClauses.join(" OR ")})`);
     }
 
-    // Gender (supports multiple: Men, Women, Unisex)
+    // Gender filter
     const genders = parseMultiParam(gender).map((g) => g.toUpperCase());
+
     if (genders.length > 0) {
       const genderClauses = [];
+
       if (genders.some((g) => ["M", "MEN"].includes(g))) {
         genderClauses.push(`UPPER(TRIM(p.gender)) IN ('M', 'MEN')`);
       }
+
       if (genders.some((g) => ["W", "WOMEN"].includes(g))) {
         genderClauses.push(`UPPER(TRIM(p.gender)) IN ('W', 'WOMEN')`);
       }
+
       if (genders.some((g) => ["M/W", "UNISEX", "U"].includes(g))) {
         genderClauses.push(`UPPER(TRIM(p.gender)) IN ('M/W', 'UNISEX', 'U')`);
       }
+
       if (genderClauses.length > 0) {
         conditions.push(`(${genderClauses.join(" OR ")})`);
       }
     }
 
-    // Season / Weather (supports Summer, Winter)
+    // Season / Weather filter
     const seasons = parseMultiParam(weather).map((w) => w.toLowerCase());
+
     if (seasons.length > 0) {
       const seasonClauses = [];
+
       if (seasons.includes("summer")) {
         seasonClauses.push(
           `(p.weather ILIKE '%summer%' OR p.weather ILIKE '%summeer%' OR p.weather ILIKE '%all season%')`
         );
       }
+
       if (seasons.includes("winter")) {
         seasonClauses.push(
           `(p.weather ILIKE '%winter%' OR p.weather ILIKE '%all season%')`
         );
       }
+
       seasons.forEach((s) => {
         if (s !== "summer" && s !== "winter") {
           values.push(`%${s}%`);
           seasonClauses.push(`p.weather ILIKE $${values.length}`);
         }
       });
+
       if (seasonClauses.length > 0) {
         conditions.push(`(${seasonClauses.join(" OR ")})`);
       }
@@ -131,18 +160,38 @@ export const getProducts = async (req, res) => {
       conditions.push(`p.type ILIKE $${values.length}`);
     }
 
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+    const whereClause =
+      conditions.length > 0
+        ? `WHERE ${conditions.join(" AND ")}`
+        : "";
 
     let limitClause = "";
     const parsedLimit = parseInt(limit, 10);
+
     if (!isNaN(parsedLimit) && parsedLimit > 0) {
       values.push(parsedLimit);
       limitClause = `LIMIT $${values.length}`;
     }
 
+    // Product query with average rating and review count
     const query = `
       SELECT
         p.*,
+
+        COALESCE(
+          (
+            SELECT ROUND(AVG(pr.rating)::numeric, 1)
+            FROM product_reviews pr
+            WHERE pr.product_id = p.id
+          ), 0
+        ) AS average_rating,
+
+        (
+          SELECT COUNT(*)::integer
+          FROM product_reviews pr
+          WHERE pr.product_id = p.id
+        ) AS review_count,
+
         COALESCE(
           json_agg(
             json_build_object(
@@ -156,20 +205,28 @@ export const getProducts = async (req, res) => {
           ) FILTER (WHERE pv.id IS NOT NULL),
           '[]'::json
         ) AS variants
+
       FROM products p
+
       LEFT JOIN product_variants pv
         ON p.id = pv.product_id
+
       ${whereClause}
+
       GROUP BY p.id
+
       ${orderByClause}
+
       ${limitClause}
     `;
 
     const result = await pool.query(query, values);
+
     if (isDefaultCatalog) {
       allProductsCache = result.rows;
       allProductsCacheTime = Date.now();
     }
+
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -181,12 +238,18 @@ export const getProducts = async (req, res) => {
   }
 };
 
+// GET SINGLE PRODUCT BY ID
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
     const numericId = parseInt(id, 10);
-    if (!Number.isInteger(numericId) || numericId <= 0 || !/^\d+$/.test(String(id).trim())) {
+
+    if (
+      !Number.isInteger(numericId) ||
+      numericId <= 0 ||
+      !/^\d+$/.test(String(id).trim())
+    ) {
       return res.status(404).json({
         message: "Product not found",
       });
@@ -196,6 +259,21 @@ export const getProductById = async (req, res) => {
       `
       SELECT
         p.*,
+
+        COALESCE(
+          (
+            SELECT ROUND(AVG(pr.rating)::numeric, 1)
+            FROM product_reviews pr
+            WHERE pr.product_id = p.id
+          ), 0
+        ) AS average_rating,
+
+        (
+          SELECT COUNT(*)::integer
+          FROM product_reviews pr
+          WHERE pr.product_id = p.id
+        ) AS review_count,
+
         COALESCE(
           json_agg(
             json_build_object(
@@ -209,10 +287,14 @@ export const getProductById = async (req, res) => {
           ) FILTER (WHERE pv.id IS NOT NULL),
           '[]'::json
         ) AS variants
+
       FROM products p
+
       LEFT JOIN product_variants pv
         ON p.id = pv.product_id
+
       WHERE p.id = $1
+
       GROUP BY p.id
       `,
       [numericId]
@@ -235,29 +317,41 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// @desc    Register a customer restock notification request
-// @route   POST /api/products/notify-restock
-// @access  Public
+// REGISTER CUSTOMER RESTOCK NOTIFICATION
 export const requestStockNotification = async (req, res) => {
   try {
     let { productId, variantId, productName, sizeMl, contactInfo } = req.body;
 
     if (!contactInfo || !contactInfo.trim()) {
-      return res.status(400).json({ message: "Please provide an email or WhatsApp number." });
+      return res.status(400).json({
+        message: "Please provide an email or WhatsApp number.",
+      });
     }
 
     if (!productName && productId) {
-      const pRes = await pool.query("SELECT name FROM products WHERE id = $1", [productId]);
-      if (pRes.rows.length > 0) productName = pRes.rows[0].name;
+      const pRes = await pool.query(
+        "SELECT name FROM products WHERE id = $1",
+        [productId]
+      );
+
+      if (pRes.rows.length > 0) {
+        productName = pRes.rows[0].name;
+      }
     }
 
     if (!sizeMl && variantId) {
-      const vRes = await pool.query("SELECT size_ml FROM product_variants WHERE id = $1", [variantId]);
-      if (vRes.rows.length > 0) sizeMl = vRes.rows[0].size_ml;
+      const vRes = await pool.query(
+        "SELECT size_ml FROM product_variants WHERE id = $1",
+        [variantId]
+      );
+
+      if (vRes.rows.length > 0) {
+        sizeMl = vRes.rows[0].size_ml;
+      }
     }
 
     const result = await pool.query(
-      `INSERT INTO stock_notifications 
+      `INSERT INTO stock_notifications
         (product_id, variant_id, product_name, size_ml, contact_info)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
@@ -271,12 +365,15 @@ export const requestStockNotification = async (req, res) => {
     );
 
     res.status(201).json({
-      message: "Notification registered! We'll alert you the moment this perfume is back in stock.",
+      message:
+        "Notification registered! We'll alert you the moment this perfume is back in stock.",
       notification: result.rows[0],
     });
   } catch (error) {
     console.error("Error creating stock notification:", error);
-    res.status(500).json({ message: "Failed to register restock notification." });
+
+    res.status(500).json({
+      message: "Failed to register restock notification.",
+    });
   }
 };
-
