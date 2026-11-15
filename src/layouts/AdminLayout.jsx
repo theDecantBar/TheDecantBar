@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingBag,
-  Sparkles,
+  Droplets,
   Boxes,
   MessageSquare,
   LogOut,
@@ -21,7 +21,7 @@ const navigationItems = [
   { name: "Dashboard", path: "/admin", icon: LayoutDashboard, end: true },
   { name: "Orders & Shipping", path: "/admin/orders", icon: ShoppingBag },
   { name: "Inventory & Alerts", path: "/admin/inventory", icon: Boxes },
-  { name: "Perfume Catalog", path: "/admin/products", icon: Sparkles },
+  { name: "Perfume Catalog", path: "/admin/products", icon: Droplets },
   { name: "Customer Reviews", path: "/admin/reviews", icon: MessageSquare },
 ];
 
@@ -96,7 +96,7 @@ export default function AdminLayout() {
                 onClick={() => setMobileMenuOpen(false)}
                 title={!open ? item.name : undefined}
                 className={({ isActive }) =>
-                  `relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${isActive
+                  `relative flex h-11 w-full items-center rounded-xl transition-all duration-200 ${isActive
                     ? "bg-[#c6a15b]/15 text-[#c6a15b] shadow-sm border-l-2 border-[#c6a15b] font-semibold"
                     : "text-[#c5c1b9] hover:bg-white/5 hover:text-[#f4efe6]"
                   }`
@@ -125,7 +125,7 @@ export default function AdminLayout() {
                 to="/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-3 px-3 py-2 text-xs text-[#8e8a82] hover:text-[#c6a15b] transition rounded hover:bg-white/5"
+                className="flex items-center gap-3 px-3 py-2 text-xs text-[#8e8a82] hover:text-[#c6a15b] transition rounded-xl hover:bg-white/5"
               >
                 <ExternalLink size={14} className="shrink-0" />
                 <span className="truncate">Open Live Store</span>
@@ -147,7 +147,7 @@ export default function AdminLayout() {
               type="button"
               onClick={handleLogout}
               title="Sign Out"
-              className="p-1.5 text-[#8e8a82] hover:text-red-400 hover:bg-white/5 transition rounded cursor-pointer"
+              className="p-1.5 text-[#8e8a82] hover:text-red-400 hover:bg-white/5 transition rounded-lg cursor-pointer"
             >
               <LogOut size={15} />
             </button>
@@ -187,7 +187,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden text-[#f4efe6] p-2 hover:bg-white/5 rounded"
+              className="lg:hidden text-[#f4efe6] p-2 hover:bg-white/5 rounded-lg"
             >
               <Menu size={22} />
             </button>
@@ -207,7 +207,7 @@ export default function AdminLayout() {
             <Link
               to="/admin/orders"
               title="Recent Orders"
-              className="relative p-2 rounded-lg bg-white/5 border border-white/10 text-[#8e8a82] hover:text-[#f4efe6] transition"
+              className="relative p-2 rounded-xl bg-white/5 border border-white/10 text-[#8e8a82] hover:text-[#f4efe6] transition"
             >
               <Bell className="h-4 w-4" />
               <span className="absolute -top-1 -right-1 h-2 w-2 bg-[#c6a15b] rounded-full" />
@@ -216,7 +216,7 @@ export default function AdminLayout() {
             <Link
               to="/account"
               title="My Account"
-              className="p-2 rounded-lg bg-white/5 border border-white/10 text-[#8e8a82] hover:text-[#f4efe6] transition"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-[#8e8a82] hover:text-[#f4efe6] transition"
             >
               <User className="h-4 w-4" />
             </Link>

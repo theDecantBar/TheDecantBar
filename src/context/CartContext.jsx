@@ -1,20 +1,91 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import LuxuryToast from "../components/common/LuxuryToast";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
-const CART_STORAGE_KEY = "thedecantbar_cart";
+const GUEST_CART_KEY = "thedecantbar_cart_guest";
+const USER_CART_PREFIX = "thedecantbar_cart_user_";
+const LEGACY_CART_KEY = "thedecantbar_cart";
 
-export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState(() => {
-    try {
-      const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch (error) {
-      console.error("Failed to load cart from localStorage:", error);
-      return [];
+/**
+ * Returns user-specific storage key so Account A and Account B
+ * have completely isolated carts.
+ */
+const getCartStorageKey = (user) => {
+  if (user?.id) {
+    return `${USER_CART_PREFIX}${user.id}`;
+  }
+  if (user?.email) {
+    return `${USER_CART_PREFIX}${encodeURIComponent(user.email.toLowerCase().trim())}`;
+  }
+  return GUEST_CART_KEY;
+};
+
+/**
+ * Safely loads saved cart from localStorage with fallback to legacy key
+ */
+const loadSavedCart = (key) => {
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved) return JSON.parse(saved);
+
+    // One-time fallback migration from legacy shared key for guests
+    if (key === GUEST_CART_KEY) {
+      const legacy = localStorage.getItem(LEGACY_CART_KEY);
+      if (legacy) return JSON.parse(legacy);
+    }
+    return [];
+  } catch (error) {
+    console.error(`Failed to load cart from ${key}:`, error);
+    return [];
+  }
+};
+
+/**
+ * Merges items added as a guest into the user's account cart on login
+ */
+const mergeCarts = (userCart = [], guestCart = []) => {
+  if (!guestCart || guestCart.length === 0) return userCart || [];
+  if (!userCart || userCart.length === 0) return guestCart || [];
+
+  const merged = [...userCart];
+  guestCart.forEach((guestItem) => {
+    const existingIndex = merged.findIndex(
+      (item) => item.cartItemId === guestItem.cartItemId
+    );
+    if (existingIndex > -1) {
+      const max = Number(merged[existingIndex].maxStock ?? 99);
+      merged[existingIndex] = {
+        ...merged[existingIndex],
+        quantity: Math.min(
+          merged[existingIndex].quantity + guestItem.quantity,
+          max
+        ),
+      };
+    } else {
+      merged.push(guestItem);
     }
   });
+  return merged;
+};
+
+export function CartProvider({ children }) {
+  let authContext = null;
+  try {
+    authContext = useAuth();
+  } catch {
+    authContext = null;
+  }
+  const user = authContext?.user ?? null;
+
+  const [cartItems, setCartItems] = useState(() => {
+    const initialKey = getCartStorageKey(user);
+    return loadSavedCart(initialKey);
+  });
+
+  const previousUserRef = useRef(user?.id ?? null);
+  const isInitialMount = useRef(true);
 
   const [toasts, setToasts] = useState([]);
 
@@ -35,14 +106,49 @@ export function CartProvider({ children }) {
     }, 3800);
   }, [dismissToast]);
 
-  // Save to localStorage whenever cart changes
+  // Synchronize cart across authentication state changes (Guest -> Login -> Logout -> Other Account)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      previousUserRef.current = user?.id ?? null;
+      return;
+    }
+
+    const currentUserId = user?.id ?? null;
+    const prevUserId = previousUserRef.current;
+
+    if (currentUserId === prevUserId) return;
+
+    if (currentUserId) {
+      // User just logged in: merge any items they picked as a guest into their account cart
+      const guestItems = loadSavedCart(GUEST_CART_KEY);
+      const userItems = loadSavedCart(getCartStorageKey(user));
+      const merged = mergeCarts(userItems, guestItems);
+
+      try {
+        localStorage.setItem(getCartStorageKey(user), JSON.stringify(merged));
+        localStorage.removeItem(GUEST_CART_KEY);
+        localStorage.removeItem(LEGACY_CART_KEY);
+      } catch {}
+
+      setCartItems(merged);
+    } else {
+      // User logged out: active cart clears to empty guest cart so Account B never sees Account A's items
+      setCartItems([]);
+    }
+
+    previousUserRef.current = currentUserId;
+  }, [user]);
+
+  // Save to current user's localStorage whenever cart changes
+  useEffect(() => {
+    const key = getCartStorageKey(user);
     try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+      localStorage.setItem(key, JSON.stringify(cartItems));
     } catch (error) {
       console.error("Failed to save cart to localStorage:", error);
     }
-  }, [cartItems]);
+  }, [cartItems, user]);
 
   /**
    * Add a product with its selected variant (size) to the cart.
@@ -218,6 +324,10 @@ export function CartProvider({ children }) {
    */
   const clearCart = () => {
     setCartItems([]);
+    const key = getCartStorageKey(user);
+    try {
+      localStorage.removeItem(key);
+    } catch {}
   };
 
   // Total quantity of all items in cart (excluding any marked sold out)

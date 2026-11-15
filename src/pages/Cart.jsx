@@ -7,7 +7,8 @@ import {
   ArrowRight,
   ShoppingBag,
   ShieldCheck,
-  Sparkles,
+  Droplets,
+  Check,
   Truck,
   XCircle,
 } from "lucide-react";
@@ -261,7 +262,7 @@ export default function Cart() {
               </div>
             ) : (
               <div className="rounded-2xl mt-4 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
-                <Sparkles size={15} className="text-emerald-400 shrink-0" />
+                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
             )}
@@ -321,7 +322,7 @@ export default function Cart() {
                 <span>100% Genuine, Handcrafted Decants</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Sparkles size={16} className="text-[#c6a15b] shrink-0" />
+                <Droplets size={16} className="text-[#c6a15b] shrink-0" />
                 <span>Premium leak-proof glass atomizers</span>
               </div>
             </div>

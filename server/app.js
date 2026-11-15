@@ -1,3 +1,4 @@
+
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
@@ -17,6 +18,7 @@ import authRoutes from "./routes/authRoutes.js";
 import { receiveRazorpayWebhook } from "./controllers/orderController.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import productReviewRoutes from "./routes/productReviewRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import { ensureAdminSchema } from "./scripts/initAdminDb.js";
@@ -27,9 +29,16 @@ const app = express();
 const schemaReady = ensureAdminSchema();
 schemaReady.catch(() => {});
 app.locals.schemaReady = schemaReady;
+
 app.use(async (_req, res, next) => {
-  try { await schemaReady; next(); }
-  catch { res.status(503).json({ message: "The store is temporarily unavailable. Please try again shortly." }); }
+  try {
+    await schemaReady;
+    next();
+  } catch {
+    res.status(503).json({
+      message: "The store is temporarily unavailable. Please try again shortly.",
+    });
+  }
 });
 
 // Production-ready CORS policy
@@ -47,6 +56,7 @@ const corsOptions = {
 
     const isExplicitMatch = allowedOrigins.includes(origin);
     const isVercelPreview = /^https:\/\/[\w-]+\.vercel\.app$/.test(origin);
+
     const isLocalDev =
       process.env.NODE_ENV !== "production" &&
       /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
@@ -63,8 +73,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 app.get("/api/jobs/payment-recovery", paymentRecoveryJob);
-app.post("/api/orders/razorpay-webhook", express.raw({ type: "application/json", limit: "256kb" }), receiveRazorpayWebhook);
+
+app.post(
+  "/api/orders/razorpay-webhook",
+  express.raw({ type: "application/json", limit: "256kb" }),
+  receiveRazorpayWebhook
+);
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static(path.resolve(__dirname, "../public")));
@@ -72,7 +89,19 @@ app.use(express.static(path.resolve(__dirname, "../public")));
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
+
+// Existing homepage testimonials
 app.use("/api/reviews", reviewRoutes);
+
+
+// New product-specific reviews
+app.use("/api/product-reviews", (req, res, next) => {
+  console.log("PRODUCT REVIEW MOUNT HIT:", req.method, req.originalUrl);
+  next();
+});
+
+app.use("/api/product-reviews", productReviewRoutes);
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
 
@@ -86,6 +115,7 @@ app.get("/", (req, res) => {
 app.post("/api/test-email", protect, adminOnly, async (req, res) => {
   try {
     const recipient = req.body?.to || getPrimaryAdminEmail();
+
     const result = await sendEmail({
       to: recipient,
       subject: "The Decant Bar - Admin Email Test",
@@ -93,7 +123,7 @@ app.post("/api/test-email", protect, adminOnly, async (req, res) => {
         <div style="background:#11110f;color:#f4efe6;padding:30px;font-family:Arial">
           <h1 style="color:#c6a15b">The Decant Bar</h1>
           <p>Your email integration is working!</p>
-          <p>This is an authenticated diagnostic test email dispatched by an authorized administrator.</p>
+          <p>This is an authenticated diagnostic test-email dispatched by an authorized administrator.</p>
         </div>
       `,
       text: "The Decant Bar: Your email integration is working!",
@@ -106,24 +136,28 @@ app.post("/api/test-email", protect, adminOnly, async (req, res) => {
     });
   } catch (error) {
     console.error("Test email failed:", error.message);
+
     res.status(500).json({
       success: false,
-      message: error.message || "Email test failed. Check your server logs and Resend configuration.",
+      message:
+        error.message ||
+        "Email test failed. Check your server logs and Resend configuration.",
     });
   }
 });
 
-// 404 handler for unknown API routes - ensures JSON response instead of HTML
+// 404 handler for unknown API routes
 app.use("/api", (req, res) => {
   res.status(404).json({
     message: `API endpoint not found: ${req.method} ${req.originalUrl}`,
   });
 });
 
-// Global error handler for API (Express requires 4 arguments to recognize error middleware)
+// Global error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error("Express unhandled error:", err);
+
   res.status(err.status || 500).json({
     message: err.message || "Internal server error",
   });

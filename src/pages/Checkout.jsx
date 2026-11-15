@@ -8,7 +8,8 @@ import {
   ArrowRight,
   ShoppingBag,
   ArrowLeft,
-  Sparkles,
+  Droplets,
+  Check,
   Lock,
   AlertCircle,
   Loader2,
@@ -51,6 +52,9 @@ export default function Checkout() {
   const [errorMessage, setErrorMessage] = useState("");
   const [savedReference, setSavedReference] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
+  const [pendingRazorpayOrder, setPendingRazorpayOrder] = useState(null);
+  const [pendingOrderPayloadKey, setPendingOrderPayloadKey] = useState(null);
+  const [paymentVerificationPending, setPaymentVerificationPending] = useState(false);
 
   const fullNameRef = useRef(null);
   const phoneRef = useRef(null);
@@ -178,6 +182,13 @@ export default function Checkout() {
 
     setFormData((prev) => ({ ...prev, [name]: nextValue }));
 
+    // Invalidate stale pending order so it will not be reused if checkout details change
+    if (pendingRazorpayOrder) {
+      setPendingRazorpayOrder(null);
+      setPendingOrderPayloadKey(null);
+      setSavedReference("");
+    }
+
     if (touched[name]) {
       const err = validateField(name, nextValue);
       setErrors((prev) => ({ ...prev, [name]: err }));
@@ -194,6 +205,18 @@ export default function Checkout() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
+
+    if (paymentVerificationPending) {
+      setErrorMessage(
+        "Payment verification is currently pending. Please check My orders or wait for confirmation before attempting another payment."
+      );
+      return;
+    }
+
+    if (!onlinePaymentsEnabled) {
+      setErrorMessage("Online payments are temporarily unavailable. Please try again later.");
+      return;
+    }
 
     if (cartItems.length === 0) {
       setErrorMessage("Your cart is empty. Please add fragrances before checking out.");
@@ -266,19 +289,31 @@ export default function Checkout() {
       }
 
       // 2. Request backend to create Razorpay Order (prices verified server-side)
-      const rzpOrderData = await createRazorpayOrderApi(
-        {
-          ...cleanPayload,
-          items: itemPayload,
-        },
-        token
-      );
+      // Reuse an existing pending order only if checkout data and cart have not changed
+      const currentPayloadKey = JSON.stringify({ cleanPayload, items: itemPayload });
+      let rzpOrderData = null;
 
-      if (!rzpOrderData || !rzpOrderData.orderId) {
-        throw new Error("Unable to initialize secure payment. Please try again.");
+      if (pendingRazorpayOrder && pendingOrderPayloadKey === currentPayloadKey) {
+        rzpOrderData = pendingRazorpayOrder;
+      } else {
+        rzpOrderData = await createRazorpayOrderApi(
+          {
+            ...cleanPayload,
+            items: itemPayload,
+          },
+          token
+        );
+
+        if (!rzpOrderData || !rzpOrderData.orderId) {
+          throw new Error("Unable to initialize secure payment. Please try again.");
+        }
+
+        // Save the complete order response and payload snapshot for payment retries
+        setPendingRazorpayOrder(rzpOrderData);
+        setPendingOrderPayloadKey(currentPayloadKey);
+        setSavedReference(rzpOrderData.orderNumber);
       }
 
-      setSavedReference(rzpOrderData.orderNumber);
       // 3. Launch Razorpay Checkout Modal
       const options = {
         key: rzpOrderData.keyId,
@@ -321,12 +356,20 @@ export default function Checkout() {
             };
 
             setCompletedOrder(orderSummary);
+            setPendingRazorpayOrder(null);
+            setPendingOrderPayloadKey(null);
+            setSavedReference("");
+            setPaymentVerificationPending(false);
             clearCart();
             window.scrollTo({ top: 0, behavior: "smooth" });
           } catch (verificationErr) {
             console.error("Payment confirmation error:", verificationErr);
+
+            // Do not allow another payment attempt until this payment is checked
+            setPaymentVerificationPending(true);
+
             setErrorMessage(
-              `Check My orders for ${rzpOrderData.orderNumber} before paying again. Payment reference: ${response.razorpay_payment_id}.`
+              `Payment was initiated, but confirmation could not be completed. Please check My orders for ${rzpOrderData.orderNumber} before attempting another payment. Payment reference: ${response.razorpay_payment_id}.`
             );
           } finally {
             setIsSubmitting(false);
@@ -348,7 +391,7 @@ export default function Checkout() {
           ondismiss: function () {
             setIsSubmitting(false);
             setErrorMessage(
-              "Your order is saved. Open My orders to check its payment or retry."
+              `Payment was not completed. Your order ${rzpOrderData.orderNumber} is saved. You can retry payment below.`
             );
           },
         },
@@ -372,10 +415,6 @@ export default function Checkout() {
 
   // 1. Order Completed Screen
   if (completedOrder) {
-    const isCod =
-      completedOrder.customer.paymentMethod === "Cash on Delivery" ||
-      completedOrder.customer.paymentMethod === "cod";
-
     return (
       <Container className="py-20 sm:py-28">
         <div className="rounded-2xl mx-auto max-w-2xl border border-white/10 bg-[#171715] p-8 sm:p-12 shadow-2xl">
@@ -385,7 +424,7 @@ export default function Checkout() {
             </div>
 
             <p className="text-xs uppercase tracking-[0.25em] text-[#c6a15b]">
-              {isCod ? "Order Placed · Cash on Delivery" : "Payment Verified · Order Confirmed"}
+              Payment Verified · Order Confirmed
             </p>
 
             <h1 className="mt-2 font-display text-4xl text-[#f4efe6] sm:text-5xl">
@@ -415,17 +454,15 @@ export default function Checkout() {
             <div className="flex justify-between">
               <span>Payment Method:</span>
               <span className="text-[#c6a15b] font-medium uppercase tracking-wider">
-                {isCod ? "Cash on Delivery (COD)" : "Online Payment via Razorpay"}
+                Online Payment via Razorpay
               </span>
             </div>
-            {isCod ? (
-              <div className="flex justify-between">
-                <span>Payment Status:</span>
-                <span className="text-amber-400 font-medium uppercase tracking-wider">
-                  Pending (Pay upon delivery)
-                </span>
-              </div>
-            ) : null}
+            <div className="flex justify-between">
+              <span>Payment Status:</span>
+              <span className="text-emerald-400 font-medium uppercase tracking-wider">
+                Paid
+              </span>
+            </div>
             {completedOrder.paymentId && (
               <div className="flex justify-between">
                 <span>Payment Reference:</span>
@@ -441,7 +478,7 @@ export default function Checkout() {
               </span>
             </div>
             <div className="flex justify-between border-t border-white/10 pt-4 text-sm font-semibold text-[#f4efe6]">
-              <span>{isCod ? "Amount Due on Delivery:" : "Total Amount Paid:"}</span>
+              <span>Total Amount Paid:</span>
               <span className="font-display text-2xl text-[#c6a15b]">
                 ₹{completedOrder.total}
               </span>
@@ -452,19 +489,9 @@ export default function Checkout() {
           <div className="rounded-2xl mt-8 border border-white/10 bg-[#151512] p-4 text-xs text-[#8e8a82] leading-relaxed flex items-center gap-3">
             <Truck size={20} className="text-[#c6a15b] shrink-0" />
             <span>
-              {isCod ? (
-                <>
-                  Your authentic decants are being safely sterile-packaged. Please keep exact cash
-                  of <strong>₹{completedOrder.total}</strong> or UPI ready at the time of delivery.
-                  Estimated delivery within <strong>3–5 business days</strong>.
-                </>
-              ) : (
-                <>
-                  Your authentic decants are being safely sterile-packaged. Estimated delivery within{" "}
-                  <strong>3–5 business days</strong>. Tracking details will be shared on{" "}
-                  {completedOrder.customer.phone}.
-                </>
-              )}
+              Your authentic decants are being safely sterile-packaged. Estimated delivery within{" "}
+              <strong>3–5 business days</strong>. Tracking details will be shared on{" "}
+              {completedOrder.customer.phone}.
             </span>
           </div>
 
@@ -631,7 +658,7 @@ export default function Checkout() {
                     </label>
                     <div className="flex">
                       <span
-                        className={`inline-flex items-center px-3 border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
+                        className={`inline-flex items-center px-3 rounded-l-xl border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
                           touched.phone && errors.phone
                             ? "border-red-500/80"
                             : "border-white/15"
@@ -841,16 +868,34 @@ export default function Checkout() {
                 <h2 className="font-display text-2xl text-[#f4efe6]">
                   3. Payment Method
                 </h2>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b] bg-[#c6a15b]/10 border border-[#c6a15b]/30">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b] bg-[#c6a15b]/10 border border-[#c6a15b]/30">
                   <Lock size={11} /> 100% Secure
                 </span>
               </div>
 
               <div className="space-y-4">
-                {/* Pay Online (Razorpay) */}
-                <div className="border border-[#c6a15b] bg-[#1a1915] p-5 shadow-lg shadow-[#c6a15b]/5">
+
+
+                {/* Option 2: Pay Online (Razorpay) */}
+                {onlinePaymentsEnabled ? (<label
+                  className={`block cursor-pointer rounded-2xl border p-5 transition-all ${
+                    formData.paymentMethod === "online"
+                      ? "border-[#c6a15b] bg-[#1a1915] shadow-lg shadow-[#c6a15b]/5"
+                      : "border-white/10 bg-[#11110f]/70 hover:border-white/20"
+                  }`}
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3.5">
+                      <div className="pt-0.5">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="online"
+                          checked={formData.paymentMethod === "online"}
+                          onChange={handleChange}
+                          className="h-4 w-4 accent-[#c6a15b] cursor-pointer"
+                        />
+                      </div>
                       <div className="mt-[-2px] flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[#c6a15b]">
                         <CreditCard size={18} />
                       </div>
@@ -859,7 +904,7 @@ export default function Checkout() {
                           <span className="text-xs font-semibold uppercase tracking-wider text-[#f4efe6]">
                             Pay Online (Razorpay)
                           </span>
-                          <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-300 uppercase tracking-wider">
+                          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-medium text-emerald-300 uppercase tracking-wider">
                             Instant Confirmation
                           </span>
                         </div>
@@ -868,16 +913,16 @@ export default function Checkout() {
                         </p>
 
                         <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             UPI / QR
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             Cards (Visa / Master / RuPay)
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             NetBanking
                           </span>
-                          <span className="border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
+                          <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-wider text-[#c5c1b9] uppercase">
                             Wallets
                           </span>
                         </div>
@@ -888,16 +933,31 @@ export default function Checkout() {
                       <ShieldCheck size={20} />
                     </div>
                   </div>
+                  </label>)
+                 : (
+                  <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
+                    <p className="text-sm font-medium text-amber-300">
+                      Online payments are temporarily unavailable.
+                    </p>
+                    <p className="mt-1 text-xs text-[#8e8a82]">
+                      Please try again later.
+                    </p>
+                  </div>
+                )}
                 </div>
-              </div>
+            </div>
 
               
-            </div>
+           
 
             {/* Submit Place Order Button */}
             <button
               type="submit"
-              disabled={isSubmitting || Boolean(savedReference)}
+              disabled={
+                isSubmitting ||
+                paymentVerificationPending ||
+                !onlinePaymentsEnabled
+              }
               className="rounded-2xl w-full flex items-center justify-between border border-[#c6a15b] bg-[#c6a15b] px-8 py-5 text-xs font-semibold uppercase tracking-widest text-[#11110f] hover:bg-[#d8c08a] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
             >
               <span className="flex items-center gap-2">
@@ -930,7 +990,7 @@ export default function Checkout() {
               </div>
             ) : (
               <div className="rounded-2xl mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
-                <Sparkles size={14} className="text-emerald-400 shrink-0" />
+                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
             )}
@@ -998,7 +1058,7 @@ export default function Checkout() {
                 <span>Leak-proof bubble wrapped secure dispatch</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Sparkles size={16} className="text-[#c6a15b] shrink-0" />
+                <Droplets size={16} className="text-[#c6a15b] shrink-0" />
                 <span>Fine-mist glass spray atomizers</span>
               </div>
             </div>

@@ -13,7 +13,6 @@ import {
   LogIn,
   ShieldCheck,
   ArrowUpRight,
-  Sparkles,
 } from "lucide-react";
 import {
   motion,
@@ -295,7 +294,7 @@ export default function Navbar() {
                             ? handleShopClick
                             : closeMobileMenu
                         }
-                        className="group flex items-center justify-between rounded py-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#c5c1b9] transition-all hover:translate-x-1 hover:text-[#c6a15b]"
+                        className="group flex items-center justify-between rounded-xl px-2 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#c5c1b9] transition-all hover:translate-x-1 hover:text-[#c6a15b]"
                       >
                         <span>{item.name}</span>
                         <span className="text-[10px] text-[#c6a15b] opacity-0 transition-opacity group-hover:opacity-100">

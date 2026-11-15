@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Truck, ShieldCheck, Mail, Phone, MapPin, Clock, AlertTriangle } from "lucide-react";
+import { Truck, ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 import Container from "../../components/ui/Container";
 
 export default function ShippingPolicy() {
@@ -68,7 +68,7 @@ export default function ShippingPolicy() {
               Orders are processed after successful order confirmation and payment verification, where applicable.
             </p>
             <p className="mt-2 text-xs text-[#8e8a82]">
-              Order processing generally takes <strong className="text-[#f4efe6]">[CONFIRM PROCESSING TIME]</strong> business days.
+              Order processing generally takes <strong className="text-[#f4efe6]">1-2 business days</strong>.
             </p>
             <p className="mt-2 text-xs text-[#8e8a82]">
               Processing may take longer during holidays, sales or periods of high order volume.
@@ -82,7 +82,7 @@ export default function ShippingPolicy() {
             </h2>
             <div className="p-4 rounded-xl border border-white/5 bg-[#171715] text-xs space-y-2">
               <p className="font-semibold text-[#f4efe6]">
-                Estimated delivery time: <span className="text-[#c6a15b]">[CONFIRM DELIVERY ESTIMATE]</span> business days after dispatch.
+                Estimated delivery time: <span className="text-[#c6a15b]">4-5 business days</span> after dispatch.
               </p>
             </div>
             <p className="mt-4 text-xs text-[#c5c1b9]">

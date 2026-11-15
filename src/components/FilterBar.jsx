@@ -7,8 +7,6 @@ const CLASSIFICATION_OPTIONS = [
   { label: "Designer", value: "Designer" },
   { label: "Niche", value: "Niche" },
   { label: "Middle Eastern", value: "Middle eastern" },
-  { label: "Fresh", value: "Fresh" },
-  { label: "Woody", value: "Woody" },
 ];
 
 const SEASON_OPTIONS = [

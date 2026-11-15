@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Container from "../ui/Container";
 import ProductCard from "../products/ProductCard";
 
@@ -74,12 +74,9 @@ export default function FeaturedDecants() {
         {/* Section Heading */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-7 sm:mb-16 gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles size={22} className="text-[#c6a15b]" />
-              <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
-                Best Sellers
-              </h2>
-            </div>
+            <h2 className="font-display text-4xl sm:text-5xl text-[#f4efe6]">
+              Best Sellers
+            </h2>
             
             <p className="mt-3 text-xs sm:text-sm text-[#8e8a82] max-w-xl">
               Experience the world's most sought-after niche and designer fragrances in authentic 2ml, 5ml, and 10ml travel decants.

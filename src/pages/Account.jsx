@@ -379,7 +379,7 @@ export default function Account() {
                               <span className="font-display text-lg text-[#f4efe6]">
                                 #{order.order_number}
                               </span>
-                              <span className="inline-flex items-center gap-1 rounded bg-[#c6a15b]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b]">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#c6a15b]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#c6a15b]">
                                 {order.order_status || "Confirmed"}
                               </span>
                             </div>

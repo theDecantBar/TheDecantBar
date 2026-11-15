@@ -8,7 +8,6 @@ import {
   MessageSquare,
   ArrowUpRight,
   ShieldCheck,
-  Sparkles,
   Droplets,
   Package,
 } from "lucide-react";
@@ -190,7 +189,7 @@ export default function FAQ() {
 
                         <div className="flex items-center gap-2 shrink-0">
                           {faq.category && (
-                            <span className="hidden rounded border border-white/10 px-2 py-0.5 text-[9px] uppercase tracking-wider text-[#8e8a82] md:inline">
+                            <span className="hidden rounded-full border border-white/10 px-2.5 py-0.5 text-[9px] uppercase tracking-wider text-[#8e8a82] md:inline">
                               {faq.category}
                             </span>
                           )}
