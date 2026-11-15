@@ -1,0 +1,4493 @@
+[
+  {
+    "productId": 1,
+    "brand": "Dior",
+    "name": "Sauvage Eau de Toilette",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Mandarin Orange",
+      "Elemi"
+    ],
+    "correctedTop": [
+      "Calabrian Bergamot",
+      "Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sandalwood"
+    ],
+    "correctedMid": [
+      "Sichuan Pepper",
+      "Lavender",
+      "Pink Pepper",
+      "Vetiver",
+      "Patchouli",
+      "Geranium",
+      "Elemi"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Olibanum",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Ambroxan",
+      "Cedar",
+      "Labdanum"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Sauvage-31561.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 2,
+    "brand": "Chanel",
+    "name": "Bleu de Chanel Eau de Toilette",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Melon"
+    ],
+    "correctedMid": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Iso E Super"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Incense",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Labdanum"
+    ],
+    "correctedBase": [
+      "Incense",
+      "Vetiver",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Labdanum",
+      "White Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.chanel.com / https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-9099.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 4,
+    "brand": "Tom Ford",
+    "name": "Tom Ford Ombré Leather",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Cardamom"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Leather",
+      "Jasmine Sambac"
+    ],
+    "correctedMid": [
+      "Leather",
+      "Jasmine Sambac"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amber",
+      "Moss",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Amber",
+      "Moss",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/Ombre-Leather-2018-50239.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 5,
+    "brand": "Tom Ford",
+    "name": "Tom Ford Ombré Leather Parfum",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Violet Leaf",
+      "Cedar"
+    ],
+    "correctedTop": [
+      "Violet Leaf",
+      "Cedar"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Jasmine Sambac",
+      "Orris"
+    ],
+    "correctedMid": [
+      "Jasmine Sambac",
+      "Orris"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Leather",
+      "Woody Notes",
+      "Tobacco"
+    ],
+    "correctedBase": [
+      "Leather",
+      "Woody Notes",
+      "Tobacco"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/Ombre-Leather-Parfum-68559.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 6,
+    "brand": "Tom Ford",
+    "name": "Tom Ford Ébène Fumé",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Incense",
+      "Palo Santo",
+      "Black Pepper",
+      "Violet Leaf"
+    ],
+    "correctedTop": [
+      "Incense",
+      "Palo Santo",
+      "Black Pepper",
+      "Violet Leaf"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Leather",
+      "Labdanum",
+      "Cade Oil",
+      "Papyrus",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Leather",
+      "Labdanum",
+      "Cade Oil",
+      "Papyrus",
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Resins",
+      "Ebony Tree",
+      "Guaiac Wood"
+    ],
+    "correctedBase": [
+      "Resins",
+      "Ebony Wood",
+      "Guaiac Wood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/Ebene-Fume-69992.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 7,
+    "brand": "Tom Ford",
+    "name": "Tom Ford Tuscan Leather",
+    "type": "EDP",
+    "existingDbTop": [
+      "Raspberry",
+      "Saffron",
+      "Thyme"
+    ],
+    "existingFbTop": [
+      "Raspberry",
+      "Saffron",
+      "Thyme"
+    ],
+    "correctedTop": [
+      "Raspberry",
+      "Saffron",
+      "Thyme"
+    ],
+    "existingDbMid": [
+      "Olibanum",
+      "Jasmine"
+    ],
+    "existingFbMid": [
+      "Olibanum",
+      "Jasmine"
+    ],
+    "correctedMid": [
+      "Olibanum",
+      "Jasmine"
+    ],
+    "existingDbBase": [
+      "Leather",
+      "Suede",
+      "Woody Notes",
+      "Amber"
+    ],
+    "existingFbBase": [
+      "Leather",
+      "Suede",
+      "Woody Notes",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Leather",
+      "Suede",
+      "Woody Notes",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/Tuscan-Leather-1849.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database already contains authentic notes; verified accurate."
+  },
+  {
+    "productId": 8,
+    "brand": "Tom Ford",
+    "name": "Tom Ford White Suede",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Thyme",
+      "Tea"
+    ],
+    "correctedTop": [
+      "Thyme",
+      "Tea"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Lily-of-the-Valley",
+      "Saffron",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Lily-of-the-Valley",
+      "Saffron",
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Suede",
+      "Musk",
+      "Sandalwood",
+      "Olibanum",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Suede",
+      "Musk",
+      "Sandalwood",
+      "Olibanum",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/White-Suede-6386.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 9,
+    "brand": "Tom Ford",
+    "name": "Tom Ford Grey Vetiver",
+    "type": null,
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Grapefruit",
+      "Orange Blossom",
+      "Sage"
+    ],
+    "correctedTop": [
+      "Grapefruit",
+      "Orange Blossom",
+      "Sage"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Nutmeg",
+      "Orris Root",
+      "Pimento"
+    ],
+    "correctedMid": [
+      "Nutmeg",
+      "Orris Root",
+      "Pimento"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vetiver",
+      "Woodsy Notes",
+      "Oakmoss",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Vetiver",
+      "Woodsy Notes",
+      "Oakmoss",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.tomford.com / https://www.fragrantica.com/perfume/Tom-Ford/Grey-Vetiver-6697.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 10,
+    "brand": "Creed",
+    "name": "Creed Aventus",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Black Currant",
+      "Apple",
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Pink Pepper",
+      "Apple",
+      "Bergamot",
+      "Blackcurrant"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Pineapple",
+      "Patchouli",
+      "Moroccan Jasmine"
+    ],
+    "correctedMid": [
+      "Pineapple",
+      "Jasmine",
+      "Patchouli"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Birch",
+      "Musk",
+      "Oakmoss",
+      "Cedarwood",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Birch",
+      "Ambergris",
+      "Cedarwood",
+      "Oakmoss",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://creedboutique.com / https://www.fragrantica.com/perfume/Creed/Aventus-9828.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 11,
+    "brand": "Creed",
+    "name": "Creed Absolu Aventus",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Grapefruit",
+      "Bergamot",
+      "Pink Pepper",
+      "Black Currant",
+      "Pineapple",
+      "Nutmeg",
+      "Cloves"
+    ],
+    "correctedTop": [
+      "Grapefruit",
+      "Bergamot",
+      "Blackcurrant"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ginger",
+      "Cinnamon",
+      "Citron",
+      "Cardamom",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Cardamom",
+      "Cinnamon",
+      "Ginger",
+      "Citron"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Vetiver",
+      "Oakmoss",
+      "Ambroxan",
+      "Sandalwood",
+      "Musk",
+      "Tonka",
+      "Evernyl"
+    ],
+    "correctedBase": [
+      "Pink Pepper",
+      "Patchouli",
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://creedboutique.com / https://www.fragrantica.com/perfume/Creed/Absolu-Aventus-86644.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 12,
+    "brand": "Creed",
+    "name": "Creed Green Irish Tweed",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Iris",
+      "Vervain"
+    ],
+    "correctedTop": [
+      "Lemon Verbena",
+      "Iris"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Violet Leaf"
+    ],
+    "correctedMid": [
+      "Violet Leaves"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Sandalwood"
+    ],
+    "correctedBase": [
+      "Ambergris",
+      "Sandalwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://creedboutique.com / https://www.fragrantica.com/perfume/Creed/Green-Irish-Tweed-474.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 13,
+    "brand": "Creed",
+    "name": "Creed Silver Mountain Water",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Green Tea",
+      "Black Currant"
+    ],
+    "correctedMid": [
+      "Green Tea",
+      "Black Currant"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Petitgrain",
+      "Sandalwood",
+      "Galbanum"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Petitgrain",
+      "Sandalwood",
+      "Galbanum"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://creedboutique.com / https://www.fragrantica.com/perfume/Creed/Silver-Mountain-Water-472.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 14,
+    "brand": "Creed",
+    "name": "Creed Original Vetiver",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Ginger",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Bitter Orange",
+      "Mandarin Orange",
+      "Vetiver Leaves"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Haitian Vetiver",
+      "Sandalwood",
+      "Iris"
+    ],
+    "correctedMid": [
+      "White Pepper",
+      "Coriander",
+      "Pink Pepper"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Ambergris"
+    ],
+    "correctedBase": [
+      "Mysore Sandalwood",
+      "Vetiver",
+      "Ambergris",
+      "Tonkin Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://creedboutique.com / https://www.fragrantica.com/perfume/Creed/Original-Vetiver-468.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 16,
+    "brand": "Azzaro",
+    "name": "Azzaro The Most Wanted Intense",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Calabrian Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Lavender"
+    ],
+    "correctedMid": [
+      "Provence Lavender"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Liquor",
+      "Moss"
+    ],
+    "correctedBase": [
+      "Liquor Accord",
+      "Moss"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.azzaro.com / https://www.fragrantica.com/perfume/Azzaro/The-Most-Wanted-Eau-de-Toilette-Intense-89467.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 17,
+    "brand": "Azzaro",
+    "name": "Azzaro Wanted by Night",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Cinnamon",
+      "Mandarin Orange",
+      "Lavender",
+      "Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Toffee Caramel"
+    ],
+    "correctedMid": [
+      "Fruity Notes",
+      "Incense",
+      "Cumin",
+      "Red Cedar"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amberwood"
+    ],
+    "correctedBase": [
+      "Tobacco",
+      "Vanilla",
+      "Leather",
+      "Benzoin",
+      "Iso E Super",
+      "Cedar",
+      "Cypress",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.azzaro.com / https://www.fragrantica.com/perfume/Azzaro/Wanted-by-Night-49144.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 18,
+    "brand": "Valentino",
+    "name": "Valentino Born in Roma Green Stravaganza",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Calabrian Bergamot"
+    ],
+    "correctedTop": [
+      "Calabrian Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Coffee"
+    ],
+    "correctedMid": [
+      "Coffee Accord"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vetiver"
+    ],
+    "correctedBase": [
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.valentino-beauty.us / https://www.fragrantica.com/perfume/Valentino/Born-in-Roma-Green-Stravaganza-Uomo-88894.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 19,
+    "brand": "Valentino",
+    "name": "Valentino Uomo",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Myrtle"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Myrtle"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Hazelnut",
+      "Chocolate",
+      "Roasted Coffee Beans"
+    ],
+    "correctedMid": [
+      "Hazelnut",
+      "Chocolate",
+      "Roasted Coffee Beans"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Leather",
+      "Cedar"
+    ],
+    "correctedBase": [
+      "Leather",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.valentino-beauty.us / https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-19558.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 20,
+    "brand": "Valentino",
+    "name": "Valentino Born in Roma Coral Fantasy",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Mineral Notes",
+      "Violet Leaf",
+      "Salt"
+    ],
+    "correctedTop": [
+      "Red Apple",
+      "Cardamom",
+      "Calabrian Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ginger",
+      "Sage"
+    ],
+    "correctedMid": [
+      "Lavender",
+      "Clary Sage",
+      "Bourbon Geranium"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Smoked Vetiver",
+      "Woody Notes"
+    ],
+    "correctedBase": [
+      "Tobacco Leaf",
+      "Patchouli",
+      "Haitian Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.valentino-beauty.us / https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-in-Roma-Coral-Fantasy-71649.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 21,
+    "brand": "Valentino",
+    "name": "Valentino Uomo Born in Roma",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Mineral Notes",
+      "Violet Leaf",
+      "Salt"
+    ],
+    "correctedTop": [
+      "Mineral Notes",
+      "Violet Leaf",
+      "Salt"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ginger",
+      "Sage"
+    ],
+    "correctedMid": [
+      "Ginger",
+      "Sage"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Smoked Vetiver",
+      "Woody Notes"
+    ],
+    "correctedBase": [
+      "Woody Notes",
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.valentino-beauty.us / https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-In-Roma-56540.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 22,
+    "brand": "Maison Francis Kurkdjian",
+    "name": "Maison Francis Kurkdjian Baccarat Rouge 540",
+    "type": "EDP",
+    "existingDbTop": [
+      "Bitter Almond",
+      "Saffron"
+    ],
+    "existingFbTop": [
+      "Bitter Almond",
+      "Saffron"
+    ],
+    "correctedTop": [
+      "Saffron",
+      "Jasmine"
+    ],
+    "existingDbMid": [
+      "Egyptian Jasmine",
+      "virginia cedar"
+    ],
+    "existingFbMid": [
+      "Egyptian Jasmine",
+      "Cedar"
+    ],
+    "correctedMid": [
+      "Amberwood",
+      "Ambergris"
+    ],
+    "existingDbBase": [
+      "Ambergris",
+      "woody notes",
+      "musk",
+      "ambroxan",
+      "cashmeran"
+    ],
+    "existingFbBase": [
+      "Ambergris",
+      "Woody Musk",
+      "Fir Resin"
+    ],
+    "correctedBase": [
+      "Fir Resin",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.franciskurkdjian.com / https://www.fragrantica.com/perfume/Maison-Francis-Kurkdjian/Baccarat-Rouge-540-33519.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database contained Extrait bitter almond notes on EDP listing; corrected to official EDP saffron/ambergris pyramid."
+  },
+  {
+    "productId": 23,
+    "brand": "Yves Saint Laurent",
+    "name": "YSL L'Homme",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Calabrian Bergamot",
+      "Ginger",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Bitter Orange",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sage",
+      "Geranium",
+      "Juniper"
+    ],
+    "correctedMid": [
+      "Lavender",
+      "Geranium"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Olibanum"
+    ],
+    "correctedBase": [
+      "Cognac",
+      "Oak",
+      "Cedar",
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.yslbeauty.com / https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Eau-de-Parfum-72648.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 24,
+    "brand": "Yves Saint Laurent",
+    "name": "YSL L'Homme Le Parfum",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Calabrian Bergamot",
+      "Ginger",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Ozonic Notes",
+      "Cardamom",
+      "Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sage",
+      "Geranium",
+      "Juniper"
+    ],
+    "correctedMid": [
+      "Geranium",
+      "Basil",
+      "Violet Leaf"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Olibanum"
+    ],
+    "correctedBase": [
+      "Amberwood",
+      "Cedar Essence",
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.yslbeauty.com / https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Le-Parfum-59868.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 25,
+    "brand": "Yves Saint Laurent",
+    "name": "YSL L'Homme Cologne Bleue",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Calabrian Bergamot",
+      "Ginger",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Sea Notes",
+      "Bergamot",
+      "Blood Orange",
+      "Grapefruit",
+      "Cardamom",
+      "Black Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sage",
+      "Geranium",
+      "Juniper"
+    ],
+    "correctedMid": [
+      "Apple",
+      "Geranium",
+      "Clary Sage",
+      "Lavender"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Olibanum"
+    ],
+    "correctedBase": [
+      "Cedar",
+      "Patchouli",
+      "Sandalwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.yslbeauty.com / https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Cologne-Bleue-48419.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 26,
+    "brand": "Yves Saint Laurent",
+    "name": "YSL Y Eau de Parfum",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Ginger",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Apple",
+      "Ginger",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sage",
+      "Juniper Berries",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Sage",
+      "Juniper Berries",
+      "Geranium"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Vetiver",
+      "Olibanum"
+    ],
+    "correctedBase": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Vetiver",
+      "Olibanum"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.yslbeauty.com / https://www.fragrantica.com/perfume/Yves-Saint-Laurent/Y-Eau-de-Parfum-50757.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 27,
+    "brand": "Yves Saint Laurent",
+    "name": "YSL MYSLF Le Parfum",
+    "type": "PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Ginger",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Black Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Orange Blossom",
+      "Grapefruit",
+      "Lavandin"
+    ],
+    "correctedMid": [
+      "Orange Blossom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Ambrofix",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Bourbon Vanilla",
+      "Amber",
+      "Woody Notes",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.yslbeauty.com / https://www.fragrantica.com/perfume/Yves-Saint-Laurent/MYSLF-Le-Parfum-95166.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 28,
+    "brand": "Versace",
+    "name": "Versace Eros",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Italian Lemon",
+      "Mint",
+      "Candied Apple",
+      "Italian Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Mint",
+      "Candy Apple",
+      "Lemon",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ambermax",
+      "Clary Sage",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Ambroxan",
+      "Geranium",
+      "Clary Sage"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Sandalwood",
+      "Vanilla",
+      "Virginia Cedar",
+      "Vetiver",
+      "Leather"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Leather",
+      "Bitter Orange"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.versace.com / https://www.fragrantica.com/perfume/Versace/Eros-Eau-de-Parfum-62762.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 29,
+    "brand": "Versace",
+    "name": "Versace Eros Flame",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Italian Lemon",
+      "Mint",
+      "Candied Apple",
+      "Italian Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Mandarin Orange",
+      "Black Pepper",
+      "Chinotto",
+      "Lemon",
+      "Rosemary"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ambermax",
+      "Clary Sage",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Pepper",
+      "Geranium",
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Sandalwood",
+      "Vanilla",
+      "Virginia Cedar",
+      "Vetiver",
+      "Leather"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Tonka Bean",
+      "Texas Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Oakmoss"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.versace.com / https://www.fragrantica.com/perfume/Versace/Eros-Flame-52180.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 30,
+    "brand": "Versace",
+    "name": "Versace Pour Homme",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lemon",
+      "Bergamot",
+      "Neroli",
+      "Rose de Mai"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Neroli",
+      "Bergamot",
+      "Rose de Mai"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Hyacinth",
+      "Cedar",
+      "Clary Sage",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Hyacinth",
+      "Cedar",
+      "Clary Sage",
+      "Geranium"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Tonka Bean",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Musk",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.versace.com / https://www.fragrantica.com/perfume/Versace/Versace-Pour-Homme-2318.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 31,
+    "brand": "Kilian",
+    "name": "Kilian Blue Moon Ginger Dash",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lemon",
+      "Calone",
+      "Mint",
+      "Aldehydes"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Calone"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Vodka",
+      "Ginger"
+    ],
+    "correctedMid": [
+      "Vodka",
+      "Ginger"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambroxan",
+      "White Musk"
+    ],
+    "correctedBase": [
+      "Ambroxan",
+      "White Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.bykilian.com / https://www.fragrantica.com/perfume/By-Kilian/Blue-Moon-Ginger-Dash-79679.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 32,
+    "brand": "Kilian",
+    "name": "Kilian Angels' Share",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cognac"
+    ],
+    "correctedTop": [
+      "Cognac"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cinnamon",
+      "Tonka Bean",
+      "Oak Wood"
+    ],
+    "correctedMid": [
+      "Cinnamon",
+      "Tonka Bean",
+      "Oak"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Praline",
+      "Vanilla",
+      "Sandalwood"
+    ],
+    "correctedBase": [
+      "Praline",
+      "Vanilla",
+      "Sandalwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.bykilian.com / https://www.fragrantica.com/perfume/By-Kilian/Angels-Share-62615.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 33,
+    "brand": "Kilian",
+    "name": "Kilian Roses on Ice",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cucumber",
+      "Juniper Berries",
+      "Lime",
+      "Violet Leaf",
+      "Pink Pepper"
+    ],
+    "correctedTop": [
+      "Cucumber",
+      "Juniper Berries",
+      "Lime"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rose",
+      "Ozonic Notes"
+    ],
+    "correctedMid": [
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Sandalwood",
+      "Ambroxan",
+      "Cedar"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Sandalwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.bykilian.com / https://www.fragrantica.com/perfume/By-Kilian/Roses-on-Ice-62616.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 34,
+    "brand": "Givenchy",
+    "name": "Givenchy Gentleman Boisée",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Black Pepper",
+      "Coriander",
+      "Geranium"
+    ],
+    "correctedTop": [
+      "Black Pepper",
+      "Coriander",
+      "Geranium"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Iris",
+      "Cedarwood",
+      "Cocoa"
+    ],
+    "correctedMid": [
+      "Iris",
+      "Cacao Pod",
+      "Cedar"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Sandalwood",
+      "Burning Wood",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Woodsy Notes",
+      "Sandalwood",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.givenchybeauty.com / https://www.fragrantica.com/perfume/Givenchy/Gentleman-Eau-de-Parfum-Boisee-59299.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 35,
+    "brand": "Givenchy",
+    "name": "Givenchy Gentleman Reserve Privée",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Black Pepper",
+      "Coriander"
+    ],
+    "correctedTop": [
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Iris",
+      "Cocoa",
+      "Cedar"
+    ],
+    "correctedMid": [
+      "Iris",
+      "Chestnut"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Burning Woods",
+      "Sandalwood",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Whiskey",
+      "Woodsy Notes",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.givenchybeauty.com / https://www.fragrantica.com/perfume/Givenchy/Gentleman-Eau-de-Parfum-Reserve-Privee-71272.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 36,
+    "brand": "Paco Rabanne",
+    "name": "Paco Rabanne 1 Million",
+    "type": "EDT",
+    "existingDbTop": [
+      "Blood Mandarin",
+      "Grapefruit",
+      "Mint"
+    ],
+    "existingFbTop": [
+      "Blood Mandarin",
+      "Grapefruit",
+      "Mint"
+    ],
+    "correctedTop": [
+      "Blood Mandarin",
+      "Grapefruit",
+      "Mint"
+    ],
+    "existingDbMid": [
+      "Cinnamon",
+      "Spicy Notes",
+      "Rose"
+    ],
+    "existingFbMid": [
+      "Cinnamon",
+      "Spicy Notes",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Cinnamon",
+      "Spicy Notes",
+      "Rose"
+    ],
+    "existingDbBase": [
+      "Amber",
+      "Leather",
+      "Woody Notes",
+      "Indian Patchouli"
+    ],
+    "existingFbBase": [
+      "Amber",
+      "Leather",
+      "Woody Notes",
+      "Indian Patchouli"
+    ],
+    "correctedBase": [
+      "Amber",
+      "Leather",
+      "Woody Notes",
+      "Indian Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rabanne.com / https://www.fragrantica.com/perfume/Paco-Rabanne/1-Million-3747.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database already contains authentic notes; verified accurate."
+  },
+  {
+    "productId": 37,
+    "brand": "Dior",
+    "name": "Christian Dior Oud Ispahan",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Labdanum"
+    ],
+    "correctedTop": [
+      "Labdanum"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rose",
+      "Patchouli",
+      "Saffron"
+    ],
+    "correctedMid": [
+      "Rose",
+      "Patchouli",
+      "Saffron"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Agarwood (Oud)",
+      "Sandalwood",
+      "Cedar"
+    ],
+    "correctedBase": [
+      "Agarwood (Oud)",
+      "Sandalwood",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Oud-Ispahan-15105.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 38,
+    "brand": "Dior",
+    "name": "Christian Dior Gris Dior",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Grapefruit"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rose",
+      "Oakmoss",
+      "Patchouli"
+    ],
+    "correctedMid": [
+      "Rose",
+      "Jasmine",
+      "Strawberry",
+      "Ylang-Ylang",
+      "Orange Blossom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Cedar",
+      "Amber",
+      "Sandalwood"
+    ],
+    "correctedBase": [
+      "Patchouli",
+      "Oakmoss",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "White Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Gris-Dior-48387.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 39,
+    "brand": "Dior",
+    "name": "Dior Sauvage Parfum",
+    "type": "PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Mandarin Orange",
+      "Elemi"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Mandarin Orange",
+      "Elemi"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Sandalwood"
+    ],
+    "correctedMid": [
+      "Sandalwood"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Olibanum",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Olibanum",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Sauvage-Parfum-56324.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 40,
+    "brand": "Dior",
+    "name": "Dior Homme Intense",
+    "type": "PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Tuscan Iris",
+      "Lavender"
+    ],
+    "correctedTop": [
+      "Lavender"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ambrette (Musk Mallow)",
+      "Pear"
+    ],
+    "correctedMid": [
+      "Iris",
+      "Ambrette (Musk Mallow)",
+      "Pear"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Virginia Cedar",
+      "Vetiver"
+    ],
+    "correctedBase": [
+      "Virginia Cedar",
+      "Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Dior-Homme-Intense-2011-13016.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 41,
+    "brand": "Dior",
+    "name": "Dior Sauvage Elixir",
+    "type": "ELIXER",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Nutmeg",
+      "Cardamom",
+      "Cinnamon",
+      "Grapefruit"
+    ],
+    "correctedTop": [
+      "Nutmeg",
+      "Cardamom",
+      "Cinnamon",
+      "Grapefruit"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Lavender"
+    ],
+    "correctedMid": [
+      "Lavender"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Licorice",
+      "Sandalwood",
+      "Amber",
+      "Patchouli",
+      "Haitian Vetiver"
+    ],
+    "correctedBase": [
+      "Licorice",
+      "Sandalwood",
+      "Amber",
+      "Patchouli",
+      "Haitian Vetiver"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.dior.com / https://www.fragrantica.com/perfume/Dior/Sauvage-Elixir-68415.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 42,
+    "brand": "Xerjoff",
+    "name": "Xerjoff Accento",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Pineapple",
+      "Hyacinth"
+    ],
+    "correctedTop": [
+      "Pineapple",
+      "Hyacinth"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Pink Pepper",
+      "Iris",
+      "Jasmine"
+    ],
+    "correctedMid": [
+      "Pink Pepper",
+      "Iris",
+      "Jasmine"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Amber",
+      "Vetiver",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Amber",
+      "Vetiver",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.xerjoff.com / https://www.fragrantica.com/perfume/Xerjoff/Accento-54522.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 43,
+    "brand": "Xerjoff",
+    "name": "Xerjoff Naxos",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lavender",
+      "Bergamot",
+      "Lemon"
+    ],
+    "correctedTop": [
+      "Lavender",
+      "Bergamot",
+      "Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Honey",
+      "Cinnamon",
+      "Cashmeran",
+      "Jasmine Sambac"
+    ],
+    "correctedMid": [
+      "Honey",
+      "Cinnamon",
+      "Cashmeran",
+      "Jasmine Sambac"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tobacco Leaf",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Tobacco Leaf",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.xerjoff.com / https://www.fragrantica.com/perfume/Xerjoff/XJ-1861-Naxos-30526.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 44,
+    "brand": "Xerjoff",
+    "name": "Xerjoff Erba Pura",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Sicilian Orange",
+      "Calabrian Bergamot",
+      "Sicilian Lemon"
+    ],
+    "correctedTop": [
+      "Sicilian Orange",
+      "Calabrian Bergamot",
+      "Sicilian Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Mediterranean Fruit Basket"
+    ],
+    "correctedMid": [
+      "Mediterranean Fruits"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "White Musk",
+      "Madagascar Vanilla",
+      "Amber"
+    ],
+    "correctedBase": [
+      "White Musk",
+      "Madagascar Vanilla",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.xerjoff.com / https://www.fragrantica.com/perfume/Xerjoff/Erba-Pura-55157.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 45,
+    "brand": "Viktor&Rolf",
+    "name": "Viktor&Rolf Spicebomb Extreme",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Pink Pepper",
+      "Elemi",
+      "Bergamot",
+      "Grapefruit"
+    ],
+    "correctedTop": [
+      "Black Pepper",
+      "Caraway"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cinnamon",
+      "Paprika",
+      "Saffron"
+    ],
+    "correctedMid": [
+      "Cinnamon",
+      "Saffron"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tobacco",
+      "Leather",
+      "Vetiver"
+    ],
+    "correctedBase": [
+      "Tobacco",
+      "Bourbon Vanilla",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://us.viktor-rolf.com / https://www.fragrantica.com/perfume/Viktor-Rolf/Spicebomb-Extreme-30499.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 46,
+    "brand": "Paco Rabanne",
+    "name": "Paco Rabanne Invictus Victory Extreme",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Pink Pepper",
+      "Lemon"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Lavender",
+      "Olibanum"
+    ],
+    "correctedMid": [
+      "Lavender",
+      "Olibanum"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Tonka Bean",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Tonka Bean",
+      "Amber"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rabanne.com / https://www.fragrantica.com/perfume/Paco-Rabanne/Invictus-Victory-65476.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 47,
+    "brand": "Paco Rabanne",
+    "name": "Paco Rabanne Invictus Legend",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Sea Notes",
+      "Grapefruit"
+    ],
+    "correctedTop": [
+      "Sea Notes",
+      "Sea Salt",
+      "Grapefruit"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Bay Leaf",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Bay Leaf",
+      "Geranium",
+      "Spices"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Red Amber",
+      "Guaiac Wood"
+    ],
+    "correctedBase": [
+      "Red Amber",
+      "Guaiac Wood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rabanne.com / https://www.fragrantica.com/perfume/Paco-Rabanne/Invictus-Legend-54157.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 48,
+    "brand": "Roberto Cavalli",
+    "name": "Roberto Cavalli Splendid Vanilla",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Rose",
+      "Black Pepper"
+    ],
+    "correctedTop": [
+      "Black Pepper",
+      "Rose"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cypriol Oil or Nagarmotha",
+      "Magnolia"
+    ],
+    "correctedMid": [
+      "Cypriol Oil (Nagarmotha)",
+      "Magnolia"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Cedar",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.robertocavalli.com / https://www.fragrantica.com/perfume/Roberto-Cavalli/Splendid-Vanilla-58083.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 49,
+    "brand": "Parfums de Marly",
+    "name": "Parfums de Marly Layton",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lavender",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Apple",
+      "Lavender",
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cardamom",
+      "Violet",
+      "Jasmine",
+      "Geranium"
+    ],
+    "correctedMid": [
+      "Geranium",
+      "Violet",
+      "Jasmine"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Cardamom",
+      "Sandalwood",
+      "Guaiac Wood",
+      "Patchouli",
+      "Pepper"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Cardamom",
+      "Sandalwood",
+      "Pepper",
+      "Guaiac Wood",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://parfums-de-marly.com / https://www.fragrantica.com/perfume/Parfums-de-Marly/Layton-39314.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 50,
+    "brand": "Parfums de Marly",
+    "name": "Parfums de Marly Carlisle",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Green Apple",
+      "Nutmeg"
+    ],
+    "correctedTop": [
+      "Green Apple",
+      "Nutmeg"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Tonka Bean",
+      "Rose",
+      "Osmanthus"
+    ],
+    "correctedMid": [
+      "Tonka Bean",
+      "Rose",
+      "Osmanthus",
+      "Davana"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Vanilla",
+      "Opoponax"
+    ],
+    "correctedBase": [
+      "Patchouli",
+      "Vanilla",
+      "Opoponax"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://parfums-de-marly.com / https://www.fragrantica.com/perfume/Parfums-de-Marly/Carlisle-33514.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 51,
+    "brand": "Montblanc",
+    "name": "Montblanc Explorer",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Pepper",
+      "Clary Sage"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Pink Pepper",
+      "Clary Sage"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Haitian Vetiver",
+      "Leather"
+    ],
+    "correctedMid": [
+      "Haitian Vetiver",
+      "Leather"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambroxan",
+      "Akigalawood",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Ambroxan",
+      "Akigalawood",
+      "Indonesian Patchouli Leaf",
+      "Cacao Pod"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.montblanc.com / https://www.fragrantica.com/perfume/Montblanc/Explorer-52002.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 52,
+    "brand": "Chanel",
+    "name": "Bleu de Chanel Eau de Parfum",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper",
+      "Bergamot",
+      "Aldehydes",
+      "Coriander"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Melon"
+    ],
+    "correctedMid": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Melon"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Incense",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Labdanum"
+    ],
+    "correctedBase": [
+      "Incense",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Amberwood",
+      "Labdanum"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.chanel.com / https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-Eau-de-Parfum-25967.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 53,
+    "brand": "Maison Crivelli",
+    "name": "Maison Crivelli Oud Stallion",
+    "type": "Extrait de parfum",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Saffron",
+      "Cardamom",
+      "Indonesian Nutmeg"
+    ],
+    "correctedTop": [
+      "Cardamom",
+      "Saffron",
+      "Nutmeg"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Jasmine",
+      "Osmanthus",
+      "Turkish Rose"
+    ],
+    "correctedMid": [
+      "Turkish Rose",
+      "Jasmine",
+      "Osmanthus"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Agarwood (Oud)",
+      "Leather",
+      "Cedar",
+      "Tonka",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Agarwood (Oud)",
+      "Leather Accord",
+      "Cedarwood",
+      "Patchouli",
+      "Roasted Tonka Bean"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisoncrivelli.com / https://www.fragrantica.com/perfume/Maison-Crivelli/Oud-Stallion-87723.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 54,
+    "brand": "Roja Parfums",
+    "name": "Roja Parfums Harrods Exclusive",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lemon",
+      "Bergamot",
+      "Orange"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Bergamot",
+      "Lime",
+      "Bitter Orange",
+      "Lavender",
+      "Thyme"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Jasmine",
+      "Rose",
+      "Violet"
+    ],
+    "correctedMid": [
+      "Geranium",
+      "Rose de Mai",
+      "Neroli",
+      "Jasmin de Grasse",
+      "Ylang-Ylang",
+      "Violet"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Cedarwood",
+      "Sandalwood",
+      "Musk",
+      "Ambergris"
+    ],
+    "correctedBase": [
+      "Galbanum",
+      "Patchouli",
+      "Oakmoss",
+      "Vetiver",
+      "Cashmere Wood",
+      "Vanilla",
+      "Orris",
+      "Labdanum",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://rojaparfums.com / https://www.fragrantica.com/perfume/Roja-Dove/Harrods-Parfum-Pour-Homme-55734.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 55,
+    "brand": "Giorgio Armani",
+    "name": "Armani Code Eau de Parfum",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lemon",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Star Anise",
+      "Olive Blossom",
+      "Guaiac Wood"
+    ],
+    "correctedMid": [
+      "Olive Tree Blossom",
+      "Star Anise",
+      "Guaiac Wood"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Leather",
+      "Tonka Bean",
+      "Tobacco"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Tobacco",
+      "Leather",
+      "Suede"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.armanibeauty.com / https://www.fragrantica.com/perfume/Giorgio-Armani/Armani-Code-Eau-de-Parfum-65528.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 56,
+    "brand": "Bentley",
+    "name": "Bentley for Men Intense",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Black Pepper",
+      "Bay Leaf",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Black Pepper",
+      "Bay Leaf",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rum",
+      "Woody Notes",
+      "Cinnamon",
+      "Clary Sage",
+      "African Geranium"
+    ],
+    "correctedMid": [
+      "Rum",
+      "Woody Notes",
+      "Cinnamon",
+      "Clary Sage",
+      "African Geranium"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Incense",
+      "Leather",
+      "Benzoin",
+      "Cedar",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Incense",
+      "Leather",
+      "Benzoin",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.bentley-fragrances.com / https://www.fragrantica.com/perfume/Bentley/Bentley-for-Men-Intense-17666.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 57,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica By the Fireplace",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Clove",
+      "Pink Pepper",
+      "Orange Blossom"
+    ],
+    "correctedTop": [
+      "Cloves",
+      "Pink Pepper",
+      "Orange Blossom"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Chestnut",
+      "Guaiac Wood",
+      "Juniper"
+    ],
+    "correctedMid": [
+      "Chestnut",
+      "Guaiac Wood",
+      "Juniper"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Peru Balsam",
+      "Cashmeran"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Peru Balsam",
+      "Cashmeran"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/By-the-Fireplace-31623.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 58,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Lazy Sunday Morning",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Aldehydes",
+      "Lily-of-the-Valley",
+      "Pear"
+    ],
+    "correctedTop": [
+      "Aldehydes",
+      "Lily-of-the-Valley",
+      "Pear"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rose",
+      "Iris",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Rose",
+      "Iris",
+      "Orange Blossom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "White Musk",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "White Musk",
+      "Ambrette (Musk Mallow)",
+      "Indonesian Patchouli Leaf"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Lazy-Sunday-Morning-20542.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 59,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Jazz Club",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Pink Pepper",
+      "Neroli",
+      "Lemon"
+    ],
+    "correctedTop": [
+      "Pink Pepper",
+      "Neroli",
+      "Lemon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rum",
+      "Clary Sage",
+      "Java Vetiver"
+    ],
+    "correctedMid": [
+      "Rum",
+      "Java Vetiver Oil",
+      "Clary Sage"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tobacco Leaf",
+      "Vanilla Bean",
+      "Styrax"
+    ],
+    "correctedBase": [
+      "Tobacco Leaf",
+      "Vanilla Bean",
+      "Styrax"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Jazz-Club-20541.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 60,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica When the Rain Stops",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Pepper"
+    ],
+    "correctedTop": [
+      "Rain Notes",
+      "Bergamot",
+      "Pink Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Rain Notes",
+      "Turkish Rose",
+      "Pine Tree"
+    ],
+    "correctedMid": [
+      "Watery Notes",
+      "Turkish Rose",
+      "Pine Tree Needle",
+      "Jasmine"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Oakmoss",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Moss",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/When-the-Rain-Stops-71286.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 61,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Beach Walk",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Coconut Milk",
+      "Ylang-Ylang",
+      "Heliotrope"
+    ],
+    "correctedMid": [
+      "Coconut Milk",
+      "Ylang-Ylang",
+      "Heliotrope"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Benzoin",
+      "Cedar"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Benzoin",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Beach-Walk-15261.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 62,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Dancing on the Moon",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Aldehydes"
+    ],
+    "correctedTop": [
+      "Aldehydes"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Jasmine Sambac",
+      "Frangipani",
+      "Iris"
+    ],
+    "correctedMid": [
+      "Frangipani",
+      "Jasmine Sambac",
+      "Iris"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Cashmeran",
+      "Ambergris",
+      "Musk"
+    ],
+    "correctedBase": [
+      "Cashmeran",
+      "Ambergris",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Dancing-on-the-Moon-40854.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 63,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Sailing Day",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Sea Notes",
+      "Aldehydes",
+      "Red Pepper"
+    ],
+    "correctedTop": [
+      "Sea Notes",
+      "Aldehydes",
+      "Coriander",
+      "Red Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Juniper",
+      "Iris",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Juniper",
+      "Salicylate",
+      "Iris",
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Seaweed",
+      "Ambergris",
+      "Cedarwood"
+    ],
+    "correctedBase": [
+      "Seaweed",
+      "Ambergris",
+      "Amberwood",
+      "Cedar"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Sailing-Day-47916.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 64,
+    "brand": "Maison Margiela",
+    "name": "Maison Margiela Replica Flower Market",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Green Leaves",
+      "Freesia"
+    ],
+    "correctedTop": [
+      "Freesia",
+      "Green Leaves"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Jasmine Sambac",
+      "Tuberose",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Tuberose",
+      "Jasmine Sambac",
+      "Egyptian Jasmine",
+      "Rose de Mai"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Peach",
+      "Cedarwood",
+      "Oakmoss"
+    ],
+    "correctedBase": [
+      "Peach",
+      "Cedar",
+      "Oakmoss"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.maisonmargiela-fragrances.us / https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Flower-Market-15260.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 65,
+    "brand": "French Avenue",
+    "name": "French Avenue Baie 19",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Pepper",
+      "Mint"
+    ],
+    "correctedTop": [
+      "Juniper Berries",
+      "Green Leaves",
+      "Ozonic Notes"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cardamom",
+      "Lavender",
+      "Cedarwood"
+    ],
+    "correctedMid": [
+      "Patchouli",
+      "Water Notes"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Vetiver",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Ambroxan",
+      "Musk"
+    ],
+    "verificationStatus": "Partially Verified",
+    "sourceUrl": "https://fragranceworld.ae / Le Labo Baie 19 Formulation Reference",
+    "sourceType": "Brand Documentation & Secondary",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Clone formula benchmarked to original creation; lacks standalone directory listing. Excluded by default."
+  },
+  {
+    "productId": 66,
+    "brand": "French Avenue",
+    "name": "French Avenue Vulcan Feu",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Pepper",
+      "Mint"
+    ],
+    "correctedTop": [
+      "Mango",
+      "Lemon",
+      "Ginger",
+      "Rhubarb"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cardamom",
+      "Lavender",
+      "Cedarwood"
+    ],
+    "correctedMid": [
+      "Jasmine",
+      "Pink Pepper",
+      "Violet",
+      "Praline"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Vetiver",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Cedarwood",
+      "Ambergris",
+      "Moss"
+    ],
+    "verificationStatus": "Partially Verified",
+    "sourceUrl": "https://fragranceworld.ae / https://www.fragrantica.com/perfume/Stephane-Humbert-Lucas-777/God-of-Fire-72210.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Clone formula benchmarked to original creation; lacks standalone directory listing. Excluded by default."
+  },
+  {
+    "productId": 67,
+    "brand": "French Avenue",
+    "name": "French Avenue Vulcan Sable Brun",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Pepper",
+      "Mint"
+    ],
+    "correctedTop": [
+      "Whiskey",
+      "Coriander",
+      "Mandarin Orange",
+      "Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Cardamom",
+      "Lavender",
+      "Cedarwood"
+    ],
+    "correctedMid": [
+      "Cashmeran",
+      "Tonka Bean",
+      "Styrax",
+      "Anise"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Vetiver",
+      "Patchouli"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Patchouli",
+      "Benzoin"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://fragranceworld.ae",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 68,
+    "brand": "Afnan",
+    "name": "Afnan Turathi Electric",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://ifragranceofficial.com/perfumes/afnan-turathi-electric/",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 69,
+    "brand": "Afnan",
+    "name": "Afnan Turathi Blue",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Amber",
+      "Woody Notes"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Patchouli",
+      "Spices"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/Turathi-Blue-70889.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 70,
+    "brand": "Armaf",
+    "name": "Armaf Club de Nuit Intense Man",
+    "type": "EDT",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Lemon",
+      "Pineapple",
+      "Bergamot",
+      "Blackcurrant",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Pineapple",
+      "Bergamot",
+      "Black Currant",
+      "Apple"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Birch",
+      "Jasmine",
+      "Rose"
+    ],
+    "correctedMid": [
+      "Birch",
+      "Jasmine",
+      "Rose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Musk",
+      "Ambergris",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "correctedBase": [
+      "Musk",
+      "Ambergris",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://armaf.ae / https://www.fragrantica.com/perfume/Armaf/Club-de-Nuit-Intense-Man-34696.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 71,
+    "brand": "Armaf",
+    "name": "Armaf Ombre D'Or",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Musk",
+      "Lime"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Black Leather",
+      "Jasmine Sambac"
+    ],
+    "correctedMid": [
+      "Metallic Notes",
+      "Saffron",
+      "Rose",
+      "Iris"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Amber",
+      "Moss"
+    ],
+    "correctedBase": [
+      "Incense",
+      "Woody Notes",
+      "Amber"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://armaf.ae",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 72,
+    "brand": "Afnan",
+    "name": "Afnan Supremacy Not Only Intense",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Blackcurrant",
+      "Bergamot",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Black Currant",
+      "Apple",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Oakmoss",
+      "Patchouli",
+      "Lavender"
+    ],
+    "correctedMid": [
+      "Oakmoss",
+      "Patchouli",
+      "Lavender"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Saffron"
+    ],
+    "correctedBase": [
+      "Ambergris",
+      "Saffron",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/Supremacy-Not-Only-Intense-68271.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 73,
+    "brand": "Afnan",
+    "name": "Afnan Supremacy Collector's Edition",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Blackcurrant",
+      "Bergamot",
+      "Apple"
+    ],
+    "correctedTop": [
+      "Pineapple",
+      "Bergamot",
+      "Apple",
+      "White Flowers"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Oakmoss",
+      "Patchouli",
+      "Lavender"
+    ],
+    "correctedMid": [
+      "Orange Blossom",
+      "Birch",
+      "Amber"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Saffron"
+    ],
+    "correctedBase": [
+      "Oakmoss",
+      "Musk",
+      "Ambergris"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://afnan.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 74,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Ice",
+    "type": "EDP",
+    "existingDbTop": [
+      "Frozen Apple",
+      "Bergamot",
+      "Lemon",
+      "Star Anise"
+    ],
+    "existingFbTop": [
+      "Frozen Apple",
+      "Bergamot",
+      "Lemon",
+      "Star Anise"
+    ],
+    "correctedTop": [
+      "Frozen Apple",
+      "Bergamot",
+      "Lemon",
+      "Star Anise"
+    ],
+    "existingDbMid": [
+      "Plum",
+      "Cardamom",
+      "Orange Blossom"
+    ],
+    "existingFbMid": [
+      "Plum",
+      "Cardamom",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Plum",
+      "Cardamom",
+      "Orange Blossom"
+    ],
+    "existingDbBase": [
+      "Ambergris",
+      "Musk",
+      "Driftwood",
+      "Moss"
+    ],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Driftwood",
+      "Moss"
+    ],
+    "correctedBase": [
+      "Ambergris",
+      "Musk",
+      "Driftwood",
+      "Moss"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rasasi.com / https://www.fragrantica.com/perfume/Rasasi/Hawas-Ice-for-Him-85916.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database already contains authentic notes; verified accurate."
+  },
+  {
+    "productId": 75,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Tropical",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Coconut Water",
+      "Ginger",
+      "Fig Leaf"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Coconut",
+      "Fig",
+      "Mint"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Sandalwood",
+      "Musk"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 76,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas for Him",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rasasi.com / https://www.fragrantica.com/perfume/Rasasi/Hawas-for-Him-33449.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 77,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Elixir",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Mugwort (Artemisia)",
+      "Bergamot",
+      "Spearmint"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Dark Chocolate",
+      "Lavender",
+      "Benzoin"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "White Musk",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 78,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Fire",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "French Clary Sage"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Egyptian Jasmine",
+      "Marine Notes"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Ambergris",
+      "Mineral Amber"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 79,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Verde",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Lime",
+      "Green Apple"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Rosemary"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Patchouli",
+      "Amber"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 80,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Black",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Pineapple",
+      "Grapefruit",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Patchouli",
+      "Cedarwood",
+      "Jasmine"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Oakmoss",
+      "Amber",
+      "Woody Notes"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://www.rasasi.com / https://www.fragrantica.com/perfume/Rasasi/Hawas-Black-98188.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 81,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Malibu",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Pineapple",
+      "Orange",
+      "Grapefruit"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Sweet Notes",
+      "Aquatic Notes"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Woody Notes",
+      "Amber"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 82,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Cobra",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Ginger",
+      "Bergamot",
+      "Tangerine"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "correctedMid": [
+      "Cinnamon",
+      "Green Tea",
+      "Neroli"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "correctedBase": [
+      "Amber",
+      "Musk",
+      "Woody Notes"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://www.rasasi.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 83,
+    "brand": "Lattafa Perfumes",
+    "name": "Lattafa Khamrah Qahwa",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Ginger",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Cinnamon",
+      "Cardamom",
+      "Ginger"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Praline",
+      "Candied Fruits",
+      "White Flowers"
+    ],
+    "correctedMid": [
+      "Praline",
+      "Candied Fruits",
+      "White Flowers"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Roasted Coffee Beans",
+      "Vanilla",
+      "Tonka Bean",
+      "Benzoin",
+      "Musk"
+    ],
+    "correctedBase": [
+      "Coffee",
+      "Vanilla",
+      "Tonka Bean",
+      "Benzoin",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://lattafa.com / https://www.fragrantica.com/perfume/Lattafa-Perfumes/Khamrah-Qahwa-88339.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 84,
+    "brand": "Zimaya",
+    "name": "Zimaya Sharaf Blend The Club",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Dates",
+      "Nutmeg",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Pineapple",
+      "Apple",
+      "Bergamot",
+      "White Flowers"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Praline",
+      "Vanilla",
+      "Tuberose"
+    ],
+    "correctedMid": [
+      "Orange Blossom",
+      "Birch",
+      "Amber"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tonka Bean",
+      "Benzoin",
+      "Amberwood"
+    ],
+    "correctedBase": [
+      "Oakmoss",
+      "Musk",
+      "Ambergris"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://zimayaperfumes.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 85,
+    "brand": "Zimaya",
+    "name": "Zimaya Sharaf Blend",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Dates",
+      "Nutmeg",
+      "Cinnamon"
+    ],
+    "correctedTop": [
+      "Dates",
+      "Nutmeg",
+      "Saffron"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Praline",
+      "Vanilla",
+      "Tuberose"
+    ],
+    "correctedMid": [
+      "Vanilla",
+      "Praline",
+      "Tuberose"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tonka Bean",
+      "Benzoin",
+      "Amberwood"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Benzoin",
+      "Amberwood",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://zimayaperfumes.com / https://www.fragrantica.com/perfume/Zimaya/Sharaf-Blend-81677.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 86,
+    "brand": "Maison Alhambra",
+    "name": "Maison Alhambra Jean Lowe Ombre",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cardamom",
+      "Saffron"
+    ],
+    "correctedTop": [
+      "Agarwood (Oud)",
+      "Incense"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Black Leather",
+      "Jasmine Sambac"
+    ],
+    "correctedMid": [
+      "Rose",
+      "Raspberry",
+      "Saffron",
+      "Birch"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Patchouli",
+      "Amber",
+      "Moss"
+    ],
+    "correctedBase": [
+      "Benzoin",
+      "Amberwood",
+      "Geranium"
+    ],
+    "verificationStatus": "Partially Verified",
+    "sourceUrl": "https://maisonalhambra.co / LV Ombre Nomade Formulation Reference",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Clone formula benchmarked to original creation; lacks standalone directory listing. Excluded by default."
+  },
+  {
+    "productId": 87,
+    "brand": "Afnan",
+    "name": "Afnan 9 PM",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Apple",
+      "Cinnamon",
+      "Wild Lavender",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Orange Blossom",
+      "Lily-of-the-Valley"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Tonka Bean",
+      "Amber",
+      "Patchouli"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/9-PM-65414.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 88,
+    "brand": "Afnan",
+    "name": "Afnan 9 PM Elixir",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Nutmeg",
+      "Elemi",
+      "Cardamom"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Pimento",
+      "Lavandin",
+      "Leather"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Rockrose (Ciste)",
+      "Labdanum",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/9-PM-Elixir-102559.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 89,
+    "brand": "Afnan",
+    "name": "Afnan 9 PM Night Out",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Dragon Fruit",
+      "Bergamot",
+      "Cognac",
+      "Lavender",
+      "Apple"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Cardamom",
+      "Mahonial",
+      "Suede",
+      "Toffee",
+      "Cedar"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Tonka Bean",
+      "Akigalawood",
+      "Ambrofix",
+      "Patchouli"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://afnan.com",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 90,
+    "brand": "Afnan",
+    "name": "Afnan 9 AM Dive",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Lemon",
+      "Mint",
+      "Black Currant",
+      "Pink Pepper"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Apple",
+      "Incense",
+      "Cedar"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Patchouli",
+      "Jasmine",
+      "Ginger",
+      "Sandalwood"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/9-AM-Dive-80327.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 91,
+    "brand": "Afnan",
+    "name": "Afnan 9 PM Elixir",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "correctedTop": [
+      "Nutmeg",
+      "Elemi",
+      "Cardamom"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "correctedMid": [
+      "Pimento",
+      "Lavandin",
+      "Leather"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "correctedBase": [
+      "Rockrose (Ciste)",
+      "Labdanum",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://afnan.com / https://www.fragrantica.com/perfume/Afnan/9-PM-Elixir-102559.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 92,
+    "brand": "French Avenue",
+    "name": "French Avenue Liquid Brun",
+    "type": "EDP",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cinnamon",
+      "Cardamom",
+      "Orange Blossom",
+      "Bergamot"
+    ],
+    "correctedTop": [
+      "Cinnamon",
+      "Cardamom",
+      "Orange Blossom",
+      "Bergamot"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Bourbon Vanilla",
+      "Elemi"
+    ],
+    "correctedMid": [
+      "Bourbon Vanilla",
+      "Elemi Resin"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Praline",
+      "Musk",
+      "Ambroxan",
+      "Guaiac Wood"
+    ],
+    "correctedBase": [
+      "Praline",
+      "Ambroxan",
+      "Guaiac Wood",
+      "Musk"
+    ],
+    "verificationStatus": "Fully Verified",
+    "sourceUrl": "https://fragranceworld.ae / https://www.fragrantica.com/perfume/Fragrance-World/Liquid-Brun-94883.html",
+    "sourceType": "Official & Secondary Authoritative",
+    "migrationEligibility": "ELIGIBLE",
+    "observations": "Database notes empty ({})."
+  },
+  {
+    "productId": 93,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Greek Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Lychee",
+      "Narcissus",
+      "Rose"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "Apricot",
+      "Iris",
+      "Orange Blossom"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Tobacco",
+      "Musk",
+      "Peony"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 94,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Brazilian Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Pink Pepper",
+      "Bergamot",
+      "Red Chilli Pepper",
+      "Lavender"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "Brazilian Tobacco",
+      "Oud Wood",
+      "Cherry",
+      "Cedarwood"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Leather",
+      "Patchouli",
+      "Vetiver"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 95,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Spanish Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Aquatic Notes",
+      "Saffron",
+      "Tonka Bean"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "Cocoa",
+      "Amber",
+      "Spanish Tobacco"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Iris",
+      "Woody Notes"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 96,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke French Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Blood Orange",
+      "Green Apple",
+      "Mandarin Orange"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "French Tobacco",
+      "Orange Blossom",
+      "Cinnamon",
+      "Ginger"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Lemongrass",
+      "Iris",
+      "Olibanum",
+      "Guaiac Wood"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 97,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Tobacco Extrait de Parfum",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Warm Tobacco Leaf",
+      "Spiced Accord"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "Amber",
+      "Leather",
+      "Honey"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Vanilla",
+      "Cedarwood",
+      "Roasted Tonka Bean"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Classic Tobacco",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 98,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Dominican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Spiced Tobacco Leaf",
+      "Cinnamon",
+      "Cardamom"
+    ],
+    "correctedTop": [
+      "Cinnamon",
+      "Lavender",
+      "Dominican Tobacco"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Golden Honey",
+      "Clove",
+      "Cacao",
+      "Tonka Bean"
+    ],
+    "correctedMid": [
+      "Guaiac Wood",
+      "Orchid"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Vanilla",
+      "Dried Fruits",
+      "Cedarwood",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Saffron",
+      "Bergamot",
+      "Neroli"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 99,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Cuban Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cocoa",
+      "Tobacco"
+    ],
+    "correctedTop": [
+      "Cocoa",
+      "Cuban Tobacco"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Leather",
+      "Sandalwood",
+      "Vanilla"
+    ],
+    "correctedMid": [
+      "Sandalwood",
+      "Leather",
+      "Vanilla"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Honey",
+      "Coconut"
+    ],
+    "correctedBase": [
+      "Honey",
+      "Coconut"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 100,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Jamaican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Patchouli",
+      "Amber"
+    ],
+    "correctedTop": [
+      "Amber",
+      "Patchouli"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Tobacco",
+      "Cedar",
+      "Oud"
+    ],
+    "correctedMid": [
+      "Cedar",
+      "Oud",
+      "Jamaican Tobacco"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Jasmine",
+      "Vetiver"
+    ],
+    "correctedBase": [
+      "Jasmine",
+      "Vetiver"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  },
+  {
+    "productId": 101,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Mexican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "existingDbTop": [],
+    "existingFbTop": [
+      "Cedarwood",
+      "Dark Chocolate"
+    ],
+    "correctedTop": [
+      "Cedarwood",
+      "Dark Chocolate"
+    ],
+    "existingDbMid": [],
+    "existingFbMid": [
+      "Lilac",
+      "Cinnamon"
+    ],
+    "correctedMid": [
+      "Lilac",
+      "Cinnamon"
+    ],
+    "existingDbBase": [],
+    "existingFbBase": [
+      "Tobacco",
+      "Rose",
+      "Amber"
+    ],
+    "correctedBase": [
+      "Mexican Tobacco",
+      "Amber",
+      "Rose"
+    ],
+    "verificationStatus": "Unverified",
+    "sourceUrl": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "sourceType": "Official Brand & Regional Distribution",
+    "migrationEligibility": "EXCLUDED",
+    "observations": "Generic brand landing page only; lacks dedicated manufacturer spec sheet. Excluded from migration."
+  }
+]

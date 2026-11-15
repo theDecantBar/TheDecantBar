@@ -1,0 +1,1540 @@
+[
+  {
+    "id": 1,
+    "name": "Sauvage Eau de Toilette",
+    "brand": "Dior",
+    "category": "Fresh",
+    "type": "EDP",
+    "gender": "Men",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 2,
+    "name": "Bleu de Chanel Eau de Toilette",
+    "brand": "Chanel",
+    "category": "Woody",
+    "type": "EDP",
+    "gender": "Men",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 4,
+    "name": "Tom Ford Ombré Leather",
+    "brand": "Tom Ford",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 5,
+    "name": "Tom Ford Ombré Leather Parfum",
+    "brand": "Tom Ford",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 6,
+    "name": "Tom Ford Ébène Fumé",
+    "brand": "Tom Ford",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 7,
+    "name": "Tom Ford Tuscan Leather",
+    "brand": "Tom Ford",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [
+      "Raspberry",
+      "Saffron",
+      "Thyme"
+    ],
+    "middle_notes": [
+      "Olibanum",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Leather",
+      "Suede",
+      "Woody Notes",
+      "Amber"
+    ],
+    "accords": [
+      {
+        "name": "leather",
+        "color": "#7A4B3A",
+        "percentage": 100
+      },
+      {
+        "name": "fruity",
+        "color": "#C84B4B",
+        "percentage": 90
+      },
+      {
+        "name": "animalic",
+        "color": "#8C533E",
+        "percentage": 80
+      },
+      {
+        "name": "sweet",
+        "color": "#9C2759",
+        "percentage": 70
+      },
+      {
+        "name": "amber",
+        "color": "#C17A36",
+        "percentage": 69
+      },
+      {
+        "name": "smoky",
+        "color": "#4A4A4E",
+        "percentage": 64
+      },
+      {
+        "name": "warm spicy",
+        "color": "#B85428",
+        "percentage": 64
+      },
+      {
+        "name": "woody",
+        "color": "#6E4F32",
+        "percentage": 60
+      }
+    ],
+    "vibe": null
+  },
+  {
+    "id": 8,
+    "name": "Tom Ford White Suede",
+    "brand": "Tom Ford",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 9,
+    "name": "Tom Ford Grey Vetiver",
+    "brand": "Tom Ford",
+    "category": null,
+    "type": null,
+    "gender": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 10,
+    "name": "Creed Aventus",
+    "brand": "Creed",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 11,
+    "name": "Creed Absolu Aventus",
+    "brand": "Creed",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 12,
+    "name": "Creed Green Irish Tweed",
+    "brand": "Creed",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 13,
+    "name": "Creed Silver Mountain Water",
+    "brand": "Creed",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 14,
+    "name": "Creed Original Vetiver",
+    "brand": "Creed",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 16,
+    "name": "Azzaro The Most Wanted Intense",
+    "brand": "Azzaro",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 17,
+    "name": "Azzaro Wanted by Night",
+    "brand": "Azzaro",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 18,
+    "name": "Valentino Born in Roma Green Stravaganza",
+    "brand": "Valentino",
+    "category": "Designer",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 19,
+    "name": "Valentino Uomo",
+    "brand": "Valentino",
+    "category": "Designer",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 20,
+    "name": "Valentino Born in Roma Coral Fantasy",
+    "brand": "Valentino",
+    "category": "Designer",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 21,
+    "name": "Valentino Uomo Born in Roma",
+    "brand": "Valentino",
+    "category": "Designer",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 22,
+    "name": "Maison Francis Kurkdjian Baccarat Rouge 540",
+    "brand": "Maison Francis Kurkdjian",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [
+      "Bitter Almond",
+      "Saffron"
+    ],
+    "middle_notes": [
+      "Egyptian Jasmine",
+      "virginia cedar"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "woody notes",
+      "musk",
+      "ambroxan",
+      "cashmeran"
+    ],
+    "accords": [
+      {
+        "name": "amber",
+        "color": "#b85428",
+        "percentage": 92
+      },
+      {
+        "name": "almond",
+        "color": "#f3deba",
+        "percentage": 82
+      },
+      {
+        "name": "warm spicy ",
+        "color": "#d94a26",
+        "percentage": 74
+      },
+      {
+        "name": "musky ",
+        "color": "#d4c3ea",
+        "percentage": 66
+      },
+      {
+        "name": "animalic",
+        "color": "#784b21",
+        "percentage": 58
+      },
+      {
+        "name": "nutty",
+        "color": "#d1a86b",
+        "percentage": 46
+      },
+      {
+        "name": "fuity",
+        "color": "#b41313",
+        "percentage": 60
+      }
+    ],
+    "vibe": "Airy Crystal Amber, Sweet Saffron & Cedar"
+  },
+  {
+    "id": 23,
+    "name": "YSL L'Homme",
+    "brand": "Yves Saint Laurent",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 24,
+    "name": "YSL L'Homme Le Parfum",
+    "brand": "Yves Saint Laurent",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 25,
+    "name": "YSL L'Homme Cologne Bleue",
+    "brand": "Yves Saint Laurent",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 26,
+    "name": "YSL Y Eau de Parfum",
+    "brand": "Yves Saint Laurent",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 27,
+    "name": "YSL MYSLF Le Parfum",
+    "brand": "Yves Saint Laurent",
+    "category": "Designer",
+    "type": "PARFUM",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 28,
+    "name": "Versace Eros",
+    "brand": "Versace",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 29,
+    "name": "Versace Eros Flame",
+    "brand": "Versace",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 30,
+    "name": "Versace Pour Homme",
+    "brand": "Versace",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 31,
+    "name": "Kilian Blue Moon Ginger Dash",
+    "brand": "Kilian",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 32,
+    "name": "Kilian Angels' Share",
+    "brand": "Kilian",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 33,
+    "name": "Kilian Roses on Ice",
+    "brand": "Kilian",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 34,
+    "name": "Givenchy Gentleman Boisée",
+    "brand": "Givenchy",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 35,
+    "name": "Givenchy Gentleman Reserve Privée",
+    "brand": "Givenchy",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 36,
+    "name": "Paco Rabanne 1 Million",
+    "brand": "Paco Rabanne",
+    "category": "Designer",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [
+      "Blood Mandarin",
+      "Grapefruit",
+      "Mint"
+    ],
+    "middle_notes": [
+      "Cinnamon",
+      "Spicy Notes",
+      "Rose"
+    ],
+    "base_notes": [
+      "Amber",
+      "Leather",
+      "Woody Notes",
+      "Indian Patchouli"
+    ],
+    "accords": [
+      {
+        "name": "warm spicy",
+        "color": "#b85428",
+        "percentage": 92
+      },
+      {
+        "name": "leather",
+        "color": "#5a392d",
+        "percentage": 82
+      },
+      {
+        "name": "citrus",
+        "color": "#9a7028",
+        "percentage": 74
+      },
+      {
+        "name": "sweet",
+        "color": "#9c2759",
+        "percentage": 66
+      },
+      {
+        "name": "amber",
+        "color": "#d9822b",
+        "percentage": 58
+      },
+      {
+        "name": "woody",
+        "color": "#6e4f32",
+        "percentage": 48
+      },
+      {
+        "name": "fresh spicy",
+        "color": "#314b4b",
+        "percentage": 38
+      }
+    ],
+    "vibe": "Sweet Blood Mandarin, Spiced Cinnamon & Blond Leather"
+  },
+  {
+    "id": 37,
+    "name": "Christian Dior Oud Ispahan",
+    "brand": "Dior",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 38,
+    "name": "Christian Dior Gris Dior",
+    "brand": "Dior",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 39,
+    "name": "Dior Sauvage Parfum",
+    "brand": "Dior",
+    "category": "Designer",
+    "type": "PARFUM",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 40,
+    "name": "Dior Homme Intense",
+    "brand": "Dior",
+    "category": "Designer",
+    "type": "PARFUM",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 41,
+    "name": "Dior Sauvage Elixir",
+    "brand": "Dior",
+    "category": "Designer",
+    "type": "ELIXER",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 42,
+    "name": "Xerjoff Accento",
+    "brand": "Xerjoff",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 43,
+    "name": "Xerjoff Naxos",
+    "brand": "Xerjoff",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 44,
+    "name": "Xerjoff Erba Pura",
+    "brand": "Xerjoff",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 45,
+    "name": "Viktor&Rolf Spicebomb Extreme",
+    "brand": "Viktor&Rolf",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 46,
+    "name": "Paco Rabanne Invictus Victory Extreme",
+    "brand": "Paco Rabanne",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 47,
+    "name": "Paco Rabanne Invictus Legend",
+    "brand": "Paco Rabanne",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 48,
+    "name": "Roberto Cavalli Splendid Vanilla",
+    "brand": "Roberto Cavalli",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 49,
+    "name": "Parfums de Marly Layton",
+    "brand": "Parfums de Marly",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 50,
+    "name": "Parfums de Marly Carlisle",
+    "brand": "Parfums de Marly",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 51,
+    "name": "Montblanc Explorer",
+    "brand": "Montblanc",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 52,
+    "name": "Bleu de Chanel Eau de Parfum",
+    "brand": "Chanel",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 53,
+    "name": "Maison Crivelli Oud Stallion",
+    "brand": "Maison Crivelli",
+    "category": "Niche",
+    "type": "Extrait de parfum",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 54,
+    "name": "Roja Parfums Harrods Exclusive",
+    "brand": "Roja Parfums",
+    "category": "Niche",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 55,
+    "name": "Armani Code Eau de Parfum",
+    "brand": "Giorgio Armani",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 56,
+    "name": "Bentley for Men Intense",
+    "brand": "Bentley",
+    "category": "Designer",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 57,
+    "name": "Maison Margiela Replica By the Fireplace",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 58,
+    "name": "Maison Margiela Replica Lazy Sunday Morning",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 59,
+    "name": "Maison Margiela Replica Jazz Club",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 60,
+    "name": "Maison Margiela Replica When the Rain Stops",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 61,
+    "name": "Maison Margiela Replica Beach Walk",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 62,
+    "name": "Maison Margiela Replica Dancing on the Moon",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 63,
+    "name": "Maison Margiela Replica Sailing Day",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 64,
+    "name": "Maison Margiela Replica Flower Market",
+    "brand": "Maison Margiela",
+    "category": "NICHE",
+    "type": "EDT",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 65,
+    "name": "French Avenue Baie 19",
+    "brand": "French Avenue",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 66,
+    "name": "French Avenue Vulcan Feu",
+    "brand": "French Avenue",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 67,
+    "name": "French Avenue Vulcan Sable Brun",
+    "brand": "French Avenue",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 68,
+    "name": "Afnan Turathi Electric",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 69,
+    "name": "Afnan Turathi Blue",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 70,
+    "name": "Armaf Club de Nuit Intense Man",
+    "brand": "Armaf",
+    "category": "Middle eastern",
+    "type": "EDT",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 71,
+    "name": "Armaf Ombre D'Or",
+    "brand": "Armaf",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 72,
+    "name": "Afnan Supremacy Not Only Intense",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 73,
+    "name": "Afnan Supremacy Collector's Edition",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 74,
+    "name": "Rasasi Hawas Ice",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [
+      "Frozen Apple",
+      "Bergamot",
+      "Lemon",
+      "Star Anise"
+    ],
+    "middle_notes": [
+      "Plum",
+      "Cardamom",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Musk",
+      "Driftwood",
+      "Moss"
+    ],
+    "accords": [
+      {
+        "name": "Fruity",
+        "color": "#D97736",
+        "percentage": 100
+      },
+      {
+        "name": "Citrus",
+        "color": "#D4AF37",
+        "percentage": 90
+      },
+      {
+        "name": "Sweet",
+        "color": "#ff8c82",
+        "percentage": 65
+      },
+      {
+        "name": "Fresh",
+        "color": "#2E86AB",
+        "percentage": 60
+      },
+      {
+        "name": "Aromatic",
+        "color": "#4A7C59",
+        "percentage": 55
+      },
+      {
+        "name": "Musky",
+        "color": "#7B6D8D",
+        "percentage": 50
+      },
+      {
+        "name": "Powdery",
+        "color": "#9B8B7B",
+        "percentage": 50
+      },
+      {
+        "name": "Fresh spicy",
+        "color": "#96d35f",
+        "percentage": 50
+      },
+      {
+        "name": "Green",
+        "color": "#4f7a28",
+        "percentage": 45
+      },
+      {
+        "name": "Amber",
+        "color": "#C68B59",
+        "percentage": 40
+      }
+    ],
+    "vibe": "Frosty Crisp Apple, Italian Citrus, Plum & Ambergris"
+  },
+  {
+    "id": 75,
+    "name": "Rasasi Hawas Tropical",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 76,
+    "name": "Rasasi Hawas for Him",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 77,
+    "name": "Rasasi Hawas Elixir",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 78,
+    "name": "Rasasi Hawas Fire",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 79,
+    "name": "Rasasi Hawas Verde",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 80,
+    "name": "Rasasi Hawas Black",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 81,
+    "name": "Rasasi Hawas Malibu",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 82,
+    "name": "Rasasi Hawas Cobra",
+    "brand": "Rasasi",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 83,
+    "name": "Lattafa Khamrah Qahwa",
+    "brand": "Lattafa Perfumes",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 84,
+    "name": "Zimaya Sharaf Blend The Club",
+    "brand": "Zimaya",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 85,
+    "name": "Zimaya Sharaf Blend",
+    "brand": "Zimaya",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 86,
+    "name": "Maison Alhambra Jean Lowe Ombre",
+    "brand": "Maison Alhambra",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 87,
+    "name": "Afnan 9 PM",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 88,
+    "name": "Afnan 9 PM Elixir",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 89,
+    "name": "Afnan 9 PM Night Out",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 90,
+    "name": "Afnan 9 AM Dive",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 91,
+    "name": "Afnan 9 PM Elixir",
+    "brand": "Afnan",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 92,
+    "name": "French Avenue Liquid Brun",
+    "brand": "French Avenue",
+    "category": "Middle eastern",
+    "type": "EDP",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 93,
+    "name": "Bespoke Greek Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 94,
+    "name": "Bespoke Brazilian Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 95,
+    "name": "Bespoke Spanish Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 96,
+    "name": "Bespoke French Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 97,
+    "name": "Bespoke Tobacco Extrait de Parfum",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 98,
+    "name": "Bespoke Dominican Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 99,
+    "name": "Bespoke Cuban Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [
+      {
+        "name": "tobacco",
+        "color": "#8B4513",
+        "percentage": 95
+      },
+      {
+        "name": "sweet",
+        "color": "#9c2759",
+        "percentage": 80
+      },
+      {
+        "name": "warm spicy",
+        "color": "#b85428",
+        "percentage": 72
+      },
+      {
+        "name": "amber",
+        "color": "#d9822b",
+        "percentage": 65
+      },
+      {
+        "name": "vanilla",
+        "color": "#c49e49",
+        "percentage": 55
+      },
+      {
+        "name": "woody",
+        "color": "#6e4f32",
+        "percentage": 48
+      },
+      {
+        "name": "smoky",
+        "color": "#4a4a4e",
+        "percentage": 38
+      }
+    ],
+    "vibe": null
+  },
+  {
+    "id": 100,
+    "name": "Bespoke Jamaican Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  },
+  {
+    "id": 101,
+    "name": "Bespoke Mexican Tobacco",
+    "brand": "Bespoke Collection",
+    "category": "Middle eastern",
+    "type": "EXTRAIT DE PARFUM",
+    "gender": "M/W",
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "accords": [],
+    "vibe": null
+  }
+]

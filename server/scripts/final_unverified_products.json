@@ -1,0 +1,549 @@
+[
+  {
+    "id": 65,
+    "brand": "French Avenue",
+    "name": "French Avenue Baie 19",
+    "type": "EDP",
+    "top_notes": [
+      "Juniper Berries",
+      "Green Leaves",
+      "Ozonic Notes"
+    ],
+    "middle_notes": [
+      "Patchouli",
+      "Water Notes"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "Musk"
+    ],
+    "source": "https://fragranceworld.ae / Le Labo Baie 19 Formulation Reference",
+    "source_type": "Brand Documentation & Secondary",
+    "verification_status": "Partially Verified"
+  },
+  {
+    "id": 66,
+    "brand": "French Avenue",
+    "name": "French Avenue Vulcan Feu",
+    "type": "EDP",
+    "top_notes": [
+      "Mango",
+      "Lemon",
+      "Ginger",
+      "Rhubarb"
+    ],
+    "middle_notes": [
+      "Jasmine",
+      "Pink Pepper",
+      "Violet",
+      "Praline"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Cedarwood",
+      "Ambergris",
+      "Moss"
+    ],
+    "source": "https://fragranceworld.ae / https://www.fragrantica.com/perfume/Stephane-Humbert-Lucas-777/God-of-Fire-72210.html",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Partially Verified"
+  },
+  {
+    "id": 67,
+    "brand": "French Avenue",
+    "name": "French Avenue Vulcan Sable Brun",
+    "type": "EDP",
+    "top_notes": [
+      "Whiskey",
+      "Coriander",
+      "Mandarin Orange",
+      "Orange"
+    ],
+    "middle_notes": [
+      "Cashmeran",
+      "Tonka Bean",
+      "Styrax",
+      "Anise"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Patchouli",
+      "Benzoin"
+    ],
+    "source": "https://fragranceworld.ae",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 71,
+    "brand": "Armaf",
+    "name": "Armaf Ombre D'Or",
+    "type": "EDP",
+    "top_notes": [
+      "Musk",
+      "Lime"
+    ],
+    "middle_notes": [
+      "Metallic Notes",
+      "Saffron",
+      "Rose",
+      "Iris"
+    ],
+    "base_notes": [
+      "Incense",
+      "Woody Notes",
+      "Amber"
+    ],
+    "source": "https://armaf.ae",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 73,
+    "brand": "Afnan",
+    "name": "Afnan Supremacy Collector's Edition",
+    "type": "EDP",
+    "top_notes": [
+      "Pineapple",
+      "Bergamot",
+      "Apple",
+      "White Flowers"
+    ],
+    "middle_notes": [
+      "Orange Blossom",
+      "Birch",
+      "Amber"
+    ],
+    "base_notes": [
+      "Oakmoss",
+      "Musk",
+      "Ambergris"
+    ],
+    "source": "https://afnan.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 75,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Tropical",
+    "type": "EDP",
+    "top_notes": [
+      "Coconut Water",
+      "Ginger",
+      "Fig Leaf"
+    ],
+    "middle_notes": [
+      "Coconut",
+      "Fig",
+      "Mint"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Sandalwood",
+      "Musk"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 77,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Elixir",
+    "type": "EDP",
+    "top_notes": [
+      "Mugwort (Artemisia)",
+      "Bergamot",
+      "Spearmint"
+    ],
+    "middle_notes": [
+      "Dark Chocolate",
+      "Lavender",
+      "Benzoin"
+    ],
+    "base_notes": [
+      "White Musk",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 78,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Fire",
+    "type": "EDP",
+    "top_notes": [
+      "French Clary Sage"
+    ],
+    "middle_notes": [
+      "Egyptian Jasmine",
+      "Marine Notes"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Mineral Amber"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 79,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Verde",
+    "type": "EDP",
+    "top_notes": [
+      "Lime",
+      "Green Apple"
+    ],
+    "middle_notes": [
+      "Rosemary"
+    ],
+    "base_notes": [
+      "Patchouli",
+      "Amber"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 81,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Malibu",
+    "type": "EDP",
+    "top_notes": [
+      "Pineapple",
+      "Orange",
+      "Grapefruit"
+    ],
+    "middle_notes": [
+      "Sweet Notes",
+      "Aquatic Notes"
+    ],
+    "base_notes": [
+      "Woody Notes",
+      "Amber"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 82,
+    "brand": "Rasasi",
+    "name": "Rasasi Hawas Cobra",
+    "type": "EDP",
+    "top_notes": [
+      "Ginger",
+      "Bergamot",
+      "Tangerine"
+    ],
+    "middle_notes": [
+      "Cinnamon",
+      "Green Tea",
+      "Neroli"
+    ],
+    "base_notes": [
+      "Amber",
+      "Musk",
+      "Woody Notes"
+    ],
+    "source": "https://www.rasasi.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 84,
+    "brand": "Zimaya",
+    "name": "Zimaya Sharaf Blend The Club",
+    "type": "EDP",
+    "top_notes": [
+      "Pineapple",
+      "Apple",
+      "Bergamot",
+      "White Flowers"
+    ],
+    "middle_notes": [
+      "Orange Blossom",
+      "Birch",
+      "Amber"
+    ],
+    "base_notes": [
+      "Oakmoss",
+      "Musk",
+      "Ambergris"
+    ],
+    "source": "https://zimayaperfumes.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 86,
+    "brand": "Maison Alhambra",
+    "name": "Maison Alhambra Jean Lowe Ombre",
+    "type": "EDP",
+    "top_notes": [
+      "Agarwood (Oud)",
+      "Incense"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Raspberry",
+      "Saffron",
+      "Birch"
+    ],
+    "base_notes": [
+      "Benzoin",
+      "Amberwood",
+      "Geranium"
+    ],
+    "source": "https://maisonalhambra.co / LV Ombre Nomade Formulation Reference",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Partially Verified"
+  },
+  {
+    "id": 89,
+    "brand": "Afnan",
+    "name": "Afnan 9 PM Night Out",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Dragon Fruit",
+      "Bergamot",
+      "Cognac",
+      "Lavender",
+      "Apple"
+    ],
+    "middle_notes": [
+      "Cardamom",
+      "Mahonial",
+      "Suede",
+      "Toffee",
+      "Cedar"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Akigalawood",
+      "Ambrofix",
+      "Patchouli"
+    ],
+    "source": "https://afnan.com",
+    "source_type": "Official & Secondary Authoritative",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 93,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Greek Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Lychee",
+      "Narcissus",
+      "Rose"
+    ],
+    "middle_notes": [
+      "Apricot",
+      "Iris",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Tobacco",
+      "Musk",
+      "Peony"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 94,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Brazilian Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Pink Pepper",
+      "Bergamot",
+      "Red Chilli Pepper",
+      "Lavender"
+    ],
+    "middle_notes": [
+      "Brazilian Tobacco",
+      "Oud Wood",
+      "Cherry",
+      "Cedarwood"
+    ],
+    "base_notes": [
+      "Leather",
+      "Patchouli",
+      "Vetiver"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 95,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Spanish Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Aquatic Notes",
+      "Saffron",
+      "Tonka Bean"
+    ],
+    "middle_notes": [
+      "Cocoa",
+      "Amber",
+      "Spanish Tobacco"
+    ],
+    "base_notes": [
+      "Iris",
+      "Woody Notes"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 96,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke French Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Blood Orange",
+      "Green Apple",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "French Tobacco",
+      "Orange Blossom",
+      "Cinnamon",
+      "Ginger"
+    ],
+    "base_notes": [
+      "Lemongrass",
+      "Iris",
+      "Olibanum",
+      "Guaiac Wood"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 97,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Tobacco Extrait de Parfum",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Warm Tobacco Leaf",
+      "Spiced Accord"
+    ],
+    "middle_notes": [
+      "Amber",
+      "Leather",
+      "Honey"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Cedarwood",
+      "Roasted Tonka Bean"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Classic Tobacco",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 98,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Dominican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Cinnamon",
+      "Lavender",
+      "Dominican Tobacco"
+    ],
+    "middle_notes": [
+      "Guaiac Wood",
+      "Orchid"
+    ],
+    "base_notes": [
+      "Saffron",
+      "Bergamot",
+      "Neroli"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 99,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Cuban Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Cocoa",
+      "Cuban Tobacco"
+    ],
+    "middle_notes": [
+      "Sandalwood",
+      "Leather",
+      "Vanilla"
+    ],
+    "base_notes": [
+      "Honey",
+      "Coconut"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 100,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Jamaican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Amber",
+      "Patchouli"
+    ],
+    "middle_notes": [
+      "Cedar",
+      "Oud",
+      "Jamaican Tobacco"
+    ],
+    "base_notes": [
+      "Jasmine",
+      "Vetiver"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  },
+  {
+    "id": 101,
+    "brand": "Bespoke Collection",
+    "name": "Bespoke Mexican Tobacco",
+    "type": "EXTRAIT DE PARFUM",
+    "top_notes": [
+      "Cedarwood",
+      "Dark Chocolate"
+    ],
+    "middle_notes": [
+      "Lilac",
+      "Cinnamon"
+    ],
+    "base_notes": [
+      "Mexican Tobacco",
+      "Amber",
+      "Rose"
+    ],
+    "source": "https://ibraqperfumes.com / Ibraheem Al Qurashi Tobacco Collection",
+    "source_type": "Official Brand & Regional Distribution",
+    "verification_status": "Unverified"
+  }
+]
