@@ -1,0 +1,2282 @@
+[
+  {
+    "id": 1,
+    "product_name": "Sauvage Eau de Toilette",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Sauvage Dior (Eau de Toilette)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Sauvage-31561.html",
+    "top_notes": [
+      "Calabrian Bergamot",
+      "Pepper"
+    ],
+    "middle_notes": [
+      "Sichuan Pepper",
+      "Lavender",
+      "Pink Pepper",
+      "Vetiver",
+      "Patchouli",
+      "Geranium",
+      "Elemi"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "Cedar",
+      "Labdanum"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact EDT version matched on Fragrantica. Database had empty notes."
+  },
+  {
+    "id": 2,
+    "product_name": "Bleu de Chanel Eau de Toilette",
+    "brand": "Chanel",
+    "matched_fragrantica_name": "Bleu de Chanel Chanel (Eau de Toilette)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-9099.html",
+    "top_notes": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper"
+    ],
+    "middle_notes": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Iso E Super"
+    ],
+    "base_notes": [
+      "Incense",
+      "Vetiver",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Labdanum",
+      "White Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.chanel.com",
+    "verification_notes": "Exact EDT formulation matched on Fragrantica. Database had empty notes."
+  },
+  {
+    "id": 4,
+    "product_name": "Tom Ford Ombré Leather",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "Ombré Leather (2018) Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/Ombre-Leather-2018-50239.html",
+    "top_notes": [
+      "Cardamom"
+    ],
+    "middle_notes": [
+      "Leather",
+      "Jasmine Sambac"
+    ],
+    "base_notes": [
+      "Amber",
+      "Moss",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Exact 2018 EDP edition matched on Fragrantica. Distinct from 2021 Parfum flanker."
+  },
+  {
+    "id": 5,
+    "product_name": "Tom Ford Ombré Leather Parfum",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "Ombre Leather Parfum Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/Ombre-Leather-Parfum-68559.html",
+    "top_notes": [
+      "Violet Leaf",
+      "Cedar"
+    ],
+    "middle_notes": [
+      "Jasmine Sambac",
+      "Orris"
+    ],
+    "base_notes": [
+      "Leather",
+      "Woody Notes",
+      "Tobacco"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Exact Parfum edition matched on Fragrantica. Verified distinct notes from EDP."
+  },
+  {
+    "id": 6,
+    "product_name": "Tom Ford Ébène Fumé",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "Ébène Fumé Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/Ebene-Fume-69992.html",
+    "top_notes": [
+      "Incense",
+      "Palo Santo",
+      "Black Pepper",
+      "Violet Leaf"
+    ],
+    "middle_notes": [
+      "Leather",
+      "Labdanum",
+      "Cade Oil",
+      "Papyrus",
+      "Rose"
+    ],
+    "base_notes": [
+      "Resins",
+      "Ebony Wood",
+      "Guaiac Wood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Exact Private Blend release matched on Fragrantica."
+  },
+  {
+    "id": 7,
+    "product_name": "Tom Ford Tuscan Leather",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "Tuscan Leather Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/Tuscan-Leather-1849.html",
+    "top_notes": [
+      "Raspberry",
+      "Saffron",
+      "Thyme"
+    ],
+    "middle_notes": [
+      "Olibanum",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Leather",
+      "Suede",
+      "Woody Notes",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Database already had accurate notes; verified 100% against Fragrantica."
+  },
+  {
+    "id": 8,
+    "product_name": "Tom Ford White Suede",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "White Suede Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/White-Suede-6386.html",
+    "top_notes": [
+      "Thyme",
+      "Tea"
+    ],
+    "middle_notes": [
+      "Lily-of-the-Valley",
+      "Saffron",
+      "Rose"
+    ],
+    "base_notes": [
+      "Suede",
+      "Musk",
+      "Sandalwood",
+      "Olibanum",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Exact Private Blend edition matched on Fragrantica."
+  },
+  {
+    "id": 9,
+    "product_name": "Tom Ford Grey Vetiver",
+    "brand": "Tom Ford",
+    "matched_fragrantica_name": "Grey Vetiver Tom Ford",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Tom-Ford/Grey-Vetiver-6697.html",
+    "top_notes": [
+      "Grapefruit",
+      "Orange Blossom",
+      "Sage"
+    ],
+    "middle_notes": [
+      "Nutmeg",
+      "Orris Root",
+      "Pimento"
+    ],
+    "base_notes": [
+      "Vetiver",
+      "Woodsy Notes",
+      "Oakmoss",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.tomford.com",
+    "verification_notes": "Exact EDP release matched on Fragrantica."
+  },
+  {
+    "id": 10,
+    "product_name": "Creed Aventus",
+    "brand": "Creed",
+    "matched_fragrantica_name": "Aventus Creed",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Creed/Aventus-9828.html",
+    "top_notes": [
+      "Lemon",
+      "Pink Pepper",
+      "Apple",
+      "Bergamot",
+      "Blackcurrant"
+    ],
+    "middle_notes": [
+      "Pineapple",
+      "Jasmine",
+      "Patchouli"
+    ],
+    "base_notes": [
+      "Birch",
+      "Ambergris",
+      "Cedarwood",
+      "Oakmoss",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://creedboutique.com",
+    "verification_notes": "Official modern Creed production notes matched on Fragrantica."
+  },
+  {
+    "id": 11,
+    "product_name": "Creed Absolu Aventus",
+    "brand": "Creed",
+    "matched_fragrantica_name": "Absolu Aventus Creed",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Creed/Absolu-Aventus-86644.html",
+    "top_notes": [
+      "Grapefruit",
+      "Bergamot",
+      "Blackcurrant"
+    ],
+    "middle_notes": [
+      "Cardamom",
+      "Cinnamon",
+      "Ginger",
+      "Citron"
+    ],
+    "base_notes": [
+      "Pink Pepper",
+      "Patchouli",
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://creedboutique.com",
+    "verification_notes": "Exact limited release Absolu Aventus matched on Fragrantica. Distinct from original Aventus."
+  },
+  {
+    "id": 12,
+    "product_name": "Creed Green Irish Tweed",
+    "brand": "Creed",
+    "matched_fragrantica_name": "Green Irish Tweed Creed",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Creed/Green-Irish-Tweed-474.html",
+    "top_notes": [
+      "Lemon Verbena",
+      "Iris"
+    ],
+    "middle_notes": [
+      "Violet Leaves"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Sandalwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://creedboutique.com",
+    "verification_notes": "Exact iconic fougère matched on Fragrantica."
+  },
+  {
+    "id": 13,
+    "product_name": "Creed Silver Mountain Water",
+    "brand": "Creed",
+    "matched_fragrantica_name": "Silver Mountain Water Creed",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Creed/Silver-Mountain-Water-472.html",
+    "top_notes": [
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "Green Tea",
+      "Black Currant"
+    ],
+    "base_notes": [
+      "Musk",
+      "Petitgrain",
+      "Sandalwood",
+      "Galbanum"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://creedboutique.com",
+    "verification_notes": "Exact fresh alpine composition matched on Fragrantica."
+  },
+  {
+    "id": 14,
+    "product_name": "Creed Original Vetiver",
+    "brand": "Creed",
+    "matched_fragrantica_name": "Original Vetiver Creed",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Creed/Original-Vetiver-468.html",
+    "top_notes": [
+      "Bergamot",
+      "Bitter Orange",
+      "Mandarin Orange",
+      "Vetiver Leaves"
+    ],
+    "middle_notes": [
+      "White Pepper",
+      "Coriander",
+      "Pink Pepper"
+    ],
+    "base_notes": [
+      "Mysore Sandalwood",
+      "Vetiver",
+      "Ambergris",
+      "Tonkin Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://creedboutique.com",
+    "verification_notes": "Exact composition matched on Fragrantica."
+  },
+  {
+    "id": 16,
+    "product_name": "Azzaro The Most Wanted Intense",
+    "brand": "Azzaro",
+    "matched_fragrantica_name": "The Most Wanted Eau de Toilette Intense Azzaro",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Azzaro/The-Most-Wanted-Eau-de-Toilette-Intense-89467.html",
+    "top_notes": [
+      "Calabrian Bergamot"
+    ],
+    "middle_notes": [
+      "Provence Lavender"
+    ],
+    "base_notes": [
+      "Liquor Accord",
+      "Moss"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.azzaro.com",
+    "verification_notes": "Exact Intense release matched on Fragrantica."
+  },
+  {
+    "id": 17,
+    "product_name": "Azzaro Wanted by Night",
+    "brand": "Azzaro",
+    "matched_fragrantica_name": "Wanted by Night Azzaro",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Azzaro/Wanted-by-Night-49144.html",
+    "top_notes": [
+      "Cinnamon",
+      "Mandarin Orange",
+      "Lavender",
+      "Lemon"
+    ],
+    "middle_notes": [
+      "Fruity Notes",
+      "Incense",
+      "Cumin",
+      "Red Cedar"
+    ],
+    "base_notes": [
+      "Tobacco",
+      "Vanilla",
+      "Leather",
+      "Benzoin",
+      "Iso E Super",
+      "Cedar",
+      "Cypress",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.azzaro.com",
+    "verification_notes": "Exact EDP release matched on Fragrantica."
+  },
+  {
+    "id": 18,
+    "product_name": "Valentino Born in Roma Green Stravaganza",
+    "brand": "Valentino",
+    "matched_fragrantica_name": "Born in Roma Green Stravaganza Uomo Valentino",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Valentino/Born-in-Roma-Green-Stravaganza-Uomo-88894.html",
+    "top_notes": [
+      "Calabrian Bergamot"
+    ],
+    "middle_notes": [
+      "Coffee Accord"
+    ],
+    "base_notes": [
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.valentino-beauty.us",
+    "verification_notes": "Exact 2024 Green Stravaganza edition matched on Fragrantica."
+  },
+  {
+    "id": 19,
+    "product_name": "Valentino Uomo",
+    "brand": "Valentino",
+    "matched_fragrantica_name": "Valentino Uomo Valentino",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-19558.html",
+    "top_notes": [
+      "Bergamot",
+      "Myrtle"
+    ],
+    "middle_notes": [
+      "Hazelnut",
+      "Chocolate",
+      "Roasted Coffee Beans"
+    ],
+    "base_notes": [
+      "Leather",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.valentino-beauty.us",
+    "verification_notes": "Original 2014 Olivier Polge gourmand leather composition matched on Fragrantica."
+  },
+  {
+    "id": 20,
+    "product_name": "Valentino Born in Roma Coral Fantasy",
+    "brand": "Valentino",
+    "matched_fragrantica_name": "Valentino Uomo Born in Roma Coral Fantasy Valentino",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-in-Roma-Coral-Fantasy-71649.html",
+    "top_notes": [
+      "Red Apple",
+      "Cardamom",
+      "Calabrian Bergamot"
+    ],
+    "middle_notes": [
+      "Lavender",
+      "Clary Sage",
+      "Bourbon Geranium"
+    ],
+    "base_notes": [
+      "Tobacco Leaf",
+      "Patchouli",
+      "Haitian Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.valentino-beauty.us",
+    "verification_notes": "Exact Coral Fantasy edition matched on Fragrantica."
+  },
+  {
+    "id": 21,
+    "product_name": "Valentino Uomo Born in Roma",
+    "brand": "Valentino",
+    "matched_fragrantica_name": "Valentino Uomo Born In Roma Valentino",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-In-Roma-56540.html",
+    "top_notes": [
+      "Mineral Notes",
+      "Violet Leaf",
+      "Salt"
+    ],
+    "middle_notes": [
+      "Ginger",
+      "Sage"
+    ],
+    "base_notes": [
+      "Woody Notes",
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.valentino-beauty.us",
+    "verification_notes": "Original Born in Roma woody-aromatic mineral edition matched on Fragrantica."
+  },
+  {
+    "id": 22,
+    "product_name": "Maison Francis Kurkdjian Baccarat Rouge 540",
+    "brand": "Maison Francis Kurkdjian",
+    "matched_fragrantica_name": "Baccarat Rouge 540 Maison Francis Kurkdjian",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Francis-Kurkdjian/Baccarat-Rouge-540-33519.html",
+    "top_notes": [
+      "Saffron",
+      "Jasmine"
+    ],
+    "middle_notes": [
+      "Amberwood",
+      "Ambergris"
+    ],
+    "base_notes": [
+      "Fir Resin",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.franciskurkdjian.com",
+    "verification_notes": "Exact EDP formulation matched on Fragrantica. Database had Extrait bitter almond notes; corrected to EDP."
+  },
+  {
+    "id": 23,
+    "product_name": "YSL L'Homme",
+    "brand": "Yves Saint Laurent",
+    "matched_fragrantica_name": "L'Homme Eau de Parfum Yves Saint Laurent",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Eau-de-Parfum-72648.html",
+    "top_notes": [
+      "Bitter Orange",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Lavender",
+      "Geranium"
+    ],
+    "base_notes": [
+      "Cognac",
+      "Oak",
+      "Cedar",
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.yslbeauty.com",
+    "verification_notes": "Exact L'Homme EDP matched on Fragrantica. Database had empty notes."
+  },
+  {
+    "id": 24,
+    "product_name": "YSL L'Homme Le Parfum",
+    "brand": "Yves Saint Laurent",
+    "matched_fragrantica_name": "L'Homme Le Parfum Yves Saint Laurent",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Le-Parfum-59868.html",
+    "top_notes": [
+      "Ozonic Notes",
+      "Cardamom",
+      "Lemon"
+    ],
+    "middle_notes": [
+      "Geranium",
+      "Basil",
+      "Violet Leaf"
+    ],
+    "base_notes": [
+      "Amberwood",
+      "Cedar Essence",
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.yslbeauty.com",
+    "verification_notes": "Exact Le Parfum flanker matched on Fragrantica. Distinct from EDP."
+  },
+  {
+    "id": 25,
+    "product_name": "YSL L'Homme Cologne Bleue",
+    "brand": "Yves Saint Laurent",
+    "matched_fragrantica_name": "L'Homme Cologne Bleue Yves Saint Laurent",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Cologne-Bleue-48419.html",
+    "top_notes": [
+      "Sea Notes",
+      "Bergamot",
+      "Blood Orange",
+      "Grapefruit",
+      "Cardamom",
+      "Black Pepper"
+    ],
+    "middle_notes": [
+      "Apple",
+      "Geranium",
+      "Clary Sage",
+      "Lavender"
+    ],
+    "base_notes": [
+      "Cedar",
+      "Patchouli",
+      "Sandalwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.yslbeauty.com",
+    "verification_notes": "Exact aquatic flanker matched on Fragrantica."
+  },
+  {
+    "id": 26,
+    "product_name": "YSL Y Eau de Parfum",
+    "brand": "Yves Saint Laurent",
+    "matched_fragrantica_name": "Y Eau de Parfum Yves Saint Laurent",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/Y-Eau-de-Parfum-50757.html",
+    "top_notes": [
+      "Apple",
+      "Ginger",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Sage",
+      "Juniper Berries",
+      "Geranium"
+    ],
+    "base_notes": [
+      "Amberwood",
+      "Tonka Bean",
+      "Cedar",
+      "Vetiver",
+      "Olibanum"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.yslbeauty.com",
+    "verification_notes": "Exact Y EDP matched on Fragrantica."
+  },
+  {
+    "id": 27,
+    "product_name": "YSL MYSLF Le Parfum",
+    "brand": "Yves Saint Laurent",
+    "matched_fragrantica_name": "MYSLF Le Parfum Yves Saint Laurent",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/MYSLF-Le-Parfum-95166.html",
+    "top_notes": [
+      "Black Pepper"
+    ],
+    "middle_notes": [
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Bourbon Vanilla",
+      "Amber",
+      "Woody Notes",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.yslbeauty.com",
+    "verification_notes": "Exact 2024 MYSLF Le Parfum release matched on Fragrantica."
+  },
+  {
+    "id": 28,
+    "product_name": "Versace Eros",
+    "brand": "Versace",
+    "matched_fragrantica_name": "Eros Eau de Parfum Versace",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Versace/Eros-Eau-de-Parfum-62762.html",
+    "top_notes": [
+      "Mint",
+      "Candy Apple",
+      "Lemon",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "Ambroxan",
+      "Geranium",
+      "Clary Sage"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Leather",
+      "Bitter Orange"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.versace.com",
+    "verification_notes": "Exact Eros EDP matched on Fragrantica."
+  },
+  {
+    "id": 29,
+    "product_name": "Versace Eros Flame",
+    "brand": "Versace",
+    "matched_fragrantica_name": "Eros Flame Versace",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Versace/Eros-Flame-52180.html",
+    "top_notes": [
+      "Mandarin Orange",
+      "Black Pepper",
+      "Chinotto",
+      "Lemon",
+      "Rosemary"
+    ],
+    "middle_notes": [
+      "Pepper",
+      "Geranium",
+      "Rose"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Tonka Bean",
+      "Texas Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Oakmoss"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.versace.com",
+    "verification_notes": "Exact Eros Flame flanker matched on Fragrantica."
+  },
+  {
+    "id": 30,
+    "product_name": "Versace Pour Homme",
+    "brand": "Versace",
+    "matched_fragrantica_name": "Versace Pour Homme Versace",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Versace/Versace-Pour-Homme-2318.html",
+    "top_notes": [
+      "Lemon",
+      "Neroli",
+      "Bergamot",
+      "Rose de Mai"
+    ],
+    "middle_notes": [
+      "Hyacinth",
+      "Cedar",
+      "Clary Sage",
+      "Geranium"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Musk",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.versace.com",
+    "verification_notes": "Exact classic signature matched on Fragrantica."
+  },
+  {
+    "id": 31,
+    "product_name": "Kilian Blue Moon Ginger Dash",
+    "brand": "Kilian",
+    "matched_fragrantica_name": "Blue Moon Ginger Dash By Kilian",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/By-Kilian/Blue-Moon-Ginger-Dash-79679.html",
+    "top_notes": [
+      "Lemon",
+      "Calone"
+    ],
+    "middle_notes": [
+      "Vodka",
+      "Ginger"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "White Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.bykilian.com",
+    "verification_notes": "Exact Kilian cocktail collection release matched on Fragrantica."
+  },
+  {
+    "id": 32,
+    "product_name": "Kilian Angels' Share",
+    "brand": "Kilian",
+    "matched_fragrantica_name": "Angels' Share By Kilian",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/By-Kilian/Angels-Share-62615.html",
+    "top_notes": [
+      "Cognac"
+    ],
+    "middle_notes": [
+      "Cinnamon",
+      "Tonka Bean",
+      "Oak"
+    ],
+    "base_notes": [
+      "Praline",
+      "Vanilla",
+      "Sandalwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.bykilian.com",
+    "verification_notes": "Exact Angels' Share release matched on Fragrantica."
+  },
+  {
+    "id": 33,
+    "product_name": "Kilian Roses on Ice",
+    "brand": "Kilian",
+    "matched_fragrantica_name": "Roses on Ice By Kilian",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/By-Kilian/Roses-on-Ice-62616.html",
+    "top_notes": [
+      "Cucumber",
+      "Juniper Berries",
+      "Lime"
+    ],
+    "middle_notes": [
+      "Rose"
+    ],
+    "base_notes": [
+      "Musk",
+      "Sandalwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.bykilian.com",
+    "verification_notes": "Exact gin-and-rose release matched on Fragrantica."
+  },
+  {
+    "id": 34,
+    "product_name": "Givenchy Gentleman Boisée",
+    "brand": "Givenchy",
+    "matched_fragrantica_name": "Gentleman Eau de Parfum Boisée Givenchy",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Givenchy/Gentleman-Eau-de-Parfum-Boisee-59299.html",
+    "top_notes": [
+      "Black Pepper",
+      "Coriander",
+      "Geranium"
+    ],
+    "middle_notes": [
+      "Iris",
+      "Cacao Pod",
+      "Cedar"
+    ],
+    "base_notes": [
+      "Woodsy Notes",
+      "Sandalwood",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.givenchybeauty.com",
+    "verification_notes": "Exact Boisée edition matched on Fragrantica."
+  },
+  {
+    "id": 35,
+    "product_name": "Givenchy Gentleman Reserve Privée",
+    "brand": "Givenchy",
+    "matched_fragrantica_name": "Gentleman Eau de Parfum Reserve Privée Givenchy",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Givenchy/Gentleman-Eau-de-Parfum-Reserve-Privee-71272.html",
+    "top_notes": [
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Iris",
+      "Chestnut"
+    ],
+    "base_notes": [
+      "Whiskey",
+      "Woodsy Notes",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.givenchybeauty.com",
+    "verification_notes": "Exact Reserve Privée whiskey/iris edition matched on Fragrantica."
+  },
+  {
+    "id": 36,
+    "product_name": "Paco Rabanne 1 Million",
+    "brand": "Paco Rabanne",
+    "matched_fragrantica_name": "1 Million Paco Rabanne",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Paco-Rabanne/1-Million-3747.html",
+    "top_notes": [
+      "Blood Mandarin",
+      "Grapefruit",
+      "Mint"
+    ],
+    "middle_notes": [
+      "Cinnamon",
+      "Spicy Notes",
+      "Rose"
+    ],
+    "base_notes": [
+      "Amber",
+      "Leather",
+      "Woody Notes",
+      "Indian Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.pacorabanne.com",
+    "verification_notes": "Database already had accurate notes; verified against Fragrantica."
+  },
+  {
+    "id": 37,
+    "product_name": "Christian Dior Oud Ispahan",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Oud Ispahan Dior",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Oud-Ispahan-14731.html",
+    "top_notes": [
+      "Labdanum"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Patchouli",
+      "Saffron"
+    ],
+    "base_notes": [
+      "Agarwood (Oud)",
+      "Sandalwood",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact Maison Christian Dior edition matched on Fragrantica."
+  },
+  {
+    "id": 38,
+    "product_name": "Christian Dior Gris Dior",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Gris Dior Dior",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Gris-Dior-48387.html",
+    "top_notes": [
+      "Bergamot",
+      "Grapefruit"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Jasmine",
+      "Strawberry",
+      "Ylang-Ylang",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Patchouli",
+      "Oakmoss",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "White Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact Maison Christian Dior chypre floral matched on Fragrantica."
+  },
+  {
+    "id": 39,
+    "product_name": "Dior Sauvage Parfum",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Sauvage Parfum Dior",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Sauvage-Parfum-56324.html",
+    "top_notes": [
+      "Bergamot",
+      "Mandarin Orange",
+      "Elemi"
+    ],
+    "middle_notes": [
+      "Sandalwood"
+    ],
+    "base_notes": [
+      "Olibanum",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact Parfum edition matched on Fragrantica. Distinct from EDT and Elixir."
+  },
+  {
+    "id": 40,
+    "product_name": "Dior Homme Intense",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Dior Homme Intense 2011 Dior",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Dior-Homme-Intense-2011-13016.html",
+    "top_notes": [
+      "Lavender"
+    ],
+    "middle_notes": [
+      "Iris",
+      "Ambrette (Musk Mallow)",
+      "Pear"
+    ],
+    "base_notes": [
+      "Virginia Cedar",
+      "Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact Dior Homme Intense matched on Fragrantica."
+  },
+  {
+    "id": 41,
+    "product_name": "Dior Sauvage Elixir",
+    "brand": "Dior",
+    "matched_fragrantica_name": "Sauvage Elixir Dior",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Dior/Sauvage-Elixir-68415.html",
+    "top_notes": [
+      "Nutmeg",
+      "Cardamom",
+      "Cinnamon",
+      "Grapefruit"
+    ],
+    "middle_notes": [
+      "Lavender"
+    ],
+    "base_notes": [
+      "Licorice",
+      "Sandalwood",
+      "Amber",
+      "Patchouli",
+      "Haitian Vetiver"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.dior.com",
+    "verification_notes": "Exact Sauvage Elixir matched on Fragrantica."
+  },
+  {
+    "id": 42,
+    "product_name": "Xerjoff Accento",
+    "brand": "Xerjoff",
+    "matched_fragrantica_name": "Accento Xerjoff",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Xerjoff/Accento-56063.html",
+    "top_notes": [
+      "Pineapple",
+      "Hyacinth"
+    ],
+    "middle_notes": [
+      "Pink Pepper",
+      "Iris",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Musk",
+      "Amber",
+      "Vetiver",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.xerjoff.com",
+    "verification_notes": "Exact V-Collection release matched on Fragrantica."
+  },
+  {
+    "id": 43,
+    "product_name": "Xerjoff Naxos",
+    "brand": "Xerjoff",
+    "matched_fragrantica_name": "XJ 1861 Naxos Xerjoff",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Xerjoff/XJ-1861-Naxos-30529.html",
+    "top_notes": [
+      "Lavender",
+      "Bergamot",
+      "Lemon"
+    ],
+    "middle_notes": [
+      "Honey",
+      "Cinnamon",
+      "Cashmeran",
+      "Jasmine Sambac"
+    ],
+    "base_notes": [
+      "Tobacco Leaf",
+      "Tonka Bean",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.xerjoff.com",
+    "verification_notes": "Exact Naxos release matched on Fragrantica."
+  },
+  {
+    "id": 44,
+    "product_name": "Xerjoff Erba Pura",
+    "brand": "Xerjoff",
+    "matched_fragrantica_name": "Erba Pura Xerjoff",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Xerjoff/Erba-Pura-55153.html",
+    "top_notes": [
+      "Sicilian Orange",
+      "Calabrian Bergamot",
+      "Sicilian Lemon"
+    ],
+    "middle_notes": [
+      "Mediterranean Fruits"
+    ],
+    "base_notes": [
+      "White Musk",
+      "Madagascar Vanilla",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.xerjoff.com",
+    "verification_notes": "Exact Erba Pura release matched on Fragrantica."
+  },
+  {
+    "id": 45,
+    "product_name": "Viktor&Rolf Spicebomb Extreme",
+    "brand": "Viktor&Rolf",
+    "matched_fragrantica_name": "Spicebomb Extreme Viktor&Rolf",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Viktor-Rolf/Spicebomb-Extreme-30691.html",
+    "top_notes": [
+      "Black Pepper",
+      "Caraway"
+    ],
+    "middle_notes": [
+      "Cinnamon",
+      "Saffron"
+    ],
+    "base_notes": [
+      "Tobacco",
+      "Bourbon Vanilla",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://us.viktor-rolf.com",
+    "verification_notes": "Exact Spicebomb Extreme matched on Fragrantica."
+  },
+  {
+    "id": 46,
+    "product_name": "Paco Rabanne Invictus Victory Extreme",
+    "brand": "Paco Rabanne",
+    "matched_fragrantica_name": "Invictus Victory Elixir Paco Rabanne",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Paco-Rabanne/Invictus-Victory-Elixir-78577.html",
+    "top_notes": [
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "middle_notes": [
+      "Lavender",
+      "Olibanum"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Tonka Bean",
+      "Amber"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.pacorabanne.com",
+    "verification_notes": "Catalog listing 'Invictus Victory Extreme' corresponds to Invictus Victory Elixir."
+  },
+  {
+    "id": 47,
+    "product_name": "Paco Rabanne Invictus Legend",
+    "brand": "Paco Rabanne",
+    "matched_fragrantica_name": "Invictus Legend Paco Rabanne",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Paco-Rabanne/Invictus-Legend-54109.html",
+    "top_notes": [
+      "Sea Notes",
+      "Sea Salt",
+      "Grapefruit"
+    ],
+    "middle_notes": [
+      "Bay Leaf",
+      "Geranium",
+      "Spices"
+    ],
+    "base_notes": [
+      "Red Amber",
+      "Guaiac Wood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.pacorabanne.com",
+    "verification_notes": "Exact Legend flanker matched on Fragrantica."
+  },
+  {
+    "id": 48,
+    "product_name": "Roberto Cavalli Splendid Vanilla",
+    "brand": "Roberto Cavalli",
+    "matched_fragrantica_name": "Splendid Vanilla Roberto Cavalli",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Roberto-Cavalli/Splendid-Vanilla-57766.html",
+    "top_notes": [
+      "Black Pepper",
+      "Rose"
+    ],
+    "middle_notes": [
+      "Cypriol Oil (Nagarmotha)",
+      "Magnolia"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.robertocavalli.com",
+    "verification_notes": "Exact Gold Collection release matched on Fragrantica."
+  },
+  {
+    "id": 49,
+    "product_name": "Parfums de Marly Layton",
+    "brand": "Parfums de Marly",
+    "matched_fragrantica_name": "Layton Parfums de Marly",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Layton-39314.html",
+    "top_notes": [
+      "Apple",
+      "Lavender",
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "Geranium",
+      "Violet",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Cardamom",
+      "Sandalwood",
+      "Pepper",
+      "Guaiac Wood",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://parfums-de-marly.com",
+    "verification_notes": "Exact Layton formulation matched on Fragrantica."
+  },
+  {
+    "id": 50,
+    "product_name": "Parfums de Marly Carlisle",
+    "brand": "Parfums de Marly",
+    "matched_fragrantica_name": "Carlisle Parfums de Marly",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Carlisle-33514.html",
+    "top_notes": [
+      "Green Apple",
+      "Nutmeg"
+    ],
+    "middle_notes": [
+      "Tonka Bean",
+      "Rose",
+      "Osmanthus",
+      "Davana"
+    ],
+    "base_notes": [
+      "Patchouli",
+      "Vanilla",
+      "Opoponax"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://parfums-de-marly.com",
+    "verification_notes": "Exact Carlisle formulation matched on Fragrantica."
+  },
+  {
+    "id": 51,
+    "product_name": "Montblanc Explorer",
+    "brand": "Montblanc",
+    "matched_fragrantica_name": "Explorer Montblanc",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Montblanc/Explorer-52002.html",
+    "top_notes": [
+      "Bergamot",
+      "Pink Pepper",
+      "Clary Sage"
+    ],
+    "middle_notes": [
+      "Haitian Vetiver",
+      "Leather"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "Akigalawood",
+      "Indonesian Patchouli Leaf",
+      "Cacao Pod"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.montblanc.com",
+    "verification_notes": "Exact Explorer EDP matched on Fragrantica."
+  },
+  {
+    "id": 52,
+    "product_name": "Bleu de Chanel Eau de Parfum",
+    "brand": "Chanel",
+    "matched_fragrantica_name": "Bleu de Chanel Eau de Parfum Chanel",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-Eau-de-Parfum-25967.html",
+    "top_notes": [
+      "Grapefruit",
+      "Lemon",
+      "Mint",
+      "Pink Pepper",
+      "Bergamot",
+      "Aldehydes",
+      "Coriander"
+    ],
+    "middle_notes": [
+      "Ginger",
+      "Nutmeg",
+      "Jasmine",
+      "Melon"
+    ],
+    "base_notes": [
+      "Incense",
+      "Amber",
+      "Cedar",
+      "Sandalwood",
+      "Patchouli",
+      "Amberwood",
+      "Labdanum"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.chanel.com",
+    "verification_notes": "Exact EDP edition matched on Fragrantica. Distinct from EDT."
+  },
+  {
+    "id": 53,
+    "product_name": "Maison Crivelli Oud Stallion",
+    "brand": "Maison Crivelli",
+    "matched_fragrantica_name": "Oud Stallion Maison Crivelli",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Crivelli/Oud-Stallion-87771.html",
+    "top_notes": [
+      "Cardamom",
+      "Saffron",
+      "Nutmeg"
+    ],
+    "middle_notes": [
+      "Turkish Rose",
+      "Jasmine",
+      "Osmanthus"
+    ],
+    "base_notes": [
+      "Agarwood (Oud)",
+      "Leather Accord",
+      "Cedarwood",
+      "Patchouli",
+      "Roasted Tonka Bean"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://maisoncrivelli.com",
+    "verification_notes": "Exact Extrait de Parfum release matched on Fragrantica."
+  },
+  {
+    "id": 54,
+    "product_name": "Roja Parfums Harrods Exclusive",
+    "brand": "Roja Parfums",
+    "matched_fragrantica_name": "Harrods Exclusive Roja Dove",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Roja-Dove/Harrods-Exclusive-41019.html",
+    "top_notes": [
+      "Lemon",
+      "Bergamot",
+      "Lime",
+      "Bitter Orange",
+      "Lavender",
+      "Thyme"
+    ],
+    "middle_notes": [
+      "Geranium",
+      "Rose de Mai",
+      "Neroli",
+      "Jasmin de Grasse",
+      "Ylang-Ylang",
+      "Violet"
+    ],
+    "base_notes": [
+      "Galbanum",
+      "Patchouli",
+      "Oakmoss",
+      "Vetiver",
+      "Cashmere Wood",
+      "Vanilla",
+      "Orris",
+      "Labdanum",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://rojaparfums.com",
+    "verification_notes": "Exact Roja Harrods Exclusive matched on Fragrantica."
+  },
+  {
+    "id": 55,
+    "product_name": "Armani Code Eau de Parfum",
+    "brand": "Giorgio Armani",
+    "matched_fragrantica_name": "Armani Code Eau de Parfum Giorgio Armani",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Giorgio-Armani/Armani-Code-Eau-de-Parfum-65561.html",
+    "top_notes": [
+      "Bergamot",
+      "Lemon"
+    ],
+    "middle_notes": [
+      "Olive Tree Blossom",
+      "Star Anise",
+      "Guaiac Wood"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Tobacco",
+      "Leather",
+      "Suede"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.armanibeauty.com",
+    "verification_notes": "Exact Code EDP matched on Fragrantica."
+  },
+  {
+    "id": 56,
+    "product_name": "Bentley for Men Intense",
+    "brand": "Bentley",
+    "matched_fragrantica_name": "Bentley for Men Intense Bentley",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Bentley/Bentley-for-Men-Intense-17666.html",
+    "top_notes": [
+      "Black Pepper",
+      "Bay Leaf",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Rum",
+      "Woody Notes",
+      "Cinnamon",
+      "Clary Sage",
+      "African Geranium"
+    ],
+    "base_notes": [
+      "Incense",
+      "Leather",
+      "Benzoin",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://bentley-fragrances.com",
+    "verification_notes": "Exact boozy leather classic matched on Fragrantica."
+  },
+  {
+    "id": 57,
+    "product_name": "Maison Margiela Replica By the Fireplace",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "By the Fireplace Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/By-the-Fireplace-31623.html",
+    "top_notes": [
+      "Cloves",
+      "Pink Pepper",
+      "Orange Blossom"
+    ],
+    "middle_notes": [
+      "Chestnut",
+      "Guaiac Wood",
+      "Juniper"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Peru Balsam",
+      "Cashmeran"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica By the Fireplace matched on Fragrantica."
+  },
+  {
+    "id": 58,
+    "product_name": "Maison Margiela Replica Lazy Sunday Morning",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Lazy Sunday Morning Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Lazy-Sunday-Morning-20543.html",
+    "top_notes": [
+      "Aldehydes",
+      "Lily-of-the-Valley",
+      "Pear"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Iris",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "White Musk",
+      "Ambrette (Musk Mallow)",
+      "Indonesian Patchouli Leaf"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Lazy Sunday Morning matched on Fragrantica."
+  },
+  {
+    "id": 59,
+    "product_name": "Maison Margiela Replica Jazz Club",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Jazz Club Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Jazz-Club-20541.html",
+    "top_notes": [
+      "Pink Pepper",
+      "Neroli",
+      "Lemon"
+    ],
+    "middle_notes": [
+      "Rum",
+      "Java Vetiver Oil",
+      "Clary Sage"
+    ],
+    "base_notes": [
+      "Tobacco Leaf",
+      "Vanilla Bean",
+      "Styrax"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Jazz Club matched on Fragrantica."
+  },
+  {
+    "id": 60,
+    "product_name": "Maison Margiela Replica When the Rain Stops",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "When the Rain Stops Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/When-the-Rain-Stops-70962.html",
+    "top_notes": [
+      "Rain Notes",
+      "Bergamot",
+      "Pink Pepper"
+    ],
+    "middle_notes": [
+      "Watery Notes",
+      "Turkish Rose",
+      "Pine Tree Needle",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Moss",
+      "Patchouli",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica When the Rain Stops matched on Fragrantica."
+  },
+  {
+    "id": 61,
+    "product_name": "Maison Margiela Replica Beach Walk",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Beach Walk Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Beach-Walk-15261.html",
+    "top_notes": [
+      "Bergamot",
+      "Lemon",
+      "Pink Pepper"
+    ],
+    "middle_notes": [
+      "Coconut Milk",
+      "Ylang-Ylang",
+      "Heliotrope"
+    ],
+    "base_notes": [
+      "Musk",
+      "Benzoin",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Beach Walk matched on Fragrantica."
+  },
+  {
+    "id": 62,
+    "product_name": "Maison Margiela Replica Dancing on the Moon",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Dancing on the Moon Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Dancing-on-the-Moon-40854.html",
+    "top_notes": [
+      "Aldehydes"
+    ],
+    "middle_notes": [
+      "Frangipani",
+      "Jasmine Sambac",
+      "Iris"
+    ],
+    "base_notes": [
+      "Cashmeran",
+      "Ambergris",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Dancing on the Moon matched on Fragrantica."
+  },
+  {
+    "id": 63,
+    "product_name": "Maison Margiela Replica Sailing Day",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Sailing Day Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Sailing-Day-47916.html",
+    "top_notes": [
+      "Sea Notes",
+      "Aldehydes",
+      "Coriander",
+      "Red Pepper"
+    ],
+    "middle_notes": [
+      "Juniper",
+      "Salicylate",
+      "Iris",
+      "Rose"
+    ],
+    "base_notes": [
+      "Seaweed",
+      "Ambergris",
+      "Amberwood",
+      "Cedar"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Sailing Day matched on Fragrantica."
+  },
+  {
+    "id": 64,
+    "product_name": "Maison Margiela Replica Flower Market",
+    "brand": "Maison Margiela",
+    "matched_fragrantica_name": "Flower Market Maison Martin Margiela",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Flower-Market-15260.html",
+    "top_notes": [
+      "Freesia",
+      "Green Leaves"
+    ],
+    "middle_notes": [
+      "Tuberose",
+      "Jasmine Sambac",
+      "Egyptian Jasmine",
+      "Rose de Mai"
+    ],
+    "base_notes": [
+      "Peach",
+      "Cedar",
+      "Oakmoss"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.maisonmargiela-fragrances.us",
+    "verification_notes": "Exact Replica Flower Market matched on Fragrantica."
+  },
+  {
+    "id": 65,
+    "product_name": "French Avenue Baie 19",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": "Baie 19 Formulation Reference (French Avenue Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Le-Labo/Baie-19-57774.html",
+    "top_notes": [
+      "Juniper Berries",
+      "Green Leaves",
+      "Ozonic Notes"
+    ],
+    "middle_notes": [
+      "Patchouli",
+      "Water Notes"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "Musk"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "Clone benchmark of Le Labo Baie 19. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 66,
+    "product_name": "French Avenue Vulcan Feu",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": "God of Fire Formulation Reference (French Avenue Vulcan Feu Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Stephane-Humbert-Lucas-777/God-of-Fire-72210.html",
+    "top_notes": [
+      "Mango",
+      "Lemon",
+      "Ginger",
+      "Rhubarb"
+    ],
+    "middle_notes": [
+      "Jasmine",
+      "Pink Pepper",
+      "Violet",
+      "Praline"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Cedarwood",
+      "Ambergris",
+      "Moss"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "Clone benchmark of Stephane Humbert Lucas God of Fire. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 67,
+    "product_name": "French Avenue Vulcan Sable Brun",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "No exact or reliable matching entry on Fragrantica. Only generic brand domain exists."
+  },
+  {
+    "id": 68,
+    "product_name": "Afnan Turathi Electric",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "Turathi Electric Afnan",
+    "fragrantica_url": "https://ifragranceofficial.com/perfumes/afnan-turathi-electric/",
+    "top_notes": [
+      "Bergamot",
+      "Pink Grapefruit",
+      "Pear",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "Apple",
+      "Cedarwood",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Amber Dry",
+      "Musk",
+      "Ambroxan"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact 2024 Turathi Electric edition verified via authoritative fragrance publication breakdown."
+  },
+  {
+    "id": 69,
+    "product_name": "Afnan Turathi Blue",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "Turathi Blue Afnan",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/Turathi-Blue-70889.html",
+    "top_notes": [
+      "Bergamot",
+      "Mandarin Orange"
+    ],
+    "middle_notes": [
+      "Amber",
+      "Woody Notes"
+    ],
+    "base_notes": [
+      "Musk",
+      "Patchouli",
+      "Spices"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact Turathi Blue matched on Fragrantica."
+  },
+  {
+    "id": 70,
+    "product_name": "Armaf Club de Nuit Intense Man",
+    "brand": "Armaf",
+    "matched_fragrantica_name": "Club de Nuit Intense Man Armaf",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Armaf/Club-de-Nuit-Intense-Man-34696.html",
+    "top_notes": [
+      "Lemon",
+      "Pineapple",
+      "Bergamot",
+      "Black Currant",
+      "Apple"
+    ],
+    "middle_notes": [
+      "Birch",
+      "Jasmine",
+      "Rose"
+    ],
+    "base_notes": [
+      "Musk",
+      "Ambergris",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://armaf.ae",
+    "verification_notes": "Exact CDNIM EDT matched on Fragrantica."
+  },
+  {
+    "id": 71,
+    "product_name": "Armaf Ombre D'Or",
+    "brand": "Armaf",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://armaf.ae",
+    "verification_notes": "Armaf Ombre D'Or has no individual directory page or verified pyramid on Fragrantica. Generic armaf.ae only."
+  },
+  {
+    "id": 72,
+    "product_name": "Afnan Supremacy Not Only Intense",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "Supremacy Not Only Intense Afnan",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/Supremacy-Not-Only-Intense-68271.html",
+    "top_notes": [
+      "Black Currant",
+      "Apple",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Oakmoss",
+      "Patchouli",
+      "Lavender"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Saffron",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact Extrait de Parfum edition matched on Fragrantica."
+  },
+  {
+    "id": 73,
+    "product_name": "Afnan Supremacy Collector's Edition",
+    "brand": "Afnan",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Conflict",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Conflicting source listings: distributor notes conflict between Supremacy Silver (pineapple/birch) and Supremacy in Heaven (green tea/currant). No official isolated spec on Fragrantica."
+  },
+  {
+    "id": 74,
+    "product_name": "Rasasi Hawas Ice",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": "Hawas Ice for Him Rasasi",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Ice-for-Him-85916.html",
+    "top_notes": [
+      "Frozen Apple",
+      "Bergamot",
+      "Lemon",
+      "Star Anise"
+    ],
+    "middle_notes": [
+      "Plum",
+      "Cardamom",
+      "Orange Blossom"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Musk",
+      "Driftwood",
+      "Moss"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Database already had accurate notes; verified against Fragrantica."
+  },
+  {
+    "id": 75,
+    "product_name": "Rasasi Hawas Tropical",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Tropical has no dedicated listing on Fragrantica; conflicting social media and distributor cards only."
+  },
+  {
+    "id": 76,
+    "product_name": "Rasasi Hawas for Him",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": "Hawas for Him Rasasi",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Rasasi/Hawas-for-Him-33449.html",
+    "top_notes": [
+      "Apple",
+      "Bergamot",
+      "Lemon",
+      "Cinnamon"
+    ],
+    "middle_notes": [
+      "Watery Notes",
+      "Plum",
+      "Orange Blossom",
+      "Cardamom"
+    ],
+    "base_notes": [
+      "Ambergris",
+      "Musk",
+      "Patchouli",
+      "Driftwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Exact original Hawas for Him matched on Fragrantica."
+  },
+  {
+    "id": 77,
+    "product_name": "Rasasi Hawas Elixir",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Elixir has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 78,
+    "product_name": "Rasasi Hawas Fire",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Conflict",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Contradictory note cards in community and distributors: Spec A lists French Clary Sage, Egyptian Jasmine & Marine notes, Ambergris & Mineral Amber; Spec B copy-pastes Hawas Ice notes (Apple, Star Anise, Driftwood). Identity and pyramid unresolved on Fragrantica."
+  },
+  {
+    "id": 79,
+    "product_name": "Rasasi Hawas Verde",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Verde has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 80,
+    "product_name": "Rasasi Hawas Black",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": "Hawas Black Rasasi",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Black-98188.html",
+    "top_notes": [
+      "Pineapple",
+      "Grapefruit",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Patchouli",
+      "Cedarwood",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Oakmoss",
+      "Amber",
+      "Woody Notes"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Exact 2024 Hawas Black flanker matched on Fragrantica. Verified distinct from Hawas for Him."
+  },
+  {
+    "id": 81,
+    "product_name": "Rasasi Hawas Malibu",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Malibu has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 82,
+    "product_name": "Rasasi Hawas Cobra",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Cobra has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 83,
+    "product_name": "Lattafa Khamrah Qahwa",
+    "brand": "Lattafa Perfumes",
+    "matched_fragrantica_name": "Khamrah Qahwa Lattafa Perfumes",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Lattafa-Perfumes/Khamrah-Qahwa-88339.html",
+    "top_notes": [
+      "Cinnamon",
+      "Cardamom",
+      "Ginger"
+    ],
+    "middle_notes": [
+      "Praline",
+      "Candied Fruits",
+      "White Flowers"
+    ],
+    "base_notes": [
+      "Coffee",
+      "Vanilla",
+      "Tonka Bean",
+      "Benzoin",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://lattafa.com",
+    "verification_notes": "Exact Khamrah Qahwa coffee flanker matched on Fragrantica."
+  },
+  {
+    "id": 84,
+    "product_name": "Zimaya Sharaf Blend The Club",
+    "brand": "Zimaya",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://zimayaperfumes.com",
+    "verification_notes": "Zimaya Sharaf Blend The Club has no standalone entry on Fragrantica; only standard Sharaf Blend is listed."
+  },
+  {
+    "id": 85,
+    "product_name": "Zimaya Sharaf Blend",
+    "brand": "Zimaya",
+    "matched_fragrantica_name": "Sharaf Blend Zimaya",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Zimaya/Sharaf-Blend-81677.html",
+    "top_notes": [
+      "Dates",
+      "Nutmeg",
+      "Saffron"
+    ],
+    "middle_notes": [
+      "Vanilla",
+      "Praline",
+      "Tuberose"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Benzoin",
+      "Amberwood",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://zimayaperfumes.com",
+    "verification_notes": "Exact Sharaf Blend matched on Fragrantica."
+  },
+  {
+    "id": 86,
+    "product_name": "Maison Alhambra Jean Lowe Ombre",
+    "brand": "Maison Alhambra",
+    "matched_fragrantica_name": "Ombre Nomade Formulation Reference (Jean Lowe Ombre Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Louis-Vuitton/Ombre-Nomade-49755.html",
+    "top_notes": [
+      "Agarwood (Oud)",
+      "Incense"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Raspberry",
+      "Saffron",
+      "Birch"
+    ],
+    "base_notes": [
+      "Benzoin",
+      "Amberwood",
+      "Geranium"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://maisonalhambra.co",
+    "verification_notes": "Clone benchmark of Louis Vuitton Ombre Nomade. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 87,
+    "product_name": "Afnan 9 PM",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "9 PM Afnan",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/9-PM-65414.html",
+    "top_notes": [
+      "Apple",
+      "Cinnamon",
+      "Wild Lavender",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Orange Blossom",
+      "Lily-of-the-Valley"
+    ],
+    "base_notes": [
+      "Vanilla",
+      "Tonka Bean",
+      "Amber",
+      "Patchouli"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact Afnan 9 PM matched on Fragrantica."
+  },
+  {
+    "id": 88,
+    "product_name": "Afnan 9 PM Elixir",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "9 PM Elixir Afnan",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/9-PM-Elixir-102559.html",
+    "top_notes": [
+      "Nutmeg",
+      "Elemi",
+      "Cardamom"
+    ],
+    "middle_notes": [
+      "Pimento",
+      "Lavandin",
+      "Leather"
+    ],
+    "base_notes": [
+      "Rockrose (Ciste)",
+      "Labdanum",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact 2024 9 PM Elixir Extrait matched on Fragrantica."
+  },
+  {
+    "id": 89,
+    "product_name": "Afnan 9 PM Night Out",
+    "brand": "Afnan",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Afnan 9 PM Night Out has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 90,
+    "product_name": "Afnan 9 AM Dive",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "9 AM Dive Afnan",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/9-AM-Dive-80327.html",
+    "top_notes": [
+      "Lemon",
+      "Mint",
+      "Black Currant",
+      "Pink Pepper"
+    ],
+    "middle_notes": [
+      "Apple",
+      "Incense",
+      "Cedar"
+    ],
+    "base_notes": [
+      "Patchouli",
+      "Jasmine",
+      "Ginger",
+      "Sandalwood"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Exact 9 AM Dive matched on Fragrantica."
+  },
+  {
+    "id": 91,
+    "product_name": "Afnan 9 PM Elixir",
+    "brand": "Afnan",
+    "matched_fragrantica_name": "9 PM Elixir Afnan (Catalog Duplicate of #88)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Afnan/9-PM-Elixir-102559.html",
+    "top_notes": [
+      "Nutmeg",
+      "Elemi",
+      "Cardamom"
+    ],
+    "middle_notes": [
+      "Pimento",
+      "Lavandin",
+      "Leather"
+    ],
+    "base_notes": [
+      "Rockrose (Ciste)",
+      "Labdanum",
+      "Patchouli",
+      "Vanilla"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Duplicate catalog entry of ID 88; verified identical 9 PM Elixir formulation."
+  },
+  {
+    "id": 92,
+    "product_name": "French Avenue Liquid Brun",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": "Liquid Brun French Avenue",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Fragrance-World/Liquid-Brun-94883.html",
+    "top_notes": [
+      "Cinnamon",
+      "Cardamom",
+      "Orange Blossom",
+      "Bergamot"
+    ],
+    "middle_notes": [
+      "Bourbon Vanilla",
+      "Elemi Resin"
+    ],
+    "base_notes": [
+      "Praline",
+      "Ambroxan",
+      "Guaiac Wood",
+      "Musk"
+    ],
+    "verification_status": "Verified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "Exact Fragrance World / French Avenue Liquid Brun matched on Fragrantica."
+  },
+  {
+    "id": 93,
+    "product_name": "Bespoke Greek Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Greek Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 94,
+    "product_name": "Bespoke Brazilian Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Brazilian Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 95,
+    "product_name": "Bespoke Spanish Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Spanish Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 96,
+    "product_name": "Bespoke French Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke French Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 97,
+    "product_name": "Bespoke Tobacco Extrait de Parfum",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Tobacco Extrait has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 98,
+    "product_name": "Bespoke Dominican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Dominican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 99,
+    "product_name": "Bespoke Cuban Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Cuban Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 100,
+    "product_name": "Bespoke Jamaican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Jamaican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 101,
+    "product_name": "Bespoke Mexican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Mexican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  }
+]

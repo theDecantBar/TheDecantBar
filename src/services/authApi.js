@@ -136,25 +136,7 @@ export async function verifyPaymentAndPlaceOrder(orderData, token = null) {
   return handleApiResponse(response, "Failed to confirm payment and place order.");
 }
 
-export async function placeCodOrder(orderData, token = null) {
-  const headers = { "Content-Type": "application/json" };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_BASE_URL}/orders`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ ...orderData, paymentMethod: "cod" }),
-  });
-
-  return handleApiResponse(response, "Failed to place Cash on Delivery order.");
-}
-
 export const placeOrder = async (orderData, token = null) => {
-  if (orderData.paymentMethod === "cod" || !orderData.razorpay_payment_id) {
-    return placeCodOrder(orderData, token);
-  }
   return verifyPaymentAndPlaceOrder(orderData, token);
 };
 

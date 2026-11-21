@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import {
-  Plus, Search, Edit2, Trash2, ExternalLink, X, Upload, Loader2,
+  Plus, Search, Edit2, Trash2, ExternalLink, Sparkles, X, Upload, Loader2,
   ChevronDown, ChevronUp, Check, Droplets, Package,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -959,6 +959,7 @@ export default function AdminProducts() {
       {/* Product Add/Edit Modal */}
       {modalOpen && (
         <ProductModal
+          key={editingProduct ? `edit-${editingProduct.id}` : "new-product"}
           product={editingProduct}
           onClose={() => setModalOpen(false)}
           onSave={handleModalSave}

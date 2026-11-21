@@ -547,214 +547,25 @@ export async function checkAdminPayment(req, res, { background = false } = {}) {
   }
 }
 
-// @desc    Create Cash on Delivery (COD) Order
+// @desc    Create Cash on Delivery (COD) Order (Deprecated / Disabled)
 // @route   POST /api/orders/cod or POST /api/orders
 // @access  Public (Guest or Authenticated)
 export const createCodOrder = async (req, res) => {
-  const client = await pool.connect();
-  try {
-    const { items } = req.body;
-
-    // 1. Validate required contact and shipping details
-    const validation = validateCustomerAndShippingDetails(req.body);
-    if (validation.error) {
-      return res.status(400).json({ message: validation.error });
-    }
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ message: "Cart cannot be empty when creating an order." });
-    }
-
-    const {
-      fullName,
-      email,
-      phone,
-      address,
-      city,
-      state,
-      pincode,
-      orderNotes,
-    } = validation.validDetails;
-
-    // 2. Begin transaction
-    await client.query("BEGIN");
-
-    // Check for duplicate submission using idempotency checkoutKey within the last 15 minutes
-    const checkoutKey = req.body.checkoutKey ? String(req.body.checkoutKey).trim() : null;
-    if (checkoutKey) {
-      const existingKeyOrder = await client.query(
-        `SELECT * FROM orders 
-         WHERE checkout_key = $1 AND created_at > NOW() - INTERVAL '15 minutes'
-         ORDER BY id DESC LIMIT 1`,
-        [checkoutKey]
-      );
-      if (existingKeyOrder.rows.length > 0) {
-        await client.query("ROLLBACK");
-        const existing = existingKeyOrder.rows[0];
-        return res.status(200).json({
-          message: "Order placed successfully with Cash on Delivery.",
-          order: {
-            id: existing.id,
-            orderNumber: existing.order_number,
-            customerName: existing.customer_name,
-            customerEmail: existing.customer_email,
-            total: Number(existing.total_amount),
-            subtotal: Number(existing.subtotal),
-            shippingFee: Number(existing.shipping_fee),
-            orderStatus: existing.order_status,
-            paymentMethod: existing.payment_method,
-            paymentStatus: existing.payment_status,
-          },
-        });
-      }
-    }
-
-    // 3. Server-side validation of cart items & price calculation directly from DB
-    let calculation;
-    try {
-      calculation = await validateAndCalculateCart(client, items);
-    } catch (valErr) {
-      await client.query("ROLLBACK");
-      return res.status(400).json({ message: valErr.message });
-    }
-
-    const { validatedItems, subtotal, shippingFee, total } = calculation;
-
-    const userId = req.user.id;
-    const dateStr = new Date().toISOString().slice(2, 10).replace(/-/g, "");
-    const randPart = Math.floor(1000 + Math.random() * 9000);
-    const orderNumber = `TDB-${dateStr}-${randPart}`;
-
-    const orderResult = await client.query(
-      `INSERT INTO orders
-        (order_number, user_id, customer_name, customer_email, customer_phone,
-         shipping_address, city, state, pincode, payment_method, order_notes,
-         subtotal, shipping_fee, total_amount, order_status, razorpay_order_id,
-         razorpay_payment_id, payment_status, checkout_key)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
-       RETURNING *`,
-      [
-        orderNumber,
-        userId,
-        fullName.trim(),
-        email.trim().toLowerCase(),
-        phone.trim(),
-        address.trim(),
-        city.trim(),
-        state.trim(),
-        pincode.trim(),
-        "cod",
-        orderNotes || "",
-        subtotal,
-        shippingFee,
-        total,
-        "Confirmed",
-        null,
-        null,
-        "Pending",
-        checkoutKey || null,
-      ]
-    );
-
-    const order = orderResult.rows[0];
-
-    // Insert verified order items & update inventory atomically
-    for (const item of validatedItems) {
-      await client.query(
-        `INSERT INTO order_items
-          (order_id, product_id, product_name, size_ml, price, quantity, image_url, variant_id)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [
-          order.id,
-          item.productId,
-          item.name,
-          item.size_ml,
-          item.price,
-          item.quantity,
-          item.image_url,
-          item.variantId || null,
-        ]
-      );
-
-      if (item.variantId) {
-        const stockUpdate = await client.query(
-          `UPDATE product_variants 
-           SET stock = stock - $1 
-           WHERE id = $2 AND stock >= $1 
-           RETURNING stock`,
-          [item.quantity, item.variantId]
-        );
-        if (stockUpdate.rowCount === 0) {
-          await client.query("ROLLBACK");
-          return res.status(409).json({
-            message: `Insufficient inventory for ${item.name} (${item.size_ml}ml). Please adjust your cart.`,
-          });
-        }
-      }
-    }
-
-    // Save default address for authenticated users if not already present
-    if (userId) {
-      await client.query(
-        `UPDATE users
-         SET address = COALESCE(address, $1),
-             city = COALESCE(city, $2),
-             state = COALESCE(state, $3),
-             pincode = COALESCE(pincode, $4),
-             phone = COALESCE(phone, $5)
-         WHERE id = $6`,
-        [address.trim(), city.trim(), state.trim(), pincode.trim(), phone.trim(), userId]
-      );
-    }
-
-    await client.query("COMMIT");
-    invalidateProductCache();
-
-    // Asynchronously dispatch Owner Alert & Customer Confirmation Emails for COD
-    sendOrderConfirmationEmail(order.id).catch((err) => {
-      console.warn("[OrderController] Async COD order confirmation email error for order " + order.id + ":", err.message);
-    });
-
-    res.status(201).json({
-      message: "Order placed successfully with Cash on Delivery.",
-      order: {
-        id: order.id,
-        orderNumber: order.order_number,
-        customerName: order.customer_name,
-        customerEmail: order.customer_email,
-        customerPhone: order.customer_phone,
-        shippingAddress: order.shipping_address,
-        city: order.city,
-        state: order.state,
-        pincode: order.pincode,
-        paymentMethod: order.payment_method,
-        paymentStatus: order.payment_status,
-        subtotal: order.subtotal,
-        shippingFee: order.shipping_fee,
-        total: order.total_amount,
-        status: order.order_status,
-        createdAt: order.created_at,
-        items: validatedItems,
-      },
-    });
-  } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("COD order creation error:", error);
-    res.status(500).json({ message: error.message || "Failed to place COD order. Please contact support." });
-  } finally {
-    client.release();
-  }
+  return res.status(400).json({
+    message: "Cash on Delivery is no longer available. Please complete your purchase using online payment via Razorpay.",
+  });
 };
 
 /**
  * Universal order placement handler.
- * Routes to COD order creation if paymentMethod === 'cod' or no razorpay credentials are supplied.
- * Otherwise routes to Razorpay payment verification.
+ * Routes to Razorpay payment verification. Rejects deprecated COD requests.
  */
 export const handlePlaceOrder = async (req, res) => {
   const method = String(req.body?.paymentMethod || "").toLowerCase().trim();
-  if (method === "cod" || method === "cash on delivery" || (!req.body?.razorpay_payment_id && method !== "online")) {
-    return createCodOrder(req, res);
+  if (method === "cod" || method === "cash on delivery") {
+    return res.status(400).json({
+      message: "Cash on Delivery is no longer available. Please complete your purchase using online payment via Razorpay.",
+    });
   }
   return verifyPaymentAndCreateOrder(req, res);
 };

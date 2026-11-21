@@ -68,7 +68,6 @@ export default function AdminDashboard() {
     {
       title: "Total Revenue",
       value: `₹${(stats?.revenue || 0).toLocaleString("en-IN")}`,
-      change: "+18% from last month",
       icon: IndianRupee,
       iconBg: "bg-[#c6a15b]/10 text-[#c6a15b]",
       trend: "up",

@@ -1,4 +1,4 @@
-export const onlinePaymentsEnabled = import.meta.env.VITE_ONLINE_PAYMENTS_ENABLED === "true";
+export const onlinePaymentsEnabled = import.meta.env.VITE_ONLINE_PAYMENTS_ENABLED !== "false";
 
 export const loadRazorpayScript = () => {
   return new Promise((resolve) => {

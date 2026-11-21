@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Lock, AlertCircle, Eye } from "lucide-react";
+import { ShieldCheck, Lock, Mail, Phone, MapPin, Globe } from "lucide-react";
 import Container from "../../components/ui/Container";
 
 export default function Privacy() {
@@ -16,109 +16,265 @@ export default function Privacy() {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#c6a15b]/30 bg-[#c6a15b]/10 text-[#c6a15b] text-[11px] uppercase tracking-[0.25em] font-semibold mb-4">
             <Lock size={14} />
-            <span>Data Protection</span>
+            <span>Data Protection & Privacy</span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl text-[#f4efe6] tracking-tight">
             Privacy Policy
           </h1>
           <p className="mt-4 text-xs sm:text-sm text-[#8e8a82] max-w-xl mx-auto leading-relaxed">
-            Your privacy is of the utmost importance to The Decant Bar. This policy describes what information we collect, how we protect it, and how it is used to deliver your luxury fragrance discovery orders.
+            At The Decant Bar, accessible through{" "}
+            <a
+              href="https://www.thedecantbar.com"
+              className="text-[#c6a15b] hover:underline"
+            >
+              https://www.thedecantbar.com
+            </a>
+            , we value the privacy of our customers and visitors.
           </p>
-          <p className="mt-2 text-[11px] text-[#c6a15b]/80">
-            Last Updated: October 2026
+          <p className="mt-3 text-[11px] font-medium uppercase tracking-wider text-[#c6a15b]">
+            Last Updated: 15 November 2026
           </p>
         </div>
 
-        {/* Highlight Card */}
-        <div className="max-w-3xl mx-auto mb-12 p-6 rounded-2xl border border-white/10 bg-[#171715] shadow-xl">
+        {/* Commitment Highlight Card */}
+        <div className="max-w-3xl mx-auto mb-12 p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#171715] shadow-xl">
           <div className="flex items-start gap-4">
             <ShieldCheck size={24} className="text-[#c6a15b] shrink-0 mt-1" />
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-[#c6a15b]">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-[#c6a15b]">
                 Our Privacy Commitment
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-[#c5c1b9]">
-                We do not sell, rent, or trade your personal information to third-party advertising brokers. Your contact and delivery details are used solely to fulfill your fragrance orders, send transaction receipts, and provide customer support.
+              </h2>
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#c5c1b9]">
+                This Privacy Policy explains what information we collect, how we use it and the measures we take to protect your personal information when you visit our website or purchase our products. We do not sell customers' personal information to third parties.
               </p>
             </div>
           </div>
         </div>
 
         {/* Content Sections */}
-        <div className="max-w-3xl mx-auto space-y-10 text-xs sm:text-sm text-[#c5c1b9] leading-relaxed">
-          {/* Section 1 */}
+        <div className="max-w-3xl mx-auto space-y-8 text-xs sm:text-sm text-[#c5c1b9] leading-relaxed">
+          {/* Section 1: Who We Are */}
           <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
             <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
-              <span className="text-[#c6a15b]">1.</span> Information We Collect
+              <span className="text-[#c6a15b]">1.</span> Who We Are
             </h2>
             <p>
-              When you browse our catalogue, register an account, or place an order, we collect specific details necessary to provide our services:
+              The Decant Bar is a fragrance-focused business based in Chandigarh, India, offering perfumes and fragrance decants to customers across India.
+            </p>
+            <div className="mt-4 p-4 rounded-xl border border-white/5 bg-[#171715] text-xs space-y-1">
+              <p className="font-semibold text-[#f4efe6]">For privacy-related enquiries, you can contact us at:</p>
+              <p className="text-[#8e8a82]">
+                Email:{" "}
+                <a
+                  href="mailto:contact@thedecantbar.com"
+                  className="text-[#c6a15b] underline"
+                >
+                  contact@thedecantbar.com
+                </a>
+              </p>
+            </div>
+          </section>
+
+          {/* Section 2: Information We Collect */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">2.</span> Information We Collect
+            </h2>
+            <p>
+              When you visit our website, place an order or contact us, we may collect:
             </p>
             <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
-              <li><strong className="text-[#f4efe6]">Contact & Account Details:</strong> Full name, email address, password hash, and 10-digit Indian mobile number.</li>
-              <li><strong className="text-[#f4efe6]">Shipping & Delivery Details:</strong> Physical delivery address, city, state, postal PIN code, and optional delivery notes.</li>
-              <li><strong className="text-[#f4efe6]">Payment Records:</strong> Order amounts, payment method selected (Razorpay online or Cash on Delivery), and transaction reference IDs. (Note: We never store card numbers or UPI PINs).</li>
-              <li><strong className="text-[#f4efe6]">Order History & Preferences:</strong> Past fragrance purchases, selected decant volumes (2ml, 5ml, 10ml), and product review submissions.</li>
+              <li>Name and contact information.</li>
+              <li>Email address and phone number.</li>
+              <li>Billing and shipping addresses.</li>
+              <li>Order and purchase history.</li>
+              <li>Payment transaction references and status.</li>
+              <li>Information shared through customer support enquiries.</li>
+              <li>Technical information such as IP address, browser type and website usage data, where applicable.</li>
             </ul>
           </section>
 
-          {/* Section 2 */}
+          {/* Section 3: How We Use Your Information */}
           <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
             <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
-              <span className="text-[#c6a15b]">2.</span> How We Use Your Information
+              <span className="text-[#c6a15b]">3.</span> How We Use Your Information
             </h2>
-            <ul className="space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
-              <li><strong className="text-[#f4efe6]">Fulfillment & Logistics:</strong> Generating shipping manifests and dispatching packages through verified domestic courier partners.</li>
-              <li><strong className="text-[#f4efe6]">Transactional Communications:</strong> Sending order confirmations, dispatch tracking updates, and one-time authentication codes (OTPs).</li>
-              <li><strong className="text-[#f4efe6]">Fraud Prevention:</strong> Verifying order authenticity and protecting against duplicate submissions or unauthorized card usage.</li>
-              <li><strong className="text-[#f4efe6]">Customer Support:</strong> Addressing customer enquiries regarding packaging, tracking, or fragrance recommendations.</li>
+            <p>We use your information for the following purposes:</p>
+            <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
+              <li>To process and confirm customer orders.</li>
+              <li>To arrange shipping and delivery.</li>
+              <li>To communicate order updates.</li>
+              <li>To respond to customer enquiries.</li>
+              <li>To manage cancellations, returns and refunds.</li>
+              <li>To improve our products and website experience.</li>
+              <li>To prevent fraudulent transactions.</li>
+              <li>To comply with applicable legal requirements.</li>
             </ul>
           </section>
 
-          {/* Section 3 */}
+          {/* Section 4: Payment Information */}
           <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
             <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
-              <span className="text-[#c6a15b]">3.</span> Payment Security & Third-Party Processors
+              <span className="text-[#c6a15b]">4.</span> Payment Information
             </h2>
             <p>
-              All online payments are processed through <strong className="text-[#f4efe6]">Razorpay</strong>, a RBI-regulated, PCI-DSS Level 1 compliant payment aggregator.
+              Payments on our website may be processed through third-party payment service providers, including Razorpay.
             </p>
             <p className="mt-2 text-xs text-[#8e8a82]">
-              Your financial credentials (credit/debit card numbers, CVVs, and UPI PINs) are encrypted directly between your browser and the payment gateway. The Decant Bar servers only receive cryptographic verification signatures confirming payment status.
-            </p>
-          </section>
-
-          {/* Section 4 */}
-          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
-            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
-              <span className="text-[#c6a15b]">4.</span> Cookies & Local Storage
-            </h2>
-            <p>
-              We utilize browser <code className="text-[#c6a15b] font-mono text-xs">localStorage</code> to persist your shopping cart items between sessions and to remember authenticated sessions securely. We do not use third-party tracking cookies or sell your browsing history to advertising data networks.
-            </p>
-          </section>
-
-          {/* Section 5 */}
-          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
-            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
-              <span className="text-[#c6a15b]">5.</span> Data Retention & Your Rights
-            </h2>
-            <p>
-              You have the right to inspect, update, or request the deletion of your account information at any time through your <Link to="/account" className="text-[#c6a15b] underline">Account Dashboard</Link> or by contacting our support team.
+              Your payment information is processed according to the security and privacy practices of the respective payment provider.
             </p>
             <p className="mt-2 text-xs text-[#8e8a82]">
-              Transaction records are retained for the duration legally required by Indian accounting and taxation authorities.
+              We do not intentionally store complete card numbers, CVV numbers or UPI PINs on our website servers.
             </p>
           </section>
 
-          {/* Privacy & Grievance Contact */}
-          <section className="p-6 rounded-2xl border border-[#c6a15b]/20 bg-[#171715]">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-[#c6a15b]">
-              Data Privacy & Grievance Inquiries
-            </h3>
-            <p className="mt-2 text-xs text-[#8e8a82] leading-relaxed">
-              If you have any questions, concerns, or requests regarding the handling of your personal information or wish to request data deletion, please submit your enquiry via our <Link to="/contact" className="text-[#c6a15b] underline">Contact Form</Link>.
+          {/* Section 5: Cookies */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">5.</span> Cookies
+            </h2>
+            <p>Our website may use cookies and similar technologies to:</p>
+            <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
+              <li>Improve website functionality.</li>
+              <li>Remember customer preferences.</li>
+              <li>Maintain shopping cart information.</li>
+              <li>Understand website traffic and usage.</li>
+              <li>Improve the overall browsing experience.</li>
+            </ul>
+            <p className="mt-3 text-xs text-[#8e8a82]">
+              You can manage cookies through your browser settings. Some website functionality may be affected if cookies are disabled.
             </p>
+          </section>
+
+          {/* Section 6: Comments and Customer Communication */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">6.</span> Comments and Customer Communication
+            </h2>
+            <p>
+              If visitors submit comments, feedback or enquiries through our website, we may collect the information submitted in those forms.
+            </p>
+            <p className="mt-2 text-xs text-[#8e8a82]">
+              This information is used to respond to enquiries, manage customer communication and improve our services.
+            </p>
+          </section>
+
+          {/* Section 7: Sharing Your Information */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">7.</span> Sharing Your Information
+            </h2>
+            <p>
+              We may share relevant information with trusted third parties when necessary to operate our business, including:
+            </p>
+            <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
+              <li>Payment gateway providers.</li>
+              <li>Shipping and delivery partners.</li>
+              <li>Website hosting providers.</li>
+              <li>Technical service providers.</li>
+              <li>Legal or regulatory authorities when required by law.</li>
+            </ul>
+            <div className="mt-4 p-3.5 rounded-xl border border-[#c6a15b]/20 bg-[#171715] text-xs text-[#f4efe6] font-medium">
+              We do not sell customers' personal information to third parties.
+            </div>
+          </section>
+
+          {/* Section 8: Data Retention */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">8.</span> Data Retention
+            </h2>
+            <p>
+              We retain personal information only for as long as necessary to fulfil the purposes described in this Privacy Policy, provide customer support and comply with applicable legal and accounting requirements.
+            </p>
+          </section>
+
+          {/* Section 9: Your Privacy Rights */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">9.</span> Your Privacy Rights
+            </h2>
+            <p>Subject to applicable laws, you may request:</p>
+            <ul className="mt-3 space-y-2 list-disc list-inside text-xs text-[#8e8a82]">
+              <li>Access to your personal information.</li>
+              <li>Correction of inaccurate information.</li>
+              <li>Deletion of personal information where legally permissible.</li>
+              <li>Information about how your data is being used.</li>
+            </ul>
+            <p className="mt-3 text-xs text-[#8e8a82]">
+              For such requests, please contact us using the details below.
+            </p>
+          </section>
+
+          {/* Section 10: Data Security */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">10.</span> Data Security
+            </h2>
+            <p>
+              We take reasonable technical and organisational measures to protect customer information against unauthorised access, misuse, loss or disclosure.
+            </p>
+            <p className="mt-2 text-xs text-[#8e8a82]">
+              However, no online transmission or electronic storage method can be guaranteed to be completely secure.
+            </p>
+          </section>
+
+          {/* Section 11: Third-Party Websites */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">11.</span> Third-Party Websites
+            </h2>
+            <p>
+              Our website may contain links to external websites and services.
+            </p>
+            <p className="mt-2 text-xs text-[#8e8a82]">
+              We are not responsible for the privacy practices of third-party websites. We recommend reviewing their privacy policies separately.
+            </p>
+          </section>
+
+          {/* Section 12: Changes to This Policy */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#141412]">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">12.</span> Changes to This Policy
+            </h2>
+            <p>
+              We may update this Privacy Policy from time to time.
+            </p>
+            <p className="mt-2 text-xs text-[#8e8a82]">
+              Any changes will be published on this page along with the revised update date.
+            </p>
+          </section>
+
+          {/* Section 13: Contact Us */}
+          <section className="p-6 sm:p-8 rounded-2xl border border-[#c6a15b]/30 bg-[#171715] shadow-xl">
+            <h2 className="text-base sm:text-lg font-semibold text-[#f4efe6] mb-3 flex items-center gap-2">
+              <span className="text-[#c6a15b]">13.</span> Contact Us
+            </h2>
+            <p className="text-xs text-[#8e8a82]">
+              For questions or concerns regarding this Privacy Policy:
+            </p>
+
+            <div className="mt-4 space-y-2 text-xs">
+              <p className="text-sm font-semibold text-[#f4efe6]">The Decant Bar</p>
+              <p className="flex items-center gap-2 text-[#c5c1b9]">
+                <MapPin size={14} className="text-[#c6a15b]" />
+                Chandigarh, India
+              </p>
+              <p className="flex items-center gap-2 text-[#c5c1b9]">
+                <Mail size={14} className="text-[#c6a15b]" />
+                Email:{" "}
+                <a
+                  href="mailto:contact@thedecantbar.com"
+                  className="text-[#c6a15b] underline"
+                >
+                  contact@thedecantbar.com
+                </a>
+              </p>
+              <p className="flex items-center gap-2 text-[#c5c1b9]">
+                <Phone size={14} className="text-[#c6a15b]" />
+                Phone: +91 95197 19993
+              </p>
+            </div>
           </section>
         </div>
 
@@ -131,14 +287,13 @@ export default function Privacy() {
             &rarr; Read our Terms & Conditions
           </Link>
           <Link
-            to="/shipping"
+            to="/refund-policy"
             className="text-[#c6a15b] hover:text-[#d8c08a] transition underline"
           >
-            &rarr; Read our Shipping Policy
+            &rarr; Read our Refund & Cancellation Policy
           </Link>
         </div>
       </Container>
     </div>
   );
 }
-

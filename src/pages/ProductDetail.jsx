@@ -27,6 +27,7 @@ import MainAccords from "../components/product/MainAccords";
 import WhenToWear from "../components/product/WhenToWear";
 import PerfumePyramid from "../components/product/PerfumePyramid";
 import ProductImage from "../components/common/ProductImage";
+import ProductReviews from "../components/product/ProductReviews";
 
 const SPRAY_ESTIMATES = {
   2: "~30 sprays · ~7–10 days of wear",
@@ -821,12 +822,15 @@ export default function ProductDetail() {
           />
 
           {/* When to Wear */}
-          <WhenToWear
+                    <WhenToWear
             whenToWear={profile.whenToWear}
             weather={product.weather}
           />
         </div>
       </div>
+
+      {/* Product-Specific Customer Reviews */}
+      <ProductReviews productId={id} />
 
       {/* Customer Restock Notification Modal */}
       {notifyModalOpen && (

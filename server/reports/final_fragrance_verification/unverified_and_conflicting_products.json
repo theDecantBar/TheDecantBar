@@ -1,0 +1,338 @@
+[
+  {
+    "id": 65,
+    "product_name": "French Avenue Baie 19",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": "Baie 19 Formulation Reference (French Avenue Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Le-Labo/Baie-19-57774.html",
+    "top_notes": [
+      "Juniper Berries",
+      "Green Leaves",
+      "Ozonic Notes"
+    ],
+    "middle_notes": [
+      "Patchouli",
+      "Water Notes"
+    ],
+    "base_notes": [
+      "Ambroxan",
+      "Musk"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "Clone benchmark of Le Labo Baie 19. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 66,
+    "product_name": "French Avenue Vulcan Feu",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": "God of Fire Formulation Reference (French Avenue Vulcan Feu Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Stephane-Humbert-Lucas-777/God-of-Fire-72210.html",
+    "top_notes": [
+      "Mango",
+      "Lemon",
+      "Ginger",
+      "Rhubarb"
+    ],
+    "middle_notes": [
+      "Jasmine",
+      "Pink Pepper",
+      "Violet",
+      "Praline"
+    ],
+    "base_notes": [
+      "Tonka Bean",
+      "Cedarwood",
+      "Ambergris",
+      "Moss"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "Clone benchmark of Stephane Humbert Lucas God of Fire. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 67,
+    "product_name": "French Avenue Vulcan Sable Brun",
+    "brand": "French Avenue",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://fragranceworld.ae",
+    "verification_notes": "No exact or reliable matching entry on Fragrantica. Only generic brand domain exists."
+  },
+  {
+    "id": 71,
+    "product_name": "Armaf Ombre D'Or",
+    "brand": "Armaf",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://armaf.ae",
+    "verification_notes": "Armaf Ombre D'Or has no individual directory page or verified pyramid on Fragrantica. Generic armaf.ae only."
+  },
+  {
+    "id": 73,
+    "product_name": "Afnan Supremacy Collector's Edition",
+    "brand": "Afnan",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Conflict",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Conflicting source listings: distributor notes conflict between Supremacy Silver (pineapple/birch) and Supremacy in Heaven (green tea/currant). No official isolated spec on Fragrantica."
+  },
+  {
+    "id": 75,
+    "product_name": "Rasasi Hawas Tropical",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Tropical has no dedicated listing on Fragrantica; conflicting social media and distributor cards only."
+  },
+  {
+    "id": 77,
+    "product_name": "Rasasi Hawas Elixir",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Elixir has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 78,
+    "product_name": "Rasasi Hawas Fire",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Conflict",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Contradictory note cards in community and distributors: Spec A lists French Clary Sage, Egyptian Jasmine & Marine notes, Ambergris & Mineral Amber; Spec B copy-pastes Hawas Ice notes (Apple, Star Anise, Driftwood). Identity and pyramid unresolved on Fragrantica."
+  },
+  {
+    "id": 79,
+    "product_name": "Rasasi Hawas Verde",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Verde has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 81,
+    "product_name": "Rasasi Hawas Malibu",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Malibu has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 82,
+    "product_name": "Rasasi Hawas Cobra",
+    "brand": "Rasasi",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://www.rasasi.com",
+    "verification_notes": "Rasasi Hawas Cobra has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 84,
+    "product_name": "Zimaya Sharaf Blend The Club",
+    "brand": "Zimaya",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://zimayaperfumes.com",
+    "verification_notes": "Zimaya Sharaf Blend The Club has no standalone entry on Fragrantica; only standard Sharaf Blend is listed."
+  },
+  {
+    "id": 86,
+    "product_name": "Maison Alhambra Jean Lowe Ombre",
+    "brand": "Maison Alhambra",
+    "matched_fragrantica_name": "Ombre Nomade Formulation Reference (Jean Lowe Ombre Clone Target)",
+    "fragrantica_url": "https://www.fragrantica.com/perfume/Louis-Vuitton/Ombre-Nomade-49755.html",
+    "top_notes": [
+      "Agarwood (Oud)",
+      "Incense"
+    ],
+    "middle_notes": [
+      "Rose",
+      "Raspberry",
+      "Saffron",
+      "Birch"
+    ],
+    "base_notes": [
+      "Benzoin",
+      "Amberwood",
+      "Geranium"
+    ],
+    "verification_status": "Partially Verified",
+    "secondary_source_url": "https://maisonalhambra.co",
+    "verification_notes": "Clone benchmark of Louis Vuitton Ombre Nomade. Clone lacks its own dedicated Fragrantica directory page."
+  },
+  {
+    "id": 89,
+    "product_name": "Afnan 9 PM Night Out",
+    "brand": "Afnan",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://afnan.com",
+    "verification_notes": "Afnan 9 PM Night Out has no standalone directory page or verified pyramid on Fragrantica."
+  },
+  {
+    "id": 93,
+    "product_name": "Bespoke Greek Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Greek Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 94,
+    "product_name": "Bespoke Brazilian Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Brazilian Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 95,
+    "product_name": "Bespoke Spanish Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Spanish Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 96,
+    "product_name": "Bespoke French Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke French Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 97,
+    "product_name": "Bespoke Tobacco Extrait de Parfum",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Tobacco Extrait has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 98,
+    "product_name": "Bespoke Dominican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Dominican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 99,
+    "product_name": "Bespoke Cuban Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Cuban Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 100,
+    "product_name": "Bespoke Jamaican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Jamaican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  },
+  {
+    "id": 101,
+    "product_name": "Bespoke Mexican Tobacco",
+    "brand": "Bespoke Collection",
+    "matched_fragrantica_name": null,
+    "fragrantica_url": null,
+    "top_notes": [],
+    "middle_notes": [],
+    "base_notes": [],
+    "verification_status": "Unverified",
+    "secondary_source_url": "https://ibraqperfumes.com",
+    "verification_notes": "Bespoke Mexican Tobacco has no individual listing on Fragrantica. Sold exclusively via regional boutique collection."
+  }
+]
