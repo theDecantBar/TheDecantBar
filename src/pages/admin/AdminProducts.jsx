@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import {
-  Plus, Search, Edit2, Trash2, Sparkles, X, Upload, Loader2,
-  ChevronDown, ChevronUp, Check,
+  Plus, Search, Edit2, Trash2, ExternalLink, X, Upload, Loader2,
+  ChevronDown, ChevronUp, Check, Droplets, Package,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -9,6 +9,7 @@ import {
   deleteAdminProduct, uploadAdminProductImage,
 } from "../../services/adminApi";
 import { getPerfumeProfile, KNOWN_PERFUMES } from "../../data/perfumeNotes";
+import { getNoteVisual, NOTE_IMAGE_OPTIONS } from "../../data/fragranceNotesData";
 
 const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
 const GENDERS = ["Men", "Women", "Unisex"];
@@ -257,27 +258,55 @@ function toggleSeasonInString(currentWeather = "", chip) {
 }
 
 // ─── Tag Input ──────────────────────────────────────────────────────────────────
-function TagInput({ label, tags, onChange, placeholder }) {
+function TagInput({ label, tags = [], onChange, placeholder }) {
+  const safeTags = Array.isArray(tags) ? tags : [];
   const [inputVal, setInputVal] = useState("");
-  const addTag = () => { const val = inputVal.trim(); if (val && !tags.includes(val)) onChange([...tags, val]); setInputVal(""); };
-  const removeTag = (tag) => onChange(tags.filter((t) => t !== tag));
+  const [isOpen, setIsOpen] = useState(false);
+  const [showMissingMessage, setShowMissingMessage] = useState(false);
+  const filteredNotes = useMemo(() => {
+    const query = inputVal.trim().toLowerCase();
+    return NOTE_IMAGE_OPTIONS.filter((note) => !query || note.name.toLowerCase().includes(query) || note.key.includes(query)).slice(0, 80);
+  }, [inputVal]);
+  const addTag = (note) => {
+    if (!note) { setShowMissingMessage(true); return; }
+    const val = note.name;
+    if (!safeTags.some((tag) => String(tag).toLowerCase() === val.toLowerCase())) onChange([...safeTags, val]);
+    setInputVal("");
+    setIsOpen(false);
+    setShowMissingMessage(false);
+  };
+  const removeTag = (tag) => onChange(safeTags.filter((t) => t !== tag));
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === ",") { e.preventDefault(); addTag(); }
-    else if (e.key === "Backspace" && !inputVal && tags.length > 0) removeTag(tags[tags.length - 1]);
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const exact = NOTE_IMAGE_OPTIONS.find((note) => note.name.toLowerCase() === inputVal.trim().toLowerCase() || note.key === inputVal.trim().toLowerCase());
+      addTag(exact);
+    } else if (e.key === "Backspace" && !inputVal && safeTags.length > 0) removeTag(safeTags[safeTags.length - 1]);
   };
   return (
     <div>
       <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">{label}</label>
-      <div className="min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border border-white/15 px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors">
-        {tags.map((tag) => (
-          <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
+      <div className="relative min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border border-white/15 px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors">
+        {safeTags.map((tag) => {
+          const visual = getNoteVisual(tag);
+          return <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
+            {visual.imageUrl && <img src={visual.imageUrl} alt="" className="w-4 h-4 rounded-full object-cover" />}
             {tag}
             <button type="button" onClick={() => removeTag(tag)} className="text-[#c6a15b] hover:text-red-400 cursor-pointer"><X size={10} /></button>
-          </span>
-        ))}
-        <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} onKeyDown={handleKeyDown} onBlur={addTag} placeholder={tags.length === 0 ? placeholder : "Add more..."} className="flex-1 min-w-[120px] bg-transparent text-xs text-[#f4efe6] outline-none placeholder-[#8e8a82]" />
+          </span>;
+        })}
+        <input type="text" value={inputVal} onChange={(e) => { setInputVal(e.target.value); setIsOpen(true); setShowMissingMessage(false); }} onFocus={() => setIsOpen(true)} onBlur={() => setTimeout(() => setIsOpen(false), 100)} onKeyDown={handleKeyDown} placeholder={tags.length === 0 ? placeholder : "Search notes..."} className="flex-1 min-w-[120px] bg-transparent text-xs text-[#f4efe6] outline-none placeholder-[#8e8a82]" />
+        {isOpen && inputVal.trim() && <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-56 overflow-y-auto rounded-xl border border-white/15 bg-[#171715] p-1 shadow-2xl">
+          {filteredNotes.length ? filteredNotes.map((note) => {
+            const visual = getNoteVisual(note.name);
+            return <button key={note.key} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => addTag(note)} className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs text-[#f4efe6] hover:bg-white/10">
+              {visual.imageUrl ? <img src={visual.imageUrl} alt="" className="h-8 w-8 rounded-md object-cover" /> : <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/5 text-[9px] text-[#c6a15b]">No image</span>}
+              <span>{note.name}</span>
+            </button>;
+          }) : <p className="px-3 py-2 text-[11px] text-[#8e8a82]">No note found in the shared note library.</p>}
+        </div>}
       </div>
-      <p className="text-[10px] text-[#8e8a82] mt-1">Press Enter or comma to add. Click × to remove.</p>
+      <p className={`text-[10px] mt-1 ${showMissingMessage ? "text-amber-400" : "text-[#8e8a82]"}`}>{showMissingMessage ? "Choose a note from the list so its shared image is saved with it." : "Choose a note to reuse its shared image. “No image” means its photo still needs to be added. Click x to remove."}</p>
     </div>
   );
 }
@@ -516,8 +545,8 @@ function AccordRow({ accord, index, onChange, onRemove }) {
           onChange={(e) => onChange(index, "percentage", Math.max(1, Math.min(100, Number(e.target.value))))}
           className="w-20 sm:w-28 accent-[#c6a15b] cursor-pointer"
         />
-        <span className="text-[11px] text-[#c6a15b] font-mono font-bold w-10 text-right tabular-nums select-none">
-          {safeAccord.percentage ?? 50}%
+        <span className="text-[11px] text-[#c6a15b] font-mono font-bold w-10 text-right tabular-nums select-none" title="Display weight only, not a measured percentage">
+          {safeAccord.percentage ?? 50} wt
         </span>
         <button
           type="button"
@@ -872,7 +901,13 @@ export default function AdminProducts() {
                       <div className="flex items-center gap-3">
                         {p.image_url && <img src={p.image_url} alt={p.name} className="w-9 h-9 object-contain rounded-lg border border-white/10 bg-black/30" />}
                         <div>
-                          <p className="font-semibold text-[#f4efe6]">{p.name}</p>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEdit(p)}
+                            className="font-semibold text-[#f4efe6] hover:text-[#c6a15b] transition text-left cursor-pointer"
+                          >
+                            {p.name}
+                          </button>
                           {p.vibe && <p className="text-[10px] text-[#8e8a82] italic mt-0.5 max-w-[180px] truncate">{p.vibe}</p>}
                         </div>
                       </div>
@@ -900,8 +935,17 @@ export default function AdminProducts() {
                     <td className="py-3.5 px-4 text-[#c5c1b9]">{variantCount > 0 ? `${variantCount} size${variantCount > 1 ? "s" : ""}` : "—"}</td>
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center gap-2 justify-end">
-                        <button type="button" onClick={() => handleOpenEdit(p)} className="p-1.5 text-[#8e8a82] hover:text-[#c6a15b] transition cursor-pointer"><Edit2 size={14} /></button>
-                        <button type="button" onClick={() => handleDelete(p.id, p.name)} className="p-1.5 text-[#8e8a82] hover:text-red-400 transition cursor-pointer"><Trash2 size={14} /></button>
+                        <a
+                          href={`/product/${p.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="View on store"
+                          className="p-1.5 text-[#8e8a82] hover:text-[#c6a15b] transition cursor-pointer"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                        <button type="button" onClick={() => handleOpenEdit(p)} title="Edit fragrance" className="p-1.5 text-[#8e8a82] hover:text-[#c6a15b] transition cursor-pointer"><Edit2 size={14} /></button>
+                        <button type="button" onClick={() => handleDelete(p.id, p.name)} title="Delete fragrance" className="p-1.5 text-[#8e8a82] hover:text-red-400 transition cursor-pointer"><Trash2 size={14} /></button>
                       </div>
                     </td>
                   </tr>
@@ -1060,7 +1104,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
       }
       setWhenToWear({ ...WHEN_TO_WEAR_DEFAULTS, ...converted });
     }
-    if (!formData.description && template.description) {
+    if (template.description) {
       setFormData((prev) => ({ ...prev, description: template.description }));
     }
   };
@@ -1569,7 +1613,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
               <div className="p-3 bg-black/40 rounded-2xl border border-white/10 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] text-[#c6a15b] font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                    <span>📊 Live Bar Chart Preview (Highest % on top)</span>
+                    <span>📊 Live Bar Chart Preview (highest display weight first)</span>
                   </span>
                 </div>
                 <div className="space-y-1.5 max-w-lg">
@@ -1591,7 +1635,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                             {a.name}
                           </span>
                           <span className="text-[10px] font-mono font-bold text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ml-2 shrink-0">
-                            {a.percentage ?? 50}%
+                            {a.percentage ?? 50} wt
                           </span>
                         </div>
                       );

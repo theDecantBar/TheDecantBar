@@ -20,16 +20,15 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 12 Hours",
   "projection": "Strong & Addictive",
   "accords": [
-    { "name": "vanilla", "color": "#f3e5ab", "percentage": 95 },
+    { "name": "vanilla", "color": "#f3e5ab", "percentage": 100 },
     { "name": "sweet", "color": "#e75480", "percentage": 90 },
-    { "name": "amber", "color": "#d9822b", "percentage": 82 },
-    { "name": "cinnamon", "color": "#b85428", "percentage": 76 },
-    { "name": "warm spicy", "color": "#c04000", "percentage": 70 },
-    { "name": "caramel", "color": "#c68e17", "percentage": 64 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 56 },
-    { "name": "powdery", "color": "#d8bfd8", "percentage": 48 },
-    { "name": "fruity", "color": "#ff69b4", "percentage": 40 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 32 }
+    { "name": "amber", "color": "#d9822b", "percentage": 80 },
+    { "name": "cinnamon", "color": "#b85428", "percentage": 70 },
+    { "name": "warm spicy", "color": "#c04000", "percentage": 60 },
+    { "name": "powdery", "color": "#d8bfd8", "percentage": 50 },
+    { "name": "aromatic", "color": "#3a4a3c", "percentage": 40 },
+    { "name": "soft spicy", "color": "#c49e49", "percentage": 30 },
+    { "name": "caramel", "color": "#c68e17", "percentage": 20 }
   ],
   "whenToWear": {
     "winter": 4800,
@@ -3149,17 +3148,21 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Afnan",
   "name": "9AM Dive",
-  "description": "9AM Dive by Afnan is a fresh aquatic and aromatic fragrance for men and women. An invigorating splash of cool mint, sparkling lemon, and crisp green apple resting on a bed of ocean woods.",
-  "vibe": "Cool Oceanic Mint, Juicy Blackcurrant & Crisp Apple",
-  "longevity": "7 – 9 Hours",
-  "projection": "Moderate to Strong",
+  "description": "A fresh aquatic fragrance that opens with citrus, mint, pink pepper, and black currant, moves into apple, incense, and cedar, then settles on patchouli, jasmine, ginger, and sandalwood.",
+  "vibe": "Fresh Aquatic Citrus, Cool Mint & Woods",
+  "longevity": "Not verified",
+  "projection": "Not verified",
   "accords": [
-    { "name": "citrus", "color": "#9a7028", "percentage": 95 },
-    { "name": "aquatic", "color": "#2d3d4d", "percentage": 84 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 72 },
-    { "name": "fruity", "color": "#c84b4b", "percentage": 62 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 42 }
+    { "name": "fruity", "color": "#c84b4b", "percentage": 100 },
+    { "name": "green", "color": "#2d6a4f", "percentage": 90 },
+    { "name": "woody", "color": "#6e4f32", "percentage": 80 },
+    { "name": "citrus", "color": "#9a7028", "percentage": 70 },
+    { "name": "fresh spicy", "color": "#314b4b", "percentage": 60 },
+    { "name": "aromatic", "color": "#3a4a3c", "percentage": 50 },
+    { "name": "fresh", "color": "#3d6b8f", "percentage": 40 },
+    { "name": "soft spicy", "color": "#8e6b3a", "percentage": 30 },
+    { "name": "warm spicy", "color": "#b85428", "percentage": 20 },
+    { "name": "balsamic", "color": "#7b3f2b", "percentage": 10 }
   ],
   "whenToWear": {
     "winter": 400,
@@ -3171,24 +3174,20 @@ export const KNOWN_PERFUMES = [
   },
   "topNotes": [
     "Lemon",
+    "Pink Pepper",
     "Mint",
-    "Blackcurrant",
-    "Pink Pepper"
+    "Black Currant"
   ],
   "middleNotes": [
     "Apple",
     "Incense",
     "Cedarwood"
   ],
-  "heartNotes": [
-    "Apple",
-    "Incense",
-    "Cedarwood"
-  ],
   "baseNotes": [
+    "Patchouli",
+    "Jasmine",
     "Ginger",
-    "Sandalwood",
-    "Patchouli"
+    "Sandalwood"
   ]
 },
 {
