@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import AnnouncementBar from "../components/AnnouncementBar";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import MusicToggle from "../components/common/MusicToggle";
 
 export default function Layout() {
   const location = useLocation();
@@ -23,6 +24,7 @@ export default function Layout() {
         </motion.div>
       </main>
       <Footer />
+      <MusicToggle />
     </div>
   );
 }

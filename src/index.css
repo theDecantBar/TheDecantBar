@@ -98,3 +98,34 @@ textarea {
   --color-muted: var(--bg-elevated);
   --color-muted-foreground: var(--text-muted);
 }
+
+/* Minimal ambient soundbar animations */
+@keyframes soundbar-1 {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+@keyframes soundbar-2 {
+  0%, 100% { height: 11px; }
+  50% { height: 5px; }
+}
+@keyframes soundbar-3 {
+  0%, 100% { height: 5px; }
+  50% { height: 13px; }
+}
+@keyframes soundbar-4 {
+  0%, 100% { height: 10px; }
+  50% { height: 4px; }
+}
+
+.animate-soundbar-1 {
+  animation: soundbar-1 1s ease-in-out infinite;
+}
+.animate-soundbar-2 {
+  animation: soundbar-2 1.25s ease-in-out infinite;
+}
+.animate-soundbar-3 {
+  animation: soundbar-3 0.85s ease-in-out infinite;
+}
+.animate-soundbar-4 {
+  animation: soundbar-4 1.1s ease-in-out infinite;
+}

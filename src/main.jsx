@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
+import { AudioProvider } from './context/AudioContext'
 
 // Start the home page at its hero instead of restoring a previous scroll offset.
 if (window.location.pathname === '/' && !window.location.hash) {
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <CartProvider>
-        <App />
+        <AudioProvider>
+          <App />
+        </AudioProvider>
       </CartProvider>
     </AuthProvider>
   </StrictMode>,
