@@ -305,6 +305,11 @@ export default function ProductDetail() {
     product.type,
     product.gender
   );
+  // This product's DB row contains a stale EDP pyramid. Keep the verified
+  // Extrait pyramid authoritative on the detail page until that row is updated.
+  const useVerifiedBaccaratNotes = /baccarat\s+rouge\s+540/i.test(product.name || "");
+  const useVerifiedHawasVerdeData = /hawas\s+verde/i.test(product.name || "");
+  const useVerifiedAfnan9PmNightOutData = /9\s*pm\s*night\s*out/i.test(product.name || "");
 
   const parseJsonField = (val, fallback) => {
     if (!val) return fallback;
@@ -324,22 +329,22 @@ export default function ProductDetail() {
     ...defaultProfile,
 
     topNotes:
-      Array.isArray(product.top_notes) && product.top_notes.length > 0
+      !useVerifiedBaccaratNotes && !useVerifiedHawasVerdeData && !useVerifiedAfnan9PmNightOutData && Array.isArray(product.top_notes) && product.top_notes.length > 0
         ? product.top_notes
         : defaultProfile.topNotes,
 
     middleNotes:
-      Array.isArray(product.middle_notes) && product.middle_notes.length > 0
+      !useVerifiedBaccaratNotes && !useVerifiedHawasVerdeData && !useVerifiedAfnan9PmNightOutData && Array.isArray(product.middle_notes) && product.middle_notes.length > 0
         ? product.middle_notes
         : defaultProfile.middleNotes,
 
     baseNotes:
-      Array.isArray(product.base_notes) && product.base_notes.length > 0
+      !useVerifiedBaccaratNotes && !useVerifiedHawasVerdeData && !useVerifiedAfnan9PmNightOutData && Array.isArray(product.base_notes) && product.base_notes.length > 0
         ? product.base_notes
         : defaultProfile.baseNotes,
 
     accords:
-      Array.isArray(dbAccords) && dbAccords.length > 0
+      !useVerifiedHawasVerdeData && !useVerifiedAfnan9PmNightOutData && Array.isArray(dbAccords) && dbAccords.length > 0
         ? dbAccords
         : defaultProfile.accords,
 

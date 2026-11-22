@@ -1,7 +1,7 @@
 /**
- * Accurate Olfactory Profiles & Note Pyramids for The Decant Bar Catalog
- * Extracted from authentic fragrance compositions (Fragrantica / Parfumo database standards).
- * Contains full profiles for all catalog fragrances with authentic Accords, Notes, Descriptions & Suitability.
+ * Fragrance profile data for The Decant Bar catalog.
+ * Source URLs and verification notes are recorded on profiles that have been audited.
+ * Remaining profiles must be checked before their note pyramids or performance details are treated as verified.
  */
 
 
@@ -67,19 +67,11 @@ export const KNOWN_PERFUMES = [
     brand: "Bespoke Collection",
     name: "Mexican Tobacco",
     description:
-      "A warm tobacco fragrance with dark chocolate, cinnamon, soft florals and a deep woody-amber character.",
-    vibe: "Tobacco, Dark Chocolate, Warm Spices & Amber",
+      "Manufacturer note information is pending source verification.",
+    vibe: "Pending manufacturer source",
     longevity: "Not independently verified",
     projection: "Not independently verified",
-    accords: [
-      { name: "tobacco", color: "#8B4513", percentage: 95 },
-      { name: "sweet", color: "#9C2759", percentage: 80 },
-      { name: "floral", color: "#B85428", percentage: 72 },
-      { name: "rose", color: "#D9828B", percentage: 65 },
-      { name: "warm spicy", color: "#C49E49", percentage: 55 },
-      { name: "woody", color: "#6E4F32", percentage: 48 },
-      { name: "amber", color: "#B87532", percentage: 38 }
-    ],
+    accords: [],
     whenToWear: {
       winter: 95,
       spring: 35,
@@ -88,29 +80,22 @@ export const KNOWN_PERFUMES = [
       day: 40,
       night: 95
     },
-    topNotes: ["Cedarwood", "Dark Chocolate"],
-    middleNotes: ["Lilac", "Cinnamon"],
-    baseNotes: ["Tobacco", "Rose", "Amber"]
-  },
+    topNotes: [],
+    middleNotes: [],
+    baseNotes: [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
+},
 
   {
     matches: ["cuban tobacco"],
     brand: "Bespoke Collection",
     name: "Cuban Tobacco",
     description:
-      "A rich tobacco scent with cocoa, leather, sandalwood, vanilla and sweet honeyed nuances.",
-    vibe: "Tobacco, Cocoa, Leather & Honey",
+      "Manufacturer note information is pending source verification.",
+    vibe: "Pending manufacturer source",
     longevity: "Not independently verified",
     projection: "Not independently verified",
-    accords: [
-      { name: "tobacco", color: "#8B4513", percentage: 95 },
-      { name: "sweet", color: "#9C2759", percentage: 80 },
-      { name: "leather", color: "#8C4A32", percentage: 72 },
-      { name: "woody", color: "#6E4F32", percentage: 65 },
-      { name: "warm spicy", color: "#C49E49", percentage: 55 },
-      { name: "cacao", color: "#654321", percentage: 48 },
-      { name: "honey", color: "#D9A441", percentage: 38 }
-    ],
+    accords: [],
     whenToWear: {
       winter: 95,
       spring: 35,
@@ -119,31 +104,22 @@ export const KNOWN_PERFUMES = [
       day: 40,
       night: 95
     },
-    topNotes: ["Cocoa", "Tobacco"],
-    middleNotes: ["Leather", "Sandalwood", "Vanilla"],
-    baseNotes: ["Honey", "Coconut"]
-  },
+    topNotes: [],
+    middleNotes: [],
+    baseNotes: [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
+},
 
   {
     matches: ["jamaican tobacco"],
     brand: "Bespoke Collection",
     name: "Jamaican Tobacco",
     description:
-      "A woody tobacco fragrance with patchouli, amber, cedar, oud, jasmine and earthy vetiver facets.",
-    vibe: "Woody Tobacco, Patchouli, Amber & Oud",
+      "Manufacturer note information is pending source verification.",
+    vibe: "Pending manufacturer source",
     longevity: "Not independently verified",
     projection: "Not independently verified",
-    accords: [
-      { name: "woody", color: "#6E4F32", percentage: 95 },
-      { name: "tobacco", color: "#8B4513", percentage: 85 },
-      { name: "white floral", color: "#D8C7D8", percentage: 72 },
-      { name: "patchouli", color: "#536B42", percentage: 65 },
-      { name: "earthy", color: "#8A7455", percentage: 55 },
-      { name: "amber", color: "#D9822B", percentage: 50 },
-      { name: "sweet", color: "#9C2759", percentage: 42 },
-      { name: "warm spicy", color: "#C49E49", percentage: 35 },
-      { name: "aromatic", color: "#739E9B", percentage: 28 }
-    ],
+    accords: [],
     whenToWear: {
       winter: 95,
       spring: 45,
@@ -152,10 +128,11 @@ export const KNOWN_PERFUMES = [
       day: 45,
       night: 95
     },
-    topNotes: ["Patchouli", "Amber"],
-    middleNotes: ["Tobacco", "Cedar", "Oud"],
-    baseNotes: ["Jasmine", "Vetiver"]
-  },
+    topNotes: [],
+    middleNotes: [],
+    baseNotes: [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
+},
 
   {
     matches: ["tom ford ombre leather", "tom ford ombré leather", "ombre leather"],
@@ -422,41 +399,25 @@ export const KNOWN_PERFUMES = [
 {
   "matches": [
     "azzaro most wanted night",
-    "most wanted",
     "azzaro"
   ],
   "brand": "Azzaro",
   "name": "Azzaro Wanted by Night",
-  "description": "Azzaro most wanted night is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Red Ginger, Cardamom, transitioning into a captivating heart of Toffee Caramel and Woody Notes, rested on a lingering base of Bourbon Vanilla, Amberwood.",
+  "description": "A warm spicy woody fragrance opening with cinnamon, mandarin, lavender, and lemon, moving through fruity notes, incense, cumin, and red cedar to a tobacco, vanilla, leather, and patchouli base.",
   "vibe": "Sweet Toffee Caramel, Spiced Cardamom & Bourbon Vanilla",
   "longevity": "10 – 12 Hours",
   "projection": "Beast Mode",
   "accords": [
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 92
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 82
-    },
-    {
-      "name": "caramel",
-      "color": "#c49e49",
-      "percentage": 74
-    },
-    {
-      "name": "amber",
-      "color": "#d9822b",
-      "percentage": 66
-    },
-    {
-      "name": "woody",
-      "color": "#6e4f32",
-      "percentage": 58
-    }
+    "warm spicy",
+    "cinnamon",
+    "woody",
+    "sweet",
+    "tobacco",
+    "fruity",
+    "amber",
+    "aromatic",
+    "vanilla",
+    "fresh spicy"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -467,17 +428,35 @@ export const KNOWN_PERFUMES = [
     "night": 4300
   },
   "topNotes": [
-    "Cardamom"
+    "Cinnamon",
+    "Mandarin Orange",
+    "Lavender",
+    "Lemon"
   ],
   "middleNotes": [
-    "Toffee Caramel"
+    "Fruity Notes",
+    "Incense",
+    "Cumin",
+    "Red Cedar"
   ],
   "heartNotes": [
-    "Toffee Caramel"
+    "Fruity Notes",
+    "Incense",
+    "Cumin",
+    "Red Cedar"
   ],
   "baseNotes": [
-    "Amberwood"
-  ]
+    "Tobacco",
+    "Vanilla",
+    "Cedar",
+    "Leather",
+    "Benzoin",
+    "Iso E Super",
+    "Cypress",
+    "Patchouli"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Azzaro/Wanted-by-Night-49144.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -488,36 +467,19 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Valentino",
   "name": "Valentino Born in Roma Green Stravaganza",
-  "description": "Valentino born in roma green stravaganza is a distinctive EDT Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
-  "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
+  "description": "A fresh aromatic coffee and vetiver scent with a bright bergamot opening.",
+  "vibe": "Bergamot, Coffee Accord & Vetiver",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Chic",
   "accords": [
-    {
-      "name": "fresh",
-      "color": "#6b9a55",
-      "percentage": 94
-    },
-    {
-      "name": "citrus",
-      "color": "#9a7028",
-      "percentage": 84
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 74
-    },
-    {
-      "name": "synthetic",
-      "color": "#777777",
-      "percentage": 64
-    },
-    {
-      "name": "green",
-      "color": "#283b2d",
-      "percentage": 54
-    }
+    "citrus",
+    "coffee",
+    "aromatic",
+    "fresh spicy",
+    "woody",
+    "warm spicy",
+    "earthy",
+    "green"
   ],
   "whenToWear": {
     "winter": 410,
@@ -538,7 +500,9 @@ export const KNOWN_PERFUMES = [
   ],
   "baseNotes": [
     "Vetiver"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/news/www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-in-Roma-Green-Stravaganza-88989.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -549,51 +513,21 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Valentino",
   "name": "Valentino Uomo",
-  "description": "Valentino men Uomo is a distinctive EDT Designer fragrance crafted for summeer/winter wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
+  "description": "A gourmand woody composition opening with bergamot and myrtle, followed by hazelnut, chocolate, and roasted coffee, with leather and cedar in the base.",
   "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Chic",
   "accords": [
-    {
-      "name": "woody",
-      "color": "#543e2e",
-      "percentage": 94
-    },
-    {
-      "name": "nutty",
-      "color": "#a67c52",
-      "percentage": 84
-    },
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 74
-    },
-    {
-      "name": "chocolate",
-      "color": "#5b3528",
-      "percentage": 64
-    },
-    {
-      "name": "leather",
-      "color": "#7a4b3a",
-      "percentage": 54
-    },
-    {
-      "name": "coffee",
-      "color": "#594033",
-      "percentage": 44
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 34
-    },
-    {
-      "name": "citrus",
-      "color": "#d5a52b",
-      "percentage": 24
-    }
+    "woody",
+    "nutty",
+    "warm spicy",
+    "chocolate",
+    "leather",
+    "coffee",
+    "sweet",
+    "aromatic",
+    "fresh spicy",
+    "citrus"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -620,7 +554,9 @@ export const KNOWN_PERFUMES = [
   "baseNotes": [
     "Leather",
     "Cedar"
-  ]
+  ],
+  "sourceUrl": "https://www.perfumica.com/perfumes/53930/valentino-uomo-by-valentino-for-men",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -631,46 +567,21 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Valentino",
   "name": "Valentino Born in Roma Coral Fantasy",
-  "description": "Valentino coral is a distinctive EDT Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Mineral Notes, Violet Leaf, Salt, transitioning into a captivating heart of Ginger and Sage, rested on a lingering base of Smoked Vetiver, Woody Notes.",
-  "vibe": "Smoky Vetiver, Mineral Salt, Violet Leaf & Ginger",
+  "description": "A fruity aromatic woody scent that pairs red apple and cardamom with lavender and geranium, settling into tobacco leaf, patchouli, and Haitian vetiver.",
+  "vibe": "Red Apple, Aromatic Lavender, Tobacco Leaf & Vetiver",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Chic",
   "accords": [
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 92
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 82
-    },
-    {
-      "name": "amber",
-      "color": "#d9822b",
-      "percentage": 74
-    },
-    {
-      "name": "vanilla",
-      "color": "#c49e49",
-      "percentage": 66
-    },
-    {
-      "name": "woody",
-      "color": "#6e4f32",
-      "percentage": 58
-    },
-    {
-      "name": "powdery",
-      "color": "#8c7e77",
-      "percentage": 46
-    },
-    {
-      "name": "aromatic",
-      "color": "#346b45",
-      "percentage": 36
-    }
+    "aromatic",
+    "fruity",
+    "tobacco",
+    "sweet",
+    "warm spicy",
+    "fresh spicy",
+    "lavender",
+    "woody",
+    "citrus",
+    "patchouli"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -681,22 +592,27 @@ export const KNOWN_PERFUMES = [
     "night": 4300
   },
   "topNotes": [
-    "Mineral Notes",
-    "Violet Leaf",
-    "Salt"
+    "Red Apple",
+    "Cardamom",
+    "Calabrian Bergamot"
   ],
   "middleNotes": [
-    "Ginger",
-    "Sage"
+    "Lavender",
+    "Bourbon Geranium",
+    "Clary Sage"
   ],
   "heartNotes": [
-    "Ginger",
-    "Sage"
+    "Lavender",
+    "Bourbon Geranium",
+    "Clary Sage"
   ],
   "baseNotes": [
-    "Smoked Vetiver",
-    "Woody Notes"
-  ]
+    "Tobacco Leaf",
+    "Patchouli",
+    "Haitian Vetiver"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-In-Roma-Coral-Fantasy-71761.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -712,41 +628,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Chic",
   "accords": [
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 92
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 82
-    },
-    {
-      "name": "amber",
-      "color": "#d9822b",
-      "percentage": 74
-    },
-    {
-      "name": "vanilla",
-      "color": "#c49e49",
-      "percentage": 66
-    },
-    {
-      "name": "woody",
-      "color": "#6e4f32",
-      "percentage": 58
-    },
-    {
-      "name": "powdery",
-      "color": "#8c7e77",
-      "percentage": 46
-    },
-    {
-      "name": "aromatic",
-      "color": "#346b45",
-      "percentage": 36
-    }
+    "mineral",
+    "woody",
+    "ozonic",
+    "aromatic",
+    "aquatic",
+    "salty",
+    "herbal",
+    "fresh spicy",
+    "green",
+    "soft spicy"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -772,55 +663,33 @@ export const KNOWN_PERFUMES = [
   "baseNotes": [
     "Smoked Vetiver",
     "Woody Notes"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Valentino/Valentino-Uomo-Born-in-Roma-56724.html"
 },
 {
   "matches": [
     "baccarat rouge 540",
-    "baccarat rouge"
+    "baccarat rouge",
+    "baccarat rouge 540 extrait",
+    "baccarat rouge 540 extrait de parfum"
   ],
   "brand": "Maison Francis Kurkdjian",
-  "name": "Maison Francis Kurkdjian Baccarat Rouge 540",
-  "description": "Baccarat rouge 540 is a distinctive EDP Niche fragrance crafted for Winter wear. Opens with vibrant top notes of Bitter Almond, Saffron, transitioning into a captivating heart of Egyptian Jasmine and Cedar, rested on a lingering base of Ambergris, Woody Musk, Fir Resin.",
+  "name": "Maison Francis Kurkdjian Baccarat Rouge 540 Extrait de Parfum",
+  "description": "Baccarat Rouge 540 Extrait de Parfum is a woody amber fragrance. It opens with bitter almond and saffron, moves into Egyptian jasmine and Virginia cedar, and dries down to ambergris, woody notes, musk, Ambroxan, and Cashmeran.",
   "vibe": "Airy Crystal Amber, Sweet Saffron & Cedar",
   "longevity": "12+ Hours",
   "projection": "Magnetic Sillage Monster",
   "accords": [
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 92
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 82
-    },
-    {
-      "name": "amber",
-      "color": "#d9822b",
-      "percentage": 74
-    },
-    {
-      "name": "vanilla",
-      "color": "#c49e49",
-      "percentage": 66
-    },
-    {
-      "name": "woody",
-      "color": "#6e4f32",
-      "percentage": 58
-    },
-    {
-      "name": "powdery",
-      "color": "#8c7e77",
-      "percentage": 46
-    },
-    {
-      "name": "aromatic",
-      "color": "#346b45",
-      "percentage": 36
-    }
+    "amber",
+    "almond",
+    "warm spicy",
+    "woody",
+    "musky",
+    "animalic",
+    "nutty",
+    "fruity",
+    "metallic",
+    "white floral"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -832,71 +701,47 @@ export const KNOWN_PERFUMES = [
   },
   "topNotes": [
     "Bitter Almond",
-    "Saffron"
+    "Saffron",
   ],
   "middleNotes": [
     "Egyptian Jasmine",
-    "Cedar"
+    "Virginian Cedar"
   ],
   "heartNotes": [
     "Egyptian Jasmine",
-    "Cedar"
+    "Virginian Cedar"
   ],
   "baseNotes": [
     "Ambergris",
-    "Woody Musk",
-    "Fir Resin"
-  ]
+    "Woody Notes",
+    "Musk",
+    "Ambroxan",
+    "Cashmeran"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Maison-Francis-Kurkdjian/Baccarat-Rouge-540-Extrait-de-Parfum-46066.html",
+  "verificationStatus": "Verified against Fragrantica; bottle photo confirms Extrait de Parfum"
 },
 {
   "matches": [
     "ysl l homme",
-    "ysl",
-    "l homme",
-    "myself"
+    "l homme"
   ],
   "brand": "Yves Saint Laurent",
   "name": "YSL L'Homme",
-  "description": "YSL L Homme is a distinctive EDP Designer fragrance crafted for Winter wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
-  "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
+  "description": "L'Homme by Yves Saint Laurent opens with ginger, bergamot and lemon, followed by spices, violet leaf, white pepper and basil over tonka bean, cedar and Tahitian vetiver.",
+  "vibe": "Ginger, Citrus, Violet Leaf & Cedar",
   "longevity": "7 – 9 Hours",
   "projection": "Moderate to Strong",
   "accords": [
-    {
-      "name": "warm spicy",
-      "color": "#b85428",
-      "percentage": 92
-    },
-    {
-      "name": "sweet",
-      "color": "#9c2759",
-      "percentage": 82
-    },
-    {
-      "name": "amber",
-      "color": "#d9822b",
-      "percentage": 74
-    },
-    {
-      "name": "vanilla",
-      "color": "#c49e49",
-      "percentage": 66
-    },
-    {
-      "name": "woody",
-      "color": "#6e4f32",
-      "percentage": 58
-    },
-    {
-      "name": "powdery",
-      "color": "#8c7e77",
-      "percentage": 46
-    },
-    {
-      "name": "aromatic",
-      "color": "#346b45",
-      "percentage": 36
-    }
+    "fresh spicy",
+    "citrus",
+    "aromatic",
+    "warm spicy",
+    "woody",
+    "fresh",
+    "vanilla",
+    "ozonic",
+    "green"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -907,76 +752,52 @@ export const KNOWN_PERFUMES = [
     "night": 4300
   },
   "topNotes": [
-    "Calabrian Bergamot",
     "Ginger",
-    "Apple"
+    "Bergamot",
+    "Lemon"
   ],
   "middleNotes": [
-    "Sage",
-    "Geranium",
-    "Juniper"
+    "Spices",
+    "Violet Leaf",
+    "White Pepper",
+    "Basil"
   ],
   "heartNotes": [
-    "Sage",
-    "Geranium",
-    "Juniper"
+    "Spices",
+    "Violet Leaf",
+    "White Pepper",
+    "Basil"
   ],
   "baseNotes": [
-    "Amberwood",
     "Tonka Bean",
     "Cedar",
-    "Olibanum"
-  ]
+    "Tahitian Vetiver"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-734.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "ysl l homme le parfum",
-    "ysl",
-    "l homme",
-    "myself"
+    "l homme le parfum"
   ],
   "brand": "Yves Saint Laurent",
   "name": "YSL L'Homme Le Parfum",
-  "description": "YSL L Homme Le Parfum is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
-  "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
+  "description": "L'Homme Le Parfum opens with ozonic notes, cardamom and lemon, develops through geranium, violet leaf and basil, and settles into amberwood, cedar essence and vetiver.",
+  "vibe": "Ozonic Citrus, Cardamom, Geranium & Amberwood",
   "longevity": "7 – 9 Hours",
   "projection": "Moderate to Strong",
   "accords": [
-    {
-      "name": "citrus",
-      "color": "#9a7028",
-      "percentage": 94
-    },
-    {
-      "name": "aromatic",
-      "color": "#3a4a3c",
-      "percentage": 82
-    },
-    {
-      "name": "fresh spicy",
-      "color": "#314b4b",
-      "percentage": 74
-    },
-    {
-      "name": "woody",
-      "color": "#543e2e",
-      "percentage": 62
-    },
-    {
-      "name": "aquatic",
-      "color": "#2d3d4d",
-      "percentage": 52
-    },
-    {
-      "name": "musky",
-      "color": "#3d3b40",
-      "percentage": 42
-    },
-    {
-      "name": "green",
-      "color": "#283b2d",
-      "percentage": 34
-    }
+    "aromatic",
+    "woody",
+    "ozonic",
+    "warm spicy",
+    "fresh spicy",
+    "amber",
+    "citrus",
+    "green",
+    "aquatic",
+    "herbal"
   ],
   "whenToWear": {
     "winter": 410,
@@ -987,34 +808,34 @@ export const KNOWN_PERFUMES = [
     "night": 1900
   },
   "topNotes": [
-    "Calabrian Bergamot",
-    "Ginger",
-    "Apple"
+    "Ozonic Notes",
+    "Cardamom",
+    "Lemon"
   ],
   "middleNotes": [
-    "Sage",
     "Geranium",
-    "Juniper"
+    "Violet Leaf",
+    "Basil"
   ],
   "heartNotes": [
-    "Sage",
     "Geranium",
-    "Juniper"
+    "Violet Leaf",
+    "Basil"
   ],
   "baseNotes": [
     "Amberwood",
-    "Tonka Bean",
-    "Cedar",
-    "Olibanum"
-  ]
+    "Cedar Essence",
+    "Vetiver"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Le-Parfum-59731.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 
 {
   "matches": [
-    "ysl homme cologne blue",
-    "ysl",
-    "l homme",
-    "myself"
+    "ysl l homme cologne bleue",
+    "l homme cologne bleue",
+    "l homme cologne blue"
   ],
   "brand": "Yves Saint Laurent",
   "name": "YSL L'Homme Cologne Bleue",
@@ -1023,13 +844,13 @@ export const KNOWN_PERFUMES = [
   "longevity": "7 – 9 Hours",
   "projection": "Moderate to Strong",
   "accords": [
-    { "name": "citrus", "color": "#9a7028", "percentage": 94 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 82 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 74 },
-    { "name": "woody", "color": "#543e2e", "percentage": 62 },
-    { "name": "aquatic", "color": "#2d3d4d", "percentage": 52 },
-    { "name": "musky", "color": "#3d3b40", "percentage": 42 },
-    { "name": "green", "color": "#283b2d", "percentage": 34 }
+    "citrus",
+    "aromatic",
+    "fresh spicy",
+    "woody",
+    "aquatic",
+    "musky",
+    "green"
   ],
   "whenToWear": {
     "winter": 410,
@@ -1040,33 +861,38 @@ export const KNOWN_PERFUMES = [
     "night": 1900
   },
   "topNotes": [
-    "Calabrian Bergamot",
-    "Ginger",
-    "Apple"
+    "Sea Notes",
+    "Grapefruit",
+    "Mandarin Orange",
+    "Blood Orange",
+    "Cardamom",
+    "Black Pepper"
   ],
   "middleNotes": [
-    "Sage",
+    "Lavender",
+    "Apple",
     "Geranium",
-    "Juniper"
+    "Thyme"
   ],
   "heartNotes": [
-    "Sage",
+    "Lavender",
+    "Apple",
     "Geranium",
-    "Juniper"
+    "Thyme"
   ],
   "baseNotes": [
-    "Amberwood",
-    "Tonka Bean",
-    "Cedar",
-    "Olibanum"
-  ]
+    "Patchouli",
+    "Sandalwood",
+    "Cedar"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/L-Homme-Cologne-Bleue-48308.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
-    "ysl y",
-    "ysl",
-    "l homme",
-    "myself"
+    "ysl y eau de parfum",
+    "ysl y edp",
+    "y eau de parfum"
   ],
   "brand": "Yves Saint Laurent",
   "name": "YSL Y Eau de Parfum",
@@ -1118,25 +944,26 @@ export const KNOWN_PERFUMES = [
 },
 {
   "matches": [
-    "ysl myself l'abslou parfum",
-    "ysl",
-    "l homme",
-    "myself"
+    "ysl myslf le parfum",
+    "myslf le parfum"
   ],
   "brand": "Yves Saint Laurent",
   "name": "YSL MYSLF Le Parfum",
-  "description": "YSL myself L'abslou parfum is a distinctive PARFUM Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Calabrian Bergamot, Ginger, Apple, transitioning into a captivating heart of Sage and Geranium, rested on a lingering base of Amberwood, Tonka Bean, Cedar.",
-  "vibe": "Sparkling Bergamot, Fresh Ginger, Sage & Amberwood",
+  "description": "MYSLF Le Parfum is a warm woody fragrance opening with black pepper, followed by orange blossom and a vanilla, amber, wood and patchouli base.",
+  "vibe": "Black Pepper, Orange Blossom, Bourbon Vanilla & Amber Woods",
   "longevity": "7 – 9 Hours",
   "projection": "Moderate to Strong",
   "accords": [
-    { "name": "woody", "color": "#543e2e", "percentage": 94 },
-    { "name": "floral", "color": "#b879a5", "percentage": 84 },
-    { "name": "citrus", "color": "#d5a52b", "percentage": 74 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 64 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 54 },
-    { "name": "earthy", "color": "#8a7455", "percentage": 44 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 34 }
+    "white floral",
+    "vanilla",
+    "woody",
+    "citrus",
+    "amber",
+    "sweet",
+    "fresh spicy",
+    "warm spicy",
+    "patchouli",
+    "powdery"
   ],
   "whenToWear": {
     "winter": 410,
@@ -1147,44 +974,44 @@ export const KNOWN_PERFUMES = [
     "night": 1900
   },
   "topNotes": [
-    "Bergamot",
-    "Ginger",
-    "Cardamom"
+    "Black Pepper"
   ],
   "middleNotes": [
-    "Orange Blossom",
-    "Grapefruit",
-    "Lavandin"
+    "Orange Blossom"
   ],
   "heartNotes": [
-    "Orange Blossom",
-    "Grapefruit",
-    "Lavandin"
+    "Orange Blossom"
   ],
   "baseNotes": [
-    "Patchouli",
-    "Ambrofix",
-    "Vanilla"
-  ]
+    "Bourbon Vanilla",
+    "Amber",
+    "Woody Notes",
+    "Patchouli"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/MYSLF-Le-Parfum-94983.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "versace eros"
   ],
   "brand": "Versace",
-  "name": "Versace eros",
+  "name": "Versace Eros Eau de Parfum",
   "description": "Versace eros is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Mint, Green Apple, Lemon, transitioning into a captivating heart of Tonka Bean and Ambroxan, rested on a lingering base of Madagascar Vanilla, Virginian Cedar, Atlas Cedar.",
   "vibe": "Vibrant Mint, Candied Green Apple, Tonka & Vanilla",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Alluring",
   "accords": [
-    { "name": "fresh", "color": "#6b9a55", "percentage": 94 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 86 },
-    { "name": "citrus", "color": "#d5a52b", "percentage": 78 },
-    { "name": "fruity", "color": "#a84c62", "percentage": 68 },
-    { "name": "synthetic", "color": "#777777", "percentage": 58 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 48 },
-    { "name": "woody", "color": "#543e2e", "percentage": 38 }
+    "vanilla",
+    "aromatic",
+    "fruity",
+    "sweet",
+    "amber",
+    "fresh spicy",
+    "citrus",
+    "woody",
+    "leather",
+    "green"
   ],
   "whenToWear": {
     "winter": 410,
@@ -1217,7 +1044,8 @@ export const KNOWN_PERFUMES = [
     "Virginia Cedar",
     "Vetiver",
     "Leather"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Versace/Eros-Eau-de-Parfum-62762.html"
 },
 {
   "matches": [
@@ -1389,13 +1217,13 @@ export const KNOWN_PERFUMES = [
   "longevity": "10 – 12 Hours",
   "projection": "Strong & Delicious",
   "accords": [
-    { "name": "warm spicy", "color": "#b85428", "percentage": 92 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 82 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 76 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 68 },
-    { "name": "cinnamon", "color": "#bd6033", "percentage": 58 },
-    { "name": "amber", "color": "#d9822b", "percentage": 48 },
-    { "name": "powdery", "color": "#8c7e77", "percentage": 36 }
+    "warm spicy",
+    "woody",
+    "sweet",
+    "vanilla",
+    "cinnamon",
+    "amber",
+    "powdery"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -1405,10 +1233,28 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": ["Cognac"],
-  "middleNotes": ["Cinnamon", "Tonka Bean", "Oak Wood"],
-  "heartNotes": ["Cinnamon", "Tonka Bean", "Oak Wood"],
-  "baseNotes": ["Praline", "Vanilla", "Sandalwood"]
+  "topNotes": [
+    "Cognac"
+  ],
+  "middleNotes": [
+    "Cinnamon",
+    "Tonka Bean",
+    "Oak",
+    "Hedione"
+  ],
+  "heartNotes": [
+    "Cinnamon",
+    "Tonka Bean",
+    "Oak",
+    "Hedione"
+  ],
+  "baseNotes": [
+    "Vanilla",
+    "Praline",
+    "Sandalwood",
+    "Candied Almond"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/By-Kilian/Angels-Share-62615.html"
 },
 {
   "matches": [
@@ -1906,7 +1752,10 @@ export const KNOWN_PERFUMES = [
   "baseNotes": ["Vanilla", "Cedar", "Patchouli"]
 },
 {
-  "matches": ["marly layton", "layton"],
+  "matches": [
+    "marly layton",
+    "layton"
+  ],
   "brand": "Parfums de Marly",
   "name": "Marly layton",
   "description": "Marly layton is a distinctive EDP Niche fragrance crafted for Winter wear. Opens with vibrant top notes of Apple, Bergamot, Lavender, transitioning into a captivating heart of Cardamom and Violet, rested on a lingering base of Vanilla, Cardamom, Sandalwood.",
@@ -1914,19 +1763,54 @@ export const KNOWN_PERFUMES = [
   "longevity": "10 – 12 Hours",
   "projection": "Strong & Royal",
   "accords": [
-    { "name": "vanilla", "color": "#c49e49", "percentage": 96 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 86 },
-    { "name": "fruity", "color": "#db8a35", "percentage": 78 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 70 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 62 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 54 },
-    { "name": "floral", "color": "#a64d79", "percentage": 46 }
+    "warm spicy",
+    "fresh spicy",
+    "woody",
+    "vanilla",
+    "aromatic",
+    "fruity",
+    "powdery",
+    "lavender",
+    "fresh",
+    "citrus"
   ],
-  "whenToWear": { "winter": 4400, "spring": 1200, "summer": 380, "fall": 3950, "day": 1800, "night": 4300 },
-  "topNotes": ["Apple", "Bergamot", "Lavender", "Mandarin Orange"],
-  "middleNotes": ["Cardamom", "Violet", "Jasmine", "Geranium"],
-  "heartNotes": ["Cardamom", "Violet", "Jasmine", "Geranium"],
-  "baseNotes": ["Vanilla", "Cardamom", "Sandalwood", "Guaiac Wood", "Patchouli", "Pepper"]
+  "whenToWear": {
+    "winter": 4400,
+    "spring": 1200,
+    "summer": 380,
+    "fall": 3950,
+    "day": 1800,
+    "night": 4300
+  },
+  "topNotes": [
+    "Apple",
+    "Bergamot",
+    "Lavender",
+    "Mandarin Orange"
+  ],
+  "middleNotes": [
+    "Cardamom",
+    "Violet",
+    "Jasmine",
+    "Geranium"
+  ],
+  "heartNotes": [
+    "Cardamom",
+    "Violet",
+    "Jasmine",
+    "Geranium"
+  ],
+  "baseNotes": [
+    "Vanilla",
+    "Cardamom",
+    "Sandalwood",
+    "Pepper",
+    "Guaiac Wood",
+    "Patchouli",
+    "Ambermax",
+    "Coumarin"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Layton-39314.html"
 },
 {
   "matches": ["marly castley", "castley", "carlisle"],
@@ -1952,7 +1836,13 @@ export const KNOWN_PERFUMES = [
   "baseNotes": ["Patchouli", "Vanilla", "Opoponax"]
 },
 {
-  "matches": ["mont blac explorar", "mont blac", "mont blanc", "explorar", "explorer"],
+  "matches": [
+    "mont blac explorar",
+    "mont blac",
+    "mont blanc",
+    "explorar",
+    "explorer"
+  ],
   "brand": "Montblanc",
   "name": "Montblanc Explorer",
   "description": "Mont blac explorar is a distinctive EDP Designer fragrance crafted for Summer wear. Opens with vibrant top notes of Bergamot, Pink Pepper, Clary Sage, transitioning into a captivating heart of Haitian Vetiver and Leather, rested on a lingering base of Ambroxan, Akigalawood, Patchouli.",
@@ -1960,41 +1850,59 @@ export const KNOWN_PERFUMES = [
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Crisp",
   "accords": [
-    { "name": "woody", "color": "#543e2e", "percentage": 96 },
-    { "name": "citrus", "color": "#9a7028", "percentage": 88 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 78 },
-    { "name": "leather", "color": "#7A4B3A", "percentage": 68 },
-    { "name": "earthy", "color": "#6b573b", "percentage": 58 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 48 }
+    "woody",
+    "citrus",
+    "aromatic",
+    "leather",
+    "earthy",
+    "fresh spicy"
   ],
-  "whenToWear": { "winter": 410, "spring": 3200, "summer": 4600, "fall": 1400, "day": 4200, "night": 1900 },
-  "topNotes": ["Bergamot", "Pink Pepper", "Clary Sage"],
-  "middleNotes": ["Haitian Vetiver", "Leather"],
-  "heartNotes": ["Haitian Vetiver", "Leather"],
-  "baseNotes": ["Ambroxan", "Akigalawood", "Patchouli"]
+  "whenToWear": {
+    "winter": 410,
+    "spring": 3200,
+    "summer": 4600,
+    "fall": 1400,
+    "day": 4200,
+    "night": 1900
+  },
+  "topNotes": [
+    "Bergamot",
+    "Pink Pepper",
+    "Clary Sage"
+  ],
+  "middleNotes": [
+    "Haitian Vetiver",
+    "Leather"
+  ],
+  "heartNotes": [
+    "Haitian Vetiver",
+    "Leather"
+  ],
+  "baseNotes": [
+    "Ambroxan",
+    "Akigalawood",
+    "Indonesian Patchouli Leaf",
+    "Cacao Pod"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Montblanc/Explorer-52002.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
-  "matches": ["blue de chanel edp", "blue de chanel", "bleu de chanel"],
+  "matches": ["bleu de chanel eau de parfum", "blue de chanel eau de parfum", "blue de chanel edp"],
   "brand": "Chanel",
-  "name": "Blue de chanel edp",
+  "name": "Bleu de Chanel Eau de Parfum",
   "description": "Blue de chanel edp is a distinctive EDP Designer fragrance crafted for Winter/Summer wear. Opens with vibrant top notes of Grapefruit, Lemon, Mint, transitioning into a captivating heart of Ginger and Nutmeg, rested on a lingering base of Incense, Amber, Cedar.",
   "vibe": "Crisp Grapefruit, Spicy Incense, Mint & Cedarwood",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Refined",
-  "accords": [
-    { "name": "woody", "color": "#543e2e", "percentage": 96 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 86 },
-    { "name": "citrus", "color": "#9a7028", "percentage": 78 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 70 },
-    { "name": "amber", "color": "#d9822b", "percentage": 62 },
-    { "name": "incense", "color": "#55515c", "percentage": 54 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 46 }
-  ],
+  "accords": ["citrus", "amber", "woody", "fresh spicy", "aromatic", "warm spicy", "fresh", "smoky", "balsamic", "powdery"],
   "whenToWear": { "winter": 2800, "spring": 3400, "summer": 3100, "fall": 3200, "day": 3600, "night": 3300 },
-  "topNotes": ["Grapefruit", "Lemon", "Mint", "Pink Pepper", "Bergamot"],
+  "topNotes": ["Grapefruit", "Lemon", "Mint", "Bergamot", "Pink Pepper", "Aldehydes", "Coriander"],
   "middleNotes": ["Ginger", "Nutmeg", "Jasmine", "Melon"],
   "heartNotes": ["Ginger", "Nutmeg", "Jasmine", "Melon"],
-  "baseNotes": ["Incense", "Amber", "Cedar", "Sandalwood", "Patchouli", "Labdanum"]
+  "baseNotes": ["Incense", "Amber", "Cedar", "Sandalwood", "Amberwood", "Patchouli", "Labdanum"],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-Eau-de-Parfum-25967.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": ["oud stallion"],
@@ -2004,20 +1912,14 @@ export const KNOWN_PERFUMES = [
   "vibe": "Noble Black Oud, Spicy Saffron & Saddle Leather",
   "longevity": "12 – 16 Hours",
   "projection": "Beast Mode",
-  "accords": [
-    { "name": "leather", "color": "#7A4B3A", "percentage": 96 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 88 },
-    { "name": "oud", "color": "#3f292b", "percentage": 84 },
-    { "name": "woody", "color": "#543e2e", "percentage": 74 },
-    { "name": "floral", "color": "#a64d79", "percentage": 62 },
-    { "name": "animalic", "color": "#70564c", "percentage": 52 },
-    { "name": "rose", "color": "#a64d79", "percentage": 44 }
-  ],
+  "accords": ["leather", "warm spicy", "oud", "floral", "woody", "animalic", "fresh spicy", "white floral", "rose"],
   "whenToWear": { "winter": 4900, "spring": 1000, "summer": 200, "fall": 4400, "day": 1400, "night": 4800 },
   "topNotes": ["Saffron", "Cardamom", "Indonesian Nutmeg"],
   "middleNotes": ["Jasmine", "Osmanthus", "Turkish Rose"],
   "heartNotes": ["Jasmine", "Osmanthus", "Turkish Rose"],
-  "baseNotes": ["Agarwood (Oud)", "Leather", "Cedar", "Tonka", "Patchouli"]
+  "baseNotes": ["Agarwood (Oud)", "Leather", "Cedar", "Tonka", "Patchouli"],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Maison-Crivelli/Oud-Stallion-83822.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": ["roja harrods"],
@@ -2111,7 +2013,10 @@ export const KNOWN_PERFUMES = [
   "baseNotes": ["Vanilla", "Peru Balsam", "Cashmeran"]
 },
 {
-  "matches": ["maison margiela replica lazy sunday morning", "lazy sunday morning"],
+  "matches": [
+    "maison margiela replica lazy sunday morning",
+    "lazy sunday morning"
+  ],
   "brand": "Maison Margiela",
   "name": "Maison Margiela REPLICA Lazy sunday morning",
   "description": "Lazy Sunday Morning by Maison Margiela is a Floral Woody Musk fragrance evoking smooth white cotton sheets warmed by morning sunlight.",
@@ -2119,18 +2024,66 @@ export const KNOWN_PERFUMES = [
   "longevity": "6 – 8 Hours",
   "projection": "Intimate to Moderate",
   "accords": [
-    { "name": "musky", "color": "#3d3b40", "percentage": 96 },
-    { "name": "floral", "color": "#a64d79", "percentage": 86 },
-    { "name": "powdery", "color": "#8c7e77", "percentage": 76 },
-    { "name": "fresh", "color": "#314b4b", "percentage": 68 },
-    { "name": "aldehydic", "color": "#a9b5bc", "percentage": 56 },
-    { "name": "rose", "color": "#a64d79", "percentage": 46 }
+    {
+      "name": "musky",
+      "color": "#3d3b40",
+      "percentage": 96
+    },
+    {
+      "name": "floral",
+      "color": "#a64d79",
+      "percentage": 86
+    },
+    {
+      "name": "powdery",
+      "color": "#8c7e77",
+      "percentage": 76
+    },
+    {
+      "name": "fresh",
+      "color": "#314b4b",
+      "percentage": 68
+    },
+    {
+      "name": "aldehydic",
+      "color": "#a9b5bc",
+      "percentage": 56
+    },
+    {
+      "name": "rose",
+      "color": "#a64d79",
+      "percentage": 46
+    }
   ],
-  "whenToWear": { "winter": 900, "spring": 4600, "summer": 4200, "fall": 2100, "day": 4800, "night": 1200 },
-  "topNotes": ["Aldehydes", "Lily-of-the-Valley", "Pear"],
-  "middleNotes": ["Rose", "Iris", "Orange Blossom"],
-  "heartNotes": ["Rose", "Iris", "Orange Blossom"],
-  "baseNotes": ["White Musk", "Patchouli"]
+  "whenToWear": {
+    "winter": 900,
+    "spring": 4600,
+    "summer": 4200,
+    "fall": 2100,
+    "day": 4800,
+    "night": 1200
+  },
+  "topNotes": [
+    "Aldehydes",
+    "Lily-of-the-Valley",
+    "Pear"
+  ],
+  "middleNotes": [
+    "Rose",
+    "Iris",
+    "Orange Blossom"
+  ],
+  "heartNotes": [
+    "Rose",
+    "Iris",
+    "Orange Blossom"
+  ],
+  "baseNotes": [
+    "White Musk",
+    "Ambrette (Musk Mallow)",
+    "Indonesian Patchouli Leaf"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Lazy-Sunday-Morning-20542.html"
 },
 {
   "matches": ["maison margiela replica jazzclub", "jazz club", "jazzclub"],
@@ -2222,7 +2175,10 @@ export const KNOWN_PERFUMES = [
   "baseNotes": ["Cashmeran", "Ambergris", "Musk"]
 },
 {
-  "matches": ["maison margiela replica sailing day", "sailing day"],
+  "matches": [
+    "maison margiela replica sailing day",
+    "sailing day"
+  ],
   "brand": "Maison Margiela",
   "name": "Maison Margiela REPLICA SAILING DAY",
   "description": "Sailing Day by Maison Margiela is an invigorating aquatic creation recalling deep ocean waters, sea breeze, and sun on wet wood.",
@@ -2230,17 +2186,46 @@ export const KNOWN_PERFUMES = [
   "longevity": "6 – 8 Hours",
   "projection": "Moderate",
   "accords": [
-    { "name": "marine", "color": "#2d3d4d", "percentage": 96 },
-    { "name": "aquatic", "color": "#3b7890", "percentage": 88 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 76 },
-    { "name": "salty", "color": "#485d6e", "percentage": 68 },
-    { "name": "woody", "color": "#543e2e", "percentage": 50 }
+    "marine",
+    "aquatic",
+    "aromatic",
+    "salty",
+    "woody"
   ],
-  "whenToWear": { "winter": 400, "spring": 3100, "summer": 4900, "fall": 1200, "day": 4800, "night": 1300 },
-  "topNotes": ["Sea Notes", "Aldehydes", "Red Pepper"],
-  "middleNotes": ["Juniper", "Iris", "Rose"],
-  "heartNotes": ["Juniper", "Iris", "Rose"],
-  "baseNotes": ["Seaweed", "Ambergris", "Cedarwood"]
+  "whenToWear": {
+    "winter": 400,
+    "spring": 3100,
+    "summer": 4900,
+    "fall": 1200,
+    "day": 4800,
+    "night": 1300
+  },
+  "topNotes": [
+    "Sea Notes",
+    "Aldehydes",
+    "Coriander",
+    "Red Pepper"
+  ],
+  "middleNotes": [
+    "Juniper",
+    "Iris",
+    "Amyl Salicylate",
+    "Rose"
+  ],
+  "heartNotes": [
+    "Juniper",
+    "Iris",
+    "Amyl Salicylate",
+    "Rose"
+  ],
+  "baseNotes": [
+    "Seaweed",
+    "Ambergris",
+    "Cedar",
+    "Amberwood"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Maison-Martin-Margiela/Sailing-Day-47891.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": ["maison margiela replica flower market", "flower market"],
@@ -2264,32 +2249,26 @@ export const KNOWN_PERFUMES = [
   "baseNotes": ["Peach", "Cedarwood", "Oakmoss"]
 },
 {
-  "matches": ["french avenue baie edp", "french avenue", "vulcan"],
+  "matches": ["french avenue baie 19", "french avenue baie edp"],
   "brand": "French Avenue",
-  "name": "French avenue Baie EDP",
-  "description": "French Avenue Vulcan is a distinguished oriental spicy fragrance combining sparkling bergamot, aromatic spices, and a velvety amber trail.",
-  "vibe": "Smoky Incense, Fiery Spices & Deep Ambergris",
+  "name": "French Avenue Baie 19",
+  "description": "The exact French Avenue product variant has not been matched to a reliable source yet.",
+  "vibe": "Product variant needs confirmation",
   "longevity": "9 – 12 Hours",
   "projection": "Strong",
-  "accords": [
-    { "name": "amber", "color": "#d9822b", "percentage": 94 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 86 },
-    { "name": "woody", "color": "#543e2e", "percentage": 76 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 64 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 54 }
-  ],
+  "accords": [],
   "whenToWear": { "winter": 4200, "spring": 2100, "summer": 900, "fall": 3800, "day": 2200, "night": 4300 },
-  "topNotes": ["Bergamot", "Pink Pepper", "Mint"],
-  "middleNotes": ["Cardamom", "Lavender", "Cedarwood"],
-  "heartNotes": ["Cardamom", "Lavender", "Cedarwood"],
-  "baseNotes": ["Ambergris", "Vetiver", "Patchouli"]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: exact product variant/photo needs confirmation"
 },
 
   {
   "matches": [
     "french vulcan feu",
-    "french avenue",
-    "vulcan"
+    "vulcan feu"
   ],
   "brand": "French Avenue",
   "name": "french vulcan feu",
@@ -2298,12 +2277,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 12 Hours",
   "projection": "Strong",
   "accords": [
-    { "name": "fruity", "color": "#d9822b", "percentage": 94 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 86 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 78 },
-    { "name": "woody", "color": "#543e2e", "percentage": 68 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 58 },
-    { "name": "floral", "color": "#a64d79", "percentage": 46 }
+    "tropical",
+    "fruity",
+    "sweet",
+    "citrus",
+    "fresh",
+    "woody",
+    "fresh spicy",
+    "aromatic",
+    "terpenic",
+    "amber"
   ],
   "whenToWear": {
     "winter": 4200,
@@ -2313,31 +2296,46 @@ export const KNOWN_PERFUMES = [
     "day": 2200,
     "night": 4300
   },
-  "topNotes": ["Ginger", "Mango", "Lemon", "Rhubarb"],
-  "middleNotes": ["Jasmine", "Violet", "Praline", "Pink Pepper"],
-  "heartNotes": ["Jasmine", "Violet", "Praline", "Pink Pepper"],
-  "baseNotes": ["Cedar", "Ambergris", "Tonka Bean", "Moss"]
+  "topNotes": [
+    "Mango",
+    "Lemon",
+    "Ginger",
+    "Rhubarb"
+  ],
+  "middleNotes": [
+    "Pink Pepper",
+    "Jasmine",
+    "Violet",
+    "Praline"
+  ],
+  "heartNotes": [
+    "Pink Pepper",
+    "Jasmine",
+    "Violet",
+    "Praline"
+  ],
+  "baseNotes": [
+    "Tonka Bean",
+    "Cedarwood",
+    "Ambergris",
+    "Moss"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/p/105520",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
-    "french vulcan sable brown",
-    "french avenue",
-    "vulcan"
+    "french avenue vulcan sable",
+    "vulcan sable",
+    "french vulcan sable brown"
   ],
   "brand": "French Avenue",
-  "name": "french vulcan sable brown",
-  "description": "French Avenue Vulcan is a distinguished oriental spicy fragrance combining sparkling bergamot, aromatic spices, and a velvety amber trail.",
-  "vibe": "Smoky Incense, Fiery Spices & Deep Ambergris",
+  "name": "French Avenue Vulcan Sable",
+  "description": "French Avenue Vulcan Sable is a boozy aromatic fragrance opening with whiskey, citrus, and spice, followed by tonka and warm woods over vanilla, patchouli, and benzoin.",
+  "vibe": "Whiskey, Tonka, Vanilla & Warm Woods",
   "longevity": "9 – 12 Hours",
   "projection": "Strong",
-  "accords": [
-    { "name": "woody", "color": "#543e2e", "percentage": 94 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 86 },
-    { "name": "amber", "color": "#d9822b", "percentage": 78 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 68 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 58 },
-    { "name": "vanilla", "color": "#d8b68a", "percentage": 48 }
-  ],
+  "accords": ["vanilla", "woody", "amber", "whiskey", "warm spicy", "citrus", "sweet", "powdery", "balsamic", "musky"],
   "whenToWear": {
     "winter": 4200,
     "spring": 2100,
@@ -2346,31 +2344,25 @@ export const KNOWN_PERFUMES = [
     "day": 2200,
     "night": 4300
   },
-  "topNotes": ["Whiskey", "Coriander Seed", "Mandarin", "Orange", "Sesame", "Anise"],
-  "middleNotes": ["Cocoa", "Sandalwood", "Cashmeran"],
-  "heartNotes": ["Cocoa", "Sandalwood", "Cashmeran"],
-  "baseNotes": ["Tonka Bean", "Benzoin", "Styrax", "White Cedar", "Patchouli", "Vanilla", "Cashmere Wood"]
+  "topNotes": ["Whiskey", "Orange", "Coriander", "Mandarin"],
+  "middleNotes": ["Tonka", "Cashmeran", "Styrax", "Anise"],
+  "heartNotes": ["Tonka", "Cashmeran", "Styrax", "Anise"],
+  "baseNotes": ["Vanilla", "Patchouli", "Benzoin"],
+  "sourceUrl": "https://www.fragrantica.com/perfume/French-Avenue/Vulcan-Sable-105521.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "turathi electric",
-    "turathi blue",
-    "turathi"
+    "afnan turathi electric"
   ],
   "brand": "Afnan",
-  "name": "turathi electric",
-  "description": "turathi electric is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Juicy Grapefruit, Bergamot, Mandarin, transitioning into a captivating heart of Ambroxan and Woody Notes, rested on a lingering base of Amber, Musk, Patchouli.",
-  "vibe": "Zesty Grapefruit, Ambroxan & Deep Woody Amber",
+  "name": "Afnan Turathi Electric",
+  "description": "A floral fruity fragrance with pear, pink grapefruit, mandarin orange, and bergamot up top; orange blossom, apple, and cedarwood in the heart; and musk, amber, and vanilla in the base.",
+  "vibe": "Juicy Pear, Citrus, Orange Blossom & Soft Musk",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Fresh",
-  "accords": [
-    { "name": "fruity", "color": "#d9822b", "percentage": 94 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 88 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 76 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 68 },
-    { "name": "amber", "color": "#d9822b", "percentage": 58 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 46 }
-  ],
+  "accords": ["citrus", "fruity", "sweet", "musky", "powdery", "fresh", "white floral", "fresh spicy", "aquatic", "green"],
   "whenToWear": {
     "winter": 410,
     "spring": 3200,
@@ -2379,10 +2371,12 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Bergamot", "Pink Grapefruit", "Pear", "Mandarin Orange"],
-  "middleNotes": ["Apple", "Cedarwood", "Orange Blossom"],
-  "heartNotes": ["Apple", "Cedarwood", "Orange Blossom"],
-  "baseNotes": ["Vanilla", "Amber Dry", "Musk", "Ambroxan"]
+  "topNotes": ["Pear", "Pink Grapefruit", "Mandarin Orange", "Bergamot"],
+  "middleNotes": ["Orange Blossom", "Apple", "Cedarwood"],
+  "heartNotes": ["Orange Blossom", "Apple", "Cedarwood"],
+  "baseNotes": ["Musk", "Amber", "Vanilla"],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Afnan/Turathi-Electric-108244.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2390,19 +2384,14 @@ export const KNOWN_PERFUMES = [
     "turathi"
   ],
   "brand": "Afnan",
-  "name": "Turathi blue",
-  "description": "Turathi blue is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Juicy Grapefruit, Bergamot, Mandarin, transitioning into a captivating heart of Ambroxan and Woody Notes, rested on a lingering base of Amber, Musk, Patchouli.",
-  "vibe": "Zesty Grapefruit, Ambroxan & Deep Woody Amber",
+  "name": "Turathi Blue",
+  "description": "An aromatic aquatic fragrance with a citrus opening, a heart of woodsy notes and amber, and a musk, spice, and patchouli base.",
+  "vibe": "Citrus, Musk, Woods, Amber & Patchouli",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Fresh",
   "accords": [
-    { "name": "citrus", "color": "#d6b52b", "percentage": 94 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 86 },
-    { "name": "fruity", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "aquatic", "color": "#4682b4", "percentage": 56 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 44 },
-    { "name": "amber", "color": "#d9822b", "percentage": 36 }
+    "citrus", "musky", "woody", "fresh", "amber", "powdery",
+    "warm spicy", "patchouli"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2412,10 +2401,10 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Bergamot", "Mandarin"],
+  "topNotes": ["Citruses"],
   "middleNotes": ["Amber", "Woody Notes"],
   "heartNotes": ["Amber", "Woody Notes"],
-  "baseNotes": ["Musk", "Patchouli", "Fresh Spicy Notes"]
+  "baseNotes": ["Musk", "Spices", "Patchouli"]
 },
 {
   "matches": [
@@ -2424,19 +2413,14 @@ export const KNOWN_PERFUMES = [
     "cdnim"
   ],
   "brand": "Armaf",
-  "name": "Armaf Club de nuit intense",
-  "description": "Armaf Club de nuit intense is a distinctive EDT Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Lemon, Pineapple, Bergamot, transitioning into a captivating heart of Birch and Jasmine, rested on a lingering base of Musk, Ambergris, Patchouli.",
-  "vibe": "Smoky Lemon Birch, Blackcurrant & Oakmoss",
+  "name": "Armaf Club de Nuit Intense Man",
+  "description": "A woody spicy fragrance opening with lemon, pineapple, bergamot, black currant, and apple, moving through birch, jasmine, and rose, and settling on musk, ambergris, patchouli, and vanilla.",
+  "vibe": "Citrus, Pineapple, Smoky Birch & Musk",
   "longevity": "10 – 12 Hours",
   "projection": "Beast Mode",
   "accords": [
-    { "name": "citrus", "color": "#d6b52b", "percentage": 96 },
-    { "name": "fruity", "color": "#d9822b", "percentage": 88 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 80 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 72 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 62 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 52 },
-    { "name": "earthy", "color": "#806044", "percentage": 42 }
+    "citrus", "fruity", "leather", "smoky", "woody", "aromatic",
+    "sweet", "fresh", "musky"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2446,33 +2430,20 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Lemon", "Pineapple", "Bergamot", "Blackcurrant", "Apple"],
+  "topNotes": ["Lemon", "Pineapple", "Bergamot", "Black Currant", "Apple"],
   "middleNotes": ["Birch", "Jasmine", "Rose"],
   "heartNotes": ["Birch", "Jasmine", "Rose"],
   "baseNotes": ["Musk", "Ambergris", "Patchouli", "Vanilla"]
 },
 {
-  "matches": [
-    "armaf omb d'or",
-    "ombre leather",
-    "ombré leather",
-    "jean lowe ombre",
-    "omb d'or"
-  ],
+  "matches": ["armaf ombre d or", "omb d or"],
   "brand": "Armaf",
   "name": "Armaf Ombre D'Or",
-  "description": "Ombré Leather is a deeply tactile floral leather fragrance driven by rich spices, cardamom, and sensual jasmine sambac over warm amber and patchouli.",
+  "description": "Armaf Ombre D\'Or has no confirmed note or accord source in the current review.",
   "vibe": "Warm, Rich Leather & Floral Smoke",
   "longevity": "9 – 12 Hours",
   "projection": "Strong (Room-Filling)",
-  "accords": [
-    { "name": "leather", "color": "#7A4B3A", "percentage": 95 },
-    { "name": "woody", "color": "#543e2e", "percentage": 82 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "floral", "color": "#a64d79", "percentage": 62 },
-    { "name": "amber", "color": "#d9822b", "percentage": 52 },
-    { "name": "earthy", "color": "#806044", "percentage": 42 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4700,
     "spring": 1300,
@@ -2481,41 +2452,37 @@ export const KNOWN_PERFUMES = [
     "day": 1700,
     "night": 4800
   },
-  "topNotes": ["Cardamom"],
-  "middleNotes": ["Black Leather", "Jasmine Sambac"],
-  "heartNotes": ["Black Leather", "Jasmine Sambac"],
-  "baseNotes": ["Patchouli", "Amber", "Moss"]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable source found"
 },
 {
   "matches": [
     "afnan supermacy not only intense",
-    "supermacy",
-    "supremacy"
+    "afnan supremacy not only intense",
+    "supremacy not only intense"
   ],
   "brand": "Afnan",
-  "name": "Afnan supermacy not only intense",
-  "description": "Afnan supermacy not only intense is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Blackcurrant, Bergamot, Apple, transitioning into a captivating heart of Oakmoss and Patchouli, rested on a lingering base of Ambergris, Musk, Saffron.",
-  "vibe": "Fruity Blackcurrant, Bergamot, Birch Smoke & Oakmoss",
+  "name": "Afnan Supremacy Not Only Intense",
+  "description": "A fruity, mossy woody fragrance opening with black currant, bergamot, and apple, moving through oakmoss, patchouli, and lavender, then drying down to ambergris, musk, and saffron.",
+  "vibe": "Black Currant, Citrus, Oakmoss & Patchouli",
   "longevity": "10 – 12 Hours",
   "projection": "Beast Mode",
   "accords": [
-    { "name": "fruity", "color": "#d9822b", "percentage": 94 },
-    { "name": "mossy", "color": "#607d3b", "percentage": 86 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 78 },
-    { "name": "earthy", "color": "#806044", "percentage": 68 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 58 },
-    { "name": "fresh spicy", "color": "#b85428", "percentage": 48 },
-    { "name": "amber", "color": "#d9822b", "percentage": 38 }
+    "fruity", "mossy", "woody", "earthy", "citrus", "fresh spicy",
+    "amber", "animalic", "aromatic", "warm spicy"
   ],
   "whenToWear": {
-    "winter": 410,
-    "spring": 3200,
-    "summer": 4600,
-    "fall": 1400,
-    "day": 4200,
-    "night": 1900
+    "winter": 2400,
+    "spring": 3300,
+    "summer": 3100,
+    "fall": 3200,
+    "day": 3200,
+    "night": 2900
   },
-  "topNotes": ["Blackcurrant", "Bergamot", "Apple"],
+  "topNotes": ["Black Currant", "Bergamot", "Apple"],
   "middleNotes": ["Oakmoss", "Patchouli", "Lavender"],
   "heartNotes": ["Oakmoss", "Patchouli", "Lavender"],
   "baseNotes": ["Ambergris", "Musk", "Saffron"]
@@ -2523,22 +2490,26 @@ export const KNOWN_PERFUMES = [
 {
   "matches": [
     "afnan supermacy collector edition",
-    "supermacy",
-    "supremacy"
+    "afnan supremacy collector edition",
+    "supremacy collector's edition"
   ],
   "brand": "Afnan",
-  "name": "Afnan supermacy collector edition",
-  "description": "Afnan supermacy collector edition is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Blackcurrant, Bergamot, Apple, transitioning into a captivating heart of Oakmoss and Patchouli, rested on a lingering base of Ambergris, Musk, Saffron.",
-  "vibe": "Fruity Blackcurrant, Bergamot, Birch Smoke & Oakmoss",
+  "name": "Afnan Supremacy Collector's Edition Pour Homme",
+  "description": "A chypre fruity fragrance opening with pineapple, bergamot, white flowers, and apple; its heart combines orange blossom, birch, and amber, over an oak moss, musk, and ambergris base.",
+  "vibe": "Pineapple, Citrus, White Flowers & Oak Moss",
   "longevity": "10 – 12 Hours",
   "projection": "Beast Mode",
   "accords": [
-    { "name": "fruity", "color": "#d9822b", "percentage": 94 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "white floral", "color": "#eee5d9", "percentage": 66 },
-    { "name": "mossy", "color": "#607d3b", "percentage": 56 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 46 }
+    "fruity",
+    "sweet",
+    "white floral",
+    "citrus",
+    "amber",
+    "mossy",
+    "tropical",
+    "animalic",
+    "fresh",
+    "musky"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2548,13 +2519,34 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Pineapple", "Bergamot", "Apple", "White Floral"],
-  "middleNotes": ["Orange Blossom", "Birch", "Amber"],
-  "heartNotes": ["Orange Blossom", "Birch", "Amber"],
-  "baseNotes": ["Oak Moss", "Musk", "Ambergris"]
+  "topNotes": [
+    "Pineapple",
+    "Bergamot",
+    "White Flowers",
+    "Apple"
+  ],
+  "middleNotes": [
+    "Orange Blossom",
+    "Birch",
+    "Amber"
+  ],
+  "heartNotes": [
+    "Orange Blossom",
+    "Birch",
+    "Amber"
+  ],
+  "baseNotes": [
+    "Oak Moss",
+    "Musk",
+    "Ambergris"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/p/98689",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
-  "matches": ["hawas ice"],
+  "matches": [
+    "hawas ice"
+  ],
   "brand": "Rasasi",
   "name": "Hawas Ice",
   "description": "Hawas Ice is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Frozen Apple, Bergamot, Lemon, transitioning into a captivating heart of Plum and Cardamom, rested on a lingering base of Ambergris, Musk, Driftwood.",
@@ -2562,12 +2554,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "10 – 12 Hours",
   "projection": "Beast Mode",
   "accords": [
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 94 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 86 },
-    { "name": "fruity", "color": "#d9822b", "percentage": 78 },
-    { "name": "aquatic", "color": "#4682b4", "percentage": 68 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 58 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 }
+    "fruity",
+    "citrus",
+    "sweet",
+    "fresh",
+    "aromatic",
+    "musky",
+    "powdery",
+    "fresh spicy",
+    "green",
+    "amber"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2577,10 +2573,30 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Frozen Apple", "Bergamot", "Lemon", "Star Anise"],
-  "middleNotes": ["Plum", "Cardamom", "Orange Blossom"],
-  "heartNotes": ["Plum", "Cardamom", "Orange Blossom"],
-  "baseNotes": ["Ambergris", "Musk", "Driftwood", "Moss"]
+  "topNotes": [
+    "Apple",
+    "Italian Lemon",
+    "Sicilian Bergamot",
+    "Star Anise"
+  ],
+  "middleNotes": [
+    "Plum",
+    "Orange Blossom",
+    "Cardamom"
+  ],
+  "heartNotes": [
+    "Plum",
+    "Orange Blossom",
+    "Cardamom"
+  ],
+  "baseNotes": [
+    "Musk",
+    "Amber",
+    "Driftwood",
+    "Moss"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Ice-89050.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2595,12 +2611,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "aquatic", "color": "#4682b4", "percentage": 92 },
-    { "name": "fruity", "color": "#d9822b", "percentage": 84 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 76 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 68 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 56 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 46 }
+    "sweet",
+    "green",
+    "woody",
+    "coconut",
+    "vanilla",
+    "fresh",
+    "aromatic",
+    "powdery",
+    "lactonic",
+    "fruity"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2610,10 +2630,28 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Coconut Water",
+    "Fig Leaf",
+    "Ginger"
+  ],
+  "middleNotes": [
+    "Coconut",
+    "Fig",
+    "Mint"
+  ],
+  "heartNotes": [
+    "Coconut",
+    "Fig",
+    "Mint"
+  ],
+  "baseNotes": [
+    "Sandalwood",
+    "Tonka Bean",
+    "Musk"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/p/108054",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2627,12 +2665,12 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "aquatic", "color": "#4682b4", "percentage": 92 },
-    { "name": "fruity", "color": "#d9822b", "percentage": 84 },
-    { "name": "citrus", "color": "#d6b52b", "percentage": 76 },
-    { "name": "fresh", "color": "#6ca6a3", "percentage": 68 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 56 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 46 }
+    "aquatic",
+    "fruity",
+    "citrus",
+    "fresh",
+    "musky",
+    "woody"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2642,10 +2680,32 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Apple",
+    "Bergamot",
+    "Lemon",
+    "Cinnamon"
+  ],
+  "middleNotes": [
+    "Watery Notes",
+    "Plum",
+    "Orange Blossom",
+    "Cardamom"
+  ],
+  "heartNotes": [
+    "Watery Notes",
+    "Plum",
+    "Orange Blossom",
+    "Cardamom"
+  ],
+  "baseNotes": [
+    "Ambergris",
+    "Musk",
+    "Patchouli",
+    "Driftwood"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-for-Him-46890.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2660,12 +2720,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "amber", "color": "#d9822b", "percentage": 92 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 84 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 76 },
-    { "name": "vanilla", "color": "#d8b68a", "percentage": 68 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 58 },
-    { "name": "musky", "color": "#a9a9a9", "percentage": 48 }
+    "vanilla",
+    "aromatic",
+    "green",
+    "sweet",
+    "fresh spicy",
+    "warm spicy",
+    "amber",
+    "chocolate",
+    "lavender",
+    "powdery"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -2675,10 +2739,28 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Mint",
+    "Bergamot",
+    "Artemisia"
+  ],
+  "middleNotes": [
+    "Dark Chocolate",
+    "Lavender",
+    "Benzoin"
+  ],
+  "heartNotes": [
+    "Dark Chocolate",
+    "Lavender",
+    "Benzoin"
+  ],
+  "baseNotes": [
+    "Vanilla",
+    "Tonka Bean",
+    "White Musk"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Elixir-110808.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2693,13 +2775,14 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "amber",
+    "aromatic",
+    "mineral",
+    "marine",
+    "soft spicy",
+    "animalic",
+    "white floral",
+    "salty"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2709,31 +2792,48 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Clary Sage"
+  ],
+  "middleNotes": [
+    "Marine Notes",
+    "Egyptian Jasmine"
+  ],
+  "heartNotes": [
+    "Marine Notes",
+    "Egyptian Jasmine"
+  ],
+  "baseNotes": [
+    "Amber",
+    "Mineral Notes",
+    "Ambergris"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Fire-101665.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "hawas verde",
-    "hawas for him",
-    "hawas"
+    "rasasi hawas verde",
+    "rasasi hawas verde for men"
   ],
   "brand": "Rasasi",
-  "name": "Hawas verde",
-  "description": "Hawas verde is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Apple, Bergamot, Lemon, transitioning into a captivating heart of Watery Notes and Plum, rested on a lingering base of Ambergris, Musk, Patchouli.",
-  "vibe": "Aquatic Melon, Apple, Cinnamon & Ambergris",
+  "name": "Rasasi Hawas Verde",
+  "description": "Rasasi Hawas Verde features lime and green apple with aromatic rosemary, settling into patchouli and amber.",
+  "vibe": "Lime, Green Apple, Rosemary & Patchouli",
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "citrus",
+    "aromatic",
+    "fresh spicy",
+    "woody",
+    "fruity",
+    "green",
+    "patchouli",
+    "conifer",
+    "fresh",
+    "amber"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2743,10 +2843,23 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Lime",
+    "Green Apple"
+  ],
+  "middleNotes": [
+    "Rosemary"
+  ],
+  "heartNotes": [
+    "Rosemary"
+  ],
+  "baseNotes": [
+    "Patchouli",
+    "Amber"
+  ],
+  "verificationNote": "Fragrantica lists Lime, Rosemary, Green Apple, Patchouli, and Amber without a top/heart/base split. The displayed tiers follow the supplied reference grouping.",
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Verde-117625.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2761,13 +2874,15 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "woody",
+    "citrus",
+    "mossy",
+    "earthy",
+    "fresh spicy",
+    "fruity",
+    "patchouli",
+    "sweet",
+    "aromatic"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2777,10 +2892,28 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Bergamot",
+    "Pineapple",
+    "Grapefruit"
+  ],
+  "middleNotes": [
+    "Patchouli",
+    "Cedarwood",
+    "Jasmine"
+  ],
+  "heartNotes": [
+    "Patchouli",
+    "Cedarwood",
+    "Jasmine"
+  ],
+  "baseNotes": [
+    "Oakmoss",
+    "Woody Notes",
+    "Amber"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Hawas-Black-96817.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2795,13 +2928,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "sweet",
+    "amber",
+    "citrus",
+    "fruity",
+    "powdery",
+    "musky",
+    "vanilla",
+    "iris",
+    "woody",
+    "aromatic"
   ],
   "whenToWear": {
     "winter": 410,
@@ -2811,10 +2947,29 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Pineapple",
+    "Orange",
+    "Grapefruit"
+  ],
+  "middleNotes": [
+    "Amber",
+    "Orris",
+    "Lavender"
+  ],
+  "heartNotes": [
+    "Amber",
+    "Orris",
+    "Lavender"
+  ],
+  "baseNotes": [
+    "Tonka Bean",
+    "Musk",
+    "Patchouli",
+    "Cashmeran"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/p/112707",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2829,13 +2984,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Invigorating",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "citrus",
+    "fresh spicy",
+    "fresh",
+    "musky",
+    "woody",
+    "green",
+    "powdery",
+    "amber",
+    "cinnamon",
+    "warm spicy"
   ],
   "whenToWear": {
     "winter": 2800,
@@ -2845,10 +3003,28 @@ export const KNOWN_PERFUMES = [
     "day": 3600,
     "night": 3300
   },
-  "topNotes": ["Apple", "Bergamot", "Lemon", "Cinnamon"],
-  "middleNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "heartNotes": ["Watery Notes", "Plum", "Orange Blossom", "Cardamom"],
-  "baseNotes": ["Ambergris", "Musk", "Patchouli", "Driftwood"]
+  "topNotes": [
+    "Ginger",
+    "Bergamot",
+    "Tangerine"
+  ],
+  "middleNotes": [
+    "Green Tea",
+    "Neroli",
+    "Cinnamon"
+  ],
+  "heartNotes": [
+    "Green Tea",
+    "Neroli",
+    "Cinnamon"
+  ],
+  "baseNotes": [
+    "Musk",
+    "Woody Notes",
+    "Amber"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Rasasi/Kobra-112706.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2950,22 +3126,15 @@ export const KNOWN_PERFUMES = [
   {
   "matches": [
     "jean lowe ombre",
-    "ombre leather",
-    "ombré leather",
-    "omb d'or"
+    "jean lowe noir"
   ],
   "brand": "Maison Alhambra",
   "name": "Maison Alhambra Jean Lowe Ombre",
-  "description": "Ombré Leather is a deeply tactile floral leather fragrance driven by rich spices, cardamom, and sensual jasmine sambac over warm amber and patchouli.",
-  "vibe": "Warm, Rich Leather & Floral Smoke",
+  "description": "Jean Lowe Ombre by Maison Alhambra pairs oud and incense with rose, raspberry, saffron, and birch over amber, benzoin, and geranium.",
+  "vibe": "Oud, Incense, Rose & Raspberry",
   "longevity": "9 – 12 Hours",
   "projection": "Strong (Room-Filling)",
-  "accords": [
-    { "name": "leather", "color": "#7A4B3A", "percentage": 95 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 80 },
-    { "name": "floral", "color": "#a64d79", "percentage": 65 },
-    { "name": "amber", "color": "#d9822b", "percentage": 55 }
-  ],
+  "accords": ["amber", "oud", "warm spicy", "rose", "smoky", "fruity", "leather", "fresh spicy", "balsamic", "sweet"],
   "whenToWear": {
     "winter": 4700,
     "spring": 1300,
@@ -2975,22 +3144,28 @@ export const KNOWN_PERFUMES = [
     "night": 4800
   },
   "topNotes": [
-    "Cardamom",
-    "Saffron"
+    "Oud",
+    "Incense"
   ],
   "middleNotes": [
-    "Black Leather",
-    "Jasmine Sambac"
+    "Rose",
+    "Raspberry",
+    "Saffron",
+    "Birch"
   ],
   "heartNotes": [
-    "Black Leather",
-    "Jasmine Sambac"
+    "Rose",
+    "Raspberry",
+    "Saffron",
+    "Birch"
   ],
   "baseNotes": [
-    "Patchouli",
     "Amber",
-    "Moss"
-  ]
+    "Benzoin",
+    "Geranium"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Maison-Alhambra/Jean-Lowe-Ombre-91352.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -2999,18 +3174,13 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Afnan",
   "name": "Afnan 9PM",
-  "description": "Afnan 9PM is a distinctive EDP Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Apple, Cinnamon, Wild Lavender, transitioning into a captivating heart of Orange Blossom and Lily-of-the-Valley, rested on a lingering base of Vanilla, Tonka Bean, Amber.",
+  "description": "A sweet, warm spicy fragrance opening with apple, cinnamon, wild lavender, and bergamot; moving into orange blossom and lily-of-the-valley; then settling on vanilla, tonka bean, amber, and patchouli.",
   "vibe": "Sweet Bubblegum Apple, Spicy Cinnamon & Warm Vanilla",
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Playful",
   "accords": [
-    { "name": "sweet", "color": "#9c2759", "percentage": 95 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 88 },
-    { "name": "amber", "color": "#d9822b", "percentage": 78 },
-    { "name": "fruity", "color": "#c84b4b", "percentage": 72 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 65 },
-    { "name": "powdery", "color": "#b9a4bd", "percentage": 52 },
-    { "name": "lavender", "color": "#7962a6", "percentage": 42 }
+    "vanilla", "amber", "warm spicy", "fruity", "cinnamon", "sweet",
+    "lavender", "fresh", "aromatic", "powdery"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -3043,24 +3213,26 @@ export const KNOWN_PERFUMES = [
 },
 {
   "matches": [
-    "9pm elixer",
-    "9pm",
-    "afnan 9pm"
+    "9pm elixer", "9pm elixir", "9 pm elixer", "9 pm elixir",
+    "afnan 9pm elixer", "afnan 9pm elixir", "afnan 9 pm elixer", "afnan 9 pm elixir"
   ],
   "brand": "Afnan",
-  "name": "9PM ELIXER",
-  "description": "9PM ELIXER is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Apple, Cinnamon, Wild Lavender, transitioning into a captivating heart of Orange Blossom and Lily-of-the-Valley, rested on a lingering base of Vanilla, Tonka Bean, Amber.",
-  "vibe": "Sweet Bubblegum Apple, Spicy Cinnamon & Warm Vanilla",
+  "name": "Afnan 9PM Elixir",
+  "description": "A warm spicy unisex extrait with cardamom, nutmeg, and elemi up top; pimento, leather, and lavender in the heart; and vanilla, patchouli, labdanum, and rock rose in the base.",
+  "vibe": "Cardamom, Leather, Lavender & Vanilla",
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Playful",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "warm spicy",
+    "vanilla",
+    "aromatic",
+    "fresh spicy",
+    "leather",
+    "lavender",
+    "balsamic",
+    "patchouli",
+    "powdery",
+    "woody"
   ],
   "whenToWear": {
     "winter": 410,
@@ -3071,46 +3243,62 @@ export const KNOWN_PERFUMES = [
     "night": 1900
   },
   "topNotes": [
-    "Apple",
-    "Cinnamon",
-    "Wild Lavender",
-    "Bergamot"
+    "Cardamom",
+    "Nutmeg",
+    "Elemi"
   ],
   "middleNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Pimento",
+    "Leather",
+    "Lavender"
   ],
   "heartNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Pimento",
+    "Leather",
+    "Lavender"
   ],
   "baseNotes": [
     "Vanilla",
-    "Tonka Bean",
-    "Amber",
-    "Patchouli"
-  ]
+    "Patchouli",
+    "Labdanum",
+    "Rock Rose"
+  ],
+  "whenToWear": {
+    "winter": 1500,
+    "spring": 417,
+    "summer": 127,
+    "fall": 1300,
+    "day": 448,
+    "night": 1400
+  },
+  "sourceUrl": "https://www.fragrantica.com/perfume/Afnan/9PM-Elixir-111894.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "9pm night out",
+    "9 pm night out",
+    "afnan 9 pm night out",
     "9pm",
     "afnan 9pm"
   ],
   "brand": "Afnan",
-  "name": "9PM night out",
-  "description": "9PM night out is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter/summer wear. Opens with vibrant top notes of Apple, Cinnamon, Wild Lavender, transitioning into a captivating heart of Orange Blossom and Lily-of-the-Valley, rested on a lingering base of Vanilla, Tonka Bean, Amber.",
-  "vibe": "Sweet Bubblegum Apple, Spicy Cinnamon & Warm Vanilla",
+  "name": "Afnan 9 PM Night Out",
+  "description": "A woody fruity unisex extrait with pitahaya, cognac, lavender, apple, and bergamot up top; toffee, suede, cardamom, cedar, and mahonial in the heart; and tonka bean, akigalawood, ambrofix, and patchouli in the base.",
+  "vibe": "Dragon Fruit, Cognac, Suede & Warm Woods",
   "longevity": "9 – 11 Hours",
   "projection": "Strong & Playful",
   "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
+    "woody",
+    "fruity",
+    "warm spicy",
+    "sweet",
+    "tropical",
+    "aromatic",
+    "lavender",
+    "floral",
+    "vanilla",
+    "fresh spicy"
   ],
   "whenToWear": {
     "winter": 2800,
@@ -3121,29 +3309,40 @@ export const KNOWN_PERFUMES = [
     "night": 3300
   },
   "topNotes": [
+    "Pitahaya",
+    "Cognac",
+    "Lavender",
     "Apple",
-    "Cinnamon",
-    "Wild Lavender",
     "Bergamot"
   ],
   "middleNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Toffee",
+    "Suede",
+    "Cardamom",
+    "Cedar",
+    "Mahonial"
   ],
   "heartNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Toffee",
+    "Suede",
+    "Cardamom",
+    "Cedar",
+    "Mahonial"
   ],
   "baseNotes": [
-    "Vanilla",
     "Tonka Bean",
-    "Amber",
+    "Akigalawood",
+    "Ambrofix",
     "Patchouli"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Afnan/9-PM-Night-Out-123313.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
     "9am dive",
+    "9 am dive",
+    "afnan 9 am dive",
     "9am"
   ],
   "brand": "Afnan",
@@ -3153,16 +3352,16 @@ export const KNOWN_PERFUMES = [
   "longevity": "Not verified",
   "projection": "Not verified",
   "accords": [
-    { "name": "fruity", "color": "#c84b4b", "percentage": 100 },
-    { "name": "green", "color": "#2d6a4f", "percentage": 90 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 80 },
-    { "name": "citrus", "color": "#9a7028", "percentage": 70 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 60 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 50 },
-    { "name": "fresh", "color": "#3d6b8f", "percentage": 40 },
-    { "name": "soft spicy", "color": "#8e6b3a", "percentage": 30 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 20 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 10 }
+    "fruity",
+    "green",
+    "woody",
+    "citrus",
+    "fresh spicy",
+    "aromatic",
+    "fresh",
+    "soft spicy",
+    "warm spicy",
+    "balsamic"
   ],
   "whenToWear": {
     "winter": 400,
@@ -3174,71 +3373,28 @@ export const KNOWN_PERFUMES = [
   },
   "topNotes": [
     "Lemon",
-    "Pink Pepper",
     "Mint",
-    "Black Currant"
+    "Black Currant",
+    "Pink Pepper"
   ],
   "middleNotes": [
     "Apple",
-    "Incense",
-    "Cedarwood"
+    "Cedar",
+    "Incense"
   ],
   "baseNotes": [
-    "Patchouli",
-    "Jasmine",
     "Ginger",
-    "Sandalwood"
-  ]
-},
-{
-  "matches": [
-    "9pm elixer",
-    "9pm",
-    "afnan 9pm"
-  ],
-  "brand": "Afnan",
-  "name": "9PM ELIXER",
-  "description": "9PM ELIXER is a distinctive EDP Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Apple, Cinnamon, Wild Lavender, transitioning into a captivating heart of Orange Blossom and Lily-of-the-Valley, rested on a lingering base of Vanilla, Tonka Bean, Amber.",
-  "vibe": "Sweet Bubblegum Apple, Spicy Cinnamon & Warm Vanilla",
-  "longevity": "9 – 11 Hours",
-  "projection": "Strong & Playful",
-  "accords": [
-    { "name": "oud", "color": "#3f292b", "percentage": 92 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 84 },
-    { "name": "amber", "color": "#d9822b", "percentage": 76 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 68 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 56 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 45 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
-  "whenToWear": {
-    "winter": 410,
-    "spring": 3200,
-    "summer": 4600,
-    "fall": 1400,
-    "day": 4200,
-    "night": 1900
-  },
-  "topNotes": [
-    "Apple",
-    "Cinnamon",
-    "Wild Lavender",
-    "Bergamot"
-  ],
-  "middleNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Sandalwood",
+    "Patchouli",
+    "Jasmine"
   ],
   "heartNotes": [
-    "Orange Blossom",
-    "Lily-of-the-Valley"
+    "Apple",
+    "Cedar",
+    "Incense"
   ],
-  "baseNotes": [
-    "Vanilla",
-    "Tonka Bean",
-    "Amber",
-    "Patchouli"
-  ]
+  "sourceUrl": "https://www.fragrantica.com/perfume/Afnan/9am-Dive-78611.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -3251,13 +3407,13 @@ export const KNOWN_PERFUMES = [
   "longevity": "10 – 12 Hours",
   "projection": "Strong & Cozy",
   "accords": [
-    { "name": "vanilla", "color": "#c49e49", "percentage": 95 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 88 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 82 },
-    { "name": "amber", "color": "#d9822b", "percentage": 74 },
-    { "name": "cinnamon", "color": "#9b4d28", "percentage": 66 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 58 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 45 }
+    "vanilla",
+    "warm spicy",
+    "sweet",
+    "amber",
+    "cinnamon",
+    "woody",
+    "aromatic"
   ],
   "whenToWear": {
     "winter": 4400,
@@ -3269,8 +3425,8 @@ export const KNOWN_PERFUMES = [
   },
   "topNotes": [
     "Cinnamon",
-    "Cardamom",
     "Orange Blossom",
+    "Cardamom",
     "Bergamot"
   ],
   "middleNotes": [
@@ -3283,10 +3439,12 @@ export const KNOWN_PERFUMES = [
   ],
   "baseNotes": [
     "Praline",
-    "Musk",
     "Ambroxan",
+    "Musk",
     "Guaiac Wood"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/French-Avenue/Liquid-Brun-94713.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
   "matches": [
@@ -3296,19 +3454,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "Greek Tobacco",
-  "description": "Greek Tobacco is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4400,
     "spring": 1200,
@@ -3317,29 +3467,11 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
@@ -3349,19 +3481,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "Brazilian Tobacco",
-  "description": "Brazilian Tobacco is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4400,
     "spring": 1200,
@@ -3370,29 +3494,11 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
@@ -3402,19 +3508,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "Spanish Tobacco",
-  "description": "Spanish Tobacco is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4400,
     "spring": 1200,
@@ -3423,29 +3521,11 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
@@ -3455,19 +3535,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "French Tobacco",
-  "description": "French Tobacco is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Summer wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 410,
     "spring": 3200,
@@ -3476,29 +3548,11 @@ export const KNOWN_PERFUMES = [
     "day": 4200,
     "night": 1900
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
@@ -3508,19 +3562,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "Tobacco Extrait de Parfum",
-  "description": "Tobacco Extrait de Parfum is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4400,
     "spring": 1200,
@@ -3529,29 +3575,11 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
@@ -3561,19 +3589,11 @@ export const KNOWN_PERFUMES = [
   ],
   "brand": "Bespoke Collection",
   "name": "Dominican Tobacco",
-  "description": "Dominican Tobacco is a distinctive EXTRAIT DE PARFUM Middle eastern fragrance crafted for Winter wear. Opens with vibrant top notes of Spiced Tobacco Leaf, Cinnamon, Cardamom, transitioning into a captivating heart of Golden Honey and Clove, rested on a lingering base of Vanilla, Dried Fruits, Cedarwood.",
-  "vibe": "Aged Pipe Tobacco, Warm Spices, Honey & Rich Resins",
+  "description": "Manufacturer note information is pending source verification.",
+  "vibe": "Pending manufacturer source",
   "longevity": "10 – 13 Hours",
   "projection": "Strong & Enveloping",
-  "accords": [
-    { "name": "tobacco", "color": "#8B4513", "percentage": 95 },
-    { "name": "sweet", "color": "#9c2759", "percentage": 80 },
-    { "name": "warm spicy", "color": "#b85428", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 65 },
-    { "name": "vanilla", "color": "#c49e49", "percentage": 55 },
-    { "name": "woody", "color": "#6e4f32", "percentage": 48 },
-    { "name": "smoky", "color": "#4a4a4e", "percentage": 38 }
-  ],
+  "accords": [],
   "whenToWear": {
     "winter": 4400,
     "spring": 1200,
@@ -3582,50 +3602,26 @@ export const KNOWN_PERFUMES = [
     "day": 1800,
     "night": 4300
   },
-  "topNotes": [
-    "Spiced Tobacco Leaf",
-    "Cinnamon",
-    "Cardamom"
-  ],
-  "middleNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "heartNotes": [
-    "Golden Honey",
-    "Clove",
-    "Cacao",
-    "Tonka Bean"
-  ],
-  "baseNotes": [
-    "Vanilla",
-    "Dried Fruits",
-    "Cedarwood",
-    "Amber"
-  ]
+  "topNotes": [],
+  "middleNotes": [],
+  "heartNotes": [],
+  "baseNotes": [],
+  "verificationStatus": "Unverified: no attributable manufacturer note/accord source found"
 },
 {
   "matches": [
+    "bleu de chanel eau de toilette",
+    "blue de chanel edt",
     "bleu de chanel",
     "blue de chanel"
   ],
   "brand": "Chanel",
-  "name": "Bleu de Chanel",
+  "name": "Bleu de Chanel Eau de Toilette",
   "description": "Bleu de Chanel is a distinctive EDP Woody fragrance crafted for All Season wear. Opens with vibrant top notes of Grapefruit, Lemon, Mint, transitioning into a captivating heart of Ginger and Nutmeg, rested on a lingering base of Incense, Amber, Cedar.",
   "vibe": "Crisp Grapefruit, Spicy Incense, Mint & Cedarwood",
   "longevity": "8 – 10 Hours",
   "projection": "Strong & Refined",
-  "accords": [
-    { "name": "woody", "color": "#543e2e", "percentage": 94 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 82 },
-    { "name": "citrus", "color": "#9a7028", "percentage": 78 },
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 72 },
-    { "name": "amber", "color": "#d9822b", "percentage": 62 },
-    { "name": "balsamic", "color": "#7b3f2b", "percentage": 52 },
-    { "name": "incense", "color": "#4a4a4e", "percentage": 42 }
-  ],
+  "accords": ["citrus", "woody", "fresh spicy", "aromatic", "amber", "smoky", "balsamic", "warm spicy", "green", "fresh"],
   "whenToWear": {
     "winter": 2800,
     "spring": 3400,
@@ -3638,51 +3634,41 @@ export const KNOWN_PERFUMES = [
     "Grapefruit",
     "Lemon",
     "Mint",
-    "Pink Pepper",
-    "Bergamot",
-    "Aldehydes",
-    "Coriander"
+    "Pink Pepper"
   ],
   "middleNotes": [
     "Ginger",
     "Nutmeg",
     "Jasmine",
-    "Melon"
+    "Iso E Super"
   ],
   "heartNotes": [
     "Ginger",
     "Nutmeg",
     "Jasmine",
-    "Melon"
+    "Iso E Super"
   ],
   "baseNotes": [
     "Incense",
-    "Amber",
     "Cedar",
+    "Vetiver",
     "Sandalwood",
     "Patchouli",
-    "Labdanum"
-  ]
+    "Labdanum",
+    "White Musk"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Chanel/Bleu-de-Chanel-9099.html",
+  "verificationStatus": "Verified against Fragrantica"
 },
 {
-  "matches": [
-    "sauvage",
-    "dior sauvage"
-  ],
+  "matches": ["sauvage eau de toilette", "dior sauvage eau de toilette", "sauvage", "dior sauvage"],
   "brand": "Dior",
-  "name": "Sauvage",
+  "name": "Sauvage Eau de Toilette",
   "description": "Sauvage by Dior is a radically fresh composition dictated by a name that has the ring of a manifesto. Radiant top notes burst with juicy Calabrian bergamot, while Ambroxan unleashes a powerfully woody trail.",
   "vibe": "Crisp Radiant Bergamot, Szechuan Pepper & Ambroxan",
   "longevity": "8 – 11 Hours",
   "projection": "Strong",
-  "accords": [
-    { "name": "fresh spicy", "color": "#314b4b", "percentage": 96 },
-    { "name": "citrus", "color": "#9a7028", "percentage": 88 },
-    { "name": "amber", "color": "#d9822b", "percentage": 74 },
-    { "name": "aromatic", "color": "#3a4a3c", "percentage": 68 },
-    { "name": "woody", "color": "#543e2e", "percentage": 58 },
-    { "name": "musky", "color": "#3d3b40", "percentage": 46 }
-  ],
+  "accords": ["fresh spicy", "amber", "citrus", "aromatic", "musky", "woody", "lavender", "herbal", "warm spicy"],
   "whenToWear": {
     "winter": 2800,
     "spring": 3900,
@@ -3692,28 +3678,34 @@ export const KNOWN_PERFUMES = [
     "night": 3800
   },
   "topNotes": [
-    "Bergamot",
-    "Black Pepper"
+    "Calabrian Bergamot",
+    "Pepper"
   ],
   "middleNotes": [
     "Sichuan Pepper",
     "Lavender",
     "Pink Pepper",
     "Vetiver",
-    "Patchouli"
+    "Patchouli",
+    "Geranium",
+    "Elemi"
   ],
   "heartNotes": [
     "Sichuan Pepper",
     "Lavender",
     "Pink Pepper",
     "Vetiver",
-    "Patchouli"
+    "Patchouli",
+    "Geranium",
+    "Elemi"
   ],
   "baseNotes": [
     "Ambroxan",
-    "Cedarwood",
+    "Cedar",
     "Labdanum"
-  ]
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Dior/Sauvage-31861.html",
+  "verificationStatus": "Verified against Fragrantica"
 }
 ];
 

@@ -15,6 +15,8 @@ const NOTE_IMAGE_ALIASES = {
   "woodsy notes": "/images/notes/woody_notes.png",
   "white floral": "/images/notes/white_flowers.jpg",
   "coriander seed": "/images/notes/coriander.jpg",
+  "fruity notes": "/images/notes/mediterranean_fruit_basket.jpg",
+  "fruit notes": "/images/notes/mediterranean_fruit_basket.jpg",
   "indonesian nutmeg": "/images/notes/nutmeg.png",
   "italian lemon": "/images/notes/lemon.jpg",
   "italian mandarin orange": "/images/notes/mandarin_orange.png",
@@ -22,6 +24,7 @@ const NOTE_IMAGE_ALIASES = {
   "oak moss": "/images/notes/oakmoss.jpg",
   "pink grapefruit": "/images/notes/grapefruit.png",
   "rose de mai": "/images/notes/rose.jpg",
+  "red cedar": "/images/notes/cedar.jpg",
   "white cedar": "/images/notes/cedar.jpg",
 };
 
@@ -32,16 +35,11 @@ const NOTE_IMAGE_ALIASES = {
 
 // Fallback luxury icons
 const FALLBACK_ICON = (
-  <svg viewBox="0 0 48 48" className="w-full h-full">
-    <defs>
-      <radialGradient id="lux-gold-drop" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#fef08a" />
-        <stop offset="60%" stopColor="#c6a15b" />
-        <stop offset="100%" stopColor="#785922" />
-      </radialGradient>
-    </defs>
-    <path d="M24 10 C24 10, 14 24, 14 31 C14 36.5, 18.5 41, 24 41 C29.5 41, 34 36.5, 34 31 C34 24, 24 10, 24 10 Z" fill="url(#lux-gold-drop)" />
-    <circle cx="21" cy="27" r="3" fill="#fff" opacity="0.4" />
+  <svg viewBox="0 0 48 48" className="w-full h-full" aria-hidden="true">
+    <circle cx="24" cy="24" r="21" fill="#211c14" stroke="#8f7544" strokeWidth="1.5" />
+    <path d="M12 31c9-1 18-8 23-17 2 12-4 23-15 24-4 0-7-3-8-7Z" fill="#60744b" stroke="#d1b16c" strokeWidth="1.7" strokeLinejoin="round" />
+    <path d="M14 35c5-7 11-12 19-18" fill="none" stroke="#e0c78b" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="16" cy="15" r="1.6" fill="#d8bd82" opacity=".75" />
   </svg>
 );
 

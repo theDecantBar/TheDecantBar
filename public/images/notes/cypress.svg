@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#26362e"/><stop offset="1" stop-color="#111512"/></linearGradient><linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#879466"/><stop offset="1" stop-color="#354b38"/></linearGradient></defs>
+  <rect width="512" height="512" rx="52" fill="url(#sky)"/>
+  <circle cx="364" cy="123" r="61" fill="#d9c79a" opacity=".13"/>
+  <ellipse cx="259" cy="443" rx="146" ry="27" fill="#090b09" opacity=".6"/>
+  <path d="M255 65 145 390h76l-38 42h145l-39-42h77L255 65Z" fill="url(#leaf)"/>
+  <path d="M255 65v356" stroke="#b4a078" stroke-width="8" opacity=".8"/>
+  <g fill="#71835d" stroke="#a2aa7c" stroke-width="2" opacity=".95">
+    <path d="m255 113-62 116 58-15-84 90 82-20-71 81 78-19 76 19-70-81 82 20-83-90 58 15-64-116Z"/>
+    <path d="m255 174-49 91 46-12-61 66 64-15 59 15-61-66 46 12-44-91Z" opacity=".76"/>
+  </g>
+  <g fill="#9a7951" stroke="#d2b37c" stroke-width="2"><path d="M319 280c18 20 16 39 0 54-16-15-18-34 0-54Z"/><path d="M179 327c15 16 13 32 0 44-13-12-15-28 0-44Z"/><path d="M333 364c13 14 12 27 0 37-12-10-13-23 0-37Z"/></g>
+</svg>

@@ -881,9 +881,9 @@ const products = [
   },
 
   {
-    name: "Afnan supermacy not only intense",
+    name: "Afnan Supremacy Not Only Intense",
     category: "Middle eastern",
-    weather: "Summer",
+    weather: "Spring",
     type: "EDP",
     gender: "M",
     full_bottle_price: 5000,
@@ -896,7 +896,7 @@ const products = [
   },
 
   {
-    name: "Afnan supermacy collector edition",
+    name: "Afnan Supremacy Collector's Edition",
     category: "Middle eastern",
     weather: "Summer",
     type: "EDP",
@@ -1108,9 +1108,9 @@ const products = [
   },
 
   {
-    name: "9PM ELIXER",
+    name: "Afnan 9 PM Elixir",
     category: "Middle eastern",
-    weather: "Summer",
+    weather: "Winter",
     type: "EXTRAIT DE PARFUM",
     gender: "M/W",
     variants: [
@@ -1122,7 +1122,7 @@ const products = [
   },
 
   {
-    name: "9PM night out",
+    name: "Afnan 9 PM Night Out",
     category: "Middle eastern",
     weather: "Winter/summer",
     type: "EXTRAIT DE PARFUM",
@@ -1136,7 +1136,7 @@ const products = [
   },
 
   {
-    name: "9PM Dive",
+    name: "Afnan 9 AM Dive",
     category: "Middle eastern",
     weather: "Summer",
     type: "EDP",
