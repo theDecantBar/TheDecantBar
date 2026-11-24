@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   Plus, Search, Edit2, Trash2, ExternalLink, Sparkles, X, Upload, Loader2,
   ChevronDown, ChevronUp, Check, Droplets, Package,
@@ -9,7 +9,12 @@ import {
   deleteAdminProduct, uploadAdminProductImage,
 } from "../../services/adminApi";
 import { getPerfumeProfile, KNOWN_PERFUMES } from "../../data/perfumeNotes";
-import { getNoteVisual, NOTE_IMAGE_OPTIONS } from "../../data/fragranceNotesData";
+import {
+  getNoteVisual,
+  getAvailableNoteOptions,
+  registerCustomNote,
+  formatNoteName,
+} from "../../data/fragranceNotesData";
 
 const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
 const GENDERS = ["Men", "Women", "Unisex"];
@@ -262,51 +267,254 @@ function TagInput({ label, tags = [], onChange, placeholder }) {
   const safeTags = Array.isArray(tags) ? tags : [];
   const [inputVal, setInputVal] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [showMissingMessage, setShowMissingMessage] = useState(false);
-  const filteredNotes = useMemo(() => {
-    const query = inputVal.trim().toLowerCase();
-    return NOTE_IMAGE_OPTIONS.filter((note) => !query || note.name.toLowerCase().includes(query) || note.key.includes(query)).slice(0, 80);
-  }, [inputVal]);
-  const addTag = (note) => {
-    if (!note) { setShowMissingMessage(true); return; }
-    const val = note.name;
-    if (!safeTags.some((tag) => String(tag).toLowerCase() === val.toLowerCase())) onChange([...safeTags, val]);
+  const [availableNotes, setAvailableNotes] = useState(() => getAvailableNoteOptions());
+  const [openDirection, setOpenDirection] = useState("down");
+  const containerRef = useRef(null);
+  const inputRef = useRef(null);
+
+  // Keep available notes fresh when dropdown opens
+  const refreshAvailableNotes = useCallback(() => {
+    setAvailableNotes(getAvailableNoteOptions());
+  }, []);
+
+  // Intelligently calculate whether dropdown should open downwards or upwards based on viewport space
+  const updateDropdownDirection = useCallback(() => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    // 250px is the maximum height of dropdown. If less than 250px below and more room above, flip up.
+    if (spaceBelow < 250 && spaceAbove > spaceBelow) {
+      setOpenDirection("up");
+    } else {
+      setOpenDirection("down");
+    }
+  }, []);
+
+  // Update direction on open, modal scroll, or window resize
+  useEffect(() => {
+    if (!isOpen) return;
+    updateDropdownDirection();
+    const handleScrollOrResize = () => updateDropdownDirection();
+    window.addEventListener("resize", handleScrollOrResize);
+    window.addEventListener("scroll", handleScrollOrResize, true); // capture scrolls inside modal
+    return () => {
+      window.removeEventListener("resize", handleScrollOrResize);
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+    };
+  }, [isOpen, updateDropdownDirection]);
+
+  // Clean click outside listener
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const trimmedQuery = inputVal.trim().toLowerCase();
+
+  const { filteredNotes, exactMatch } = useMemo(() => {
+    if (!trimmedQuery) {
+      return { filteredNotes: availableNotes.slice(0, 60), exactMatch: null };
+    }
+
+    const exact = availableNotes.find(
+      (n) => n.name.toLowerCase() === trimmedQuery || n.key === trimmedQuery
+    );
+
+    const startsWith = [];
+    const contains = [];
+
+    for (const note of availableNotes) {
+      const nameLower = note.name.toLowerCase();
+      const keyLower = note.key;
+      if (nameLower.startsWith(trimmedQuery) || keyLower.startsWith(trimmedQuery)) {
+        startsWith.push(note);
+      } else if (nameLower.includes(trimmedQuery) || keyLower.includes(trimmedQuery)) {
+        contains.push(note);
+      }
+    }
+
+    return {
+      filteredNotes: [...startsWith, ...contains].slice(0, 80),
+      exactMatch: exact || null,
+    };
+  }, [availableNotes, trimmedQuery]);
+
+  const addSingleNote = (name) => {
+    if (!name || typeof name !== "string") return;
+    const formatted = formatNoteName(name.trim());
+    if (!formatted) return;
+
+    // Prevent duplicate within the same category (case-insensitive)
+    if (!safeTags.some((tag) => String(tag).trim().toLowerCase() === formatted.toLowerCase())) {
+      onChange([...safeTags, formatted]);
+      registerCustomNote(formatted);
+      refreshAvailableNotes();
+    }
+
     setInputVal("");
     setIsOpen(false);
-    setShowMissingMessage(false);
   };
-  const removeTag = (tag) => onChange(safeTags.filter((t) => t !== tag));
+
+  const addNotesFromInput = (rawText) => {
+    if (!rawText || !rawText.trim()) return;
+
+    // Support comma-separated multiple notes, e.g. "Bergamot, Lemon, Lime"
+    if (rawText.includes(",")) {
+      const parts = rawText
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      let currentTags = [...safeTags];
+      for (const part of parts) {
+        const formatted = formatNoteName(part);
+        if (formatted && !currentTags.some((t) => String(t).trim().toLowerCase() === formatted.toLowerCase())) {
+          currentTags.push(formatted);
+          registerCustomNote(formatted);
+        }
+      }
+      onChange(currentTags);
+      refreshAvailableNotes();
+      setInputVal("");
+      setIsOpen(false);
+      return;
+    }
+
+    const trimmed = rawText.trim();
+    if (exactMatch) {
+      addSingleNote(exactMatch.name);
+    } else if (filteredNotes.length === 1 && filteredNotes[0].name.toLowerCase() === trimmed.toLowerCase()) {
+      addSingleNote(filteredNotes[0].name);
+    } else {
+      addSingleNote(trimmed);
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    onChange(safeTags.filter((t) => t !== tagToRemove));
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
-      const exact = NOTE_IMAGE_OPTIONS.find((note) => note.name.toLowerCase() === inputVal.trim().toLowerCase() || note.key === inputVal.trim().toLowerCase());
-      addTag(exact);
-    } else if (e.key === "Backspace" && !inputVal && safeTags.length > 0) removeTag(safeTags[safeTags.length - 1]);
+      addNotesFromInput(inputVal);
+    } else if (e.key === "Backspace" && !inputVal && safeTags.length > 0) {
+      removeTag(safeTags[safeTags.length - 1]);
+    } else if (e.key === "Escape") {
+      setIsOpen(false);
+    }
   };
+
+  const formattedCustomName = inputVal.trim() ? formatNoteName(inputVal.trim()) : "";
+  const isCustomNote = trimmedQuery && !exactMatch;
+
   return (
-    <div>
+    <div ref={containerRef} className={`relative transition-all duration-150 ${isOpen ? "z-40" : "z-10"} focus-within:z-40`}>
       <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1.5 font-medium">{label}</label>
-      <div className="relative min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border border-white/15 px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors">
+      <div className={`relative min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border ${isOpen ? "border-[#c6a15b]" : "border-white/15"} px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors`}>
         {safeTags.map((tag) => {
           const visual = getNoteVisual(tag);
-          return <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
-            {visual.imageUrl && <img src={visual.imageUrl} alt="" className="w-4 h-4 rounded-full object-cover" />}
-            {tag}
-            <button type="button" onClick={() => removeTag(tag)} className="text-[#c6a15b] hover:text-red-400 cursor-pointer"><X size={10} /></button>
-          </span>;
+          return (
+            <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
+              {visual.imageUrl && <img src={visual.imageUrl} alt="" className="w-4 h-4 rounded-full object-cover" />}
+              {tag}
+              <button type="button" onClick={() => removeTag(tag)} className="text-[#c6a15b] hover:text-red-400 cursor-pointer transition-colors" title="Remove note">
+                <X size={10} />
+              </button>
+            </span>
+          );
         })}
-        <input type="text" value={inputVal} onChange={(e) => { setInputVal(e.target.value); setIsOpen(true); setShowMissingMessage(false); }} onFocus={() => setIsOpen(true)} onBlur={() => setTimeout(() => setIsOpen(false), 100)} onKeyDown={handleKeyDown} placeholder={tags.length === 0 ? placeholder : "Search notes..."} className="flex-1 min-w-[120px] bg-transparent text-xs text-[#f4efe6] outline-none placeholder-[#8e8a82]" />
-        {isOpen && inputVal.trim() && <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-56 overflow-y-auto rounded-xl border border-white/15 bg-[#171715] p-1 shadow-2xl">
-          {filteredNotes.length ? filteredNotes.map((note) => {
-            const visual = getNoteVisual(note.name);
-            return <button key={note.key} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => addTag(note)} className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs text-[#f4efe6] hover:bg-white/10">
-              {visual.imageUrl ? <img src={visual.imageUrl} alt="" className="h-8 w-8 rounded-md object-cover" /> : <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/5 text-[9px] text-[#c6a15b]">No image</span>}
-              <span>{note.name}</span>
-            </button>;
-          }) : <p className="px-3 py-2 text-[11px] text-[#8e8a82]">No note found in the shared note library.</p>}
-        </div>}
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputVal}
+          onChange={(e) => {
+            setInputVal(e.target.value);
+            setIsOpen(true);
+            updateDropdownDirection();
+          }}
+          onFocus={() => {
+            refreshAvailableNotes();
+            setIsOpen(true);
+            updateDropdownDirection();
+          }}
+          onKeyDown={handleKeyDown}
+          placeholder={safeTags.length === 0 ? placeholder : "Type note or comma-separate..."}
+          className="flex-1 min-w-[140px] bg-transparent text-xs text-[#f4efe6] outline-none placeholder-[#8e8a82]"
+        />
+
+        {isOpen && (
+          <div
+            className={`absolute left-0 right-0 z-50 max-h-[250px] overflow-y-auto rounded-xl border border-white/20 bg-[#171715] p-1.5 shadow-[0_20px_45px_rgba(0,0,0,0.9)] space-y-0.5 backdrop-blur-md ${
+              openDirection === "up" ? "bottom-full mb-1.5" : "top-full mt-1.5"
+            }`}
+          >
+            {/* Header info bar */}
+            <div className="px-2.5 py-1 text-[10px] uppercase tracking-wider text-[#8e8a82] bg-black/40 rounded-lg flex items-center justify-between mb-1">
+              <span>{trimmedQuery ? `Matches (${filteredNotes.length})` : `Popular Fragrance Notes (${filteredNotes.length})`}</span>
+              <span className="text-[#c6a15b] font-normal lowercase">{openDirection === "up" ? "↑ opens above" : ""}</span>
+            </div>
+
+            {/* Custom Note Option when typed note isn't an exact match */}
+            {isCustomNote && (
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => addSingleNote(formattedCustomName)}
+                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs text-[#c6a15b] hover:bg-[#c6a15b]/15 border border-[#c6a15b]/30 bg-[#c6a15b]/5 transition-colors cursor-pointer mb-1"
+              >
+                <Plus size={13} className="shrink-0 text-[#c6a15b]" />
+                <span className="truncate">
+                  Add <strong className="text-[#f4efe6]">"{formattedCustomName}"</strong> as a new note
+                </span>
+              </button>
+            )}
+
+            {/* Filtered Library Suggestions */}
+            {filteredNotes.length > 0 ? (
+              filteredNotes.map((note) => {
+                const visual = getNoteVisual(note.name);
+                const isSelected = safeTags.some((t) => String(t).toLowerCase() === note.name.toLowerCase());
+                return (
+                  <button
+                    key={note.key}
+                    type="button"
+                    disabled={isSelected}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => addSingleNote(note.name)}
+                    className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-xs transition-colors ${
+                      isSelected
+                        ? "opacity-40 cursor-not-allowed bg-white/5 text-[#8e8a82]"
+                        : "text-[#f4efe6] hover:bg-white/10 cursor-pointer"
+                    }`}
+                  >
+                    {visual.imageUrl ? (
+                      <img src={visual.imageUrl} alt="" className="h-7 w-7 rounded-md object-cover shrink-0" />
+                    ) : (
+                      <span className="flex h-7 w-7 items-center justify-center rounded-md bg-white/5 text-[9px] text-[#c6a15b] shrink-0">
+                        {visual.fallbackIcon}
+                      </span>
+                    )}
+                    <span className="flex-1 truncate">{note.name}</span>
+                    {isSelected && <span className="text-[10px] text-[#8e8a82] italic">added</span>}
+                  </button>
+                );
+              })
+            ) : !isCustomNote ? (
+              <p className="px-3 py-2 text-[11px] text-[#8e8a82]">No matching note found in shared library.</p>
+            ) : null}
+          </div>
+        )}
       </div>
-      <p className={`text-[10px] mt-1 ${showMissingMessage ? "text-amber-400" : "text-[#8e8a82]"}`}>{showMissingMessage ? "Choose a note from the list so its shared image is saved with it." : "Choose a note to reuse its shared image. “No image” means its photo still needs to be added. Click x to remove."}</p>
+      <p className="text-[10px] mt-1 text-[#8e8a82]">
+        Search shared note library or press Enter/comma to add custom notes. Click × to remove.
+      </p>
     </div>
   );
 }
@@ -683,7 +891,7 @@ function WhenToWearSliders({ values, onChange }) {
 }
 
 // ─── Collapsible Section ────────────────────────────────────────────────────────
-function CollapsibleSection({ title, subtitle, children, defaultOpen = false, badge, isOpen, onToggle }) {
+function CollapsibleSection({ title, subtitle, children, defaultOpen = false, badge, isOpen, onToggle, className = "" }) {
   const [localOpen, setLocalOpen] = useState(defaultOpen);
   const open = isOpen !== undefined ? isOpen : localOpen;
   const toggle = () => {
@@ -692,11 +900,17 @@ function CollapsibleSection({ title, subtitle, children, defaultOpen = false, ba
   };
 
   return (
-    <div className="border border-white/10 rounded-2xl overflow-hidden">
+    <div
+      className={`border border-white/10 rounded-2xl transition-all ${
+        open ? "overflow-visible relative z-10 focus-within:z-30" : "overflow-hidden"
+      } ${className}`}
+    >
       <button
         type="button"
         onClick={toggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-[#141412] hover:bg-[#1a1a17] transition cursor-pointer text-left"
+        className={`w-full flex items-center justify-between px-4 py-3 bg-[#141412] hover:bg-[#1a1a17] transition cursor-pointer text-left ${
+          open ? "rounded-t-2xl" : "rounded-2xl"
+        }`}
       >
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-[#c6a15b]">{title}</span>
@@ -705,7 +919,7 @@ function CollapsibleSection({ title, subtitle, children, defaultOpen = false, ba
         </div>
         {open ? <ChevronUp size={14} className="text-[#8e8a82] shrink-0" /> : <ChevronDown size={14} className="text-[#8e8a82] shrink-0" />}
       </button>
-      {open && <div className="px-4 py-4 bg-[#141412] space-y-4">{children}</div>}
+      {open && <div className="px-4 py-4 bg-[#141412] space-y-4 rounded-b-2xl">{children}</div>}
     </div>
   );
 }
@@ -1473,6 +1687,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             badge={totalNotes > 0 ? `${totalNotes} notes` : "not set"}
             isOpen={sectionsOpen.notes}
             onToggle={() => toggleSection("notes")}
+            className="relative focus-within:z-30"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-white/5">
               <p className="text-[11px] text-[#8e8a82]">Type each note and press Enter or comma to add it. Click × to remove.</p>

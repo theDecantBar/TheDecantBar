@@ -26,6 +26,11 @@ const NOTE_IMAGE_ALIASES = {
   "rose de mai": "/images/notes/rose.jpg",
   "red cedar": "/images/notes/cedar.jpg",
   "white cedar": "/images/notes/cedar.jpg",
+  "granny smith apple": "/images/notes/green_apple.jpg",
+  "granny smith": "/images/notes/green_apple.jpg",
+  "dry wood": "/images/notes/woody_notes.png",
+  "dry woods": "/images/notes/woody_notes.png",
+  "caramel": "/images/notes/toffee_caramel.jpg",
 };
 
 /**
@@ -43,14 +48,69 @@ const FALLBACK_ICON = (
   </svg>
 );
 
-const formatNoteName = (name) => name.replace(/\b\w/g, (letter) => letter.toUpperCase());
+// In-memory registry for dynamically added custom notes during admin sessions
+const customNotesRegistry = new Map();
+
+export const formatNoteName = (name) => {
+  if (!name || typeof name !== "string") return "";
+  const minorWords = new Set(["of", "the", "de", "and", "or", "in"]);
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word, wIdx) => {
+      return word
+        .split("-")
+        .map((part, pIdx) => {
+          const lower = part.toLowerCase();
+          if (wIdx > 0 && pIdx > 0 && minorWords.has(lower)) return lower;
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        })
+        .join("-");
+    })
+    .join(" ");
+};
+
+export function registerCustomNote(rawName, imageUrl = null) {
+  if (!rawName || typeof rawName !== "string") return;
+  const clean = rawName.toLowerCase().trim();
+  if (!clean) return;
+
+  if (!customNotesRegistry.has(clean)) {
+    const visual = getNoteVisual(clean);
+    customNotesRegistry.set(clean, {
+      name: formatNoteName(clean),
+      key: clean,
+      imageUrl: imageUrl || visual.imageUrl || null,
+    });
+  }
+}
+
+export function getAvailableNoteOptions() {
+  const baseMap = new Map();
+
+  // Add all static options from localNotesMap
+  for (const [key, url] of Object.entries(localNotesMap)) {
+    if (key.includes("(") || key === "blackcurrant") continue;
+    const displayName = key === "black currant" ? "Black Currant" : formatNoteName(key);
+    baseMap.set(key.toLowerCase(), {
+      name: displayName,
+      key: key.toLowerCase(),
+      imageUrl: url || null,
+    });
+  }
+
+  // Merge any dynamically registered custom notes
+  for (const [key, noteObj] of customNotesRegistry.entries()) {
+    if (!baseMap.has(key)) {
+      baseMap.set(key, noteObj);
+    }
+  }
+
+  return Array.from(baseMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+}
 
 // This local map is shared by the storefront and the admin note picker.
-export const NOTE_IMAGE_OPTIONS = Object.keys(localNotesMap)
-  .filter((name) => !name.includes("("))
-  .filter((name) => name !== "blackcurrant")
-  .map((name) => ({ name: name === "black currant" ? "Black Currant" : formatNoteName(name), key: name, imageUrl: localNotesMap[name] }))
-  .sort((a, b) => a.name.localeCompare(b.name));
+export const NOTE_IMAGE_OPTIONS = getAvailableNoteOptions();
 
 /**
  * Resolve note visual data (local photograph URL + fallback icon) based on note name
@@ -78,7 +138,15 @@ export function getNoteVisual(name = "") {
     return { imageUrl: NOTE_IMAGE_ALIASES[clean], fallbackIcon: FALLBACK_ICON };
   }
 
-  // 2. Safe normalized slug in /images/notes/
+  // 2. Dynamically registered custom notes
+  if (customNotesRegistry.has(clean)) {
+    const custom = customNotesRegistry.get(clean);
+    if (custom?.imageUrl) {
+      return { imageUrl: custom.imageUrl, fallbackIcon: FALLBACK_ICON };
+    }
+  }
+
+  // 3. Safe normalized slug in /images/notes/
   const safeSlug = clean.replace(/[^a-z0-9]/g, "_").replace(/_+/g, "_").replace(/^_|_$/g, "");
   if (localNotesMap[safeSlug]) {
     return {

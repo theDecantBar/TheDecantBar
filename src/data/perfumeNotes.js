@@ -3340,6 +3340,62 @@ export const KNOWN_PERFUMES = [
 },
 {
   "matches": [
+    "9pm rebel",
+    "9 pm rebel",
+    "afnan 9 pm rebel",
+    "afnan 9pm rebel",
+    "rebel"
+  ],
+  "brand": "Afnan",
+  "name": "Afnan 9 PM Rebel",
+  "description": "An aromatic fruity fragrance with crisp pineapple, Granny Smith apple, and mandarin up top; oakmoss, cedarwood, and vanilla in the heart; and dry wood, ambergris, caramel, and musk in the base.",
+  "vibe": "Juicy Pineapple, Crisp Green Apple, Smoky Woods & Sweet Caramel",
+  "longevity": "9 – 11 Hours",
+  "projection": "Strong & Playful",
+  "accords": [
+    "fruity",
+    "sweet",
+    "woody",
+    "tropical",
+    "fresh",
+    "mossy",
+    "amber",
+    "caramel"
+  ],
+  "whenToWear": {
+    "winter": 1200,
+    "spring": 3100,
+    "summer": 3800,
+    "fall": 2600,
+    "day": 4100,
+    "night": 2900
+  },
+  "topNotes": [
+    "Pineapple",
+    "Granny Smith Apple",
+    "Mandarin"
+  ],
+  "middleNotes": [
+    "Oakmoss",
+    "Cedarwood",
+    "Vanilla"
+  ],
+  "heartNotes": [
+    "Oakmoss",
+    "Cedarwood",
+    "Vanilla"
+  ],
+  "baseNotes": [
+    "Dry Wood",
+    "Ambergris",
+    "Caramel",
+    "Musk"
+  ],
+  "sourceUrl": "https://www.fragrantica.com/perfume/Afnan/9-PM-Rebel-96465.html",
+  "verificationStatus": "Verified against Fragrantica"
+},
+{
+  "matches": [
     "9am dive",
     "9 am dive",
     "afnan 9 am dive",
