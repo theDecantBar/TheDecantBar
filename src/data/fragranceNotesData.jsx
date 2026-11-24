@@ -75,13 +75,39 @@ export function registerCustomNote(rawName, imageUrl = null) {
   const clean = rawName.toLowerCase().trim();
   if (!clean) return;
 
-  if (!customNotesRegistry.has(clean)) {
+  if (customNotesRegistry.has(clean)) {
+    if (imageUrl) {
+      const existing = customNotesRegistry.get(clean);
+      existing.imageUrl = imageUrl;
+      customNotesRegistry.set(clean, existing);
+    }
+  } else {
     const visual = getNoteVisual(clean);
     customNotesRegistry.set(clean, {
       name: formatNoteName(clean),
       key: clean,
       imageUrl: imageUrl || visual.imageUrl || null,
     });
+  }
+}
+
+export function updateNoteImageInRegistry(rawName, newImageUrl) {
+  if (!rawName) return;
+  const clean = rawName.toLowerCase().trim();
+  const current = customNotesRegistry.get(clean) || {
+    name: formatNoteName(clean),
+    key: clean,
+  };
+  current.imageUrl = newImageUrl;
+  customNotesRegistry.set(clean, current);
+}
+
+export function registerAllCustomNotes(notesList = []) {
+  if (!Array.isArray(notesList)) return;
+  for (const n of notesList) {
+    if (n && n.name) {
+      registerCustomNote(n.name, n.imageUrl || n.image_url);
+    }
   }
 }
 
@@ -99,9 +125,13 @@ export function getAvailableNoteOptions() {
     });
   }
 
-  // Merge any dynamically registered custom notes
+  // Merge any dynamically registered or replaced custom notes
   for (const [key, noteObj] of customNotesRegistry.entries()) {
-    if (!baseMap.has(key)) {
+    if (baseMap.has(key)) {
+      if (noteObj.imageUrl) {
+        baseMap.set(key, { ...baseMap.get(key), imageUrl: noteObj.imageUrl });
+      }
+    } else {
       baseMap.set(key, noteObj);
     }
   }
@@ -126,7 +156,15 @@ export function getNoteVisual(name = "") {
     return { imageUrl: null, fallbackIcon: FALLBACK_ICON };
   }
 
-  // 1. Direct match in localNotesMap
+  // 1. Dynamically registered or replaced custom notes (checked first so admin overrides take effect)
+  if (customNotesRegistry.has(clean)) {
+    const custom = customNotesRegistry.get(clean);
+    if (custom?.imageUrl) {
+      return { imageUrl: custom.imageUrl, fallbackIcon: FALLBACK_ICON };
+    }
+  }
+
+  // 2. Direct match in localNotesMap
   if (localNotesMap[clean]) {
     return {
       imageUrl: localNotesMap[clean],
@@ -136,14 +174,6 @@ export function getNoteVisual(name = "") {
 
   if (NOTE_IMAGE_ALIASES[clean]) {
     return { imageUrl: NOTE_IMAGE_ALIASES[clean], fallbackIcon: FALLBACK_ICON };
-  }
-
-  // 2. Dynamically registered custom notes
-  if (customNotesRegistry.has(clean)) {
-    const custom = customNotesRegistry.get(clean);
-    if (custom?.imageUrl) {
-      return { imageUrl: custom.imageUrl, fallbackIcon: FALLBACK_ICON };
-    }
   }
 
   // 3. Safe normalized slug in /images/notes/

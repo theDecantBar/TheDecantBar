@@ -8,6 +8,7 @@ dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const localUploadsDir = path.resolve(__dirname, "../../public/images/perfumes");
+const localNotesDir = path.resolve(__dirname, "../../public/images/notes");
 
 const BUCKET_NAME = "perfumes";
 
@@ -180,4 +181,87 @@ export async function deletePerfumeImage(imageUrl) {
   }
 
   return false;
+}
+
+/**
+ * Uploads or downloads a fragrance note image to permanent storage (Supabase and local public/images/notes).
+ */
+export async function uploadNoteImage({ buffer, url, filename, noteKey }) {
+  let fileBuffer = buffer;
+  let ext = "jpg";
+
+  if (url && !fileBuffer) {
+    const fetchRes = await fetch(url, {
+      headers: {
+        "User-Agent": "TheDecantBar/1.0 (https://thedecantbar.com; contact@thedecantbar.com)",
+        Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+      },
+    });
+    if (!fetchRes.ok) {
+      throw new Error(`Failed to download remote note image (HTTP ${fetchRes.status})`);
+    }
+    const cType = fetchRes.headers.get("content-type") || "";
+    if (cType.includes("png")) ext = "png";
+    else if (cType.includes("webp")) ext = "webp";
+    else ext = "jpg";
+
+    const arrBuf = await fetchRes.arrayBuffer();
+    fileBuffer = Buffer.from(arrBuf);
+  }
+
+  const cleanSlug = (noteKey || filename || "note")
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "_")
+    .slice(0, 35);
+  const uniqueFileName = `${cleanSlug}_${Date.now()}.${ext}`;
+
+  // 1. Ensure local copy exists in public/images/notes/
+  await fs.mkdir(localNotesDir, { recursive: true });
+  const localFilePath = path.join(localNotesDir, uniqueFileName);
+  await fs.writeFile(localFilePath, fileBuffer);
+  const localUrl = `/images/notes/${uniqueFileName}`;
+
+  // 2. Upload to Supabase Storage if configured
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      await ensurePerfumesBucket();
+      const storagePath = `notes/${uniqueFileName}`;
+      const mimeType = ext === "jpg" ? "image/jpeg" : `image/${ext}`;
+      const { data, error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(storagePath, fileBuffer, {
+          contentType: mimeType,
+          upsert: true,
+        });
+
+      if (!error) {
+        const { data: urlData } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(storagePath);
+
+        if (urlData?.publicUrl) {
+          console.log(`[Note Image] Stored in Supabase: ${urlData.publicUrl}`);
+          return {
+            success: true,
+            imageUrl: urlData.publicUrl,
+            localUrl,
+            storage: "supabase",
+          };
+        }
+      } else {
+        console.warn("[Note Image] Supabase upload failed, using local copy:", error.message);
+      }
+    } catch (sbErr) {
+      console.warn("[Note Image] Supabase storage exception, using local copy:", sbErr.message);
+    }
+  }
+
+  console.log(`[Note Image] Stored locally: ${localUrl}`);
+  return {
+    success: true,
+    imageUrl: localUrl,
+    localUrl,
+    storage: "local",
+  };
 }

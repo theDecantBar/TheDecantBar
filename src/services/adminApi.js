@@ -178,3 +178,43 @@ export async function checkAdminPayment(token, orderId) {
   if (!res.ok) throw new Error(result.message || "Could not check payment.");
   return result;
 }
+
+// ─── Shared Fragrance Note Library & Image Search ──────────────────────────────
+export async function searchAdminNoteImages(token, noteName, customQuery = "") {
+  const params = new URLSearchParams();
+  if (noteName) params.append("q", noteName);
+  if (customQuery) params.append("customQuery", customQuery);
+
+  const res = await fetch(`/api/admin/notes/search-images?${params.toString()}`, {
+    headers: getHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to search images for note");
+  }
+  return res.json();
+}
+
+export async function saveAdminNoteImage(token, { noteName, imageUrl, imageBase64, filename, source }) {
+  const res = await fetch("/api/admin/notes/save-image", {
+    method: "POST",
+    headers: getHeaders(token),
+    body: JSON.stringify({ noteName, imageUrl, imageBase64, filename, source }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to save fragrance note image");
+  }
+  return res.json();
+}
+
+export async function fetchAdminNotes(token) {
+  const res = await fetch("/api/admin/notes", {
+    headers: getHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to load shared fragrance notes");
+  }
+  return res.json();
+}

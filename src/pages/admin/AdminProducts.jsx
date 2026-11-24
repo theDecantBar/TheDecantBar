@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import {
   fetchAdminProducts, createAdminProduct, updateAdminProduct,
   deleteAdminProduct, uploadAdminProductImage,
+  searchAdminNoteImages, saveAdminNoteImage, fetchAdminNotes,
 } from "../../services/adminApi";
 import { getPerfumeProfile, KNOWN_PERFUMES } from "../../data/perfumeNotes";
 import {
@@ -14,6 +15,8 @@ import {
   getAvailableNoteOptions,
   registerCustomNote,
   formatNoteName,
+  registerAllCustomNotes,
+  updateNoteImageInRegistry,
 } from "../../data/fragranceNotesData";
 
 const CATEGORIES = ["Designer", "Niche", "Middle Eastern"];
@@ -263,7 +266,7 @@ function toggleSeasonInString(currentWeather = "", chip) {
 }
 
 // ─── Tag Input ──────────────────────────────────────────────────────────────────
-function TagInput({ label, tags = [], onChange, placeholder }) {
+function TagInput({ label, tags = [], onChange, placeholder, onSelectNoteForImage, searchingNote }) {
   const safeTags = Array.isArray(tags) ? tags : [];
   const [inputVal, setInputVal] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -355,6 +358,12 @@ function TagInput({ label, tags = [], onChange, placeholder }) {
       onChange([...safeTags, formatted]);
       registerCustomNote(formatted);
       refreshAvailableNotes();
+
+      // If the note doesn't have an image, trigger the image search/finder callback
+      const visual = getNoteVisual(formatted);
+      if (!visual.imageUrl && onSelectNoteForImage) {
+        onSelectNoteForImage(formatted);
+      }
     }
 
     setInputVal("");
@@ -372,17 +381,27 @@ function TagInput({ label, tags = [], onChange, placeholder }) {
         .filter(Boolean);
 
       let currentTags = [...safeTags];
+      let firstMissingImage = null;
+
       for (const part of parts) {
         const formatted = formatNoteName(part);
         if (formatted && !currentTags.some((t) => String(t).trim().toLowerCase() === formatted.toLowerCase())) {
           currentTags.push(formatted);
           registerCustomNote(formatted);
+          const visual = getNoteVisual(formatted);
+          if (!visual.imageUrl && !firstMissingImage) {
+            firstMissingImage = formatted;
+          }
         }
       }
       onChange(currentTags);
       refreshAvailableNotes();
       setInputVal("");
       setIsOpen(false);
+
+      if (firstMissingImage && onSelectNoteForImage) {
+        onSelectNoteForImage(firstMissingImage);
+      }
       return;
     }
 
@@ -420,11 +439,78 @@ function TagInput({ label, tags = [], onChange, placeholder }) {
       <div className={`relative min-h-[40px] flex flex-wrap items-center gap-1.5 bg-[#11110f] border ${isOpen ? "border-[#c6a15b]" : "border-white/15"} px-2.5 py-2 rounded-xl focus-within:border-[#c6a15b] transition-colors`}>
         {safeTags.map((tag) => {
           const visual = getNoteVisual(tag);
+          const hasImage = Boolean(visual.imageUrl);
+          const isSearchingThis = searchingNote === tag;
+
           return (
-            <span key={tag} className="inline-flex items-center gap-1 bg-[#c6a15b]/15 border border-[#c6a15b]/30 text-[#f4efe6] text-[11px] px-2 py-0.5 rounded-full">
-              {visual.imageUrl && <img src={visual.imageUrl} alt="" className="w-4 h-4 rounded-full object-cover" />}
-              {tag}
-              <button type="button" onClick={() => removeTag(tag)} className="text-[#c6a15b] hover:text-red-400 cursor-pointer transition-colors" title="Remove note">
+            <span
+              key={tag}
+              className={`inline-flex items-center gap-1.5 border text-[#f4efe6] text-[11px] pl-2 pr-2 py-1 rounded-full transition-all ${
+                hasImage
+                  ? "bg-[#c6a15b]/15 border-[#c6a15b]/35 hover:border-[#c6a15b]"
+                  : "bg-amber-500/15 border-amber-500/40 hover:border-amber-400 hover:bg-amber-500/20"
+              }`}
+            >
+              {hasImage ? (
+                <>
+                  <img
+                    src={visual.imageUrl}
+                    alt=""
+                    className="w-4 h-4 rounded-full object-cover shrink-0 cursor-pointer hover:ring-1 hover:ring-[#c6a15b]"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onSelectNoteForImage && onSelectNoteForImage(tag);
+                    }}
+                    title="Click to view or change image"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onSelectNoteForImage && onSelectNoteForImage(tag);
+                    }}
+                    className="hover:text-[#c6a15b] transition-colors cursor-pointer text-left font-normal"
+                    title="Click to change photo in shared library"
+                  >
+                    {tag}
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSelectNoteForImage && onSelectNoteForImage(tag);
+                  }}
+                  className="inline-flex items-center gap-1.5 text-left font-normal transition-colors cursor-pointer text-amber-200 hover:text-amber-100"
+                  title="Click to find image"
+                >
+                  {isSearchingThis ? (
+                    <Loader2 size={11} className="animate-spin text-amber-300 shrink-0" />
+                  ) : (
+                    <span className="w-4 h-4 rounded-full bg-amber-500/30 text-amber-300 flex items-center justify-center text-[10px] shrink-0 font-bold" aria-hidden="true">
+                      📷
+                    </span>
+                  )}
+                  <span className="font-medium text-[#f4efe6]">{tag}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/25 text-amber-300 font-semibold border border-amber-500/30">
+                    {isSearchingThis ? "Searching..." : "+ Find Image"}
+                  </span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  removeTag(tag);
+                }}
+                className="text-[#8e8a82] hover:text-red-400 cursor-pointer transition-colors ml-0.5 p-0.5 hover:bg-white/10 rounded-full"
+                title="Remove note"
+              >
                 <X size={10} />
               </button>
             </span>
@@ -890,6 +976,268 @@ function WhenToWearSliders({ values, onChange }) {
   );
 }
 
+// ─── Fragrance Note Image Finder & Auto-Search Modal ─────────────────────────────
+function NoteImageFinder({ noteName, token, onClose, onImageSaved }) {
+  const [searchQuery, setSearchQuery] = useState(noteName || "");
+  const [isSearching, setIsSearching] = useState(false);
+  const [candidates, setCandidates] = useState([]);
+  const [provider, setProvider] = useState("");
+  const [searchError, setSearchError] = useState("");
+  const [savingCandidateId, setSavingCandidateId] = useState(null);
+  const [uploadError, setUploadError] = useState("");
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  const executeSearch = useCallback(async (queryText) => {
+    if (!queryText || !queryText.trim()) return;
+    setIsSearching(true);
+    setSearchError("");
+    try {
+      const res = await searchAdminNoteImages(token, noteName, queryText.trim());
+      setCandidates(res.candidates || []);
+      setProvider(res.provider || "");
+      if (!res.candidates || res.candidates.length === 0) {
+        setSearchError(`No candidate photos found for "${queryText}". Try a simpler query (e.g. "${noteName} plant / fruit") or upload an image manually.`);
+      }
+    } catch (err) {
+      setSearchError(err.message || "Failed to search images for note.");
+    } finally {
+      setIsSearching(false);
+    }
+  }, [noteName, token]);
+
+  useEffect(() => {
+    setSearchQuery(noteName || "");
+    if (noteName) {
+      executeSearch(noteName);
+    }
+  }, [noteName, executeSearch]);
+
+  const handleSelectCandidate = async (cand) => {
+    setSavingCandidateId(cand.id);
+    setUploadError("");
+    try {
+      const res = await saveAdminNoteImage(token, {
+        noteName,
+        imageUrl: cand.fullUrl,
+        source: cand.source || provider,
+      });
+      if (res.note) {
+        onImageSaved(res.note);
+      }
+    } catch (err) {
+      setUploadError(err.message || "Failed to save selected note photo.");
+    } finally {
+      setSavingCandidateId(null);
+    }
+  };
+
+  const handleManualUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Please select a valid image file (JPG, PNG, WEBP, AVIF).");
+      return;
+    }
+    setSavingCandidateId("manual");
+    setUploadError("");
+    try {
+      const reader = new FileReader();
+      const base64Data = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsDataURL(file);
+      });
+
+      const res = await saveAdminNoteImage(token, {
+        noteName,
+        imageBase64: base64Data,
+        filename: file.name,
+        source: "manual",
+      });
+      if (res.note) {
+        onImageSaved(res.note);
+      }
+    } catch (err) {
+      setUploadError(err.message || "Failed to upload manual image.");
+    } finally {
+      setSavingCandidateId(null);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-150"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="relative w-full max-w-3xl bg-[#171715] border border-[#c6a15b]/40 p-5 sm:p-6 text-xs rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] max-h-[90vh] flex flex-col my-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header bar */}
+        <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3 mb-3 shrink-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm sm:text-base font-semibold text-[#f4efe6] flex items-center gap-2">
+              <span className="text-lg">🖼️</span>
+              Select Image for <strong className="text-[#c6a15b]">"{noteName}"</strong>
+            </span>
+            <span className="text-[10px] px-2 py-0.5 bg-[#c6a15b]/15 text-[#c6a15b] rounded-full border border-[#c6a15b]/30 font-medium">
+              Shared Note Library
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[#8e8a82] hover:text-[#f4efe6] hover:bg-white/10 p-1.5 rounded-full transition cursor-pointer"
+            title="Close (Esc)"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Query Bar & Controls */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-2 shrink-0">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  executeSearch(searchQuery);
+                }
+              }}
+              placeholder={`Search keywords (e.g. ${noteName} fruit / flower)`}
+              className="w-full rounded-xl bg-[#11110f] border border-white/15 px-3 py-2 text-xs text-[#f4efe6] focus:border-[#c6a15b] focus:outline-none placeholder-[#8e8a82]"
+            />
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => executeSearch(searchQuery)}
+              disabled={isSearching}
+              className="px-3.5 py-2 text-xs font-semibold text-[#11110f] bg-[#c6a15b] hover:bg-[#d6b16b] rounded-xl transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+            >
+              {isSearching ? <Loader2 size={13} className="animate-spin" /> : <Search size={13} />}
+              <span>Search Again</span>
+            </button>
+            <label className="px-3 py-2 text-xs font-medium text-[#c6a15b] bg-[#c6a15b]/10 hover:bg-[#c6a15b]/20 border border-[#c6a15b]/30 rounded-xl transition cursor-pointer flex items-center gap-1.5">
+              {savingCandidateId === "manual" ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+              <span>Upload Manually</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleManualUpload}
+                disabled={Boolean(savingCandidateId)}
+              />
+            </label>
+          </div>
+        </div>
+
+        {/* Provider Info Banner */}
+        <div className="flex items-center justify-between text-[11px] text-[#8e8a82] px-0.5 pb-2.5 border-b border-white/5 mb-3 shrink-0">
+          <span>
+            {provider ? <>Provider: <span className="text-[#c6a15b]">{provider}</span></> : "Searching candidates..."}
+          </span>
+          <span className="text-[10px]">
+            Click any photo to assign it permanently across all perfumes
+          </span>
+        </div>
+
+        {/* Scrollable Content Area */}
+        <div className="overflow-y-auto flex-1 pr-1 space-y-3 min-h-[220px]">
+          {uploadError && (
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300">
+              {uploadError}
+            </div>
+          )}
+
+          {searchError && (
+            <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 flex items-center justify-between gap-3">
+              <span>{searchError}</span>
+              <button
+                type="button"
+                onClick={() => executeSearch(searchQuery)}
+                className="px-3 py-1 text-[11px] font-medium bg-amber-500/20 hover:bg-amber-500/30 text-amber-100 rounded-lg transition shrink-0 cursor-pointer"
+              >
+                Retry Search
+              </button>
+            </div>
+          )}
+
+          {isSearching && (
+            <div className="py-14 flex flex-col items-center justify-center gap-2.5 text-xs text-[#8e8a82]">
+              <Loader2 size={26} className="animate-spin text-[#c6a15b]" />
+              <span className="text-sm text-[#f4efe6] font-medium">Searching high-quality photos for "{searchQuery || noteName}"...</span>
+              <span className="text-[11px] text-[#8e8a82]">Querying botanical library</span>
+            </div>
+          )}
+
+          {!isSearching && candidates.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {candidates.map((cand) => {
+                const isSavingThis = savingCandidateId === cand.id;
+                return (
+                  <div
+                    key={cand.id}
+                    className="group relative rounded-xl overflow-hidden border border-white/10 hover:border-[#c6a15b] bg-[#141412] transition-all flex flex-col cursor-pointer shadow-md"
+                    onClick={() => !savingCandidateId && handleSelectCandidate(cand)}
+                  >
+                    <div className="aspect-square w-full relative overflow-hidden bg-black/40">
+                      <img
+                        src={cand.previewUrl}
+                        alt={cand.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      {isSavingThis && (
+                        <div className="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-1.5 text-xs text-[#c6a15b]">
+                          <Loader2 size={20} className="animate-spin" />
+                          <span className="font-medium text-[11px]">Saving...</span>
+                        </div>
+                      )}
+                      {cand.photographer && (
+                        <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/70 text-[9px] text-[#c5c1b9] max-w-[90%] truncate">
+                          © {cand.photographer}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-2 flex flex-col justify-between flex-1 gap-1.5 bg-[#171715]">
+                      <span className="text-[10px] text-[#c5c1b9] truncate group-hover:text-[#f4efe6]" title={cand.title}>
+                        {cand.title}
+                      </span>
+                      <button
+                        type="button"
+                        disabled={Boolean(savingCandidateId)}
+                        className="w-full py-1 text-[11px] font-medium rounded-lg bg-[#c6a15b]/15 text-[#c6a15b] group-hover:bg-[#c6a15b] group-hover:text-[#11110f] transition cursor-pointer"
+                      >
+                        Select Image
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Collapsible Section ────────────────────────────────────────────────────────
 function CollapsibleSection({ title, subtitle, children, defaultOpen = false, badge, isOpen, onToggle, className = "" }) {
   const [localOpen, setLocalOpen] = useState(defaultOpen);
@@ -940,9 +1288,18 @@ export default function AdminProducts() {
     let ignore = false;
     async function loadData() {
       try {
-        const data = await fetchAdminProducts(token);
+        const [data, notes] = await Promise.all([
+          fetchAdminProducts(token),
+          fetchAdminNotes(token).catch((e) => {
+            console.warn("Could not load shared notes:", e.message);
+            return [];
+          }),
+        ]);
         if (!ignore) {
           setProducts(data);
+          if (Array.isArray(notes) && notes.length > 0) {
+            registerAllCustomNotes(notes);
+          }
           setError("");
         }
       } catch (err) {
@@ -1251,6 +1608,29 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
     if (fallback?.baseNotes?.length > 0) return fallback.baseNotes;
     return [];
   });
+
+  // Fragrance Note Image Finder State
+  const [activeNoteForFinder, setActiveNoteForFinder] = useState(null);
+  const [searchingNote, setSearchingNote] = useState(null);
+  const [noteImageFinderSuccess, setNoteImageFinderSuccess] = useState("");
+  const [, setNoteRefreshKey] = useState(0);
+
+  const handleSelectNoteForImageFinder = (noteName) => {
+    if (!noteName) return;
+    setSearchingNote(noteName);
+    setActiveNoteForFinder(noteName);
+  };
+
+  const handleNoteImageSaved = (savedNote) => {
+    if (savedNote?.name && savedNote?.imageUrl) {
+      updateNoteImageInRegistry(savedNote.name, savedNote.imageUrl);
+    }
+    setSearchingNote(null);
+    setActiveNoteForFinder(null);
+    setNoteRefreshKey((k) => k + 1);
+    setNoteImageFinderSuccess(`Photo for "${savedNote.name}" saved permanently in shared library.`);
+    setTimeout(() => setNoteImageFinderSuccess(""), 4500);
+  };
 
   const [accords, setAccords] = useState(() => {
     let raw = [];
@@ -1690,7 +2070,9 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             className="relative focus-within:z-30"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-white/5">
-              <p className="text-[11px] text-[#8e8a82]">Type each note and press Enter or comma to add it. Click × to remove.</p>
+              <p className="text-[11px] text-[#8e8a82]">
+                Type note and press Enter or comma. Notes without images show 📷 — click to search or change photos.
+              </p>
               <button
                 type="button"
                 onClick={handleAutoFillFromCatalog}
@@ -1701,9 +2083,47 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                 <span>Auto-Fill Notes for "{formData.name || product?.name || 'Perfume'}"</span>
               </button>
             </div>
-            <TagInput label="🔝 Top Notes — Opening (First 15–30 mins)" tags={topNotes} onChange={setTopNotes} placeholder="e.g. Bergamot, Lemon, Pink Pepper..." />
-            <TagInput label="💛 Middle / Heart Notes — Core Body (Hours 2–5)" tags={middleNotes} onChange={setMiddleNotes} placeholder="e.g. Rose, Iris, Jasmine..." />
-            <TagInput label="🌑 Base Notes — Dry Down (Hours 5+)" tags={baseNotes} onChange={setBaseNotes} placeholder="e.g. Vanilla, Cedarwood, Amber, Musk..." />
+
+            {noteImageFinderSuccess && (
+              <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-200 text-xs flex items-center justify-between animate-in fade-in">
+                <div className="flex items-center gap-2">
+                  <Check size={14} className="text-emerald-400 shrink-0" />
+                  <span>{noteImageFinderSuccess}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setNoteImageFinderSuccess("")}
+                  className="text-emerald-400 hover:text-white cursor-pointer"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            )}
+
+            <TagInput
+              label="🔝 Top Notes — Opening (First 15–30 mins)"
+              tags={topNotes}
+              onChange={setTopNotes}
+              placeholder="e.g. Bergamot, Lemon, Pink Pepper..."
+              onSelectNoteForImage={handleSelectNoteForImageFinder}
+              searchingNote={searchingNote}
+            />
+            <TagInput
+              label="💛 Middle / Heart Notes — Core Body (Hours 2–5)"
+              tags={middleNotes}
+              onChange={setMiddleNotes}
+              placeholder="e.g. Rose, Iris, Jasmine..."
+              onSelectNoteForImage={handleSelectNoteForImageFinder}
+              searchingNote={searchingNote}
+            />
+            <TagInput
+              label="🌑 Base Notes — Dry Down (Hours 5+)"
+              tags={baseNotes}
+              onChange={setBaseNotes}
+              placeholder="e.g. Vanilla, Cedarwood, Amber, Musk..."
+              onSelectNoteForImage={handleSelectNoteForImageFinder}
+              searchingNote={searchingNote}
+            />
           </CollapsibleSection>
 
           {/* ── SECTION C: Main Accords ── */}
@@ -1986,6 +2406,18 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             <button type="submit" disabled={saving} className="rounded-xl border border-[#c6a15b] bg-[#c6a15b] px-6 py-2.5 uppercase tracking-wider text-xs font-semibold text-[#11110f] hover:bg-[#d8c08a] transition disabled:opacity-50 cursor-pointer">{saving ? "Saving..." : product ? "Update Fragrance" : "Publish Fragrance"}</button>
           </div>
         </form>
+
+        {activeNoteForFinder && (
+          <NoteImageFinder
+            noteName={activeNoteForFinder}
+            token={token}
+            onClose={() => {
+              setActiveNoteForFinder(null);
+              setSearchingNote(null);
+            }}
+            onImageSaved={handleNoteImageSaved}
+          />
+        )}
       </div>
     </div>
   );

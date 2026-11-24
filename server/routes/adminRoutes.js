@@ -11,6 +11,9 @@ import {
   updateVariantStock,
   bulkUpdateAllStock,
   uploadProductImage,
+  searchFragranceNoteImages,
+  saveFragranceNoteImage,
+  getCustomFragranceNotes,
 } from "../controllers/adminController.js";
 import { updateReview, deleteReview } from "../controllers/reviewController.js";
 import { resendOrderConfirmation, checkAdminPayment } from "../controllers/orderController.js";
@@ -32,6 +35,11 @@ router.post("/orders/:id/resend-confirmation", resendOrderConfirmation);
 
 // Image Upload
 router.post("/upload-image", uploadProductImage);
+
+// Fragrance Note Image Search & Shared Library
+router.get("/notes/search-images", searchFragranceNoteImages);
+router.post("/notes/save-image", saveFragranceNoteImage);
+router.get("/notes", getCustomFragranceNotes);
 
 // Fragrance Products & Decant Variants CRUD
 router.get("/products", getAdminProducts);

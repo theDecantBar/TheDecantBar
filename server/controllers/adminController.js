@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 import pool from "../config/db.js";
 import { getPrimaryAdminEmail } from "../config/adminConfig.js";
 import { invalidateProductCache } from "./productController.js";
-import { uploadPerfumeImage, deletePerfumeImage } from "../services/supabaseStorage.js";
+import { uploadPerfumeImage, deletePerfumeImage, uploadNoteImage } from "../services/supabaseStorage.js";
+import { searchNoteImages } from "../services/noteImageSearchService.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -763,4 +764,146 @@ export const uploadProductImage = async (req, res) => {
     res.status(500).json({ message: "Failed to process image upload." });
   }
 };
+
+/**
+ * Format title casing for note display name
+ */
+function formatNoteTitle(name) {
+  if (!name || typeof name !== "string") return "";
+  const minorWords = new Set(["of", "the", "de", "and", "or", "in"]);
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word, wIdx) => {
+      return word
+        .split("-")
+        .map((part, pIdx) => {
+          const lower = part.toLowerCase();
+          if (wIdx > 0 && pIdx > 0 && minorWords.has(lower)) return lower;
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        })
+        .join("-");
+    })
+    .join(" ");
+}
+
+// @desc    Search candidate images for a fragrance note using Unsplash, Pexels, or Wikimedia
+// @route   GET /api/admin/notes/search-images
+// @access  Private / Admin
+export const searchFragranceNoteImages = async (req, res) => {
+  try {
+    const { q, customQuery } = req.query;
+    if (!q && !customQuery) {
+      return res.status(400).json({ message: "Search query 'q' or 'customQuery' is required." });
+    }
+
+    const result = await searchNoteImages(q || customQuery, customQuery);
+    return res.json(result);
+  } catch (error) {
+    console.error("Search note images error:", error);
+    return res.status(500).json({ message: "Failed to search images for note." });
+  }
+};
+
+// @desc    Save an image permanently against a fragrance note in the shared library
+// @route   POST /api/admin/notes/save-image
+// @access  Private / Admin
+export const saveFragranceNoteImage = async (req, res) => {
+  try {
+    const { noteName, imageUrl, imageBase64, filename, source } = req.body;
+    if (!noteName || typeof noteName !== "string" || !noteName.trim()) {
+      return res.status(400).json({ message: "Note name is required." });
+    }
+
+    const clean = noteName.trim();
+    const noteKey = clean.toLowerCase();
+    const formattedName = formatNoteTitle(clean);
+
+    let savedImageUrl = null;
+    let savedSource = source || "auto";
+
+    if (imageBase64) {
+      // Manual upload from client
+      const matches = imageBase64.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (!matches) {
+        return res.status(400).json({ message: "Invalid image data format." });
+      }
+      const ext = matches[1].toLowerCase();
+      const buffer = Buffer.from(matches[2], "base64");
+      const uploadRes = await uploadNoteImage({
+        buffer,
+        noteKey,
+        filename: filename || `${noteKey}.${ext}`,
+      });
+      savedImageUrl = uploadRes.imageUrl;
+      savedSource = "manual";
+    } else if (imageUrl) {
+      // Download remote image and store permanently
+      const uploadRes = await uploadNoteImage({
+        url: imageUrl,
+        noteKey,
+        filename: `${noteKey}.jpg`,
+      });
+      savedImageUrl = uploadRes.imageUrl;
+    } else {
+      return res.status(400).json({ message: "Either imageUrl or imageBase64 must be provided." });
+    }
+
+    // Persist into PostgreSQL fragrance_notes table
+    const dbRes = await pool.query(
+      `INSERT INTO fragrance_notes (name, key, image_url, source)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (key)
+       DO UPDATE SET
+         image_url = EXCLUDED.image_url,
+         name = EXCLUDED.name,
+         source = EXCLUDED.source,
+         updated_at = CURRENT_TIMESTAMP
+       RETURNING *;`,
+      [formattedName, noteKey, savedImageUrl, savedSource]
+    );
+
+    // Also sync to localNotesMap.json on disk if present
+    try {
+      const localMapPath = path.resolve(__dirname, "../../src/data/localNotesMap.json");
+      const currentMap = JSON.parse(await fs.readFile(localMapPath, "utf8"));
+      currentMap[noteKey] = savedImageUrl;
+      await fs.writeFile(localMapPath, JSON.stringify(currentMap, null, 2), "utf8");
+    } catch (diskErr) {
+      // Non-fatal if filesystem is read-only
+      console.warn("Could not write localNotesMap.json on disk:", diskErr.message);
+    }
+
+    return res.json({
+      success: true,
+      message: `Image for '${formattedName}' saved successfully.`,
+      note: {
+        id: dbRes.rows[0]?.id,
+        name: formattedName,
+        key: noteKey,
+        imageUrl: savedImageUrl,
+        source: savedSource,
+      },
+    });
+  } catch (error) {
+    console.error("Save note image error:", error);
+    return res.status(500).json({ message: error.message || "Failed to save note image." });
+  }
+};
+
+// @desc    Get all custom/saved fragrance notes from shared library
+// @route   GET /api/admin/notes
+// @access  Private / Admin (or public via products route)
+export const getCustomFragranceNotes = async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, name, key, image_url AS "imageUrl", source FROM fragrance_notes ORDER BY name ASC`
+    );
+    return res.json(result.rows);
+  } catch (error) {
+    console.error("Get fragrance notes error:", error);
+    return res.status(500).json({ message: "Failed to retrieve fragrance notes." });
+  }
+};
+
 
