@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import HeroOrbitShowcase from "./hero/HeroOrbitShowcase";
 import "./Hero.css";
 
 export default function Hero() {
@@ -67,6 +68,9 @@ export default function Hero() {
                 <span>Shop collection</span>
                 <ArrowUpRight size={17} strokeWidth={1.5} />
               </Link>
+
+              {/* Luxury Fragrance Orbit Showcase in Motion */}
+              <HeroOrbitShowcase />
             </div>
           </div>
         </div>

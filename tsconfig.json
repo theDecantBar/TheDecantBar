@@ -22,9 +22,6 @@
     }
   },
   "include": [
-    "src/components/ui/expanding-search-dock-shadcnui.tsx",
-    "src/components/ui/expanding-search-dock-demo.tsx",
-    "src/components/ui/bottom-nav-bar.tsx",
-    "src/components/ui/bottom-nav-bar-demo.tsx"
+    "src/**/*"
   ]
 }
