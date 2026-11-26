@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { X, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ArrowFillButton from "../ui/arrow-fill-button";
 import FragranceOrbitCarousel from "../ui/fragrance-orbit-carousel";
@@ -80,7 +80,7 @@ export default function HeroOrbitShowcase() {
 
                   <div className="flex items-center gap-4">
                     <span className="hidden md:inline-block text-[11px] font-mono tracking-widest text-[#7a7469] uppercase">
-                      Use Arrow Keys • Click to Orbit
+                      Scroll • Use Arrow Keys to Orbit
                     </span>
 
                     <button
