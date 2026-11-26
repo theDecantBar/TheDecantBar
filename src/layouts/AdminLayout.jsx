@@ -147,7 +147,7 @@ export default function AdminLayout() {
               type="button"
               onClick={handleLogout}
               title="Sign Out"
-              className="p-1.5 text-[#8e8a82] hover:text-red-400 hover:bg-white/5 transition rounded-lg cursor-pointer"
+              className="p-1.5 text-[#8e8a82] hover:text-[#c6a15b] hover:bg-white/5 transition rounded-lg cursor-pointer"
             >
               <LogOut size={15} />
             </button>

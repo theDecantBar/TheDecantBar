@@ -234,7 +234,7 @@ export default function AdminOrders() {
           </p>
         </div>
       ) : error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+        <div className="rounded-2xl border border-[#b8845a]/40 bg-[#1a1612] p-6 text-center text-sm text-[#eadbc8]">
           <p>{error}</p>
         </div>
       ) : orders.length === 0 ? (
@@ -272,8 +272,8 @@ export default function AdminOrders() {
                             : order.order_status === "Shipped"
                             ? "bg-purple-400/10 text-purple-300 border border-purple-400/20"
                             : order.order_status === "Delivered"
-                            ? "bg-emerald-400/10 text-emerald-300 border border-emerald-400/20"
-                            : "bg-red-400/10 text-red-300 border border-red-400/20"
+                            ? "bg-[#c6a15b]/10 text-[#d8c08a] border border-[#c6a15b]/30"
+                            : "bg-[#1a1612] text-[#d49a6a] border border-[#b8845a]/40"
                         }`}
                       >
                         {order.order_status}
@@ -489,7 +489,7 @@ function OrderFulfillmentForm({ order, isUpdating, feedback, onSave }) {
           <Truck size={16} className="text-[#c6a15b]" /> Fulfillment & Tracking Status
         </p>
         {feedback && (
-          <span className="text-emerald-400 font-semibold animate-pulse">
+          <span className="text-[#d8c08a] font-semibold animate-pulse">
             {feedback}
           </span>
         )}

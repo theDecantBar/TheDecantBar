@@ -196,9 +196,9 @@ export default function Login() {
 
         {/* Error Alert */}
         {error && (
-          <div className="rounded-2xl mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+          <div className="rounded-2xl mt-6 border border-[#b8845a]/40 bg-[#1a1612] p-4 text-xs text-[#eadbc8]">
             <div className="flex items-start gap-3">
-              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+              <AlertCircle size={16} className="text-[#d49a6a] shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
             {error.includes("create an account") && (
@@ -346,15 +346,15 @@ export default function Login() {
             </div>
 
             {forgotError && (
-              <div className="rounded-2xl mb-4 border border-red-500/30 bg-red-950/20 p-3 text-xs text-red-200 flex items-center gap-2">
-                <AlertCircle size={14} className="text-red-400 shrink-0" />
+              <div className="rounded-2xl mb-4 border border-[#b8845a]/40 bg-[#1a1612] p-3 text-xs text-[#eadbc8] flex items-center gap-2">
+                <AlertCircle size={14} className="text-[#d49a6a] shrink-0" />
                 <span>{forgotError}</span>
               </div>
             )}
 
             {forgotSuccess && (
-              <div className="rounded-2xl mb-4 border border-emerald-500/30 bg-emerald-950/20 p-3 text-xs text-emerald-200 flex items-center gap-2">
-                <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+              <div className="rounded-2xl mb-4 border border-[#c6a15b]/40 bg-[#c6a15b]/10 p-3 text-xs text-[#f4efe6] flex items-center gap-2">
+                <CheckCircle2 size={14} className="text-[#c6a15b] shrink-0" />
                 <span>{forgotSuccess}</span>
               </div>
             )}

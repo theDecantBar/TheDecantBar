@@ -181,8 +181,8 @@ export default function Contact() {
                   <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#c6a15b]">
                     Contact Information
                   </span>
-                  <span className="text-[10px] uppercase tracking-widest text-emerald-400 font-medium flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] uppercase tracking-widest text-[#c6a15b] font-medium flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#c6a15b] animate-pulse" />
                     Official Desk
                   </span>
                 </div>
@@ -442,8 +442,8 @@ export default function Contact() {
                   /* Active Form */
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
-                      <div className="rounded-2xl flex items-start gap-3 border border-red-500/40 bg-red-950/25 p-4 text-xs text-red-200 animate-in fade-in duration-200">
-                        <AlertCircle size={16} className="mt-0.5 shrink-0 text-red-400" />
+                      <div className="rounded-2xl flex items-start gap-3 border border-[#b8845a]/40 bg-[#1a1612] p-4 text-xs text-[#eadbc8] animate-in fade-in duration-200">
+                        <AlertCircle size={16} className="mt-0.5 shrink-0 text-[#d49a6a]" />
                         <div className="leading-relaxed">{error}</div>
                       </div>
                     )}

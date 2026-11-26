@@ -158,7 +158,7 @@ function ProductCard({ product }) {
             loading="lazy"
           >
             {(isSoldOut || allSoldOut) && (
-              <div className="absolute right-2.5 top-2.5 z-10 rounded-full border border-red-800/60 bg-red-950/90 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-red-300 backdrop-blur-sm">
+              <div className="absolute right-2.5 top-2.5 z-10 rounded-full border border-white/20 bg-[#141412]/90 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#c5c1b9] backdrop-blur-sm">
                 Sold Out
               </div>
             )}
@@ -309,7 +309,7 @@ function ProductCard({ product }) {
                   onClick={handleProductClick}
                   aria-label={`Sold out. View ${product.name}`}
                   title="Sold out — view product"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 cursor-pointer items-center justify-center rounded-full border border-red-500/40 bg-red-950/30 text-red-300 transition hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-[#171715] text-[#c5c1b9] transition hover:border-[#c6a15b] hover:bg-[#c6a15b] hover:text-[#11110f]"
                 >
                   <Bell size={17} strokeWidth={1.5} />
                 </button>

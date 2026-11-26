@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+      <div className="rounded-2xl border border-[#b8845a]/40 bg-[#1a1612] p-6 text-center text-sm text-[#eadbc8]">
         <p>{error}</p>
       </div>
     );
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
       value: `${stats?.totalProducts || 0} Fragrances`,
       change: `${stats?.lowStockCount || 0} low-stock decants`,
       icon: Package,
-      iconBg: stats?.lowStockCount > 0 ? "bg-rose-500/10 text-rose-400" : "bg-emerald-500/10 text-emerald-400",
+      iconBg: stats?.lowStockCount > 0 ? "bg-[#b8845a]/15 text-[#d49a6a]" : "bg-[#c6a15b]/10 text-[#d8c08a]",
       trend: "up",
     },
   ];
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
                 <div className={`p-2.5 rounded-lg ${card.iconBg}`}>
                   <Icon className="h-5 w-5" />
                 </div>
-                <TrendingUp className="h-4 w-4 text-emerald-400" />
+                <TrendingUp className="h-4 w-4 text-[#c6a15b]" />
               </div>
               <div>
                 <h3 className="font-medium text-xs text-[#8e8a82] uppercase tracking-wider mb-1">
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
                 <p className="text-2xl font-bold font-display text-[#f4efe6]">
                   {card.value}
                 </p>
-                <p className="text-xs text-emerald-400/90 mt-1.5 flex items-center gap-1 font-medium">
+                <p className="text-xs text-[#d8c08a]/90 mt-1.5 flex items-center gap-1 font-medium">
                   {card.change}
                 </p>
               </div>
@@ -213,8 +213,8 @@ export default function AdminDashboard() {
                               : ord.order_status === "Shipped"
                                 ? "bg-purple-400/10 text-purple-300 border border-purple-400/20"
                                 : ord.order_status === "Delivered"
-                                  ? "bg-emerald-400/10 text-emerald-300 border border-emerald-400/20"
-                                  : "bg-red-400/10 text-red-300 border border-red-400/20"
+                                  ? "bg-[#c6a15b]/10 text-[#d8c08a] border border-[#c6a15b]/30"
+                                  : "bg-[#1a1612] text-[#d49a6a] border border-[#b8845a]/40"
                           }`}
                       >
                         {ord.order_status}
@@ -237,11 +237,11 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex justify-between items-center mb-1.5">
                   <span className="text-[#8e8a82]">Delivered Orders</span>
-                  <span className="font-semibold text-emerald-400">{stats?.deliveredOrders || 0}</span>
+                  <span className="font-semibold text-[#d8c08a]">{stats?.deliveredOrders || 0}</span>
                 </div>
                 <div className="w-full bg-white/5 rounded-full h-2">
                   <div
-                    className="bg-emerald-500 h-2 rounded-full"
+                    className="bg-[#c6a15b] h-2 rounded-full"
                     style={{
                       width: `${stats?.totalOrders
                           ? Math.round(((stats?.deliveredOrders || 0) / stats.totalOrders) * 100)
@@ -303,13 +303,13 @@ export default function AdminDashboard() {
             <div className="space-y-3 text-xs">
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5">
                 <span className="text-[#c5c1b9]">Low Stock Variants</span>
-                <span className={`font-semibold ${stats?.lowStockCount > 0 ? "text-rose-400" : "text-emerald-400"}`}>
+                <span className={`font-semibold ${stats?.lowStockCount > 0 ? "text-[#d49a6a]" : "text-[#d8c08a]"}`}>
                   {stats?.lowStockCount || 0} decants
                 </span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5">
                 <span className="text-[#c5c1b9]">Out of Stock</span>
-                <span className="font-semibold text-rose-400">
+                <span className="font-semibold text-[#d49a6a]">
                   {stats?.outOfStockCount || 0} variants
                 </span>
               </div>

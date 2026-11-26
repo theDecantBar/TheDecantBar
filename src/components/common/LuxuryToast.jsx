@@ -26,7 +26,7 @@ export default function LuxuryToast({ toasts, onDismiss }) {
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className={`pointer-events-auto relative flex items-start gap-3 rounded-2xl border p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-white/10 backdrop-blur-md ${
                 isError
-                  ? "border-red-500/40 bg-[#181111]/95 text-[#fcedec]"
+                  ? "border-[#b8845a]/45 bg-[#1a1612]/95 text-[#f4efe6]"
                   : isWarning
                   ? "border-amber-500/40 bg-[#181510]/95 text-[#fdf6ec]"
                   : "border-[#c6a15b]/45 bg-[#161613]/95 text-[#f4efe6]"
@@ -41,7 +41,7 @@ export default function LuxuryToast({ toasts, onDismiss }) {
                   <AlertTriangle size={17} className="text-amber-400" />
                 )}
                 {isError && (
-                  <AlertCircle size={17} className="text-red-400" />
+                  <AlertCircle size={17} className="text-[#d49a6a]" />
                 )}
                 {!isSuccess && !isWarning && !isError && (
                   <Sparkles size={17} className="text-[#c6a15b]" />

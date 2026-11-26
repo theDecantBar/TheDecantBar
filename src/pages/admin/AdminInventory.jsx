@@ -15,7 +15,7 @@ import {
   Package,
   History,
   MessageCircle,
-  Sparkles,
+  Droplets,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchAdminProducts, updateAdminVariantStock, bulkUpdateAllAdminStock } from "../../services/adminApi";
@@ -360,7 +360,7 @@ export default function AdminInventory() {
                 targetStock: 10,
               })
             }
-            className="flex items-center gap-2 px-3.5 py-2 border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-500/20 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition cursor-pointer rounded-xl"
+            className="flex items-center gap-2 px-3.5 py-2 border border-[#c6a15b]/40 bg-[#c6a15b]/10 hover:bg-[#c6a15b]/20 text-xs font-semibold uppercase tracking-wider text-[#d8c08a] transition cursor-pointer rounded-xl"
           >
             <Boxes size={14} />
             Restock All to 10
@@ -389,8 +389,8 @@ export default function AdminInventory() {
         <div
           className={`p-4 text-xs flex items-center justify-between border rounded-2xl transition-all ${
             feedback.type === "success"
-              ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
-              : "bg-red-950/40 border-red-500/40 text-red-300"
+              ? "bg-[#c6a15b]/10 border-[#c6a15b]/40 text-[#d8c08a]"
+              : "bg-[#1a1612] border-[#b8845a]/40 text-[#eadbc8]"
           }`}
         >
           <span>{feedback.message}</span>
@@ -463,17 +463,17 @@ export default function AdminInventory() {
         <div
           onClick={() => setActiveTab("out")}
           className={`bg-[#171715] border p-4 rounded-2xl transition cursor-pointer ${
-            activeTab === "out" ? "border-red-500 bg-red-950/20" : "border-red-500/30 hover:border-red-500/60"
+            activeTab === "out" ? "border-[#b8845a] bg-[#1a1612]" : "border-[#b8845a]/35 hover:border-[#b8845a]/70"
           }`}
         >
-          <div className="flex items-center justify-between text-xs text-red-400">
+          <div className="flex items-center justify-between text-xs text-[#d49a6a]">
             <span className="uppercase tracking-wider text-[10px] font-semibold">Sold Out</span>
             <XCircle size={15} />
           </div>
-          <p className="text-xl font-bold font-display text-red-400 mt-2">
+          <p className="text-xl font-bold font-display text-[#d49a6a] mt-2">
             {stats.outCount}
           </p>
-          <p className="text-[10px] text-red-400/70 mt-0.5">Out of stock</p>
+          <p className="text-[10px] text-[#d49a6a]/70 mt-0.5">Out of stock</p>
         </div>
 
         {/* 6. Inventory Value */}
@@ -560,11 +560,11 @@ export default function AdminInventory() {
                 </div>
                 <div>
                   {activeVariant.stock <= 0 ? (
-                    <span className="text-red-400 font-bold uppercase tracking-wider text-[10px]">Sold Out</span>
+                    <span className="text-[#d49a6a] font-bold uppercase tracking-wider text-[10px]">Sold Out</span>
                   ) : activeVariant.stock <= 5 ? (
                     <span className="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Low Stock</span>
                   ) : (
-                    <span className="text-emerald-400 font-semibold uppercase tracking-wider text-[10px]">In Stock</span>
+                    <span className="text-[#d8c08a] font-semibold uppercase tracking-wider text-[10px]">In Stock</span>
                   )}
                 </div>
               </div>
@@ -753,8 +753,8 @@ export default function AdminInventory() {
               onClick={() => setActiveTab("out")}
               className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "out"
-                  ? "bg-red-500 text-white"
-                  : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                  ? "bg-[#d49a6a] text-[#11110f]"
+                  : "bg-[#b8845a]/15 text-[#d49a6a] hover:bg-[#b8845a]/25"
               }`}
             >
               <XCircle size={13} />
@@ -766,8 +766,8 @@ export default function AdminInventory() {
               onClick={() => setActiveTab("healthy")}
               className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "healthy"
-                  ? "bg-emerald-500 text-black"
-                  : "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                  ? "bg-[#c6a15b] text-[#11110f]"
+                  : "bg-[#c6a15b]/10 text-[#d8c08a] hover:bg-[#c6a15b]/20"
               }`}
             >
               <CheckCircle2 size={13} />
@@ -828,7 +828,7 @@ export default function AdminInventory() {
                     <tr
                       key={row.variantId}
                       className={`hover:bg-white/[0.02] transition-colors ${
-                        isSoldOut ? "bg-red-950/[0.08]" : isLow ? "bg-amber-950/[0.08]" : ""
+                        isSoldOut ? "bg-[#b8845a]/[0.08]" : isLow ? "bg-amber-950/[0.08]" : ""
                       }`}
                     >
                       {/* Fragrance Info */}
@@ -871,8 +871,8 @@ export default function AdminInventory() {
                       {/* Stock Health Badge */}
                       <td className="py-3.5 px-4">
                         {isSoldOut ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-red-950/80 text-red-300 border border-red-500/40 rounded-full">
-                            <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-[#1a1612] text-[#d49a6a] border border-[#b8845a]/40 rounded-full">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#d49a6a]" />
                             Sold Out
                           </span>
                         ) : isLow ? (
@@ -881,8 +881,8 @@ export default function AdminInventory() {
                             Only {row.stock} left
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-emerald-950/50 text-emerald-300 border border-emerald-500/30 rounded-full">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-[#c6a15b]/10 text-[#d8c08a] border border-[#c6a15b]/35 rounded-full">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#c6a15b]" />
                             In Stock
                           </span>
                         )}
@@ -933,7 +933,7 @@ export default function AdminInventory() {
                               title="Add 1 bottle (requires confirmation)"
                               disabled={isUpdating}
                               onClick={() => requestStockChange(row, 1)}
-                              className="w-8 h-full flex items-center justify-center text-[#c5c1b9] hover:text-emerald-400 transition cursor-pointer disabled:opacity-30"
+                              className="w-8 h-full flex items-center justify-center text-[#c5c1b9] hover:text-[#c6a15b] transition cursor-pointer disabled:opacity-30"
                             >
                               <Plus size={13} />
                             </button>
@@ -952,7 +952,7 @@ export default function AdminInventory() {
                             title="Add 5 to stock (requires confirmation)"
                             disabled={isUpdating}
                             onClick={() => requestStockChange(row, 5)}
-                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
+                            className="px-2.5 py-1 bg-white/5 hover:bg-[#c6a15b]/20 hover:text-[#d8c08a] border border-white/10 hover:border-[#c6a15b]/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +5
                           </button>
@@ -961,7 +961,7 @@ export default function AdminInventory() {
                             title="Add 10 to stock (requires confirmation)"
                             disabled={isUpdating}
                             onClick={() => requestStockChange(row, 10)}
-                            className="px-2.5 py-1 bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 hover:border-emerald-500/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
+                            className="px-2.5 py-1 bg-white/5 hover:bg-[#c6a15b]/20 hover:text-[#d8c08a] border border-white/10 hover:border-[#c6a15b]/40 rounded-xl text-[11px] font-mono font-semibold transition cursor-pointer"
                           >
                             +10
                           </button>
@@ -1026,7 +1026,7 @@ export default function AdminInventory() {
                 </div>
                 <div className="flex justify-between text-[#8e8a82]">
                   <span>{confirmModal.addedStock > 0 ? "Adding:" : "Deducting:"}</span>
-                  <span className={confirmModal.addedStock > 0 ? "font-semibold text-emerald-400" : "font-semibold text-amber-400"}>
+                  <span className={confirmModal.addedStock > 0 ? "font-semibold text-[#d8c08a]" : "font-semibold text-amber-400"}>
                     {confirmModal.addedStock > 0 ? `+${confirmModal.addedStock}` : confirmModal.addedStock} bottles
                   </span>
                 </div>
@@ -1089,14 +1089,14 @@ export default function AdminInventory() {
           <div
             className={`p-4 border rounded-2xl shadow-2xl flex items-start gap-3 ${
               feedback.type === "success"
-                ? "bg-[#171715] border-emerald-500/60 text-emerald-300"
-                : "bg-[#171715] border-red-500/60 text-red-300"
+                ? "bg-[#171715] border-[#c6a15b]/50 text-[#d8c08a]"
+                : "bg-[#1a1612] border-[#b8845a]/50 text-[#eadbc8]"
             }`}
           >
             {feedback.type === "success" ? (
-              <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+              <CheckCircle2 size={18} className="text-[#c6a15b] shrink-0 mt-0.5" />
             ) : (
-              <AlertTriangle size={18} className="text-red-400 shrink-0 mt-0.5" />
+              <AlertTriangle size={18} className="text-[#d49a6a] shrink-0 mt-0.5" />
             )}
             <div className="flex-1 text-xs leading-relaxed">
               <p className="font-semibold text-[#f4efe6]">

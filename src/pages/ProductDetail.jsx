@@ -265,7 +265,7 @@ export default function ProductDetail() {
     return (
       <Container className="py-24">
         <div className="mx-auto max-w-md py-12 text-center">
-          <p className="mb-6 text-sm text-red-400">
+          <p className="mb-6 text-sm text-[#d49a6a]">
             {error || "Fragrance not found"}
           </p>
 
@@ -429,7 +429,7 @@ export default function ProductDetail() {
                 containerClassName="rounded-2xl shadow-xl"
               >
                 {isSoldOut && (
-                  <div className="rounded-2xl absolute right-4 top-4 z-10 border border-red-800/70 bg-red-950/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-red-300 shadow-lg backdrop-blur-md">
+                  <div className="rounded-2xl absolute right-4 top-4 z-10 border border-white/20 bg-[#141412]/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c5c1b9] shadow-lg backdrop-blur-md">
                     Sold Out
                   </div>
                 )}
@@ -558,7 +558,7 @@ export default function ProductDetail() {
 
                           <span className="mt-0.5 text-[11px] sm:text-xs">
                             {variantSoldOut ? (
-                              <span className="font-semibold tracking-tight text-red-400">
+                              <span className="font-semibold tracking-tight text-[#8e8a82]">
                                 Sold Out
                               </span>
                             ) : (
@@ -581,9 +581,9 @@ export default function ProductDetail() {
               {/* Quantity Selector & Action Buttons */}
               {isSoldOut ? (
                 <div className="mt-3 space-y-2">
-                  <div className="flex items-center justify-between rounded-2xl border border-red-500/30 bg-red-950/30 p-2.5 text-xs">
-                    <div className="flex items-center gap-2 text-red-300">
-                      <XCircle size={14} className="shrink-0 text-red-400" />
+                  <div className="flex items-center justify-between rounded-2xl border border-[#b8845a]/40 bg-[#1a1612] p-2.5 text-xs">
+                    <div className="flex items-center gap-2 text-[#e6d6c2]">
+                      <XCircle size={14} className="shrink-0 text-[#d49a6a]" />
                       <span>
                         This {selectedVariant?.size_ml}ml decant size is
                         currently <strong>Sold Out</strong>.
@@ -871,17 +871,17 @@ export default function ProductDetail() {
             </div>
 
             {notifySubmitted ? (
-              <div className="mt-5 space-y-2 rounded-2xl border border-emerald-500/30 bg-emerald-950/30 p-4 text-center text-xs text-emerald-300">
+              <div className="mt-5 space-y-2 rounded-2xl border border-[#c6a15b]/40 bg-[#c6a15b]/10 p-4 text-center text-xs text-[#f4efe6]">
                 <Check
                   size={28}
-                  className="mx-auto text-emerald-400"
+                  className="mx-auto text-[#c6a15b]"
                 />
 
                 <p className="text-sm font-semibold text-[#f4efe6]">
                   You're on the priority list!
                 </p>
 
-                <p>
+                <p className="text-[#c5c1b9]">
                   We've registered your notification request and will
                   contact you as soon as bottles are back in stock.
                 </p>
@@ -889,7 +889,7 @@ export default function ProductDetail() {
                 <button
                   type="button"
                   onClick={() => setNotifyModalOpen(false)}
-                  className="mt-3 cursor-pointer rounded-2xl border border-emerald-500/40 px-5 py-2 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/10"
+                  className="mt-3 cursor-pointer rounded-2xl border border-[#c6a15b]/50 px-5 py-2 text-xs font-semibold text-[#c6a15b] transition hover:bg-[#c6a15b]/15"
                 >
                   Close
                 </button>

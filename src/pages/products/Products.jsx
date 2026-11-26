@@ -267,7 +267,7 @@ function Products() {
             />
           ) : error ? (
             <div className="py-12 text-center">
-              <p className="text-red-300">{error}</p>
+              <p className="text-[#d49a6a]">{error}</p>
 
               <button
                 type="button"

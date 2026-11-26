@@ -285,7 +285,7 @@ export default function ProductReviews({ productId }) {
                     <button
                       type="button"
                       onClick={() => handleDelete(review.id)}
-                      className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300"
+                      className="flex items-center gap-1.5 text-xs text-[#8e8a82] hover:text-[#d8c08a]"
                     >
                       <Trash2 size={13} /> Delete
                     </button>

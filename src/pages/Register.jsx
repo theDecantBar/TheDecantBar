@@ -161,9 +161,9 @@ export default function Register() {
 
         {/* Error Alert */}
         {error && (
-          <div className="rounded-2xl mt-6 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+          <div className="rounded-2xl mt-6 border border-[#b8845a]/40 bg-[#1a1612] p-4 text-xs text-[#eadbc8]">
             <div className="flex items-start gap-3">
-              <AlertCircle size={16} className="text-red-400 shrink-0 mt-0.5" />
+              <AlertCircle size={16} className="text-[#d49a6a] shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
             {error.includes("Please log in") && (

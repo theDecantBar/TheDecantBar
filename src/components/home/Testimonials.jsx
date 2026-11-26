@@ -13,7 +13,7 @@ function DeleteReviewDialog({ review, onClose, onDelete }) {
   useEffect(() => { const previous = document.activeElement; element.current.showModal(); return () => { previous?.focus(); }; }, []);
   return <dialog ref={element} aria-labelledby="delete-review-title" onCancel={e => { e.preventDefault(); if (!busy) onClose(); }} className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-white/20 bg-[#171715] p-7 text-[#f4efe6] backdrop:bg-black/80">
     <h2 id="delete-review-title" className="font-display text-3xl">Delete this review?</h2><p className="mt-3 text-sm leading-6 text-[#c5c1b9]">The review by {review.name} will be removed from the homepage and Reviews page.</p>
-    {error && <p role="alert" className="mt-3 text-sm text-red-200">{error}</p>}
+    {error && <p role="alert" className="mt-3 text-sm text-[#d49a6a]">{error}</p>}
     <div className="mt-6 flex justify-end gap-3"><button type="button" disabled={busy} onClick={onClose} className="rounded-full border border-white/20 px-5 py-3 text-sm">Keep review</button><button type="button" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { await onDelete(); } catch (err) { setError(err.message); setBusy(false); } }} className="rounded-full bg-[#c6a15b] px-5 py-3 text-sm font-semibold text-[#11110f]">{busy ? "Deleting..." : "Delete review"}</button></div>
   </dialog>;
 }
@@ -113,7 +113,7 @@ export default function Testimonials({ showBreadcrumb = false }) {
         </div>
 
       {notice && <p role="status" className="mb-5 rounded-lg border border-[#c6a15b]/40 p-3 text-sm text-[#d8c08a]">{notice}</p>}
-      {error && <div role="alert" className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl border border-red-400/30 p-4 text-sm text-red-200"><p>{error} {reviews.length ? "Previously loaded reviews may be out of date." : ""}</p><button type="button" onClick={refresh} className="rounded-2xl underline">Try again</button></div>}
+      {error && <div role="alert" className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl border border-[#b8845a]/40 bg-[#1a1612] p-4 text-sm text-[#eadbc8]"><p>{error} {reviews.length ? "Previously loaded reviews may be out of date." : ""}</p><button type="button" onClick={refresh} className="rounded-2xl underline">Try again</button></div>}
       {loading ? <p role="status" className="py-12 text-[#c5c1b9]">Loading customer reviews...</p> : <>
         <div className="rounded-[24px] border border-white/15 bg-[#171714] p-2 sm:p-2.5 mb-8 shadow-2xl transition-all duration-300 hover:border-[#c6a15b]/40">
           <div className="rounded-[18px] border border-white/10 bg-[#121210] p-7 sm:p-9">

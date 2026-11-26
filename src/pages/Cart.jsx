@@ -99,7 +99,7 @@ export default function Cart() {
           <button
             type="button"
             onClick={clearCart}
-            className="rounded-2xl text-xs uppercase tracking-wider text-[#8e8a82] hover:text-red-400 transition-colors self-start sm:self-auto cursor-pointer"
+            className="rounded-2xl text-xs uppercase tracking-wider text-[#8e8a82] hover:text-[#d8c08a] transition-colors self-start sm:self-auto cursor-pointer"
           >
             Clear All
           </button>
@@ -159,8 +159,8 @@ export default function Cart() {
 
                     {/* Sold Out Notice */}
                     {item.isSoldOut && (
-                      <div className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-950/40 px-2.5 py-1 text-[11px] font-semibold text-red-300">
-                        <XCircle size={13} className="text-red-400 shrink-0" />
+                      <div className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[#b8845a]/40 bg-[#1a1612] px-2.5 py-1 text-[11px] font-semibold text-[#e6d6c2]">
+                        <XCircle size={13} className="text-[#d49a6a] shrink-0" />
                         <span>Sold out — please remove to checkout</span>
                       </div>
                     )}
@@ -215,7 +215,7 @@ export default function Cart() {
                     type="button"
                     aria-label="Remove item"
                     onClick={() => removeFromCart(item.cartItemId)}
-                    className="rounded-2xl text-[#8e8a82] hover:text-red-400 transition-colors p-2 cursor-pointer"
+                    className="rounded-2xl text-[#8e8a82] hover:text-[#d8c08a] transition-colors p-2 cursor-pointer"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -261,8 +261,8 @@ export default function Cart() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl mt-4 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
-                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
+              <div className="rounded-2xl mt-4 border border-[#c6a15b]/35 bg-[#c6a15b]/10 p-2.5 text-xs text-[#d8c08a] flex items-center gap-2">
+                <Check size={14} className="text-[#c6a15b] shrink-0" strokeWidth={2.5} />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
             )}
@@ -275,7 +275,7 @@ export default function Cart() {
 
               <div className="flex justify-between items-center py-4">
                 <span>Standard Shipping</span>
-                <span className={cartSubtotal >= FREE_SHIPPING_THRESHOLD ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                <span className={cartSubtotal >= FREE_SHIPPING_THRESHOLD ? "text-[#c6a15b] font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
                   {cartSubtotal >= FREE_SHIPPING_THRESHOLD ? "FREE" : `₹${calculateShippingFee(cartSubtotal)}`}
                 </span>
               </div>
@@ -295,7 +295,7 @@ export default function Cart() {
                   <button
                     type="button"
                     disabled
-                    className="rounded-2xl flex w-full items-center justify-center gap-2 border border-red-500/40 bg-red-950/40 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-red-300 cursor-not-allowed"
+                    className="rounded-2xl flex w-full items-center justify-center gap-2 border border-[#b8845a]/40 bg-[#1a1612] px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#e6d6c2] cursor-not-allowed"
                   >
                     <XCircle size={15} />
                     <span>Remove Sold Out Items to Proceed</span>

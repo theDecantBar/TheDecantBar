@@ -48,6 +48,12 @@ export const login = async (req, res) => {
     }
 
     const user = result.rows[0];
+    if (!user.password_hash) {
+      return res.status(401).json({
+        message: "This account uses Google Sign-In. Please continue with Google or reset your password.",
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
@@ -174,10 +180,14 @@ export const changePassword = async (req, res) => {
       [req.user.id]
     );
 
-    const isMatch = await bcrypt.compare(
-      currentPassword,
-      userQuery.rows[0].password_hash
-    );
+    const storedHash = userQuery.rows[0]?.password_hash;
+    if (!storedHash) {
+      return res.status(400).json({
+        message: "This account uses Google Sign-In and has no password yet. Use Forgot Password to set one.",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, storedHash);
 
     if (!isMatch) {
       return res.status(400).json({ message: "Current password does not match." });
@@ -715,7 +725,7 @@ export const googleAuth = async (req, res) => {
             googleProfile.picture || null,
           ]
         );
-      } catch (err) {
+      } catch {
         // Fallback if google_id / avatar_url columns haven't migrated yet
         insertResult = await pool.query(
           `INSERT INTO users (full_name, email, password_hash, is_admin)
@@ -725,7 +735,7 @@ export const googleAuth = async (req, res) => {
             googleProfile.name.trim(),
             normalizedEmail,
             placeholderHash,
-            isConfiguredAdmin,
+            false,
           ]
         );
       }

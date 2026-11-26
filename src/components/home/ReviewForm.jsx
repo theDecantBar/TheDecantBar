@@ -92,7 +92,7 @@ export default function ReviewForm({ review, user, isAuthenticated, onSave, onCl
                     {photoName && <p className="mt-1 break-all text-xs text-[#b6b2a8]">{photoName}</p>}
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button type="button" onClick={() => photoInput.current?.click()} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#c6a15b]/60 px-4 py-2 text-xs text-[#d8c08a] transition hover:bg-[#c6a15b]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c6a15b]"><Upload size={14} aria-hidden="true" /> Replace photo</button>
-                      <button type="button" onClick={() => { setForm(previous => ({ ...previous, photo: null })); setPhotoName(""); setPhotoError(""); }} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs text-[#c5c1b9] transition hover:border-red-400/50 hover:text-red-300"><Trash2 size={14} aria-hidden="true" /> Remove</button>
+                      <button type="button" onClick={() => { setForm(previous => ({ ...previous, photo: null })); setPhotoName(""); setPhotoError(""); }} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs text-[#c5c1b9] transition hover:border-[#c6a15b]/60 hover:text-[#f4efe6]"><Trash2 size={14} aria-hidden="true" /> Remove</button>
                     </div>
                   </div>
                 </div>
@@ -105,10 +105,10 @@ export default function ReviewForm({ review, user, isAuthenticated, onSave, onCl
               )}
             </div>
             <p id={`${prefix}-photo-help`} className="mt-2 text-xs leading-5 text-[#b6b2a8]">JPG, PNG or WebP · Maximum 5MB · One photo per review</p>
-            {photoError && <p role="alert" className="mt-2 text-sm text-red-200">{photoError}</p>}
+            {photoError && <p role="alert" className="mt-2 text-sm text-[#d49a6a]">{photoError}</p>}
           </div>
         </fieldset>
-        {error && <p role="alert" className="rounded-lg border border-red-400/30 p-3 text-sm text-red-200">{error}</p>}
+        {error && <p role="alert" className="rounded-lg border border-[#b8845a]/40 bg-[#1a1612] p-3 text-sm text-[#eadbc8]">{error}</p>}
         <div className="flex justify-end gap-3 border-t border-white/10 pt-5"><button type="button" disabled={saving} onClick={onClose} className="rounded-full border border-white/15 px-5 py-2.5 text-xs uppercase tracking-wider">Cancel</button><button type="submit" disabled={saving || processing} className="rounded-full bg-[#c6a15b] px-6 py-2.5 text-xs uppercase tracking-wider font-semibold text-[#11110f] disabled:opacity-50">{processing ? "Preparing photo…" : saving ? "Saving…" : review ? "Save changes" : "Submit review"}</button></div>
       </form>}
     </div>

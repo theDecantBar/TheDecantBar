@@ -21,20 +21,49 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import productReviewRoutes from "./routes/productReviewRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import pool from "./config/db.js";
 import { ensureAdminSchema } from "./scripts/initAdminDb.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
-// Verify and initialize necessary admin schema columns
-const schemaReady = ensureAdminSchema();
-schemaReady.catch(() => {});
-app.locals.schemaReady = schemaReady;
+// Verify and initialize necessary admin schema columns with automatic retry on transient failures
+let schemaPromise = null;
+let schemaVerified = false;
+
+async function ensureSchemaAvailable() {
+  if (schemaVerified) return;
+  if (!schemaPromise) {
+    schemaPromise = ensureAdminSchema()
+      .then(() => {
+        schemaVerified = true;
+      })
+      .catch(async (err) => {
+        schemaPromise = null;
+        // If DDL failed (e.g. restricted ALTER privileges) but core DB is reachable, allow requests
+        try {
+          await pool.query("SELECT 1 FROM users LIMIT 1");
+          console.warn("Schema auto-migration skipped, core DB is reachable:", err.message);
+          schemaVerified = true;
+          return;
+        } catch {
+          throw err;
+        }
+      });
+  }
+  return schemaPromise;
+}
+
+// Kick off warm-up eagerly without poisoning future requests if boot DB connection blips
+ensureSchemaAvailable().catch(() => {});
+app.locals.ensureSchemaAvailable = ensureSchemaAvailable;
 
 app.use(async (_req, res, next) => {
   try {
-    await schemaReady;
+    await ensureSchemaAvailable();
     next();
-  } catch {
+  } catch (err) {
+    console.error("Store availability check failed:", err.message);
     res.status(503).json({
       message: "The store is temporarily unavailable. Please try again shortly.",
     });

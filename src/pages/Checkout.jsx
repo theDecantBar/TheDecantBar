@@ -459,7 +459,7 @@ export default function Checkout() {
             </div>
             <div className="flex justify-between">
               <span>Payment Status:</span>
-              <span className="text-emerald-400 font-medium uppercase tracking-wider">
+              <span className="text-[#c6a15b] font-medium uppercase tracking-wider">
                 Paid
               </span>
             </div>
@@ -473,7 +473,7 @@ export default function Checkout() {
             )}
             <div className="flex justify-between">
               <span>Standard Shipping:</span>
-              <span className={Number(completedOrder.shippingFee) === 0 ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+              <span className={Number(completedOrder.shippingFee) === 0 ? "text-[#c6a15b] font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
                 {Number(completedOrder.shippingFee) === 0 ? "FREE" : `₹${completedOrder.shippingFee}`}
               </span>
             </div>
@@ -599,9 +599,9 @@ export default function Checkout() {
 
           {savedReference && <p className="mb-4 text-sm">Saved order {savedReference}. <Link className="underline" to="/account">Check payment or retry in My orders</Link></p>}
           {errorMessage && (
-            <div className="rounded-2xl mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-red-500/30 bg-red-950/20 p-4 text-xs text-red-200">
+            <div className="rounded-2xl mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-[#b8845a]/40 bg-[#1a1612] p-4 text-xs text-[#eadbc8]">
               <div className="flex items-center gap-3">
-                <AlertCircle size={16} className="text-red-400 shrink-0" />
+                <AlertCircle size={16} className="text-[#d49a6a] shrink-0" />
                 <span>{errorMessage} {savedReference && <Link to="/account" className="underline">Open My orders</Link>}</span>
               </div>
               {!isAuthenticated && (
@@ -639,12 +639,12 @@ export default function Checkout() {
                     placeholder="Enter your full name"
                     className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.fullName && errors.fullName
-                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                         : "border-white/15 focus:border-[#c6a15b]"
                     }`}
                   />
                   {touched.fullName && errors.fullName && (
-                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                       <AlertCircle size={12} className="shrink-0" />
                       <span>{errors.fullName}</span>
                     </p>
@@ -660,7 +660,7 @@ export default function Checkout() {
                       <span
                         className={`inline-flex items-center px-3 rounded-l-xl border border-r-0 bg-white/5 text-xs font-mono text-[#c6a15b] select-none transition ${
                           touched.phone && errors.phone
-                            ? "border-red-500/80"
+                            ? "border-[#c89364]"
                             : "border-white/15"
                         }`}
                       >
@@ -677,13 +677,13 @@ export default function Checkout() {
                         placeholder="Enter 10-digit mobile number"
                         className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                           touched.phone && errors.phone
-                            ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                            ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                             : "border-white/15 focus:border-[#c6a15b]"
                         }`}
                       />
                     </div>
                     {touched.phone && errors.phone && (
-                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                         <AlertCircle size={12} className="shrink-0" />
                         <span>{errors.phone}</span>
                       </p>
@@ -704,12 +704,12 @@ export default function Checkout() {
                       placeholder="Enter your email address"
                       className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.email && errors.email
-                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                           : "border-white/15 focus:border-[#c6a15b]"
                       }`}
                     />
                     {touched.email && errors.email && (
-                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                         <AlertCircle size={12} className="shrink-0" />
                         <span>{errors.email}</span>
                       </p>
@@ -740,12 +740,12 @@ export default function Checkout() {
                     placeholder="Enter flat, house no., building, or street address"
                     className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.address && errors.address
-                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                         : "border-white/15 focus:border-[#c6a15b]"
                     }`}
                   />
                   {touched.address && errors.address && (
-                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                       <AlertCircle size={12} className="shrink-0" />
                       <span>{errors.address}</span>
                     </p>
@@ -767,12 +767,12 @@ export default function Checkout() {
                       placeholder="Enter your city"
                       className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.city && errors.city
-                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                           : "border-white/15 focus:border-[#c6a15b]"
                       }`}
                     />
                     {touched.city && errors.city && (
-                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                         <AlertCircle size={12} className="shrink-0" />
                         <span>{errors.city}</span>
                       </p>
@@ -793,12 +793,12 @@ export default function Checkout() {
                       placeholder="Enter your state"
                       className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.state && errors.state
-                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                           : "border-white/15 focus:border-[#c6a15b]"
                       }`}
                     />
                     {touched.state && errors.state && (
-                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                         <AlertCircle size={12} className="shrink-0" />
                         <span>{errors.state}</span>
                       </p>
@@ -820,12 +820,12 @@ export default function Checkout() {
                       placeholder="Enter 6-digit PIN code"
                       className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                         touched.pincode && errors.pincode
-                          ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                          ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                           : "border-white/15 focus:border-[#c6a15b]"
                       }`}
                     />
                     {touched.pincode && errors.pincode && (
-                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                      <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                         <AlertCircle size={12} className="shrink-0" />
                         <span>{errors.pincode}</span>
                       </p>
@@ -848,12 +848,12 @@ export default function Checkout() {
                     placeholder="Special packaging or delivery instructions (optional)"
                     className={`rounded-2xl w-full border bg-[#11110f] px-4 py-3 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition focus:outline-none ${
                       touched.orderNotes && errors.orderNotes
-                        ? "border-red-500/80 ring-1 ring-red-500/20 focus:border-red-400"
+                        ? "border-[#c89364] ring-1 ring-[#c89364]/25 focus:border-[#d8c08a]"
                         : "border-white/15 focus:border-[#c6a15b]"
                     }`}
                   />
                   {touched.orderNotes && errors.orderNotes && (
-                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">
+                    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#d49a6a]">
                       <AlertCircle size={12} className="shrink-0" />
                       <span>{errors.orderNotes}</span>
                     </p>
@@ -904,7 +904,7 @@ export default function Checkout() {
                           <span className="text-xs font-semibold uppercase tracking-wider text-[#f4efe6]">
                             Pay Online (Razorpay)
                           </span>
-                          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-medium text-emerald-300 uppercase tracking-wider">
+                          <span className="rounded-full border border-[#c6a15b]/35 bg-[#c6a15b]/10 px-2.5 py-0.5 text-[10px] font-medium text-[#d8c08a] uppercase tracking-wider">
                             Instant Confirmation
                           </span>
                         </div>
@@ -989,8 +989,8 @@ export default function Checkout() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl mb-6 border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300 flex items-center gap-2">
-                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
+              <div className="rounded-2xl mb-6 border border-[#c6a15b]/35 bg-[#c6a15b]/10 p-2.5 text-xs text-[#d8c08a] flex items-center gap-2">
+                <Check size={14} className="text-[#c6a15b] shrink-0" strokeWidth={2.5} />
                 <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
               </div>
             )}
@@ -1035,7 +1035,7 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between items-center">
                 <span>Standard Insured Shipping</span>
-                <span className={isFreeShipping ? "text-emerald-400 font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
+                <span className={isFreeShipping ? "text-[#c6a15b] font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>
                   {isFreeShipping ? "FREE" : `₹${shippingFee}`}
                 </span>
               </div>

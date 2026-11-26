@@ -259,7 +259,7 @@ export default function Account() {
 
         <button
           onClick={handleLogout}
-          className="rounded-2xl inline-flex items-center gap-2 self-start md:self-auto border border-white/15 bg-transparent px-4 py-2.5 text-xs uppercase tracking-wider text-[#c5c1b9] hover:border-red-400/50 hover:text-red-300 hover:bg-red-950/20 transition cursor-pointer"
+          className="rounded-2xl inline-flex items-center gap-2 self-start md:self-auto border border-white/15 bg-[#171715] px-4 py-2.5 text-xs uppercase tracking-wider text-[#c5c1b9] hover:border-[#c6a15b]/60 hover:text-[#f4efe6] hover:bg-[#c6a15b]/10 transition cursor-pointer"
         >
           <LogOut size={14} />
           <span>Sign Out</span>
@@ -341,8 +341,8 @@ export default function Account() {
                 </p>
 
                 {ordersError && (
-                  <div className="rounded-2xl mt-4 flex items-center gap-2 border border-red-500/30 bg-red-950/20 p-3 text-xs text-red-200">
-                    <AlertCircle size={15} />
+                  <div className="rounded-2xl mt-4 flex items-center gap-2 border border-[#b8845a]/40 bg-[#1a1612] p-3 text-xs text-[#eadbc8]">
+                    <AlertCircle size={15} className="text-[#d49a6a] shrink-0" />
                     <span>{ordersError}</span>
                   </div>
                 )}
@@ -477,15 +477,15 @@ export default function Account() {
               </p>
 
               {profileSuccess && (
-                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-green-500/30 bg-green-950/20 p-3.5 text-xs text-green-200">
-                  <CheckCircle size={16} className="text-green-400 shrink-0" />
+                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-[#c6a15b]/40 bg-[#c6a15b]/10 p-3.5 text-xs text-[#f4efe6]">
+                  <CheckCircle size={16} className="text-[#c6a15b] shrink-0" />
                   <span>{profileSuccess}</span>
                 </div>
               )}
 
               {profileError && (
-                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-red-500/30 bg-red-950/20 p-3.5 text-xs text-red-200">
-                  <AlertCircle size={16} className="text-red-400 shrink-0" />
+                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-[#b8845a]/40 bg-[#1a1612] p-3.5 text-xs text-[#eadbc8]">
+                  <AlertCircle size={16} className="text-[#d49a6a] shrink-0" />
                   <span>{profileError}</span>
                 </div>
               )}
@@ -616,15 +616,15 @@ export default function Account() {
               </p>
 
               {passwordSuccess && (
-                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-green-500/30 bg-green-950/20 p-3.5 text-xs text-green-200">
-                  <CheckCircle size={16} className="text-green-400 shrink-0" />
+                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-[#c6a15b]/40 bg-[#c6a15b]/10 p-3.5 text-xs text-[#f4efe6]">
+                  <CheckCircle size={16} className="text-[#c6a15b] shrink-0" />
                   <span>{passwordSuccess}</span>
                 </div>
               )}
 
               {passwordError && (
-                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-red-500/30 bg-red-950/20 p-3.5 text-xs text-red-200">
-                  <AlertCircle size={16} className="text-red-400 shrink-0" />
+                <div className="rounded-2xl mt-4 flex items-center gap-2 border border-[#b8845a]/40 bg-[#1a1612] p-3.5 text-xs text-[#eadbc8]">
+                  <AlertCircle size={16} className="text-[#d49a6a] shrink-0" />
                   <span>{passwordError}</span>
                 </div>
               )}

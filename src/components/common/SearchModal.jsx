@@ -386,7 +386,7 @@ export default function SearchModal({ isOpen, onClose }) {
                       <button
                         type="button"
                         onClick={clearAllRecentSearches}
-                        className="text-[10px] text-[#8e8a82] hover:text-red-400 uppercase tracking-wider transition cursor-pointer"
+                        className="text-[10px] text-[#8e8a82] hover:text-[#c6a15b] uppercase tracking-wider transition cursor-pointer"
                       >
                         Clear All
                       </button>

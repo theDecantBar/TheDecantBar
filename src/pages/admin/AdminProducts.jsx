@@ -508,7 +508,7 @@ function TagInput({ label, tags = [], onChange, placeholder, onSelectNoteForImag
                   e.stopPropagation();
                   removeTag(tag);
                 }}
-                className="text-[#8e8a82] hover:text-red-400 cursor-pointer transition-colors ml-0.5 p-0.5 hover:bg-white/10 rounded-full"
+                className="text-[#8e8a82] hover:text-[#d8c08a] cursor-pointer transition-colors ml-0.5 p-0.5 hover:bg-white/10 rounded-full"
                 title="Remove note"
               >
                 <X size={10} />
@@ -845,7 +845,7 @@ function AccordRow({ accord, index, onChange, onRemove }) {
         <button
           type="button"
           onClick={() => onRemove(index)}
-          className="text-red-400 hover:text-red-300 p-1.5 hover:bg-red-500/15 rounded-lg transition cursor-pointer shrink-0 ml-1"
+          className="text-[#8e8a82] hover:text-[#d8c08a] p-1.5 hover:bg-white/10 rounded-lg transition cursor-pointer shrink-0 ml-1"
           title="Remove accord"
         >
           <Trash2 size={14} />
@@ -1160,7 +1160,7 @@ function NoteImageFinder({ noteName, token, onClose, onImageSaved }) {
         {/* Scrollable Content Area */}
         <div className="overflow-y-auto flex-1 pr-1 space-y-3 min-h-[220px]">
           {uploadError && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300">
+            <div className="p-3 rounded-xl bg-[#1a1612] border border-[#b8845a]/40 text-xs text-[#eadbc8]">
               {uploadError}
             </div>
           )}
@@ -1441,7 +1441,7 @@ export default function AdminProducts() {
           </p>
         </div>
       ) : error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center text-sm text-red-300">
+        <div className="rounded-2xl border border-[#b8845a]/40 bg-[#1a1612] p-6 text-center text-sm text-[#eadbc8]">
           <p>{error}</p>
         </div>
       ) : filteredProducts.length === 0 ? (
@@ -1500,7 +1500,7 @@ export default function AdminProducts() {
                           {topNotes.length > 3 && <span className="text-[10px] text-[#8e8a82]">+{topNotes.length - 3}</span>}
                         </div>
                       ) : (
-                        <span className="text-[10px] text-red-400/70 italic">No notes set</span>
+                        <span className="text-[10px] text-[#8e8a82] italic">No notes set</span>
                       )}
                     </td>
                     <td className="py-3.5 px-4 text-[#c5c1b9]">{variantCount > 0 ? `${variantCount} size${variantCount > 1 ? "s" : ""}` : "—"}</td>
@@ -1516,7 +1516,7 @@ export default function AdminProducts() {
                           <ExternalLink size={14} />
                         </a>
                         <button type="button" onClick={() => handleOpenEdit(p)} title="Edit fragrance" className="p-1.5 text-[#8e8a82] hover:text-[#c6a15b] transition cursor-pointer"><Edit2 size={14} /></button>
-                        <button type="button" onClick={() => handleDelete(p.id, p.name)} title="Delete fragrance" className="p-1.5 text-[#8e8a82] hover:text-red-400 transition cursor-pointer"><Trash2 size={14} /></button>
+                        <button type="button" onClick={() => handleDelete(p.id, p.name)} title="Delete fragrance" className="p-1.5 text-[#8e8a82] hover:text-[#d8c08a] transition cursor-pointer"><Trash2 size={14} /></button>
                       </div>
                     </td>
                   </tr>
@@ -2052,7 +2052,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                   {formData.imageUrl && <button type="button" onClick={() => setFormData({ ...formData, imageUrl: "" })} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8e8a82] hover:text-[#f4efe6] cursor-pointer"><X size={14} /></button>}
                 </div>
               </div>
-              {uploadError && <p className="text-[11px] text-rose-400 mt-1">{uploadError}</p>}
+              {uploadError && <p className="text-[11px] text-[#d49a6a] mt-1">{uploadError}</p>}
             </div>
             <div>
               <label className="block uppercase tracking-wider text-[11px] text-[#8e8a82] mb-1 font-medium">Description / Scent Profile</label>
@@ -2085,15 +2085,15 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
             </div>
 
             {noteImageFinderSuccess && (
-              <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-200 text-xs flex items-center justify-between animate-in fade-in">
+              <div className="p-3 rounded-xl bg-[#c6a15b]/10 border border-[#c6a15b]/35 text-[#d8c08a] text-xs flex items-center justify-between animate-in fade-in">
                 <div className="flex items-center gap-2">
-                  <Check size={14} className="text-emerald-400 shrink-0" />
+                  <Check size={14} className="text-[#c6a15b] shrink-0" />
                   <span>{noteImageFinderSuccess}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setNoteImageFinderSuccess("")}
-                  className="text-emerald-400 hover:text-white cursor-pointer"
+                  className="text-[#c6a15b] hover:text-[#f4efe6] cursor-pointer"
                 >
                   <X size={12} />
                 </button>
@@ -2310,7 +2310,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                 <button
                   type="button"
                   onClick={() => setAccords([])}
-                  className="text-[10px] text-red-400 hover:text-red-300 underline cursor-pointer"
+                  className="text-[10px] text-[#8e8a82] hover:text-[#d8c08a] underline cursor-pointer"
                 >
                   Clear all accords
                 </button>
@@ -2393,7 +2393,7 @@ function ProductModal({ product, onClose, onSave, token, existingBrands = [] }) 
                     <input type="checkbox" id={`active-${idx}`} checked={v.active} onChange={(e) => handleVariantChange(idx, "active", e.target.checked)} className="accent-[#c6a15b] cursor-pointer" />
                     <label htmlFor={`active-${idx}`} className="text-[11px] text-[#8e8a82] cursor-pointer">Active</label>
                   </div>
-                  <button type="button" onClick={() => handleRemoveVariant(idx)} className="ml-auto text-red-400 hover:text-red-300 p-1 cursor-pointer"><Trash2 size={14} /></button>
+                  <button type="button" onClick={() => handleRemoveVariant(idx)} className="ml-auto text-[#8e8a82] hover:text-[#d8c08a] p-1 cursor-pointer"><Trash2 size={14} /></button>
                 </div>
               ))}
             </div>
