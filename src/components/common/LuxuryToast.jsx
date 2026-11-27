@@ -8,7 +8,7 @@ export default function LuxuryToast({ toasts, onDismiss }) {
     <div
       aria-live="polite"
       aria-atomic="true"
-      className="fixed top-5 right-4 sm:right-6 z-[9999] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none"
+      className="fixed top-5 right-4 sm:right-6 z-[100000] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none"
     >
       <AnimatePresence>
         {toasts.map((toast) => {

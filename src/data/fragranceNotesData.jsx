@@ -31,6 +31,12 @@ const NOTE_IMAGE_ALIASES = {
   "dry wood": "/images/notes/woody_notes.png",
   "dry woods": "/images/notes/woody_notes.png",
   "caramel": "/images/notes/toffee_caramel.jpg",
+  "indonesian patchouli": "/images/notes/indian_patchouli.jpg",
+  "rosyfolia": "/images/notes/damascena_rose.jpg",
+  "cocoapulse™": "/images/notes/cocoa.png",
+  "maple": "/images/showcase/maple_note.jpg",
+  "ambrofix™": "/images/notes/ambrofix.jpg",
+  "oak": "/images/notes/oak_wood.jpg",
 };
 
 /**

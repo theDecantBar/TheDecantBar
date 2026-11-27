@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ChevronDown, Clock, Snowflake, Leaf, Sun, Moon } from "lucide-react";
+import { ChevronDown, Clock, Snowflake, Leaf, Sun, Moon, X } from "lucide-react";
 
 export type DecantSize = "2ml" | "5ml" | "10ml";
 
@@ -456,7 +456,7 @@ type DualStageHandles = {
   bottle1: HTMLDivElement | null;
   f2Bottle: HTMLDivElement | null;
   tierHeads: (HTMLDivElement | null)[];
-  notes: Record<"top" | "mid" | "base", (HTMLDivElement | null)[]>;
+  notes: Record<"top" | "mid" | "base", (HTMLElement | null)[]>;
   arrowPaths: (SVGPathElement | null)[];
   arrowEnds: (SVGGElement | null)[];
   wearPill: HTMLDivElement | null;
@@ -534,6 +534,27 @@ const CSS_STYLES = `
   overflow: hidden;
   visibility: hidden;
   pointer-events: none;
+}
+.frg-oud-stage--active .frg-oud-note-item,
+.frg-oud-stage--active .frg-oud-wear-pill,
+.frg-oud-stage--active.frg-oud-stage--f1 .frg-oud-bottle-1,
+.frg-oud-stage--active.frg-oud-stage--f2 .frg-oud-f2-bottle {
+  pointer-events: auto;
+}
+.frg-tilt-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: perspective(950px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg)) scale(var(--tilt-scale, 1));
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .frg-tilt-wrap {
+    transform: none !important;
+  }
 }
 .frg-oud-bg1,
 .frg-oud-bg2 {
@@ -719,6 +740,18 @@ const CSS_STYLES = `
   width: 86px;
   text-align: center;
   will-change: transform, opacity;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.frg-oud-note-item:focus-visible {
+  outline: 2px solid #c6a15b;
+  outline-offset: 4px;
+  border-radius: 12px;
 }
 .frg-oud-note-ring {
   width: 72px;
@@ -728,6 +761,16 @@ const CSS_STYLES = `
   background: linear-gradient(145deg, rgba(235, 206, 146, 0.78), rgba(130, 102, 56, 0.38));
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.78), 0 0 18px rgba(198, 161, 91, 0.14);
   overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.frg-oud-note-item:hover .frg-oud-note-ring,
+.frg-oud-note-item--active .frg-oud-note-ring {
+  transform: scale(1.07);
+  background: linear-gradient(145deg, #f5dfb0, #c6a15b);
+  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.85), 0 0 24px rgba(198, 161, 91, 0.42);
+}
+.frg-oud-note-item--active .frg-oud-note-name {
+  color: #f5dfb0;
 }
 .frg-oud-note-inner {
   width: 100%;
@@ -778,17 +821,18 @@ const CSS_STYLES = `
   position: absolute;
   left: 58px;
   bottom: 14px;
+  max-width: 620px;
   z-index: 6;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 14px;
+  padding: 6px 14px;
   border-radius: 99px;
-  background: rgba(14, 13, 12, 0.8);
-  border: 1px solid rgba(198, 161, 91, 0.3);
-  backdrop-filter: blur(8px);
+  background: rgba(14, 13, 12, 0.86);
+  border: 1px solid rgba(198, 161, 91, 0.34);
+  backdrop-filter: blur(10px);
   font-size: 10.5px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: #e9dec8;
   will-change: transform, opacity;
 }
@@ -798,6 +842,18 @@ const CSS_STYLES = `
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 9.5px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.frg-oud-wear-hint {
+  color: rgba(233, 222, 200, 0.45);
+  font-size: 9.5px;
+  padding-left: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}
+.frg-oud-bottle-1--clickable {
+  cursor: pointer;
 }
 
 .frg-arc {
@@ -826,39 +882,94 @@ const CSS_STYLES = `
 }
 .frg-pager {
   position: absolute;
-  left: 22px;
+  left: 28px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 10px;
   z-index: 10;
+  transition: left 0.35s ease;
+}
+.frg-pager--compact {
+  left: 16px;
+  gap: 8px;
 }
 .frg-dot {
-  width: 24px;
-  height: 20px;
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
   cursor: pointer;
-  transition: height 0.45s cubic-bezier(0.3, 0.7, 0.2, 1);
+  color: rgba(222, 211, 191, 0.5);
+  transition: color 0.25s ease;
+}
+.frg-dot:hover {
+  color: #f4efe6;
 }
 .frg-dot i {
   display: block;
+  width: 12px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: rgba(222, 211, 191, 0.35);
+  transition: width 0.35s cubic-bezier(0.3, 0.7, 0.2, 1), background-color 0.25s ease;
+}
+.frg-pager--compact .frg-dot i {
   width: 4px;
   height: 4px;
   border-radius: 4px;
-  background: #ded3bf;
-  opacity: 0.42;
-  transition: height 0.45s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.3s, background-color 0.3s;
-}
-.frg-dot[aria-current="true"] i {
-  height: 26px;
-  opacity: 1;
-  background: #c6a15b;
 }
 .frg-dot[aria-current="true"] {
-  height: 30px;
+  color: #fffdf7;
+}
+.frg-dot[aria-current="true"] i {
+  width: 26px;
+  background: #c6a15b;
+}
+.frg-pager--compact .frg-dot[aria-current="true"] i {
+  width: 4px;
+  height: 22px;
+  background: #c6a15b;
+}
+.frg-pager-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(198, 161, 91, 0.65);
+  transition: color 0.25s ease;
+}
+.frg-dot[aria-current="true"] .frg-pager-num {
+  color: #c6a15b;
+}
+.frg-pager-name {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
+}
+.frg-pager--compact .frg-pager-num,
+.frg-pager--compact .frg-pager-name {
+  display: none;
+}
+@container (max-width: 960px) {
+  .frg-pager-num,
+  .frg-pager-name {
+    display: none;
+  }
+  .frg-pager {
+    left: 14px;
+  }
+  .frg-dot i {
+    width: 4px;
+    height: 4px;
+  }
+  .frg-dot[aria-current="true"] i {
+    width: 4px;
+    height: 22px;
+  }
 }
 .frg-bottles {
   position: absolute;
@@ -1063,44 +1174,50 @@ const CSS_STYLES = `
   background: linear-gradient(90deg, #c6a15b, #e4cc92);
 }
 
-.frg-scroll-badge {
+.frg-stage-dock {
   position: absolute;
   right: 26px;
-  bottom: 20px;
+  bottom: 18px;
   z-index: 10;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 15px;
+  gap: 2px;
+  padding: 4px;
   border-radius: 99px;
   background: rgba(18, 16, 13, 0.88);
-  border: 1px solid rgba(198, 161, 91, 0.38);
+  border: 1px solid rgba(198, 161, 91, 0.32);
+  backdrop-filter: blur(10px);
+}
+.frg-stage-tab {
+  padding: 5px 12px;
+  border-radius: 99px;
   font-size: 10px;
-  font-weight: 700;
-  color: #e6dcc8;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  pointer-events: auto;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+  color: #9e9689;
+  transition: color 0.2s, background-color 0.2s;
 }
-.frg-scroll-badge:hover {
-  border-color: #c6a15b;
-  background: rgba(28, 24, 18, 0.95);
-  transform: translateY(-1px);
+.frg-stage-tab:hover {
+  color: #f4efe6;
 }
-.frg-scroll-badge svg {
+.frg-stage-tab--active {
+  background: rgba(198, 161, 91, 0.18);
+  color: #e4cc92;
+}
+.frg-stage-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 99px;
   color: #c6a15b;
+  transition: background-color 0.2s, transform 0.2s;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .frg-scroll-badge svg {
-    animation: frg-bounce 1.9s infinite ease-in-out;
-  }
-}
-@keyframes frg-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
+.frg-stage-next:hover {
+  background: rgba(198, 161, 91, 0.15);
+  transform: translateY(1px);
 }
 
 @container (max-width: 768px) {
@@ -1173,17 +1290,70 @@ const CSS_STYLES = `
   .frg-wear-item--time {
     padding-left: 6px;
   }
-  .frg-scroll-badge {
+  .frg-stage-dock {
     right: 14px;
-    bottom: 14px;
-    padding: 5px 11px;
+    bottom: 12px;
+    padding: 3px;
+  }
+  .frg-stage-tab {
+    padding: 4px 9px;
     font-size: 9px;
   }
 }
 `;
 
+const NOTE_STORIES: Record<string, string> = {
+  "Passionfruit": "Sun-ripened tropical snap that cuts through dark wood.",
+  "Fruity Notes": "Vibrant exotic fruit flash opening the first 20 minutes.",
+  "Saffron": "Warm crimson spice with dry metallic leather edges.",
+  "Turkish Rose": "Rich velvety petals adding depth and crimson opulence.",
+  "Oud": "Resinous, smoky Cambodian agarwood lingering for 14+ hours.",
+  "Agarwood (Oud)": "Dark, untamed smoked wood anchoring the long dry-down.",
+  "Benzoin": "Balsamic, honeyed resin smoothing out sharp spice edges.",
+  "Indonesian Patchouli": "Earthy cacao-leaf richness giving structure to the heart.",
+  "Patchouli": "Dark, velvety leaf balancing sweetness with natural depth.",
+  "Leather": "Supple smoked saddle leather with an unmistakable trail.",
+  "Akigalawood": "Crisp, peppery modern wood that boosts projection.",
+  "Amber": "Warm golden resin wrapping the base in glowing warmth.",
+  "Vanilla": "Creamy bourbon vanilla bean smoothing the dry-down.",
+  "Labdanum": "Wild Mediterranean resin adding dark, leathery depth.",
+  "Cardamom": "Aromatic spiced green pod lifting the cool lavender heart.",
+  "Lavender": "Crisp French aromatic herb lending clean tailored tension.",
+  "Iris": "Powdery Florentine orris butter creating a suede-like veil.",
+  "Nutmeg": "Dry, warm kitchen spice sparking crisp bergamot.",
+  "Indonesian Nutmeg": "Smoky, spiced nutmeg weaving warmth into saffron.",
+  "Sage": "Fresh herbal clarity balancing smoked wood and leather.",
+  "Bergamot": "Sparkling Italian citrus peel brightening the dark opening.",
+  "Cedarwood": "Dry pencil-shaving cedar spine keeping resins sharp.",
+  "Cedar": "Crisp dry wood supporting smoky leather and saffron.",
+  "Geranium": "Crisp green-floral lift slicing through warm spice.",
+  "Mahonial": "Luminous white-petal radiance floating through the heart.",
+  "Rosyfolia": "Airy dewy rose transparency lifting heavy spices.",
+  "Cocoapulse™": "Roasted dark cocoa warmth with zero cloying sugar.",
+  "Tonka Bean": "Almond-hay roasted bean melting into caramel & smoke.",
+  "Tonka": "Creamy coumarin warmth softening dark agarwood.",
+  "Maple": "Subtle caramelized sap echoing smoky woods.",
+  "Ambrofix™": "Radiant mineral ambergris backbone for all-day sillage.",
+  "Jasmine": "Creamy night-blooming petals tempering fierce leather.",
+  "Osmanthus": "Apricot-tinged golden blossom nodding toward suede.",
+  "Cognac": "Aged oak-barrel brandy warmth opening the composition.",
+  "Raspberry": "Juicy ruby berry brightness cutting into rich tobacco.",
+  "Caramel": "Toasted golden toffee melting slowly into tonka bean.",
+  "Oak": "Charred barrel stave wood adding smoky vintage character.",
+  "Praline": "Roasted caramelized nuttiness lingering close to skin.",
+  "Oakmoss": "Classic emerald woodland moss anchoring the dry-down.",
+};
+
+function getNoteStory(name: string): string {
+  return NOTE_STORIES[name] || `Signature aromatic note shaping this fragrance's trail.`;
+}
+
 export interface FragranceOrbitCarouselProps {
   fragrances?: Fragrance[];
+  activeIndex?: number;
+  activeStage?: 0 | 1;
+  showStageControls?: boolean;
+  onSlideChange?: (index: number, stage: 0 | 1) => void;
   onSelectSize?: (fragrance: Fragrance, size: DecantSize) => void;
   onAddToCart?: (fragrance: Fragrance, size: DecantSize) => void;
   onExplore?: (fragrance: Fragrance) => void;
@@ -1193,9 +1363,9 @@ export interface FragranceOrbitCarouselProps {
 function getDualRefs(map: Record<number, DualStageHandles | undefined>, idx: number) {
   const h = map[idx];
   if (!h) return null;
-  const topNotes = h.notes.top.filter(Boolean) as HTMLDivElement[];
-  const midNotes = h.notes.mid.filter(Boolean) as HTMLDivElement[];
-  const baseNotes = h.notes.base.filter(Boolean) as HTMLDivElement[];
+  const topNotes = h.notes.top.filter(Boolean) as HTMLElement[];
+  const midNotes = h.notes.mid.filter(Boolean) as HTMLElement[];
+  const baseNotes = h.notes.base.filter(Boolean) as HTMLElement[];
   return {
     stage: h.stage,
     bg1: h.bg1,
@@ -1257,11 +1427,23 @@ function applyDualInstant(
 
 export function FragranceOrbitCarousel({
   fragrances = DEFAULT_FRAGRANCES,
+  activeIndex,
+  activeStage,
+  showStageControls = true,
+  onSlideChange,
   className = ""
 }: FragranceOrbitCarouselProps) {
   const n = fragrances.length;
-  const [index, setIndex] = useState(0);
-  const [dualStage, setDualStage] = useState<0 | 1>(0);
+  const [index, setIndex] = useState(() =>
+    typeof activeIndex === "number" ? wrapIndex(activeIndex, n) : 0
+  );
+  const [dualStage, setDualStage] = useState<0 | 1>(() => activeStage ?? 0);
+  const [selectedNote, setSelectedNote] = useState<{
+    fragranceIndex: number;
+    name: string;
+    tierLabel: string;
+    story: string;
+  } | null>(null);
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const indexRef = useRef(0);
@@ -1672,14 +1854,57 @@ export function FragranceOrbitCarousel({
   }, []);
 
   const select = (next: number, dir: 1 | -1, nextStage?: 0 | 1) => {
-    const hasDual = Boolean(fragrances[next]?.dualFrame);
+    const safeNext = wrapIndex(next, n);
+    const hasDual = Boolean(fragrances[safeNext]?.dualFrame);
     const resolvedStage: 0 | 1 = hasDual ? (nextStage ?? 0) : 0;
-    if (next === indexRef.current && resolvedStage === dualStageRef.current) return;
+    if (safeNext === indexRef.current && resolvedStage === dualStageRef.current) return;
     dirRef.current = dir;
-    indexRef.current = next;
+    indexRef.current = safeNext;
     dualStageRef.current = resolvedStage;
-    setIndex(next);
+    setSelectedNote(null);
+    setIndex(safeNext);
     setDualStage(resolvedStage);
+    onSlideChange?.(safeNext, resolvedStage);
+  };
+
+  useEffect(() => {
+    if (typeof activeIndex !== "number") return;
+    const safe = wrapIndex(activeIndex, n);
+    if (safe !== indexRef.current) {
+      const hasDual = Boolean(fragrances[safe]?.dualFrame);
+      const nextSt: 0 | 1 = hasDual ? (activeStage ?? 0) : 0;
+      select(safe, stepDirection(indexRef.current, safe, n), nextSt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex, n]);
+
+  useEffect(() => {
+    if (activeStage === undefined) return;
+    const hasDual = Boolean(fragrances[indexRef.current]?.dualFrame);
+    const resolved: 0 | 1 = hasDual ? activeStage : 0;
+    if (resolved !== dualStageRef.current) {
+      select(indexRef.current, resolved === 1 ? 1 : -1, resolved);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStage]);
+
+  const handleBottleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.currentTarget.querySelector<HTMLElement>(".frg-tilt-wrap");
+    if (!target) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const rx = (((e.clientY - rect.top) / rect.height) - 0.5) * -9;
+    const ry = (((e.clientX - rect.left) / rect.width) - 0.5) * 11;
+    target.style.setProperty("--tilt-rx", `${rx.toFixed(2)}deg`);
+    target.style.setProperty("--tilt-ry", `${ry.toFixed(2)}deg`);
+    target.style.setProperty("--tilt-scale", "1.02");
+  };
+
+  const handleBottleLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.currentTarget.querySelector<HTMLElement>(".frg-tilt-wrap");
+    if (!target) return;
+    target.style.setProperty("--tilt-rx", "0deg");
+    target.style.setProperty("--tilt-ry", "0deg");
+    target.style.setProperty("--tilt-scale", "1");
   };
 
   const go = (to: number, dir?: 1 | -1) => {
@@ -1896,7 +2121,9 @@ export function FragranceOrbitCarousel({
           <div
             key={f.id}
             ref={(el) => { ensureDualHandle(i).stage = el; }}
-            className="frg-oud-stage"
+            className={`frg-oud-stage ${index === i ? "frg-oud-stage--active" : ""} ${
+              index === i && dualStage === 0 ? "frg-oud-stage--f1" : "frg-oud-stage--f2"
+            }`}
             aria-hidden={index !== i}
           >
             <div
@@ -1924,30 +2151,42 @@ export function FragranceOrbitCarousel({
                 </h2>
               </div>
 
-              {/* Frame 1 Centered Studio Bottle */}
+              {/* Frame 1 Centered Studio Bottle (click to reveal notes + subtle 3D tilt) */}
               <div
                 ref={(el) => { ensureDualHandle(i).bottle1 = el; }}
-                className="frg-oud-bottle-1"
+                className={`frg-oud-bottle-1 ${index === i && dualStage === 0 ? "frg-oud-bottle-1--clickable" : ""}`}
+                onClick={() => {
+                  if (index === i && dualStage === 0) select(i, 1, 1);
+                }}
+                onPointerMove={handleBottleMove}
+                onPointerLeave={handleBottleLeave}
+                title={index === i && dualStage === 0 ? "Click bottle to reveal scent notes" : undefined}
               >
-                <img
-                  src={df.frame1Image}
-                  alt={`${f.brand} ${f.name} bottle`}
-                  draggable={false}
-                />
+                <div className="frg-tilt-wrap">
+                  <img
+                    src={df.frame1Image}
+                    alt={`${f.brand} ${f.name} bottle`}
+                    draggable={false}
+                  />
+                </div>
               </div>
 
-              {/* Frame 2 Right-Side Cutout Bottle */}
+              {/* Frame 2 Right-Side Cutout Bottle (subtle 3D tilt) */}
               <div
                 ref={(el) => { ensureDualHandle(i).f2Bottle = el; }}
                 className="frg-oud-f2-bottle"
+                onPointerMove={handleBottleMove}
+                onPointerLeave={handleBottleLeave}
               >
                 <div className="frg-oud-f2-bottle-aura" style={{ background: df.auraBg }} />
                 <div className="frg-oud-f2-bottle-floor" style={{ background: df.floorBg }} />
-                <img
-                  src={df.bottle2Image}
-                  alt={`${f.brand} ${f.name} flacon`}
-                  draggable={false}
-                />
+                <div className="frg-tilt-wrap">
+                  <img
+                    src={df.bottle2Image}
+                    alt={`${f.brand} ${f.name} flacon`}
+                    draggable={false}
+                  />
+                </div>
               </div>
 
               {/* Gold Architectural Callout Arrows Drawing From Bottle to Note Tiers */}
@@ -1968,55 +2207,99 @@ export function FragranceOrbitCarousel({
                 ))}
               </svg>
 
-              {/* Animated Individual Note Medallions & Names */}
+              {/* Animated Interactive Note Medallions & Names */}
               <div className="frg-oud-tiers">
-                {df.noteTiers.map((tier, tierIdx) => (
-                  <div key={tier.id} className="frg-oud-tier">
-                    <div
-                      ref={(el) => { ensureDualHandle(i).tierHeads[tierIdx] = el; }}
-                      className="frg-oud-tier-head"
-                    >
-                      <span className="frg-oud-tier-rule" />
-                      <h3 className="frg-oud-tier-title">{tier.label}</h3>
-                      <span className="frg-oud-tier-rule frg-oud-tier-rule--right" />
-                    </div>
+                {df.noteTiers.map((tier, tierIdx) => {
+                  const shortTier = tier.id === "top" ? "Top Note" : tier.id === "mid" ? "Heart Note" : "Base Note";
+                  return (
+                    <div key={tier.id} className="frg-oud-tier">
+                      <div
+                        ref={(el) => { ensureDualHandle(i).tierHeads[tierIdx] = el; }}
+                        className="frg-oud-tier-head"
+                      >
+                        <span className="frg-oud-tier-rule" />
+                        <h3 className="frg-oud-tier-title">{tier.label}</h3>
+                        <span className="frg-oud-tier-rule frg-oud-tier-rule--right" />
+                      </div>
 
-                    <div className="frg-oud-note-row">
-                      {tier.notes.map((note, noteIdx) => (
-                        <div
-                          key={note.name}
-                          ref={(el) => { ensureDualHandle(i).notes[tier.id][noteIdx] = el; }}
-                          className="frg-oud-note-item"
-                          style={{ "--note-delay": `${(tierIdx * 4 + noteIdx) * 0.25}s` } as React.CSSProperties}
-                        >
-                          <div className="frg-oud-note-ring">
-                            <div className="frg-oud-note-inner">
-                              <img src={note.image} alt={note.name} draggable={false} />
-                            </div>
-                          </div>
-                          <span className="frg-oud-note-name">{note.name}</span>
-                        </div>
-                      ))}
+                      <div className="frg-oud-note-row">
+                        {tier.notes.map((note, noteIdx) => {
+                          const isNoteActive =
+                            selectedNote?.fragranceIndex === i && selectedNote?.name === note.name;
+                          return (
+                            <button
+                              key={note.name}
+                              type="button"
+                              ref={(el) => { ensureDualHandle(i).notes[tier.id][noteIdx] = el; }}
+                              className={`frg-oud-note-item ${isNoteActive ? "frg-oud-note-item--active" : ""}`}
+                              style={{ "--note-delay": `${(tierIdx * 4 + noteIdx) * 0.25}s` } as React.CSSProperties}
+                              onClick={() =>
+                                setSelectedNote((prev) =>
+                                  prev?.fragranceIndex === i && prev?.name === note.name
+                                    ? null
+                                    : {
+                                        fragranceIndex: i,
+                                        name: note.name,
+                                        tierLabel: shortTier,
+                                        story: getNoteStory(note.name),
+                                      }
+                                )
+                              }
+                              aria-pressed={isNoteActive}
+                              title={`Explore ${note.name}`}
+                            >
+                              <div className="frg-oud-note-ring">
+                                <div className="frg-oud-note-inner">
+                                  <img src={note.image} alt={note.name} draggable={false} />
+                                </div>
+                              </div>
+                              <span className="frg-oud-note-name">{note.name}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div
                 ref={(el) => { ensureDualHandle(i).wearPill = el; }}
                 className="frg-oud-wear-pill"
               >
-                <Clock size={12} className="text-[#c6a15b]" />
-                <strong>When to Wear</strong>
-                <span>{f.wearSummary}</span>
+                {selectedNote && selectedNote.fragranceIndex === i ? (
+                  <>
+                    <strong>{selectedNote.tierLabel} · {selectedNote.name}</strong>
+                    <span>{selectedNote.story}</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedNote(null)}
+                      aria-label="Close note details"
+                      className="frg-btn ml-1 opacity-60 hover:opacity-100"
+                    >
+                      <X size={11} />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Clock size={12} className="text-[#c6a15b] shrink-0" />
+                    <strong>When to Wear</strong>
+                    <span>{f.wearSummary}</span>
+                    <span className="frg-oud-wear-hint">Tap any note</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
         );
       })}
 
-      {/* Vertical Pager Dots */}
-      <div className="frg-pager" role="tablist" aria-label="Select Fragrance">
+      {/* Eye-Level Scent Index (Left Side, collapses to minimal vertical dots when Frame 2 Notes open) */}
+      <div
+        className={`frg-pager ${activeHasDual && dualStage === 1 ? "frg-pager--compact" : ""}`}
+        role="tablist"
+        aria-label="Select Fragrance"
+      >
         {fragrances.map((f, i) => (
           <button
             key={f.id}
@@ -2029,6 +2312,8 @@ export function FragranceOrbitCarousel({
             onClick={() => go(i)}
           >
             <i />
+            <span className="frg-pager-num">0{i + 1}</span>
+            <span className="frg-pager-name">{f.label ?? f.name}</span>
           </button>
         ))}
       </div>
@@ -2180,26 +2465,40 @@ export function FragranceOrbitCarousel({
         </div>
       </div>
 
-      {/* Scroll / Reveal Notes interactive indicator */}
-      <button
-        type="button"
-        className="frg-btn frg-scroll-badge"
-        onClick={() => step(1)}
-        aria-label={
-          activeHasDual && dualStage === 0
-            ? "Reveal fragrance notes"
-            : "Next fragrance"
-        }
-      >
-        <span>
-          {activeHasDual
-            ? dualStage === 0
-              ? "1/2 • Scroll to reveal notes"
-              : "2/2 • Scroll for next scent"
-            : "Scroll to orbit"}
-        </span>
-        <ChevronDown size={13} />
-      </button>
+      {/* Minimalist Bottle / Notes Toggle + Next Step Pill (Standalone fallback) */}
+      {showStageControls && (
+        <div className="frg-stage-dock" role="group" aria-label="View stage controls">
+          {activeHasDual && (
+            <>
+              <button
+                type="button"
+                className={`frg-btn frg-stage-tab ${dualStage === 0 ? "frg-stage-tab--active" : ""}`}
+                onClick={() => select(index, -1, 0)}
+                aria-pressed={dualStage === 0}
+              >
+                Bottle
+              </button>
+              <button
+                type="button"
+                className={`frg-btn frg-stage-tab ${dualStage === 1 ? "frg-stage-tab--active" : ""}`}
+                onClick={() => select(index, 1, 1)}
+                aria-pressed={dualStage === 1}
+              >
+                Notes
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            className="frg-btn frg-stage-next"
+            onClick={() => step(1)}
+            aria-label={activeHasDual && dualStage === 0 ? "Reveal fragrance notes" : "Next fragrance"}
+            title="Next (Scroll or Arrow Down)"
+          >
+            <ChevronDown size={14} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
