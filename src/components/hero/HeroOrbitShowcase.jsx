@@ -417,80 +417,139 @@ export default function HeroOrbitShowcase() {
                     </div>
                   )}
 
-                  {/* ─── Compact Floating Capsule (Visible during Frame 2 Notes OR on Mobile) ─── */}
-                  <div
-                    className={`${
-                      activeStage === 1 ? "flex" : "flex md:hidden"
-                    } items-center gap-2 sm:gap-2.5 fixed bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 z-20 rounded-full border border-[#c6a15b]/35 bg-[#12110f]/90 backdrop-blur-md px-3 py-1.5 shadow-2xl max-w-[94vw]`}
-                  >
-                    {/* Mobile Prev/Next arrows */}
-                    <div className="flex md:hidden items-center gap-1 pr-1 border-r border-white/10">
+                  {/* ─── Mobile 2-Row Clean Card (<md) & Desktop Frame 2 Floating Capsule (md+) ─── */}
+                  {activeStage === 1 && (
+                    <div className="hidden md:flex items-center gap-2.5 fixed bottom-4 right-6 z-20 rounded-full border border-[#c6a15b]/35 bg-[#12110f]/90 backdrop-blur-md px-3 py-1.5 shadow-2xl">
                       <button
                         type="button"
-                        onClick={() => cycleScent(-1)}
-                        className="p-1 text-[#c5c1b9] hover:text-[#fffdf7] cursor-pointer"
-                        aria-label="Previous fragrance"
+                        onClick={() => setActiveStage(0)}
+                        className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#c6a15b]/20 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#d8c08a] transition cursor-pointer whitespace-nowrap"
                       >
-                        <ChevronLeft size={14} />
+                        ← Bottle
                       </button>
+
+                      <div className="inline-flex items-center rounded-full bg-[#181613] border border-white/10 p-0.5">
+                        {DECANT_SIZES.map((sz) => (
+                          <button
+                            key={sz}
+                            type="button"
+                            onClick={() => setSelectedSize(sz)}
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-medium transition cursor-pointer ${
+                              selectedSize === sz
+                                ? "bg-[#c6a15b] text-[#11110f] font-semibold"
+                                : "text-[#9e9689] hover:text-[#f4efe6]"
+                            }`}
+                          >
+                            {sz}
+                          </button>
+                        ))}
+                      </div>
+
                       <button
                         type="button"
-                        onClick={() => cycleScent(1)}
-                        className="p-1 text-[#c5c1b9] hover:text-[#fffdf7] cursor-pointer"
-                        aria-label="Next fragrance"
+                        onClick={handleAdd}
+                        disabled={isVariantSoldOut}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] transition cursor-pointer whitespace-nowrap disabled:opacity-50"
                       >
-                        <ChevronRight size={14} />
+                        {addedFeedback ? <Check size={12} /> : <ShoppingBag size={12} />}
+                        <span>{addedFeedback ? "Added" : `Add • ₹${displayPrice}`}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleViewDetails}
+                        className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-white/15 text-[#c5c1b9] hover:border-[#c6a15b] hover:text-[#fffdf7] transition cursor-pointer shrink-0"
+                        title={`View ${activeScent.name} page`}
+                        aria-label={`View ${activeScent.name} page`}
+                      >
+                        <ArrowUpRight size={13} />
                       </button>
                     </div>
+                  )}
 
-                    {/* Bottle <-> Notes Switch */}
-                    <button
-                      type="button"
-                      onClick={() => setActiveStage((s) => (s === 0 ? 1 : 0))}
-                      className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#c6a15b]/20 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#d8c08a] transition cursor-pointer whitespace-nowrap"
-                    >
-                      {activeStage === 1 ? "← Bottle" : "Notes →"}
-                    </button>
-
-                    {/* Size Picker */}
-                    <div className="inline-flex items-center rounded-full bg-[#181613] border border-white/10 p-0.5">
-                      {DECANT_SIZES.map((sz) => (
+                  {/* Mobile Responsive Control Card (Always fits cleanly within 390px without clipping) */}
+                  <div className="flex md:hidden flex-col gap-2 fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100vw-24px)] max-w-[400px] z-20 rounded-2xl border border-[#c6a15b]/35 bg-[#12110f]/92 backdrop-blur-md p-2.5 shadow-2xl">
+                    {/* Row 1: Scent Switcher + Bottle/Notes Flip */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1">
                         <button
-                          key={sz}
                           type="button"
-                          onClick={() => setSelectedSize(sz)}
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-medium transition cursor-pointer ${
-                            selectedSize === sz
-                              ? "bg-[#c6a15b] text-[#11110f] font-semibold"
-                              : "text-[#9e9689] hover:text-[#f4efe6]"
-                          }`}
+                          onClick={() => cycleScent(-1)}
+                          className="p-1.5 rounded-lg bg-white/5 text-[#c5c1b9] hover:text-[#fffdf7] cursor-pointer"
+                          aria-label="Previous fragrance"
                         >
-                          {sz}
+                          <ChevronLeft size={14} />
                         </button>
-                      ))}
+                        <span className="px-1.5 font-mono text-[10px] tracking-[0.16em] text-[#c6a15b]">
+                          0{activeIndex + 1}/0{SHOWCASE_SCENTS.length}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => cycleScent(1)}
+                          className="p-1.5 rounded-lg bg-white/5 text-[#c5c1b9] hover:text-[#fffdf7] cursor-pointer"
+                          aria-label="Next fragrance"
+                        >
+                          <ChevronRight size={14} />
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveStage((s) => (s === 0 ? 1 : 0))}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#c6a15b]/40 bg-[#c6a15b]/10 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#e4cc92] cursor-pointer"
+                      >
+                        <Sparkles size={11} className="text-[#c6a15b]" />
+                        <span>{activeStage === 1 ? "← Studio Bottle" : "Reveal Notes →"}</span>
+                      </button>
                     </div>
 
-                    {/* Add to Bag */}
-                    <button
-                      type="button"
-                      onClick={handleAdd}
-                      disabled={isVariantSoldOut}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] transition cursor-pointer whitespace-nowrap disabled:opacity-50"
-                    >
-                      {addedFeedback ? <Check size={12} /> : <ShoppingBag size={12} />}
-                      <span>{addedFeedback ? "Added" : `₹${displayPrice}`}</span>
-                    </button>
+                    {/* Row 2: Size Picker + Add to Bag + View Page */}
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+                      <div className="inline-flex items-center rounded-full bg-[#181613] border border-white/10 p-0.5 shrink-0">
+                        {DECANT_SIZES.map((sz) => (
+                          <button
+                            key={sz}
+                            type="button"
+                            onClick={() => setSelectedSize(sz)}
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition cursor-pointer ${
+                              selectedSize === sz
+                                ? "bg-[#c6a15b] text-[#11110f] font-semibold"
+                                : "text-[#9e9689] hover:text-[#f4efe6]"
+                            }`}
+                          >
+                            {sz}
+                          </button>
+                        ))}
+                      </div>
 
-                    {/* View Perfume Page */}
-                    <button
-                      type="button"
-                      onClick={handleViewDetails}
-                      className="inline-flex items-center justify-center w-7 h-7 rounded-full border border-white/15 text-[#c5c1b9] hover:border-[#c6a15b] hover:text-[#fffdf7] transition cursor-pointer shrink-0"
-                      title={`View ${activeScent.name} page`}
-                      aria-label={`View ${activeScent.name} page`}
-                    >
-                      <ArrowUpRight size={13} />
-                    </button>
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <button
+                          type="button"
+                          onClick={handleAdd}
+                          disabled={isVariantSoldOut}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-[#c6a15b] hover:bg-[#d8c08a] text-[#11110f] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] transition cursor-pointer whitespace-nowrap disabled:opacity-50"
+                        >
+                          {addedFeedback ? <Check size={12} /> : <ShoppingBag size={12} />}
+                          <span>
+                            {isVariantSoldOut
+                              ? "Sold Out"
+                              : addedFeedback
+                              ? "Added"
+                              : `Add • ₹${displayPrice}`}
+                          </span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleViewDetails}
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-[#e5dccb] hover:border-[#c6a15b] hover:text-[#fffdf7] transition cursor-pointer shrink-0"
+                          title={`View ${activeScent.name} page`}
+                          aria-label={`View ${activeScent.name} page`}
+                        >
+                          <ArrowUpRight size={13} />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>

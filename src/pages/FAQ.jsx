@@ -7,9 +7,6 @@ import {
   Search,
   MessageSquare,
   ArrowUpRight,
-  ShieldCheck,
-  Droplets,
-  Package,
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { faqs, FAQ_CATEGORIES } from "../data/faqs";
@@ -82,7 +79,7 @@ export default function FAQ() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search questions or keywords (e.g., sizes, sprays, shipping)..."
+                placeholder="Search questions or keywords (e.g., sizes, hygiene, shipping)..."
                 className="w-full rounded-2xl border border-white/15 bg-[#171715] py-3.5 pl-11 pr-4 text-xs text-[#f4efe6] placeholder-[#8e8a82] transition-colors focus:border-[#c6a15b] focus:outline-none focus:ring-1 focus:ring-[#c6a15b]"
               />
               {searchQuery && (
