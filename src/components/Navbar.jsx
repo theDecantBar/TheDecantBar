@@ -1,6 +1,7 @@
 import { BottomNavBar } from "@/components/ui/bottom-nav-bar";
 import SearchModal from "./common/SearchModal";
 import LiveSearch from "./common/LiveSearch";
+import MusicToggle from "./common/MusicToggle";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -148,7 +149,7 @@ export default function Navbar() {
           </div>
 
           {/* Action icons */}
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
             {isAuthenticated && user?.isAdmin && (
               <Link
                 to="/admin"
@@ -161,28 +162,31 @@ export default function Navbar() {
               </Link>
             )}
 
+            {/* Highlighted Ambient Sound Toggle */}
+            <MusicToggle />
+
             {/* Mobile Search Button (Universal across all pages) */}
             <button
               type="button"
               onClick={() => setSearchModalOpen(true)}
               aria-label="Search fragrances"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted md:hidden cursor-pointer"
+              className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted md:hidden cursor-pointer"
             >
-              <Search size={18} strokeWidth={1.5} />
+              <Search size={17} strokeWidth={1.5} />
             </button>
 
             {/* Account */}
             <Link
               to={isAuthenticated ? "/account" : "/login"}
               aria-label={isAuthenticated ? "My Account" : "Sign In"}
-              className={`flex h-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] ${
+              className={`flex h-9 sm:h-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b] ${
                 !isHome && isAuthenticated && user?.fullName
-                  ? "min-w-11 w-auto px-3.5"
-                  : "w-11"
+                  ? "min-w-9 sm:min-w-11 w-auto px-2.5 sm:px-3.5"
+                  : "w-9 sm:w-11"
               }`}
             >
               <UserRound
-                size={18}
+                size={17}
                 strokeWidth={1.5}
                 className={
                   isHome || isAuthenticated
@@ -202,9 +206,9 @@ export default function Navbar() {
             <Link
               to="/cart"
               aria-label={`Shopping Cart, ${cartCount} items`}
-              className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
+              className="relative flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#c6a15b] transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6a15b]"
             >
-              <ShoppingBag size={18} strokeWidth={1.5} />
+              <ShoppingBag size={17} strokeWidth={1.5} />
               <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#c6a15b] px-1 text-[9px] font-bold text-[#11110f]">
                 {cartCount}
               </span>
