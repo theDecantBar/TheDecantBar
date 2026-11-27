@@ -21,6 +21,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import productReviewRoutes from "./routes/productReviewRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import { getPublicOffers } from "./controllers/offersController.js";
 import pool from "./config/db.js";
 import { ensureAdminSchema } from "./scripts/initAdminDb.js";
 
@@ -133,6 +134,7 @@ app.use("/api/product-reviews", productReviewRoutes);
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
+app.get("/api/offers", getPublicOffers);
 
 app.get("/", (req, res) => {
   res.json({

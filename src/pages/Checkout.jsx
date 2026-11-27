@@ -17,14 +17,15 @@ import {
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useOffers } from "../context/OffersContext";
 import {
   createRazorpayOrderApi,
   verifyPaymentAndPlaceOrder,
 } from "../services/authApi";
 import {
   calculateShippingFee,
+  calculateDiscount,
   calculateOrderTotal,
-  FREE_SHIPPING_THRESHOLD,
 } from "../utils/shipping";
 
 import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayCheckout";
@@ -32,6 +33,7 @@ import { loadRazorpayScript, onlinePaymentsEnabled } from "../services/razorpayC
 export default function Checkout() {
   const { cartItems, cartCount, cartSubtotal, clearCart } = useCart();
   const { token, isAuthenticated } = useAuth();
+  const { offers } = useOffers();
 
   // Initial checkout form values start completely empty, even when customer is logged in
   const [formData, setFormData] = useState({
@@ -197,10 +199,17 @@ export default function Checkout() {
     if (errorMessage) setErrorMessage("");
   };
 
-  const shippingFee = cartItems.length > 0 ? calculateShippingFee(cartSubtotal) : 0;
-  const finalTotal = cartItems.length > 0 ? calculateOrderTotal(cartSubtotal) : 0;
-  const isFreeShipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD;
-  const amountForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
+  const freeShippingThreshold = Number(offers?.freeShippingThreshold ?? 499);
+  const discountActive = Boolean(offers?.discountActive);
+  const discountPercent = Number(offers?.discountPercent ?? 0);
+  const discountThreshold = Number(offers?.discountMinSubtotal ?? 999);
+
+  const shippingFee = cartItems.length > 0 ? calculateShippingFee(cartSubtotal, offers) : 0;
+  const discountAmount = cartItems.length > 0 ? calculateDiscount(cartSubtotal, offers) : 0;
+  const finalTotal = cartItems.length > 0 ? calculateOrderTotal(cartSubtotal, offers) : 0;
+  const isFreeShipping = cartSubtotal >= freeShippingThreshold;
+  const amountForFreeShipping = Math.max(0, freeShippingThreshold - cartSubtotal);
+  const amountForDiscount = Math.max(0, discountThreshold - cartSubtotal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -341,6 +350,7 @@ export default function Checkout() {
               items: res.order?.items || [...cartItems],
               total: res.order?.total ? Number(res.order.total) : finalTotal,
               subtotal: res.order?.subtotal ? Number(res.order.subtotal) : cartSubtotal,
+              discountAmount: res.order?.discountAmount !== undefined ? Number(res.order.discountAmount) : discountAmount,
               shippingFee: res.order?.shippingFee !== undefined ? Number(res.order.shippingFee) : shippingFee,
               customer: {
                 ...cleanPayload,
@@ -468,6 +478,14 @@ export default function Checkout() {
                 <span>Payment Reference:</span>
                 <span className="text-[#f4efe6] font-mono text-[11px]">
                   {completedOrder.paymentId}
+                </span>
+              </div>
+            )}
+            {Number(completedOrder.discountAmount) > 0 && (
+              <div className="flex justify-between">
+                <span>Offer Discount:</span>
+                <span className="text-[#c6a15b] font-semibold">
+                  −₹{completedOrder.discountAmount}
                 </span>
               </div>
             )}
@@ -978,20 +996,33 @@ export default function Checkout() {
               Order Summary ({cartCount} {cartCount === 1 ? "bottle" : "bottles"})
             </h2>
 
-            {/* Free Shipping Alert / Status */}
-            {cartSubtotal < FREE_SHIPPING_THRESHOLD ? (
+            {/* Free Shipping & Discount Alert / Status */}
+            {cartSubtotal < freeShippingThreshold ? (
               <div className="rounded-2xl mb-6 border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
                 <div className="flex items-center gap-2">
                   <Truck size={14} className="text-[#c6a15b] shrink-0" />
                   <span>
-                    Add <strong className="text-[#f4efe6]">₹{amountForFreeShipping}</strong> more to unlock <strong className="text-[#c6a15b]">FREE shipping</strong>
+                    Add <strong className="text-[#f4efe6]">₹{amountForFreeShipping}</strong> more to unlock <strong className="text-[#c6a15b]">FREE delivery</strong>
+                    {discountActive && discountPercent > 0 ? ` (or ${discountPercent}% OFF at ₹${discountThreshold}+)` : ""}
                   </span>
                 </div>
+              </div>
+            ) : discountActive && discountPercent > 0 && cartSubtotal < discountThreshold ? (
+              <div className="rounded-2xl mb-6 border border-[#c6a15b]/35 bg-[#c6a15b]/10 p-2.5 text-xs text-[#d8c08a] flex items-center gap-2">
+                <Check size={14} className="text-[#c6a15b] shrink-0" strokeWidth={2.5} />
+                <span>
+                  <strong className="text-[#f4efe6]">FREE delivery</strong> unlocked! Add <strong className="text-[#f4efe6]">₹{amountForDiscount}</strong> more for <strong className="text-[#c6a15b]">{discountPercent}% OFF</strong>.
+                </span>
+              </div>
+            ) : discountAmount > 0 ? (
+              <div className="rounded-2xl mb-6 border border-[#c6a15b]/40 bg-[#c6a15b]/15 p-2.5 text-xs text-[#d8c08a] flex items-center gap-2">
+                <Check size={14} className="text-[#c6a15b] shrink-0" strokeWidth={2.5} />
+                <span>You unlocked <strong className="text-[#f4efe6]">FREE delivery &amp; {discountPercent}% OFF</strong> (−₹{discountAmount} saved)!</span>
               </div>
             ) : (
               <div className="rounded-2xl mb-6 border border-[#c6a15b]/35 bg-[#c6a15b]/10 p-2.5 text-xs text-[#d8c08a] flex items-center gap-2">
                 <Check size={14} className="text-[#c6a15b] shrink-0" strokeWidth={2.5} />
-                <span>You unlocked <strong className="text-[#f4efe6]">FREE shipping</strong> on this order!</span>
+                <span>You unlocked <strong className="text-[#f4efe6]">FREE delivery</strong> on this order!</span>
               </div>
             )}
 
@@ -1033,6 +1064,12 @@ export default function Checkout() {
                 <span>Subtotal</span>
                 <span className="text-[#f4efe6] font-medium">₹{cartSubtotal}</span>
               </div>
+              {discountAmount > 0 && (
+                <div className="flex justify-between items-center">
+                  <span>{discountPercent}% Offer Discount (₹{discountThreshold}+)</span>
+                  <span className="text-[#c6a15b] font-semibold">−₹{discountAmount}</span>
+                </div>
+              )}
               <div className="flex justify-between items-center">
                 <span>Standard Insured Shipping</span>
                 <span className={isFreeShipping ? "text-[#c6a15b] font-semibold uppercase tracking-wider" : "text-[#f4efe6] font-medium"}>

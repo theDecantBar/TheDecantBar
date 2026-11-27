@@ -1,5 +1,6 @@
 import pool from "../config/db.js";
 import { getAdminEmails } from "../config/adminConfig.js";
+import { DEFAULT_OFFERS_CONFIG } from "../services/offersService.js";
 
 export async function ensureAdminSchema() {
   try {
@@ -63,6 +64,36 @@ export async function ensureAdminSchema() {
       );
       CREATE INDEX IF NOT EXISTS idx_fragrance_notes_key ON fragrance_notes(key);
     `);
+
+    // 4b. Ensure store_offers_config table exists & seed defaults once
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS store_offers_config (
+        id INTEGER PRIMARY KEY DEFAULT 1,
+        free_shipping_threshold INTEGER NOT NULL DEFAULT 499,
+        standard_shipping_fee INTEGER NOT NULL DEFAULT 80,
+        discount_active BOOLEAN NOT NULL DEFAULT true,
+        discount_percent INTEGER NOT NULL DEFAULT 10,
+        discount_min_subtotal INTEGER NOT NULL DEFAULT 999,
+        banners JSONB NOT NULL DEFAULT '[]'::jsonb,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(
+      `INSERT INTO store_offers_config
+        (id, free_shipping_threshold, standard_shipping_fee, discount_active, discount_percent, discount_min_subtotal, banners)
+       VALUES
+        (1, $1, $2, $3, $4, $5, $6::jsonb)
+       ON CONFLICT (id) DO NOTHING`,
+      [
+        DEFAULT_OFFERS_CONFIG.freeShippingThreshold,
+        DEFAULT_OFFERS_CONFIG.standardShippingFee,
+        DEFAULT_OFFERS_CONFIG.discountActive,
+        DEFAULT_OFFERS_CONFIG.discountPercent,
+        DEFAULT_OFFERS_CONFIG.discountMinSubtotal,
+        JSON.stringify(DEFAULT_OFFERS_CONFIG.banners),
+      ]
+    );
 
     // 5. Auto-promote emails configured in .env (ADMIN_EMAILS / ADMIN_EMAIL)
     const adminEmails = getAdminEmails();

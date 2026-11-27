@@ -218,3 +218,28 @@ export async function fetchAdminNotes(token) {
   }
   return res.json();
 }
+
+// ─── Store Offers & Announcement Banner Rules ──────────────────────────────────
+export async function fetchAdminOffers(token) {
+  const res = await fetch("/api/admin/offers", {
+    headers: getHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to load offers settings");
+  }
+  return res.json();
+}
+
+export async function updateAdminOffers(token, payload) {
+  const res = await fetch("/api/admin/offers", {
+    method: "PUT",
+    headers: getHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Failed to save offers");
+  }
+  return res.json();
+}

@@ -17,6 +17,7 @@ import {
 } from "../controllers/adminController.js";
 import { updateReview, deleteReview } from "../controllers/reviewController.js";
 import { resendOrderConfirmation, checkAdminPayment } from "../controllers/orderController.js";
+import { getAdminOffers, updateAdminOffers } from "../controllers/offersController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -55,5 +56,9 @@ router.post("/variants/bulk-stock", bulkUpdateAllStock);
 router.get("/reviews", getAdminReviews);
 router.put("/reviews/:id", updateReview);
 router.delete("/reviews/:id", deleteReview);
+
+// Store Offers & Top Banner Management
+router.get("/offers", getAdminOffers);
+router.put("/offers", updateAdminOffers);
 
 export default router;

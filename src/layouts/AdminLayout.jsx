@@ -14,6 +14,7 @@ import {
   ChevronsRight,
   Bell,
   User,
+  Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -22,6 +23,7 @@ const navigationItems = [
   { name: "Orders & Shipping", path: "/admin/orders", icon: ShoppingBag },
   { name: "Inventory & Alerts", path: "/admin/inventory", icon: Boxes },
   { name: "Perfume Catalog", path: "/admin/products", icon: Droplets },
+  { name: "Offers & Promos", path: "/admin/offers", icon: Tag },
   { name: "Customer Reviews", path: "/admin/reviews", icon: MessageSquare },
 ];
 

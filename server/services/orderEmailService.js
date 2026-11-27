@@ -91,6 +91,8 @@ export function generateCustomerOrderEmailHtml({ order, items }) {
   const subtotalFormatted = formatPrice(order.subtotal);
   const shippingFeeNum = Number(order.shipping_fee) || 0;
   const shippingFormatted = shippingFeeNum === 0 ? "FREE" : formatPrice(shippingFeeNum);
+  const discountNum = Math.max(0, (Number(order.subtotal) || 0) + shippingFeeNum - (Number(order.total_amount) || 0));
+  const discountFormatted = discountNum > 0 ? `-${formatPrice(discountNum)}` : null;
   const totalFormatted = formatPrice(order.total_amount);
 
   const itemsRowsHtml = (items || [])
@@ -208,6 +210,10 @@ export function generateCustomerOrderEmailHtml({ order, items }) {
               <td style="padding: 12px 16px 6px; color: #a39e93; font-size: 13px;">Subtotal</td>
               <td style="padding: 12px 16px 6px; text-align: right; color: #f4efe6; font-size: 14px;">${subtotalFormatted}</td>
             </tr>
+            ${discountFormatted ? `<tr>
+              <td style="padding: 6px 16px; color: #d8c08a; font-size: 13px;">Offer Discount</td>
+              <td style="padding: 6px 16px; text-align: right; color: #c6a15b; font-size: 13px; font-weight: 600;">${discountFormatted}</td>
+            </tr>` : ""}
             <tr>
               <td style="padding: 6px 16px; color: #a39e93; font-size: 13px;">Shipping &amp; Handling</td>
               <td style="padding: 6px 16px; text-align: right; color: #c6a15b; font-size: 13px; font-weight: 600;">${shippingFormatted}</td>
@@ -339,6 +345,8 @@ export function generateCustomerOrderEmailText({ order, items }) {
     .join("\n");
 
   const shippingText = Number(order.shipping_fee) === 0 ? "FREE" : `₹${order.shipping_fee}`;
+  const discountNum = Math.max(0, (Number(order.subtotal) || 0) + (Number(order.shipping_fee) || 0) - (Number(order.total_amount) || 0));
+  const discountLine = discountNum > 0 ? `\nOffer Discount: -₹${discountNum}` : "";
 
   return `
 THE DECANT BAR
@@ -355,7 +363,7 @@ Thank you for your order with The Decant Bar! Your authentic fragrance decants a
 ORDER SUMMARY:
 ${itemsList}
 
-Subtotal: ₹${order.subtotal}
+Subtotal: ₹${order.subtotal}${discountLine}
 Shipping: ${shippingText}
 Total: ₹${order.total_amount}
 

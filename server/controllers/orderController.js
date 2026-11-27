@@ -5,6 +5,7 @@ import { sendOrderConfirmationEmail } from "../services/orderEmailService.js";
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
 import { blockDisabledOnlinePayments } from "../config/paymentAvailability.js";
+import { getOffersConfig } from "../services/offersService.js";
 
 // Lock the variant before reading holds so competing online and COD checkouts serialize.
 async function availableStock(client, variantId, excludedOrderId = null) {
@@ -120,10 +121,21 @@ async function validateAndCalculateCart(client, items) {
   // Shipping calculation:
   // - Subtotal below â‚¹500: â‚¹80 shipping fee
   // - Subtotal â‚¹500 or above: FREE shipping (â‚¹0)
-  const shippingFee = subtotal >= 500 ? 0 : (subtotal > 0 ? 80 : 0);
-  const total = subtotal + shippingFee;
+  const offers = await getOffersConfig({ client });
+  const freeThreshold = Number(offers.freeShippingThreshold ?? 499);
+  const stdFee = Number(offers.standardShippingFee ?? 80);
+  const discActive = Boolean(offers.discountActive);
+  const discPct = Number(offers.discountPercent ?? 0);
+  const discMin = Number(offers.discountMinSubtotal ?? 999);
 
-  return { validatedItems, subtotal, shippingFee, total };
+  const shippingFee = subtotal >= freeThreshold ? 0 : (subtotal > 0 ? stdFee : 0);
+  const discountAmount =
+    discActive && discPct > 0 && subtotal >= discMin
+      ? Math.round(subtotal * (discPct / 100))
+      : 0;
+  const total = Math.max(0, subtotal - discountAmount + shippingFee);
+
+  return { validatedItems, subtotal, discountAmount, shippingFee, total };
 }
 
 /**
@@ -284,7 +296,9 @@ export const createRazorpayOrder = async (req, res) => {
     return res.json({
       orderNumber: order.order_number, orderId: order.razorpay_order_id, keyId: key_id,
       amount: Math.round(Number(order.total_amount) * 100), currency: "INR",
-      subtotal: Number(order.subtotal), shippingFee: Number(order.shipping_fee), total: Number(order.total_amount)
+      subtotal: Number(order.subtotal),
+      discountAmount: Math.max(0, Number(order.subtotal) + Number(order.shipping_fee) - Number(order.total_amount)),
+      shippingFee: Number(order.shipping_fee), total: Number(order.total_amount)
     });
   } catch (error) {
     await client.query("ROLLBACK");
@@ -430,6 +444,7 @@ async function confirmCapturedPayment(payment, userId, res) {
         paymentMethod: order.payment_method,
         paymentStatus: order.payment_status,
         subtotal: order.subtotal,
+        discountAmount: Math.max(0, Number(order.subtotal) + Number(order.shipping_fee) - Number(order.total_amount)),
         shippingFee: order.shipping_fee,
         total: order.total_amount,
         status: order.order_status,

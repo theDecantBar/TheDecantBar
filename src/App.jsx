@@ -35,6 +35,7 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminInventory = lazy(() => import("./pages/admin/AdminInventory"));
+const AdminOffers = lazy(() => import("./pages/admin/AdminOffers"));
 const AdminReviews = lazy(() => import("./pages/admin/AdminReviews"));
 
 function RouteFallback() {
@@ -111,6 +112,7 @@ export default function App() {
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="inventory" element={<AdminInventory />} />
                 <Route path="products" element={<AdminProducts />} />
+                <Route path="offers" element={<AdminOffers />} />
                 <Route path="reviews" element={<AdminReviews />} />
               </Route>
             </Route>
