@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     }
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => Boolean(token));
 
   const logout = () => {
     setUser(null);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type MouseEvent } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Home,
   ShoppingBag,

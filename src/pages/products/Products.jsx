@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/products/ProductCard";
 import FilterBar from "../../components/FilterBar";
+import { getProducts } from "../../services/api";
 
 const PRODUCTS_PER_PAGE = 32;
 
@@ -48,56 +49,31 @@ function Products() {
 
   // Fetch products using the current search and filters.
   useEffect(() => {
-    const controller = new AbortController();
+    let active = true;
 
     async function fetchProducts() {
       setLoading(true);
       setError("");
 
       try {
-        const params = new URLSearchParams();
-
-        if (searchParam) {
-          params.set("search", searchParam);
-        }
-
-        if (category) {
-          params.set("category", category);
-        }
-
-        if (gender) {
-          params.set("gender", gender);
-        }
-
-        if (weather) {
-          params.set("weather", weather);
-        }
-
-        const url = "/api/products?" + params.toString();
-
-        const response = await fetch(url, {
-          signal: controller.signal,
+        const data = await getProducts({
+          search: searchParam,
+          category,
+          gender,
+          weather,
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to load products");
-        }
-
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error("Unexpected products response");
-        }
+        if (!active) return;
 
         setProducts(data);
         setCurrentPage(1);
       } catch (err) {
-        if (err.name !== "AbortError") {
+        if (active) {
           console.error("Error fetching products:", err);
           setError("We couldn't load the products. Please try again.");
         }
       } finally {
-        if (!controller.signal.aborted) {
+        if (active) {
           setLoading(false);
         }
       }
@@ -105,7 +81,9 @@ function Products() {
 
     fetchProducts();
 
-    return () => controller.abort();
+    return () => {
+      active = false;
+    };
   }, [searchParam, category, gender, weather]);
 
   // Submit the search.

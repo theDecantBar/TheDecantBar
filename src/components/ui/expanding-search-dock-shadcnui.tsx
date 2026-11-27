@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { useRef, useState, type FormEvent, type KeyboardEventHandler } from "react";
 

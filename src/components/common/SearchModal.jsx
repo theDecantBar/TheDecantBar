@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import HighlightMatch from "./HighlightMatch";
+import { getProducts } from "../../services/api";
 
 // Curated luxury perfume houses stocked in the catalog
 const LUXURY_HOUSES_POOL = [
@@ -175,9 +176,7 @@ export default function SearchModal({ isOpen, onClose }) {
 
       setLoading(true);
       try {
-        const res = await fetch("/api/products");
-        if (!res.ok) throw new Error("Failed to load catalog");
-        const data = await res.json();
+        const data = await getProducts();
         if (isMounted && Array.isArray(data)) {
           setProducts(data);
         }

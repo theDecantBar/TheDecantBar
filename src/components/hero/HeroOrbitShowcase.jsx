@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import ArrowFillButton from "../ui/arrow-fill-button";
-import FragranceOrbitCarousel from "../ui/fragrance-orbit-carousel";
+
+const FragranceOrbitCarousel = lazy(() => import("../ui/fragrance-orbit-carousel"));
 
 export default function HeroOrbitShowcase() {
   const [isOpen, setIsOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   // Close on Escape key and lock scroll while open
   useEffect(() => {
@@ -58,10 +60,10 @@ export default function HeroOrbitShowcase() {
           <AnimatePresence>
             {isOpen && (
               <motion.div
-                initial={{ opacity: 0 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: "easeInOut" }}
                 className="fixed inset-0 z-[99999] bg-[#0c0b0a]/95 backdrop-blur-xl flex flex-col justify-between"
               >
                 {/* Header bar */}
@@ -97,13 +99,21 @@ export default function HeroOrbitShowcase() {
 
                 {/* Orbit Showcase Canvas Container */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.97, y: 12 }}
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.97, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.97, y: 12 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: 12 }}
+                  transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
                   className="flex-1 w-full h-full relative overflow-hidden"
                 >
-                  <FragranceOrbitCarousel className="w-full h-full" />
+                  <Suspense
+                    fallback={
+                      <div className="flex h-full w-full items-center justify-center">
+                        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#c6a15b] border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <FragranceOrbitCarousel className="w-full h-full" />
+                  </Suspense>
                 </motion.div>
               </motion.div>
             )}

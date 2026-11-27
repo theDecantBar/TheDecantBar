@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Container from "../components/ui/Container";
 import { useCart } from "../context/CartContext";
+import { getProducts } from "../services/api";
 import { calculateShippingFee, calculateOrderTotal, FREE_SHIPPING_THRESHOLD } from "../utils/shipping";
 
 export default function Cart() {
@@ -29,15 +30,14 @@ export default function Cart() {
 
   // Cross-check items in bag against live database inventory on mount
   useEffect(() => {
+    if (cartItems.length === 0) return;
+
     let isMounted = true;
     async function syncInventory() {
       try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data = await res.json();
-          if (isMounted && Array.isArray(data)) {
-            validateCartInventory(data);
-          }
+        const data = await getProducts({ maxAgeMs: 15_000 });
+        if (isMounted && Array.isArray(data)) {
+          validateCartInventory(data);
         }
       } catch (err) {
         console.error("Cart inventory sync error:", err);
@@ -47,7 +47,7 @@ export default function Cart() {
     return () => {
       isMounted = false;
     };
-  }, [validateCartInventory]);
+  }, [cartItems.length, validateCartInventory]);
 
   const hasSoldOutItems = cartItems.some((item) => item.isSoldOut);
 

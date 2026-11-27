@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Container from "../ui/Container";
 import ProductCard from "../products/ProductCard";
+import { getProducts } from "../../services/api";
 
 export default function FeaturedDecants() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchFeatured() {
       try {
-        const response = await fetch("/api/products");
-        if (response.ok) {
-          const data = await response.json();
+        const data = await getProducts();
+        if (isMounted && Array.isArray(data)) {
           // Prioritize top popular fragrances if available, or first 8
           const popularNames = [
             "Aventus",
@@ -45,11 +46,14 @@ export default function FeaturedDecants() {
       } catch (err) {
         console.error("Failed to load featured products:", err);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
     fetchFeatured();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {
